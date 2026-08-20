@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { caseStudies } from '../../data/caseStudies';
+import { closings } from '../../data/closings';
+
+export function getStaticPaths() {
+	return caseStudies.map((cs) => ({
+		params: { slug: cs.slug },
+		props: { cs },
+	}));
+}
+
+const { cs } = Astro.props;
+const closing = cs.closingSlug ? closings.find((c) => c.slug === cs.closingSlug) : null;
+
+const dealTypeLabels: Record<string, string> = {
+	'1031': '1031 Exchange',
+	'value-add': 'Value-Add',
+	'trust-probate': 'Trust & Probate',
+	'family-legacy': 'Family Legacy',
+	'buyer-rep': 'Buyer Representation',
+};
+
+const related = cs.submarket
+	? caseStudies.filter((other) => other.submarket === cs.submarket && other.slug !== cs.slug).slice(0, 3)
+	: [];
+---
+
+<BaseLayout title={`${cs.title} Case Study | Highlight Real Estate Group`} description={cs.summary}>
+	<article class="section">
+		<div class="container cs-detail">
+			<span class="eyebrow">Case Study</span>
+			<h1>{cs.title}</h1>
+			<p class="cs-detail__location">{cs.location}</p>
+			<span class="cs-detail__tags">
+				{cs.dealType.map((t) => <span class="tag">{dealTypeLabels[t]}</span>)}
+			</span>
+
+			{
+				closing && (
+					<div class="cs-detail__facts">
+						<div>
+							<dt>Sale Price</dt>
+							<dd>${closing.price.toLocaleString()}</dd>
+						</div>
+						{closing.units && (
+							<div>
+								<dt>Units</dt>
+								<dd>{closing.units}</dd>
+							</div>
+						)}
+						{closing.sqft && (
+							<div>
+								<dt>Building Size</dt>
+								<dd>{closing.sqft.toLocaleString()} SF</dd>
+							</div>
+						)}
+					</div>
+				)
+			}
+
+			<div class="cs-detail__body">
+				<h2>The Opportunity</h2>
+				<p>{cs.opportunity}</p>
+				<h2>The Solution</h2>
+				<p>{cs.solution}</p>
+				<h2>The Results</h2>
+				<p>{cs.results}</p>
+			</div>
+
+			<div class="cs-detail__links">
+				{
+					cs.submarket && (
+						<a href={`/submarkets/${cs.submarket}/`} class="btn btn-outline">
+							Explore the {cs.submarket.replace(/-/g, ' ')} Submarket
+						</a>
+					)
+				}
+				<a href="/contact/?intent=bov" class="btn btn-gold">Get a Free Broker Opinion of Value</a>
+			</div>
+
+			{
+				related.length > 0 && (
+					<div class="cs-detail__related">
+						<h2>Related Case Studies</h2>
+						<ul>
+							{related.map((r) => (
+								<li>
+									<a href={`/case-studies/${r.slug}/`}>{r.title}</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+		</div>
+	</article>
+</BaseLayout>
+
+<style>
+	.cs-detail {
+		max-width: 760px;
+	}
+
+	.cs-detail__location {
+		color: var(--ink-light);
+		font-weight: 600;
+	}
+
+	.cs-detail__tags {
+		display: flex;
+		gap: 0.5rem;
+		margin: 1rem 0 2rem;
+	}
+
+	.tag {
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		padding: 0.3rem 0.7rem;
+		border-radius: 1px;
+	}
+
+	.cs-detail__facts {
+		display: flex;
+		gap: 2.5rem;
+		border-top: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
+		padding-block: 1.5rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.cs-detail__facts dt {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+		font-weight: 600;
+	}
+
+	.cs-detail__facts dd {
+		margin: 0.3rem 0 0;
+		font-family: var(--font-serif);
+		font-size: 1.6rem;
+		font-weight: 400;
+		color: var(--navy-dark);
+	}
+
+	.cs-detail__body {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.cs-detail__body h2 {
+		margin-top: 2.25rem;
+		font-size: 1.5rem;
+	}
+
+	.cs-detail__links {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin: 2.5rem 0;
+	}
+
+	.cs-detail__related {
+		border-top: 1px solid var(--border);
+		padding-top: 1.5rem;
+	}
+
+	.cs-detail__related ul {
+		list-style: none;
+		padding: 0;
+	}
+
+	.cs-detail__related li {
+		margin-bottom: 0.5rem;
+	}
+</style>

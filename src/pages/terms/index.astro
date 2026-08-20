@@ -1,0 +1,61 @@
+---
+// NOTE: Starting draft. Have counsel review before publishing, particularly the listing-accuracy
+// disclaimer and DRE disclosures against current California real estate advertising requirements.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+---
+
+<BaseLayout title="Terms &amp; Conditions" description="Terms of use for highlightreg.com, the website of Highlight Real Estate Group.">
+	<section class="section legal">
+		<div class="container narrow">
+			<h1>Terms &amp; Conditions</h1>
+			<p><em>Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</em></p>
+
+			<h2>Use of This Site</h2>
+			<p>
+				This website is operated by {site.name}, a team within {site.brokerage} (Office DRE #{site.officeDRE}). By using this site, you agree to
+				these terms.
+			</p>
+
+			<h2>No Warranty on Listing Information</h2>
+			<p>
+				Property information on this site, including closed sale data, listings, and case studies, is provided for general informational
+				purposes and is believed to be accurate but is not guaranteed. Prospective buyers and sellers should independently verify all property
+				details, including square footage, unit counts, zoning, and pricing, before relying on them.
+			</p>
+
+			<h2>Equal Housing Opportunity</h2>
+			<p>
+				{site.name} is committed to compliance with all applicable federal, state, and local fair housing laws, and does not discriminate on the
+				basis of race, color, religion, sex, national origin, familial status, disability, or any other protected class.
+			</p>
+
+			<h2>Intellectual Property</h2>
+			<p>
+				The content of this site, including text, images, and case study narratives, is the property of {site.name} and may not be reproduced
+				without permission.
+			</p>
+
+			<h2>Limitation of Liability</h2>
+			<p>
+				{site.name} is not liable for any damages arising from your use of this site or reliance on information contained on it. Nothing on this
+				site constitutes legal, tax, or financial advice; consult your own advisors before making a real estate decision.
+			</p>
+
+			<h2>Contact</h2>
+			<p>
+				Questions about these terms can be directed to {site.name}, {site.officeAddress}.
+			</p>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.legal .narrow {
+		max-width: 760px;
+	}
+
+	.legal h2 {
+		margin-top: 2rem;
+	}
+</style>

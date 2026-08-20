@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { submarkets } from '../../data/submarkets';
+import { closings } from '../../data/closings';
+---
+
+<BaseLayout
+	title="LA Multifamily Submarkets | Highlight Real Estate Group"
+	description="Deep submarket coverage of Koreatown, Pico-Union, Westlake, Silver Lake, Brentwood, Santa Monica, North Hollywood, and Van Nuys apartment building investment sales."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Submarkets</span>
+			<h1>LA Multifamily Submarket Expertise</h1>
+			<p>We focus deep, not broad. Here are the eight LA submarkets where we have the strongest transaction history and local market knowledge.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container submarket-grid">
+			{
+				submarkets.map((sm) => {
+					const count = closings.filter((c) => c.submarket === sm.slug).length;
+					return (
+						<a href={`/submarkets/${sm.slug}/`} class="submarket-card">
+							<span class="submarket-card__region">{sm.region}</span>
+							<h2>{sm.name}</h2>
+							<p>{sm.blurb}</p>
+							<div class="submarket-card__meta">
+								<span>Walk Score {sm.walkScore}</span>
+								{count > 0 && <span>{count} Closed Sale{count === 1 ? '' : 's'}</span>}
+							</div>
+						</a>
+					);
+				})
+			}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+	}
+
+	.submarket-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.75rem;
+	}
+
+	.submarket-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 2rem;
+		color: var(--ink);
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+	}
+
+	.submarket-card:hover {
+		border-color: var(--gold);
+		box-shadow: 0 18px 40px -26px rgba(12, 46, 80, 0.35);
+		transform: translateY(-2px);
+		text-decoration: none;
+	}
+
+	.submarket-card h2 {
+		font-size: 1.5rem;
+	}
+
+	.submarket-card__region {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--gold-dark);
+		font-weight: 600;
+	}
+
+	.submarket-card__meta {
+		display: flex;
+		gap: 1.25rem;
+		margin-top: 1rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border);
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+</style>

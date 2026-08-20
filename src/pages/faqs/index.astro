@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const faqCategories = [
+	{
+		category: 'Selling Timeline',
+		items: [
+			{
+				q: 'How long does it take to sell an apartment building in LA?',
+				a: 'Most of our listings go under contract within 1–4 weeks of marketing, with escrow closing 30–60 days after that, depending on financing and due diligence. Off-market sales can move faster.',
+			},
+			{
+				q: 'Do I need to fix up the property before selling?',
+				a: 'Usually not. Many of the buildings we sell have deferred maintenance or below-market rents. We position these honestly as value-add opportunities rather than asking owners to invest in repairs before a sale.',
+			},
+		],
+	},
+	{
+		category: 'Fees & Process',
+		items: [
+			{
+				q: 'What does it cost to get a Broker Opinion of Value?',
+				a: 'Nothing. Our Broker Opinion of Value is free and confidential, with no obligation to list.',
+			},
+			{
+				q: 'How is your commission structured?',
+				a: 'Commission is negotiated per listing and is only earned when a sale closes. We\'ll walk through the specifics during your BOV consultation.',
+			},
+		],
+	},
+	{
+		category: '1031 Exchanges',
+		items: [
+			{
+				q: 'How does the 1031 exchange timeline work?',
+				a: 'Once your relinquished property closes, you have 45 days to identify replacement properties and 180 days total to close on the exchange. We start sourcing replacement options before your sale closes to protect that window.',
+			},
+			{
+				q: 'Can I exchange into property outside of California?',
+				a: 'Yes. We\'ve helped clients exchange into multifamily properties in Texas and other states as part of a 1031 strategy, coordinating with brokers in those markets directly.',
+			},
+		],
+	},
+	{
+		category: 'Trust & Probate Sales',
+		items: [
+			{
+				q: 'Do you work with trustees and probate attorneys directly?',
+				a: 'Yes, regularly. We coordinate with trustees, executors, attorneys, and CPAs to make sure a sale meets fiduciary and, where applicable, court requirements.',
+			},
+			{
+				q: 'What if the property hasn\'t been touched in decades?',
+				a: 'That\'s common with trust and estate sales. We market these properties clearly to value-add buyers who understand what they\'re taking on, so families aren\'t asked to modernize a building before selling it.',
+			},
+		],
+	},
+];
+---
+
+<BaseLayout
+	title="Frequently Asked Questions | Highlight Real Estate Group"
+	description="Answers to common questions LA apartment owners ask about selling timelines, fees, 1031 exchanges, and trust or probate sales."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">FAQs</span>
+			<h1>Frequently Asked Questions</h1>
+			<p>Answers to what LA apartment owners ask us most before selling.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			{
+				faqCategories.map((cat) => (
+					<div class="faq-category">
+						<h2>{cat.category}</h2>
+						<div class="faq-list">
+							{cat.items.map((f) => (
+								<details class="faq-item">
+									<summary>{f.q}</summary>
+									<p>{f.a}</p>
+								</details>
+							))}
+						</div>
+					</div>
+				))
+			}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.narrow {
+		max-width: 760px;
+	}
+
+	.faq-category {
+		margin-bottom: 2.5rem;
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.15rem 1.5rem;
+	}
+
+	.faq-item summary {
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.faq-item p {
+		margin-top: 0.75rem;
+		margin-bottom: 0;
+	}
+</style>

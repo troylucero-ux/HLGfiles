@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { listings } from '../../data/listings';
+import { formatPrice } from '../../lib/format';
+---
+
+<BaseLayout
+	title="Active Apartment Building Listings | Highlight Real Estate Group"
+	description="Current apartment building and development site listings from Highlight Real Estate Group across the Los Angeles Metro Area."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Listings</span>
+			<h1>Active Listings</h1>
+			<p>Multifamily and development-site opportunities currently available through Highlight Real Estate Group.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			{
+				listings.length === 0 ? (
+					<div class="empty-state">
+						<h2>No Active Listings Right Now</h2>
+						<p>
+							We don't have any properties actively on the market at this moment. Many of our best deals move off-market &mdash; contact us
+							directly to hear about opportunities before they're publicly listed, or browse our <a href="/closings/">closed sales</a> to see
+							the kind of properties we work with.
+						</p>
+						<a href="/contact/" class="btn btn-navy">Get in Touch</a>
+					</div>
+				) : (
+					<div class="listings-grid">
+						{listings.map((listing) => (
+							<article class="listing-card">
+								<span class="listing-card__status">{listing.status.replace('-', ' ')}</span>
+								<h2>{listing.name}</h2>
+								<p class="listing-card__location">
+									{listing.city}, {listing.state} {listing.zip}
+								</p>
+								<p>{listing.description}</p>
+								<p class="listing-card__price">{listing.askingPrice ? formatPrice(listing.askingPrice) : 'Contact for Pricing'}</p>
+							</article>
+						))}
+					</div>
+				)
+			}
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<BOVForm heading="Thinking About Selling?" subheading="Get a free, confidential Broker Opinion of Value." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.empty-state {
+		max-width: 640px;
+		background: var(--paper-alt);
+		border-top: 3px solid var(--gold);
+		border-radius: 1px;
+		padding: 2.75rem;
+	}
+
+	.listings-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.75rem;
+	}
+
+	.listing-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem;
+	}
+
+	.listing-card__status {
+		display: inline-block;
+		text-transform: uppercase;
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		padding: 0.25rem 0.65rem;
+		border-radius: 1px;
+		margin-bottom: 0.75rem;
+	}
+
+	.listing-card__price {
+		font-weight: 700;
+		color: var(--success);
+	}
+</style>

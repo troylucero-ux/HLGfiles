@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { caseStudies } from '../../data/caseStudies';
+import { site } from '../../data/site';
+
+const exchangeCaseStudies = caseStudies.filter((cs) => cs.dealType.includes('1031'));
+
+const steps = [
+	{
+		title: 'Identify Your Exchange Goals',
+		body: 'We start by understanding why you’re exchanging: consolidating into fewer, larger assets, diversifying into new markets, or moving out of California entirely.',
+	},
+	{
+		title: 'Price and Market the Relinquished Property',
+		body: 'We prepare a Broker Opinion of Value grounded in real closed comps, then market your building to maximize price while protecting your 45-day identification window.',
+	},
+	{
+		title: 'Source Replacement Property',
+		body: 'We tap our network of off-market and on-market opportunities, in LA and beyond, to identify qualified replacement properties before your deadline.',
+	},
+	{
+		title: 'Coordinate the Exchange',
+		body: 'We work directly with your qualified intermediary, CPA, and attorney to keep both sides of the exchange on schedule and inside IRS 1031 requirements.',
+	},
+];
+---
+
+<BaseLayout
+	title="1031 Exchange Apartment Sale LA | Highlight Real Estate Group"
+	description="Highlight Real Estate Group guides LA apartment owners through 1031 exchange strategy and execution, with a 100% success rate on exchanges and cross-market replacement property sourcing."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">1031 Exchanges</span>
+			<h1>1031 Exchange Strategy for LA Apartment Owners</h1>
+			<p>
+				Selling an apartment building and want to defer capital gains? We've guided LA multifamily owners through 1031 exchanges into
+				replacement properties across California and out of state, with a {site.stats.exchangeSuccessRate} success rate on exchanges to date.
+			</p>
+			<a href="/contact/?intent=bov" class="btn btn-gold">Start Your Exchange Strategy</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">How It Works</span>
+			<h2>Our 1031 Exchange Process</h2>
+			<div class="steps">
+				{
+					steps.map((step, i) => (
+						<div class="step">
+							<span class="step__num">{i + 1}</span>
+							<div>
+								<h3>{step.title}</h3>
+								<p>{step.body}</p>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	{
+		exchangeCaseStudies.length > 0 && (
+			<section class="section section-alt">
+				<div class="container">
+					<span class="eyebrow">Case Study</span>
+					<h2>A 1031 Exchange in Practice</h2>
+					<div class="cs-preview-grid">
+						{exchangeCaseStudies.map((cs) => (
+							<a href={`/case-studies/${cs.slug}/`} class="cs-preview">
+								<h3>{cs.title}</h3>
+								<p>{cs.summary}</p>
+								<span>Read the case study &rarr;</span>
+							</a>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="section">
+		<div class="container">
+			<BOVForm heading="Exploring a 1031 Exchange?" subheading="Get a free, confidential Broker Opinion of Value and exchange strategy conversation." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero h1 {
+		color: #fff;
+	}
+
+	.page-hero p {
+		color: #d7e0ea;
+		max-width: 700px;
+		font-size: 1.05rem;
+	}
+
+	.page-hero .btn-gold {
+		background: var(--gold);
+		color: var(--navy-dark);
+		border-color: var(--gold);
+	}
+
+	.page-hero .btn-gold:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+	}
+
+	.steps {
+		display: grid;
+		gap: 1.5rem;
+		max-width: 760px;
+		margin-top: 2rem;
+	}
+
+	.step {
+		display: flex;
+		gap: 1.25rem;
+	}
+
+	.step__num {
+		flex-shrink: 0;
+		width: 42px;
+		height: 42px;
+		border-radius: 2px;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.1rem;
+	}
+
+	.step h3 {
+		margin-bottom: 0.25rem;
+	}
+
+	.cs-preview-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.cs-preview {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem;
+		color: var(--ink);
+		transition: border-color 0.2s ease, transform 0.2s ease;
+	}
+
+	.cs-preview:hover {
+		border-color: var(--gold);
+		transform: translateY(-2px);
+		text-decoration: none;
+	}
+
+	.cs-preview span {
+		font-weight: 600;
+		font-size: 0.85rem;
+	}
+</style>

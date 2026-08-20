@@ -1,0 +1,401 @@
+---
+import { site } from '../data/site';
+
+const navGroups = [
+	{
+		label: 'About',
+		links: [
+			{ href: '/about/', label: 'Our Team' },
+			{ href: '/testimonials/', label: 'Testimonials' },
+		],
+	},
+	{
+		label: 'Properties',
+		links: [
+			{ href: '/listings/', label: 'Listings' },
+			{ href: '/closings/', label: 'Closed Sales' },
+			{ href: '/land-for-development/', label: 'Land for Development' },
+		],
+	},
+	{
+		label: 'Services',
+		links: [
+			{ href: '/1031-exchanges/', label: '1031 Exchanges' },
+			{ href: '/trust-and-estate-sales/', label: 'Trust & Estate Sales' },
+			{ href: '/case-studies/', label: 'Case Studies' },
+		],
+	},
+	{
+		label: 'Submarkets',
+		links: [{ href: '/submarkets/', label: 'All Submarkets' }],
+	},
+];
+
+const simpleLinks = [
+	{ href: '/insights/', label: 'Insights' },
+	{ href: '/faqs/', label: 'FAQs' },
+	{ href: '/contact/', label: 'Contact' },
+];
+---
+
+<div class="utility-bar">
+	<div class="container utility-bar__inner">
+		<p class="utility-bar__text">Get LA multifamily market insights in your inbox.</p>
+		<form class="utility-bar__form" id="newsletter-form">
+			<label for="newsletter-email" class="visually-hidden">Email address</label>
+			<input id="newsletter-email" type="email" name="email" placeholder="Email address" required />
+			<button type="submit" class="btn btn-gold utility-bar__btn">Subscribe</button>
+			<span id="newsletter-status" role="status"></span>
+		</form>
+	</div>
+</div>
+
+<header class="site-header">
+	<div class="container site-header__inner">
+		<a href="/" class="site-header__logo">
+			<span class="site-header__logo-main">HIGHLIGHT</span>
+			<span class="site-header__logo-sub">Real Estate Group</span>
+		</a>
+
+		<nav class="main-nav" aria-label="Primary">
+			<button class="main-nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav-list">
+				<span class="visually-hidden">Menu</span>
+				<span class="main-nav__toggle-bar"></span>
+				<span class="main-nav__toggle-bar"></span>
+				<span class="main-nav__toggle-bar"></span>
+			</button>
+			<ul class="main-nav__list" id="main-nav-list">
+				{
+					navGroups.map((group) => (
+						<li class="main-nav__group">
+							<span class="main-nav__group-label">{group.label}</span>
+							<ul class="main-nav__submenu">
+								{group.links.map((link) => (
+									<li>
+										<a href={link.href}>{link.label}</a>
+									</li>
+								))}
+							</ul>
+						</li>
+					))
+				}
+				{
+					simpleLinks.map((link) => (
+						<li>
+							<a href={link.href}>{link.label}</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<div class="site-header__actions">
+			<ul class="social-icons" aria-label="Social media">
+				{site.social.linkedin && (
+					<li>
+						<a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+							<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.03-1.85-3.03-1.85 0-2.14 1.45-2.14 2.94v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.8 0 0 .78 0 1.75v20.5C0 23.22.8 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.75V1.75C24 .78 23.2 0 22.22 0z"/></svg>
+						</a>
+					</li>
+				)}
+				{site.social.instagram && (
+					<li>
+						<a href={site.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+							<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07c-1.28.06-2.15.26-2.91.56-.79.31-1.46.72-2.13 1.38C1.35 2.67.94 3.34.63 4.13c-.3.76-.5 1.63-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.63.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.67 1.07-1.34 1.38-2.13.3-.76.5-1.63.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.56-2.91-.31-.79-.72-1.46-1.38-2.13C21.33 1.35 20.66.94 19.87.63c-.76-.3-1.63-.5-2.91-.56C15.67.01 15.26 0 12 0z"/><path d="M12 5.84A6.16 6.16 0 1 0 12 18.16 6.16 6.16 0 0 0 12 5.84zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM18.41 4.6a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></svg>
+						</a>
+					</li>
+				)}
+				{site.social.facebook && (
+					<li>
+						<a href={site.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+							<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06C2 17.08 5.66 21.23 10.44 22v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22C18.34 21.23 22 17.08 22 12.06z"/></svg>
+						</a>
+					</li>
+				)}
+			</ul>
+			<a href="/contact/?intent=bov" class="btn btn-navy site-header__cta">What's My Property Worth?</a>
+		</div>
+	</div>
+</header>
+
+<style>
+	.utility-bar {
+		background: var(--paper-alt);
+		color: var(--navy-dark);
+		font-size: 0.78rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.utility-bar__inner {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.5rem;
+		padding-block: 0.55rem;
+	}
+
+	.utility-bar__text {
+		margin: 0;
+		letter-spacing: 0.02em;
+	}
+
+	.utility-bar__form {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+	}
+
+	.utility-bar__form input {
+		border-radius: 1px;
+		border: 1px solid var(--border);
+		background: var(--paper);
+		padding: 0.4rem 0.65rem;
+		font-size: 0.82rem;
+		font-family: var(--font-sans);
+		min-width: 200px;
+	}
+
+	.utility-bar__btn {
+		padding: 0.5rem 1rem;
+		font-size: 0.68rem;
+	}
+
+	#newsletter-status {
+		font-size: 0.72rem;
+		align-self: center;
+	}
+
+	.site-header {
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		background: var(--paper);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.site-header__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 2rem;
+		padding-block: 1.15rem;
+	}
+
+	.site-header__logo {
+		display: flex;
+		flex-direction: column;
+		line-height: 1;
+		flex-shrink: 0;
+	}
+
+	.site-header__logo-main {
+		font-family: var(--font-serif);
+		font-weight: 400;
+		font-size: 1.6rem;
+		letter-spacing: 0.01em;
+		color: var(--navy-dark);
+	}
+
+	.site-header__logo-sub {
+		font-size: 0.62rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--gold-dark);
+		font-weight: 600;
+		margin-top: 0.3rem;
+	}
+
+	.main-nav {
+		flex: 1;
+	}
+
+	.main-nav__toggle {
+		display: none;
+		flex-direction: column;
+		gap: 4px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.5rem;
+	}
+
+	.main-nav__toggle-bar {
+		width: 22px;
+		height: 2px;
+		background: var(--navy);
+	}
+
+	.main-nav__list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.main-nav__list > li > a,
+	.main-nav__group-label {
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--navy-dark);
+		cursor: default;
+	}
+
+	.main-nav__list > li > a:hover {
+		color: var(--gold-dark);
+	}
+
+	.main-nav__group {
+		position: relative;
+	}
+
+	.main-nav__group:hover .main-nav__submenu,
+	.main-nav__group:focus-within .main-nav__submenu {
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.main-nav__submenu {
+		opacity: 0;
+		pointer-events: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		box-shadow: 0 20px 40px -16px rgba(12, 46, 80, 0.2);
+		list-style: none;
+		margin: 0.75rem 0 0;
+		padding: 0.6rem 0;
+		min-width: 210px;
+		transition: opacity 0.15s ease;
+	}
+
+	.main-nav__submenu a {
+		display: block;
+		padding: 0.55rem 1.25rem;
+		font-weight: 400;
+		font-size: 0.88rem;
+		font-family: var(--font-sans);
+		text-transform: none;
+		letter-spacing: 0;
+		color: var(--ink);
+	}
+
+	.main-nav__submenu a:hover {
+		background: var(--paper-alt);
+		text-decoration: none;
+	}
+
+	.site-header__actions {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		flex-shrink: 0;
+	}
+
+	.social-icons {
+		display: flex;
+		gap: 0.6rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.social-icons a {
+		color: var(--navy);
+		display: inline-flex;
+	}
+
+	.site-header__cta {
+		white-space: nowrap;
+		font-size: 0.85rem;
+		padding: 0.6rem 1.1rem;
+	}
+
+	@media (max-width: 860px) {
+		.main-nav__toggle {
+			display: flex;
+		}
+
+		.main-nav__list {
+			display: none;
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 100%;
+			background: #fff;
+			border-bottom: 1px solid var(--border);
+			flex-direction: column;
+			gap: 0;
+			padding: 0.5rem 1.5rem 1rem;
+		}
+
+		.main-nav__list.is-open {
+			display: flex;
+		}
+
+		.main-nav__group-label {
+			display: block;
+			padding: 0.6rem 0;
+		}
+
+		.main-nav__submenu {
+			display: block;
+			opacity: 1;
+			visibility: visible;
+			pointer-events: auto;
+			position: static;
+			border: none;
+			box-shadow: none;
+			padding: 0 0 0 1rem;
+			margin: 0;
+		}
+
+		.main-nav__submenu a {
+			padding: 0.4rem 0;
+		}
+
+		.utility-bar__inner {
+			justify-content: center;
+			text-align: center;
+		}
+	}
+</style>
+
+<script>
+	const toggle = document.getElementById('nav-toggle');
+	const list = document.getElementById('main-nav-list');
+	toggle?.addEventListener('click', () => {
+		const isOpen = list?.classList.toggle('is-open');
+		toggle.setAttribute('aria-expanded', String(!!isOpen));
+	});
+
+	const newsletterForm = document.getElementById('newsletter-form') as HTMLFormElement | null;
+	newsletterForm?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const status = document.getElementById('newsletter-status');
+		const emailInput = document.getElementById('newsletter-email') as HTMLInputElement;
+		const button = newsletterForm.querySelector('button');
+		if (button) button.disabled = true;
+		try {
+			const res = await fetch('/api/newsletter', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email: emailInput.value }),
+			});
+			const result = await res.json();
+			if (status) status.textContent = res.ok ? 'Subscribed!' : (result.error ?? 'Something went wrong.');
+			if (res.ok) newsletterForm.reset();
+		} catch {
+			if (status) status.textContent = 'Something went wrong.';
+		} finally {
+			if (button) button.disabled = false;
+		}
+	});
+</script>

@@ -1,0 +1,138 @@
+---
+interface Props {
+	heading?: string;
+	subheading?: string;
+}
+
+const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading = 'No pressure. Just data.' } = Astro.props;
+---
+
+<div class="bov-form">
+	<h2>{heading}</h2>
+	<p class="bov-form__sub">{subheading}</p>
+	<form class="js-bov-form" data-endpoint="/api/bov-lead">
+		<div class="bov-form__row">
+			<label for="bov-name" class="visually-hidden">Name</label>
+			<input id="bov-name" name="name" type="text" placeholder="Name" required />
+			<label for="bov-email" class="visually-hidden">Email</label>
+			<input id="bov-email" name="email" type="email" placeholder="Email" required />
+			<label for="bov-phone" class="visually-hidden">Phone</label>
+			<input id="bov-phone" name="phone" type="tel" placeholder="Phone" required />
+		</div>
+		<label class="bov-form__consent">
+			<input type="checkbox" name="privacyConsent" required />
+			I agree to the <a href="/privacy-policy/">Privacy Policy</a> and consent to receiving marketing communications, including automated calls, texts, and emails. Message and data rates may apply. Reply STOP to opt out of texts, or unsubscribe from any email.
+		</label>
+		<button type="submit" class="btn btn-gold">Submit</button>
+		<p class="bov-form__status" role="status" hidden></p>
+	</form>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLFormElement>('.js-bov-form').forEach((form) => {
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			const status = form.querySelector<HTMLParagraphElement>('.bov-form__status');
+			const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+			const endpoint = form.dataset.endpoint!;
+			const data = Object.fromEntries(new FormData(form).entries());
+			data.privacyConsent = (form.querySelector('input[name="privacyConsent"]') as HTMLInputElement)?.checked as unknown as string;
+
+			if (button) button.disabled = true;
+			try {
+				const res = await fetch(endpoint, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+				});
+				const result = await res.json();
+				if (status) {
+					status.hidden = false;
+					if (res.ok) {
+						status.textContent = "Thanks — we'll be in touch shortly.";
+						status.style.color = 'var(--success)';
+						form.reset();
+					} else {
+						status.textContent = result.error ?? 'Something went wrong. Please try again.';
+						status.style.color = '#b3261e';
+					}
+				}
+			} catch {
+				if (status) {
+					status.hidden = false;
+					status.textContent = 'Something went wrong. Please try again or contact us directly.';
+					status.style.color = '#b3261e';
+				}
+			} finally {
+				if (button) button.disabled = false;
+			}
+		});
+	});
+</script>
+
+<style>
+	.bov-form {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: clamp(2rem, 4vw, 3rem);
+	}
+
+	.bov-form h2 {
+		font-size: clamp(1.5rem, 2.6vw, 1.9rem);
+	}
+
+	.bov-form__sub {
+		color: var(--ink-light);
+	}
+
+	.bov-form__row {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 0.75rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.bov-form input[type='text'],
+	.bov-form input[type='email'],
+	.bov-form input[type='tel'] {
+		width: 100%;
+		padding: 0.75rem 0.9rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-size: 0.95rem;
+		font-family: var(--font-sans);
+		background: var(--paper);
+	}
+
+	.bov-form input:focus {
+		outline: none;
+		border-color: var(--gold);
+	}
+
+	.bov-form__consent {
+		display: flex;
+		gap: 0.5rem;
+		align-items: flex-start;
+		font-size: 0.75rem;
+		color: var(--ink-light);
+		margin-bottom: 1.25rem;
+	}
+
+	.bov-form__consent input {
+		margin-top: 0.2rem;
+	}
+
+	.bov-form__status {
+		margin-top: 0.75rem;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	@media (max-width: 640px) {
+		.bov-form__row {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

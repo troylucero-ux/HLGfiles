@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { submarkets } from '../../data/submarkets';
+import { closings } from '../../data/closings';
+import { caseStudies } from '../../data/caseStudies';
+import { formatPrice } from '../../lib/format';
+
+export function getStaticPaths() {
+	return submarkets.map((sm) => ({
+		params: { slug: sm.slug },
+		props: { sm },
+	}));
+}
+
+const { sm } = Astro.props;
+const relatedClosings = closings.filter((c) => c.submarket === sm.slug);
+const relatedCaseStudies = caseStudies.filter((cs) => cs.submarket === sm.slug);
+---
+
+<BaseLayout
+	title={`${sm.name} Apartment Building For Sale | LA Multifamily Submarket`}
+	description={`${sm.name} multifamily submarket profile: Walk Score, transit, retail, and employment highlights, plus Highlight Real Estate Group's closed sales and case studies in ${sm.name}.`}
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">{sm.region}</span>
+			<h1>{sm.name} Apartment Building Sales</h1>
+			<p>{sm.overview}</p>
+			<a href="/contact/?intent=bov" class="btn btn-gold">Get a Free Broker Opinion of Value in {sm.name}</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container score-grid">
+			<div class="score-card">
+				<span class="score-card__num">{sm.walkScore}</span>
+				<span class="score-card__label">Walk Score</span>
+				<span class="score-card__note">{sm.walkScoreLabel}</span>
+			</div>
+			<div class="score-card">
+				<span class="score-card__num">{sm.transitScore}</span>
+				<span class="score-card__label">Transit Score</span>
+			</div>
+			<div class="score-card">
+				<span class="score-card__num">{sm.bikeScore}</span>
+				<span class="score-card__label">Bike Score</span>
+			</div>
+		</div>
+
+		<div class="container detail-grid">
+			<div>
+				<h2>Transit Access</h2>
+				<ul>
+					{sm.transit.map((t) => <li>{t}</li>)}
+				</ul>
+			</div>
+			<div>
+				<h2>Local Retail</h2>
+				<ul>
+					{sm.retail.map((t) => <li>{t}</li>)}
+				</ul>
+			</div>
+			<div>
+				<h2>Major Employers</h2>
+				<ul>
+					{sm.employers.map((t) => <li>{t}</li>)}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	{
+		relatedClosings.length > 0 && (
+			<section class="section section-alt">
+				<div class="container">
+					<span class="eyebrow">Track Record</span>
+					<h2>Closed Sales in {sm.name}</h2>
+					<div class="closing-grid">
+						{relatedClosings.map((sale) => (
+							<a href={`/closings/#${sale.slug}`} class="closing-card">
+								<span>{sale.name}</span>
+								<span class="closing-card__meta">
+									{sale.units ? `${sale.units} Units` : 'Development Site'} &middot; Sold for {formatPrice(sale.price)}
+								</span>
+							</a>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		relatedCaseStudies.length > 0 && (
+			<section class="section">
+				<div class="container">
+					<span class="eyebrow">Case Studies</span>
+					<h2>{sm.name} Case Studies</h2>
+					<div class="closing-grid">
+						{relatedCaseStudies.map((cs) => (
+							<a href={`/case-studies/${cs.slug}/`} class="closing-card">
+								<span>{cs.title}</span>
+								<span class="closing-card__meta">{cs.summary}</span>
+							</a>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="section">
+		<div class="container">
+			<BOVForm heading={`Own an Apartment Building in ${sm.name}?`} subheading="Get a free, confidential Broker Opinion of Value." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero h1 {
+		color: #fff;
+	}
+
+	.page-hero p {
+		color: #d7e0ea;
+		max-width: 720px;
+		font-size: 1.05rem;
+	}
+
+	.page-hero .btn-gold {
+		background: var(--gold);
+		color: var(--navy-dark);
+		border-color: var(--gold);
+	}
+
+	.page-hero .btn-gold:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+	}
+
+	.score-grid {
+		display: flex;
+		gap: 1.5rem;
+		flex-wrap: wrap;
+		margin-bottom: 2.5rem;
+	}
+
+	.score-card {
+		background: var(--paper-alt);
+		border-top: 3px solid var(--gold);
+		border-radius: 1px;
+		padding: 1.75rem 2rem;
+		text-align: center;
+		flex: 1;
+		min-width: 160px;
+	}
+
+	.score-card__num {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: 2.5rem;
+		font-weight: 400;
+		color: var(--navy-dark);
+	}
+
+	.score-card__label {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+		font-weight: 600;
+	}
+
+	.score-card__note {
+		display: block;
+		font-size: 0.8rem;
+		margin-top: 0.4rem;
+		color: var(--ink-light);
+	}
+
+	.detail-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 2rem;
+	}
+
+	.detail-grid ul {
+		padding-left: 1.1rem;
+	}
+
+	.detail-grid li {
+		margin-bottom: 0.4rem;
+	}
+
+	.closing-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+
+	.closing-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.5rem;
+		color: var(--navy-dark);
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.05rem;
+		transition: border-color 0.2s ease, transform 0.2s ease;
+	}
+
+	.closing-card:hover {
+		border-color: var(--gold);
+		transform: translateY(-2px);
+		text-decoration: none;
+	}
+
+	.closing-card__meta {
+		font-weight: 400;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	@media (max-width: 860px) {
+		.detail-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,0 +1,156 @@
+---
+import { site, team } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<div class="container site-footer__grid">
+		<div class="site-footer__col">
+			<p class="site-footer__logo">HIGHLIGHT <span>Real Estate Group</span></p>
+			<p>{site.brokerage}</p>
+			<p>{site.officeAddress}</p>
+			<p>Office DRE #{site.officeDRE}</p>
+		</div>
+
+		<div class="site-footer__col">
+			<h2>Company</h2>
+			<ul>
+				<li><a href="/about/">Our Team</a></li>
+				<li><a href="/case-studies/">Case Studies</a></li>
+				<li><a href="/testimonials/">Testimonials</a></li>
+				<li><a href="/insights/">Insights</a></li>
+				<li><a href="/contact/">Contact</a></li>
+			</ul>
+		</div>
+
+		<div class="site-footer__col">
+			<h2>Properties</h2>
+			<ul>
+				<li><a href="/listings/">Listings</a></li>
+				<li><a href="/closings/">Closed Sales</a></li>
+				<li><a href="/land-for-development/">Land for Development</a></li>
+				<li><a href="/submarkets/">Submarkets</a></li>
+			</ul>
+		</div>
+
+		<div class="site-footer__col">
+			<h2>Services</h2>
+			<ul>
+				<li><a href="/1031-exchanges/">1031 Exchanges</a></li>
+				<li><a href="/trust-and-estate-sales/">Trust &amp; Estate Sales</a></li>
+				<li><a href="/faqs/">FAQs</a></li>
+			</ul>
+		</div>
+
+		<div class="site-footer__col">
+			<h2>Contact</h2>
+			<ul class="site-footer__contacts">
+				{
+					team.map((member) => (
+						<li>
+							<strong>{member.name}</strong>
+							<br />
+							<a href={`tel:${member.phone.replace(/\D/g, '')}`}>{member.phone}</a>
+							<br />
+							<a href={`mailto:${member.email}`}>{member.email}</a>
+							<br />
+							DRE #{member.dre}
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</div>
+
+	<div class="container site-footer__bottom">
+		<p>&copy; {year} {site.name}. All rights reserved.</p>
+		<ul>
+			<li><a href="/privacy-policy/">Privacy Policy</a></li>
+			<li><a href="/terms/">Terms &amp; Conditions</a></li>
+		</ul>
+	</div>
+</footer>
+
+<style>
+	.site-footer {
+		background: var(--navy-dark);
+		color: #bcccdc;
+		font-size: 0.88rem;
+	}
+
+	.site-footer a {
+		color: #d7e0ea;
+	}
+
+	.site-footer h2 {
+		font-family: var(--font-sans);
+		color: var(--gold-light);
+		font-weight: 600;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		margin-bottom: 1.1rem;
+	}
+
+	.site-footer__grid {
+		display: grid;
+		grid-template-columns: 1.4fr 1fr 1fr 1fr 1.3fr;
+		gap: 2.5rem;
+		padding-block: 4.5rem 2.5rem;
+	}
+
+	.site-footer__logo {
+		font-family: var(--font-serif);
+		font-weight: 400;
+		font-size: 1.5rem;
+		color: #fff;
+		letter-spacing: 0.01em;
+	}
+
+	.site-footer__logo span {
+		display: block;
+		font-family: var(--font-sans);
+		font-size: 0.6rem;
+		font-weight: 600;
+		color: var(--gold-light);
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		margin-top: 0.4rem;
+	}
+
+	.site-footer ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.site-footer ul li {
+		margin-bottom: 0.5rem;
+	}
+
+	.site-footer__contacts li {
+		margin-bottom: 1rem;
+		line-height: 1.5;
+	}
+
+	.site-footer__bottom {
+		border-top: 1px solid rgba(255, 255, 255, 0.15);
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 1.25rem;
+	}
+
+	.site-footer__bottom ul {
+		display: flex;
+		gap: 1.5rem;
+	}
+
+	@media (max-width: 860px) {
+		.site-footer__grid {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+</style>

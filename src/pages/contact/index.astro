@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { team, site } from '../../data/site';
+
+const intent = Astro.url.searchParams.get('intent');
+const heading = intent === 'probate' ? 'Start a Confidential Conversation' : 'Get a Free, Confidential Broker Opinion of Value';
+---
+
+<BaseLayout
+	title="Contact Highlight Real Estate Group"
+	description="Contact Josh Kaplan and Troy Lucero at Highlight Real Estate Group for LA apartment building sales, 1031 exchanges, and trust or probate sales."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Contact</span>
+			<h1>Let's Talk About Your Property</h1>
+			<p>Reach out directly, or send us your details below and we'll follow up within one business day.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container contact-grid">
+			<div class="contact-cards">
+				{
+					team.map((member) => (
+						<div class="contact-card">
+							<h2>{member.name}</h2>
+							<p class="contact-card__title">{member.title}</p>
+							<a href={`tel:${member.phone.replace(/\D/g, '')}`}>{member.phone}</a>
+							<a href={`mailto:${member.email}`}>{member.email}</a>
+							<p class="contact-card__dre">DRE #{member.dre}</p>
+						</div>
+					))
+				}
+				<div class="contact-card">
+					<h2>Office</h2>
+					<p>{site.brokerage}</p>
+					<p>{site.officeAddress}</p>
+					<p class="contact-card__dre">Office DRE #{site.officeDRE}</p>
+				</div>
+			</div>
+
+			<BOVForm heading={heading} />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.contact-grid {
+		display: grid;
+		grid-template-columns: 1fr 1.4fr;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.contact-cards {
+		display: grid;
+		gap: 1.5rem;
+	}
+
+	.contact-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem;
+	}
+
+	.contact-card h2 {
+		font-size: 1.3rem;
+	}
+
+	.contact-card a {
+		display: block;
+		font-weight: 600;
+	}
+
+	.contact-card__title {
+		color: var(--gold-dark);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		font-size: 0.72rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.contact-card__dre {
+		font-size: 0.8rem;
+		color: var(--ink-light);
+		margin-top: 0.5rem;
+	}
+
+	@media (max-width: 860px) {
+		.contact-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

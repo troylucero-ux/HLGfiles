@@ -1,0 +1,439 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BOVForm from '../components/BOVForm.astro';
+import { site } from '../data/site';
+import { closings } from '../data/closings';
+import { submarkets } from '../data/submarkets';
+import { testimonials } from '../data/site';
+import { formatPrice } from '../lib/format';
+
+const notableSales = closings.filter((c) => c.city === 'Los Angeles').slice(0, 6);
+
+const services = [
+	{
+		title: 'Multifamily Sales',
+		body: 'Full-cycle representation for apartment building sellers and buyers across the LA Metro Area, from pricing strategy through close of escrow.',
+	},
+	{
+		title: '1031 Exchanges',
+		body: 'Exchange strategy and execution for owners moving equity between multifamily assets, including cross-market and out-of-state replacement properties.',
+	},
+	{
+		title: 'Trust & Estate / Probate Sales',
+		body: 'Calm, informed guidance for trustees, executors, and families selling inherited apartment property.',
+	},
+	{
+		title: 'Land for Development',
+		body: 'Positioning and marketing of development sites, backed by zoning analysis and highest-and-best-use underwriting.',
+	},
+	{
+		title: 'Broker Opinion of Value',
+		body: 'A free, no-pressure BOV grounded in real closed comps, not guesswork.',
+	},
+];
+---
+
+<BaseLayout
+	title="LA Multifamily Investment Sales | Highlight Real Estate Group"
+	description="Highlight Real Estate Group advises Los Angeles apartment building owners on sales, 1031 exchanges, trust and probate sales, and land for development. 1,390+ units closed, $345M+ in sale value."
+>
+	<section class="hero">
+		<div class="container hero__inner">
+			<span class="eyebrow">Los Angeles Metro Area</span>
+			<h1>Apartment Building<br />Sales Experts</h1>
+			<p class="hero__sub">We do things differently. More than your agents, we're your trusted advisors for LA multifamily investment sales.</p>
+			<div class="hero__actions">
+				<a href="/contact/?intent=bov" class="btn btn-gold">Get a Free Broker Opinion of Value</a>
+				<a href="/closings/" class="hero__link">See Our Closed Sales &rarr;</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="stat-bar">
+		<div class="container stat-bar__grid">
+			<div class="stat-bar__item">
+				<span class="stat-bar__num">{site.stats.unitsSold}</span>
+				<span class="stat-bar__label">Units Sold</span>
+			</div>
+			<div class="stat-bar__item">
+				<span class="stat-bar__num">{site.stats.closedSalesVolume}</span>
+				<span class="stat-bar__label">In Closed Sales</span>
+			</div>
+			<div class="stat-bar__item">
+				<span class="stat-bar__num">{site.stats.listToSaleRatio}</span>
+				<span class="stat-bar__label">List-to-Sale Price Ratio</span>
+			</div>
+			<div class="stat-bar__item">
+				<span class="stat-bar__num">{site.stats.exchangeSuccessRate}</span>
+				<span class="stat-bar__label">Success Rate on 1031 Exchanges</span>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container who-we-are">
+			<div>
+				<span class="eyebrow">Who We Are</span>
+				<h2>A Seasoned Team Apartment Owners Can Rely On</h2>
+				<p>
+					Highlight Real Estate Group brings more than 20 years of experience as investment sales brokers, alongside principal experience in
+					acquisitions, dispositions, asset management, and development. We personally understand the challenges of being a long-term owner, a
+					buyer, and a seller, which helps us serve our clients through every stage of purchasing, owning, and selling multifamily property,
+					including 1031 exchanges.
+				</p>
+				<p>
+					Josh Kaplan and Troy Lucero lead Highlight with a shared focus: building long-term relationships to become trusted advisors to
+					apartment building owners across the Los Angeles Metro Area.
+				</p>
+				<a href="/about/" class="btn btn-outline">Meet the Team</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Our Services</span>
+			<h2>How We Help LA Apartment Owners</h2>
+			<div class="services-grid">
+				{
+					services.map((s) => (
+						<div class="service-card">
+							<h3>{s.title}</h3>
+							<p>{s.body}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Closed Transactions</span>
+			<h2>Closed Transactions in Los Angeles</h2>
+			<div class="sales-grid">
+				{
+					notableSales.map((sale) => (
+						<a class="sale-card" href={`/closings/#${sale.slug}`}>
+							<span class="sale-card__location">
+								{sale.city}, {sale.state} {sale.zip}
+							</span>
+							<span class="sale-card__name">{sale.name}</span>
+							<span class="sale-card__meta">
+								{sale.units ? `${sale.units} Units` : 'Development Site'}
+								{sale.sqft ? ` • ${sale.sqft.toLocaleString()} SF` : ''}
+								{sale.acres ? ` • ${sale.acres} Acres` : ''}
+							</span>
+							<span class="sale-card__price">Sold for {formatPrice(sale.price)}</span>
+						</a>
+					))
+				}
+			</div>
+			<a href="/closings/" class="btn btn-navy" style="margin-top: 2rem;">View All 61 Closed Sales</a>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Submarkets</span>
+			<h2>Deep LA Multifamily Submarket Expertise</h2>
+			<div class="submarket-strip">
+				{
+					submarkets.map((sm) => (
+						<a href={`/submarkets/${sm.slug}/`} class="submarket-chip">
+							{sm.name}
+						</a>
+					))
+				}
+			</div>
+			<a href="/submarkets/" class="btn btn-outline" style="margin-top: 1.5rem;">Explore All Submarkets</a>
+		</div>
+	</section>
+
+	{
+		testimonials.length > 0 && (
+			<section class="section">
+				<div class="container">
+					<span class="eyebrow">What Owners Say</span>
+					<h2>Trusted by LA Apartment Owners</h2>
+					<div class="testimonial-grid">
+						{testimonials.map((t) => (
+							<figure class="testimonial-card">
+								<blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+								<figcaption>{t.attribution}</figcaption>
+							</figure>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="section section-alt strategy-section">
+		<div class="container strategy-grid">
+			<div>
+				<span class="eyebrow">Let's Talk Strategy</span>
+				<h2>Owning an Apartment Building Is Hard Enough. Selling It Shouldn't Be.</h2>
+				<p>
+					Whether you're weighing a sale, exploring a 1031 exchange, or navigating a trust or probate transition, we start with a conversation,
+					not a pitch. We'll walk you through real comps, real timelines, and a strategy built around your goals.
+				</p>
+			</div>
+			<BOVForm />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.hero {
+		background: var(--navy-dark);
+		color: #fff;
+		padding-block: clamp(5rem, 12vw, 9rem);
+		position: relative;
+	}
+
+	.hero::after {
+		content: '';
+		position: absolute;
+		left: 2rem;
+		right: 2rem;
+		bottom: 0;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+		opacity: 0.5;
+	}
+
+	.hero__inner {
+		max-width: 780px;
+	}
+
+	.hero .eyebrow {
+		color: var(--gold-light);
+	}
+
+	.hero .btn-gold {
+		background: var(--gold);
+		color: var(--navy-dark);
+		border-color: var(--gold);
+	}
+
+	.hero .btn-gold:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+	}
+
+	.hero h1 {
+		color: #fff;
+		font-weight: 350;
+	}
+
+	.hero__sub {
+		font-size: 1.2rem;
+		color: #c3d1e0;
+		max-width: 560px;
+		line-height: 1.7;
+	}
+
+	.hero__actions {
+		display: flex;
+		align-items: center;
+		gap: 2rem;
+		flex-wrap: wrap;
+		margin-top: 2.25rem;
+	}
+
+	.hero__link {
+		color: #fff;
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+		padding-bottom: 0.2rem;
+	}
+
+	.hero__link:hover {
+		border-color: var(--gold-light);
+		color: var(--gold-light);
+		text-decoration: none;
+	}
+
+	.stat-bar {
+		background: var(--paper);
+		border-bottom: 1px solid var(--border);
+		padding-block: 3rem;
+	}
+
+	.stat-bar__grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		text-align: center;
+	}
+
+	.stat-bar__item {
+		padding-inline: 1.5rem;
+		border-left: 1px solid var(--border);
+	}
+
+	.stat-bar__item:first-child {
+		border-left: none;
+	}
+
+	.stat-bar__num {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: clamp(2rem, 4vw, 2.85rem);
+		font-weight: 400;
+		color: var(--navy-dark);
+	}
+
+	.stat-bar__label {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--ink-light);
+	}
+
+	.who-we-are p {
+		max-width: 760px;
+	}
+
+	.services-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 2.5rem;
+		margin-top: 3rem;
+	}
+
+	.service-card {
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.service-card h3 {
+		font-size: 1.2rem;
+	}
+
+	.sales-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.5rem;
+		margin-top: 3rem;
+	}
+
+	.sale-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem;
+		color: var(--ink);
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+	}
+
+	.sale-card:hover {
+		border-color: var(--gold);
+		box-shadow: 0 18px 40px -24px rgba(12, 46, 80, 0.35);
+		transform: translateY(-2px);
+		text-decoration: none;
+	}
+
+	.sale-card__location {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: var(--ink-light);
+	}
+
+	.sale-card__name {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		color: var(--navy-dark);
+		font-size: 1.2rem;
+		margin: 0.15rem 0;
+	}
+
+	.sale-card__meta {
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	.sale-card__price {
+		margin-top: 0.5rem;
+		font-weight: 600;
+		font-size: 0.9rem;
+		color: var(--success);
+	}
+
+	.submarket-strip {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 2rem;
+		margin-top: 2rem;
+	}
+
+	.submarket-chip {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+		border-bottom: 1px solid transparent;
+		padding-bottom: 0.2rem;
+	}
+
+	.submarket-chip:hover {
+		color: var(--gold-dark);
+		border-color: var(--gold);
+		text-decoration: none;
+	}
+
+	.testimonial-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 3rem;
+		margin-top: 3rem;
+	}
+
+	.testimonial-card {
+		margin: 0;
+		border-top: 1px solid var(--gold);
+		padding-top: 1.5rem;
+	}
+
+	.testimonial-card blockquote {
+		margin: 0 0 1rem;
+		font-family: var(--font-serif);
+		font-size: 1.2rem;
+		font-style: italic;
+		font-weight: 400;
+		color: var(--navy-dark);
+		line-height: 1.5;
+	}
+
+	.testimonial-card figcaption {
+		font-family: var(--font-sans);
+		font-size: 0.78rem;
+		letter-spacing: 0.03em;
+		color: var(--ink-light);
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	.strategy-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	@media (max-width: 860px) {
+		.stat-bar__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.strategy-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

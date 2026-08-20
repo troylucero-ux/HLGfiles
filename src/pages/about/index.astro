@@ -1,0 +1,278 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { team, supportTeam, site } from '../../data/site';
+---
+
+<BaseLayout
+	title="About Josh Kaplan &amp; Troy Lucero | Highlight Real Estate Group"
+	description="Meet Josh Kaplan and Troy Lucero, Directors of Multifamily Investments at Highlight Real Estate Group, and the team behind 1,390+ units and $345M+ closed across LA apartment building sales."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">About Us</span>
+			<h1>A Seasoned Team Apartment Owners Can Rely On</h1>
+			<p>
+				Highlight Real Estate Group brings more than 20 years of experience as investment sales brokers, alongside principal experience in
+				acquisitions, dispositions, asset management, and development. We personally understand the challenges of being a long-term owner, a
+				buyer, and a seller &mdash; which helps us serve our clients through every stage of purchasing, owning, and selling multifamily property,
+				including 1031 exchanges.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			{
+				team.map((member) => (
+					<article class="bio-card">
+						<div class="bio-card__photo" aria-hidden="true">
+							{member.name
+								.split(' ')
+								.map((n) => n[0])
+								.join('')}
+						</div>
+						<div class="bio-card__content">
+							<h2>{member.name}</h2>
+							<p class="bio-card__title">
+								{member.title} &middot; DRE #{member.dre}
+							</p>
+							{member.bio.map((p) => (
+								<p>{p}</p>
+							))}
+							<dl class="bio-card__facts">
+								<div>
+									<dt>Education</dt>
+									<dd>{member.education}</dd>
+								</div>
+								<div>
+									<dt>Specialties</dt>
+									<dd>{member.specialties.join(', ')}</dd>
+								</div>
+							</dl>
+							<div class="bio-card__contact">
+								<a href={`tel:${member.phone.replace(/\D/g, '')}`} class="btn btn-outline">
+									{member.phone}
+								</a>
+								<a href={`mailto:${member.email}`} class="btn btn-outline">
+									Email {member.name.split(' ')[0]}
+								</a>
+								{member.linkedin && (
+									<a href={member.linkedin} target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+										LinkedIn
+									</a>
+								)}
+							</div>
+						</div>
+					</article>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Meet Your Team of Experts</span>
+			<h2>The Team Behind Every Transaction</h2>
+			<div class="support-grid">
+				{
+					supportTeam.map((member) => (
+						<div class="support-card">
+							<div class="support-card__photo" aria-hidden="true">
+								{member.name
+									.split(' ')
+									.map((n) => n[0])
+									.join('')}
+							</div>
+							<h3>{member.name}</h3>
+							<p>{member.title}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Track Record</span>
+			<h2>Results That Speak for Themselves</h2>
+			<div class="stat-row">
+				<div>
+					<span class="stat-row__num">1,390+</span>
+					<span class="stat-row__label">Units Closed</span>
+				</div>
+				<div>
+					<span class="stat-row__num">$345M+</span>
+					<span class="stat-row__label">In Sale Value</span>
+				</div>
+				<div>
+					<span class="stat-row__num">135,000 SF</span>
+					<span class="stat-row__label">Land for Development Closed</span>
+				</div>
+			</div>
+			<p class="office-note">
+				{site.name} operates as part of {site.brokerage}, {site.officeAddress}. Office DRE #{site.officeDRE}.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<BOVForm heading="Ready to Talk Strategy?" subheading="Get a free, confidential Broker Opinion of Value from Josh and Troy." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 780px;
+		font-size: 1.1rem;
+		color: var(--ink-soft);
+	}
+
+	.bio-card {
+		display: grid;
+		grid-template-columns: 180px 1fr;
+		gap: 2.5rem;
+		margin-bottom: 4.5rem;
+	}
+
+	.bio-card__photo {
+		width: 180px;
+		height: 180px;
+		border-radius: 2px;
+		background: var(--navy-dark);
+		color: var(--gold-light);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: var(--font-serif);
+		font-size: 2.75rem;
+		font-weight: 400;
+	}
+
+	.bio-card__title {
+		font-family: var(--font-sans);
+		color: var(--gold-dark);
+		font-weight: 600;
+		text-transform: uppercase;
+		font-size: 0.72rem;
+		letter-spacing: 0.1em;
+	}
+
+	.bio-card__facts {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+		margin: 1.75rem 0;
+		padding: 1.25rem 0;
+		border-top: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.bio-card__facts dt {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+		font-weight: 600;
+	}
+
+	.bio-card__facts dd {
+		margin: 0.2rem 0 0;
+	}
+
+	.bio-card__contact {
+		display: flex;
+		gap: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.support-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		gap: 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.support-card {
+		text-align: center;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 2.25rem 1rem;
+	}
+
+	.support-card__photo {
+		width: 76px;
+		height: 76px;
+		margin: 0 auto 1.25rem;
+		border-radius: 2px;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: var(--font-serif);
+		font-weight: 400;
+		font-size: 1.4rem;
+	}
+
+	.support-card h3 {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.1rem;
+		margin-bottom: 0.2rem;
+	}
+
+	.support-card p {
+		font-size: 0.82rem;
+		color: var(--ink-light);
+		margin: 0;
+	}
+
+	.stat-row {
+		display: flex;
+		gap: 3.5rem;
+		flex-wrap: wrap;
+		margin-top: 2rem;
+	}
+
+	.stat-row__num {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: 2.5rem;
+		font-weight: 400;
+		color: var(--navy-dark);
+	}
+
+	.stat-row__label {
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+	}
+
+	.office-note {
+		margin-top: 2rem;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	@media (max-width: 640px) {
+		.bio-card {
+			grid-template-columns: 1fr;
+		}
+
+		.bio-card__facts {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

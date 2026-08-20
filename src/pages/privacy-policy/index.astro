@@ -1,0 +1,68 @@
+---
+// NOTE: This is a starting draft reflecting the site's actual data practices (BOV form, newsletter,
+// contact form, TCPA consent language already used in the BOV form). Have counsel review before publishing.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+---
+
+<BaseLayout
+	title="Privacy Policy"
+	description="How Highlight Real Estate Group collects, uses, and protects information submitted through highlightreg.com."
+>
+	<section class="section legal">
+		<div class="container narrow">
+			<h1>Privacy Policy</h1>
+			<p><em>Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</em></p>
+
+			<h2>Information We Collect</h2>
+			<p>
+				When you submit a form on this site &mdash; including our Broker Opinion of Value request, newsletter signup, or contact form &mdash; we
+				collect the information you provide, such as your name, email address, phone number, and property address.
+			</p>
+
+			<h2>How We Use Your Information</h2>
+			<p>
+				We use the information you submit to respond to your inquiry, prepare a Broker Opinion of Value, send our LA multifamily newsletter if
+				you've subscribed, and follow up about services related to buying, selling, or exchanging multifamily property. By submitting a form on
+				this site, you consent to receiving marketing communications from {site.name}, including automated calls, texts, and emails, some of
+				which may use artificial or prerecorded voices. This consent isn't required to purchase any product or service.
+			</p>
+			<p>
+				You may opt out of texts at any time by replying "STOP," and out of emails by clicking the unsubscribe link included in each message.
+				Message and data rates may apply.
+			</p>
+
+			<h2>How We Share Your Information</h2>
+			<p>
+				We do not sell your personal information. We may share information with service providers who help us operate this site (such as email
+				and CRM providers) solely to deliver the services described above, and as required by law.
+			</p>
+
+			<h2>Your Rights</h2>
+			<p>
+				California residents have rights under the California Consumer Privacy Act (CCPA) to know what personal information we collect, request
+				its deletion, and opt out of its sale (we do not sell personal information). To exercise these rights, contact us using the information
+				below.
+			</p>
+
+			<h2>Cookies</h2>
+			<p>This site may use cookies or similar technologies to understand site usage and improve performance. You can disable cookies in your browser settings.</p>
+
+			<h2>Contact Us</h2>
+			<p>
+				Questions about this policy can be directed to {site.name}, {site.officeAddress}, or by contacting either agent listed on our
+				<a href="/contact/">Contact page</a>.
+			</p>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.legal .narrow {
+		max-width: 760px;
+	}
+
+	.legal h2 {
+		margin-top: 2rem;
+	}
+</style>

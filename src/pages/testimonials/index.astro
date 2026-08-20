@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { testimonials } from '../../data/site';
+---
+
+<BaseLayout
+	title="Client Testimonials | Highlight Real Estate Group"
+	description="Read what LA apartment building owners say about selling with Highlight Real Estate Group, from off-market buyer procurement to fast closes despite deferred maintenance."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Testimonials</span>
+			<h1>What LA Apartment Owners Say About Working With Us</h1>
+			<p>Real feedback from sellers who trusted us with their multifamily property.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container testimonial-list">
+			{
+				testimonials.map((t) => (
+					<figure class="testimonial">
+						<blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+						<figcaption>{t.attribution}</figcaption>
+					</figure>
+				))
+			}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.testimonial-list {
+		display: grid;
+		gap: 1.5rem;
+		max-width: 800px;
+	}
+
+	.testimonial {
+		background: var(--paper-alt);
+		border-left: 4px solid var(--gold);
+		border-radius: 6px;
+		padding: 2rem;
+		margin: 0;
+	}
+
+	.testimonial blockquote {
+		margin: 0 0 1rem;
+		font-size: 1.1rem;
+		font-style: italic;
+	}
+
+	.testimonial figcaption {
+		font-weight: 700;
+		color: var(--navy);
+	}
+</style>

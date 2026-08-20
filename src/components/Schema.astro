@@ -1,0 +1,54 @@
+---
+import { site, team } from '../data/site';
+
+interface Props {
+	pageType?: 'home' | 'other';
+}
+
+const { pageType = 'other' } = Astro.props;
+
+const orgSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'RealEstateAgent',
+	name: site.name,
+	url: site.url,
+	// TODO: add `image` once a logo/hero photo is uploaded — omitted for now rather than pointing at a 404.
+	telephone: site.phone,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: '16820 Ventura Boulevard',
+		addressLocality: 'Encino',
+		addressRegion: 'CA',
+		postalCode: '91436',
+		addressCountry: 'US',
+	},
+	areaServed: {
+		'@type': 'City',
+		name: 'Los Angeles',
+	},
+	employee: team.map((member) => ({
+		'@type': 'Person',
+		name: member.name,
+		jobTitle: member.title,
+		telephone: member.phone,
+		email: member.email,
+	})),
+	parentOrganization: {
+		'@type': 'RealEstateAgent',
+		name: site.brokerage,
+	},
+};
+
+const localBusinessSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'LocalBusiness',
+	'@id': `${site.url}/#localbusiness`,
+	name: site.name,
+	url: site.url,
+	telephone: site.phone,
+	address: orgSchema.address,
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema)} />

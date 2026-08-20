@@ -1,0 +1,253 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { closings, closingStats } from '../../data/closings';
+import { submarkets } from '../../data/submarkets';
+import { formatPrice } from '../../lib/format';
+
+const submarketNames = Object.fromEntries(submarkets.map((s) => [s.slug, s.name]));
+
+const priceBands = [
+	{ id: 'under-2m', label: 'Under $2M', test: (p: number) => p < 2000000 },
+	{ id: '2m-5m', label: '$2M – $5M', test: (p: number) => p >= 2000000 && p < 5000000 },
+	{ id: '5m-15m', label: '$5M – $15M', test: (p: number) => p >= 5000000 && p < 15000000 },
+	{ id: 'over-15m', label: '$15M+', test: (p: number) => p >= 15000000 },
+];
+---
+
+<BaseLayout
+	title="Closed Sales | LA Apartment Building Transactions"
+	description={`Browse all ${closingStats.totalClosings} apartment building and development site sales closed by Highlight Real Estate Group across the Los Angeles Metro Area, sorted by sale price.`}
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Track Record</span>
+			<h1>Closed Sales</h1>
+			<p>
+				{closingStats.totalClosings} transactions, {closingStats.totalUnits.toLocaleString()}+ units, and {formatPrice(closingStats.totalVolume)} in
+				closed sale value across Los Angeles multifamily and development land.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="filters" role="group" aria-label="Filter closed sales">
+				<div class="filters__group">
+					<label for="filter-submarket">Neighborhood</label>
+					<select id="filter-submarket">
+						<option value="">All Neighborhoods</option>
+						{
+							submarkets.map((sm) => (
+								<option value={sm.slug}>{sm.name}</option>
+							))
+						}
+					</select>
+				</div>
+				<div class="filters__group">
+					<label for="filter-price">Price Range</label>
+					<select id="filter-price">
+						<option value="">All Prices</option>
+						{
+							priceBands.map((band) => (
+								<option value={band.id}>{band.label}</option>
+							))
+						}
+					</select>
+				</div>
+				<div class="filters__group">
+					<label for="filter-type">Type</label>
+					<select id="filter-type">
+						<option value="">All Types</option>
+						<option value="apartment">Apartment Building</option>
+						<option value="development-site">Development Site</option>
+					</select>
+				</div>
+				<p class="filters__count" id="filter-count" aria-live="polite">{closingStats.totalClosings} sales</p>
+			</div>
+
+			<div class="closings-grid" id="closings-grid">
+				{
+					closings.map((sale) => {
+						const band = priceBands.find((b) => b.test(sale.price));
+						return (
+							<article
+								class="closing-card"
+								id={sale.slug}
+								data-submarket={sale.submarket ?? ''}
+								data-price-band={band?.id ?? ''}
+								data-type={sale.type}
+							>
+								<span class="closing-card__location">
+									{sale.city}, {sale.state} {sale.zip}
+									{sale.submarket && (
+										<>
+											{' '}
+											&middot; <a href={`/submarkets/${sale.submarket}/`}>{submarketNames[sale.submarket]}</a>
+										</>
+									)}
+								</span>
+								<h2 class="closing-card__name">{sale.name}</h2>
+								<p class="closing-card__meta">
+									{sale.units ? `${sale.units} Units` : 'Development Site'}
+									{sale.sqft ? ` • ${sale.sqft.toLocaleString()} SF` : ''}
+									{sale.acres ? ` • ${sale.acres} Acres` : ''}
+								</p>
+								<p class="closing-card__price">Sold for {formatPrice(sale.price)}</p>
+								{sale.caseStudySlug && (
+									<a href={`/case-studies/${sale.caseStudySlug}/`} class="closing-card__link">
+										Read the case study &rarr;
+									</a>
+								)}
+							</article>
+						);
+					})
+				}
+			</div>
+			<p id="no-results" class="no-results" hidden>No closed sales match those filters.</p>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 6vw, 4.5rem);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		font-size: 1.1rem;
+		color: var(--ink-soft);
+	}
+
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.25rem;
+		align-items: end;
+		margin-bottom: 2rem;
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.filters__group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+
+	.filters__group label {
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+		font-weight: 700;
+	}
+
+	.filters__group select {
+		padding: 0.55rem 0.75rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-family: var(--font-sans);
+		min-width: 190px;
+	}
+
+	.filters__count {
+		margin-left: auto;
+		font-weight: 600;
+		color: var(--ink-light);
+	}
+
+	.closings-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 1.25rem;
+	}
+
+	.closing-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.5rem;
+		scroll-margin-top: 6rem;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+	}
+
+	.closing-card:hover {
+		border-color: var(--gold);
+		box-shadow: 0 18px 40px -26px rgba(12, 46, 80, 0.35);
+		transform: translateY(-2px);
+	}
+
+	.closing-card__location {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+	}
+
+	.closing-card__name {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.2rem;
+		color: var(--navy-dark);
+		margin: 0.3rem 0;
+	}
+
+	.closing-card__meta {
+		font-size: 0.85rem;
+		color: var(--ink-light);
+		margin-bottom: 0.5rem;
+	}
+
+	.closing-card__price {
+		font-weight: 700;
+		color: var(--success);
+		margin-bottom: 0.25rem;
+	}
+
+	.closing-card__link {
+		font-size: 0.85rem;
+		font-weight: 600;
+	}
+
+	.no-results {
+		text-align: center;
+		padding: 3rem 0;
+		color: var(--ink-light);
+	}
+</style>
+
+<script>
+	const grid = document.getElementById('closings-grid');
+	const cards = Array.from(document.querySelectorAll<HTMLElement>('.closing-card'));
+	const countEl = document.getElementById('filter-count');
+	const noResults = document.getElementById('no-results');
+
+	const submarketSel = document.getElementById('filter-submarket') as HTMLSelectElement;
+	const priceSel = document.getElementById('filter-price') as HTMLSelectElement;
+	const typeSel = document.getElementById('filter-type') as HTMLSelectElement;
+
+	function applyFilters() {
+		const submarket = submarketSel.value;
+		const price = priceSel.value;
+		const type = typeSel.value;
+		let visible = 0;
+
+		for (const card of cards) {
+			const matches =
+				(!submarket || card.dataset.submarket === submarket) &&
+				(!price || card.dataset.priceBand === price) &&
+				(!type || card.dataset.type === type);
+			card.hidden = !matches;
+			if (matches) visible++;
+		}
+
+		if (countEl) countEl.textContent = `${visible} sale${visible === 1 ? '' : 's'}`;
+		if (noResults) noResults.hidden = visible !== 0;
+		if (grid) grid.hidden = visible === 0;
+	}
+
+	[submarketSel, priceSel, typeSel].forEach((el) => el?.addEventListener('change', applyFilters));
+</script>

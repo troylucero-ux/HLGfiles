@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { caseStudies } from '../../data/caseStudies';
+
+const dealTypeLabels: Record<string, string> = {
+	'1031': '1031 Exchange',
+	'value-add': 'Value-Add',
+	'trust-probate': 'Trust & Probate',
+	'family-legacy': 'Family Legacy',
+	'buyer-rep': 'Buyer Representation',
+};
+---
+
+<BaseLayout
+	title="Case Studies | LA Apartment Building Sale Strategies"
+	description="How Highlight Real Estate Group navigates complex dispositions, 1031 exchanges, and value-add opportunities for LA multifamily owners &mdash; real deals, real numbers."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Case Studies</span>
+			<h1>How We've Helped LA Apartment Owners Win</h1>
+			<p>Real transactions, real obstacles, and the strategies we used to close &mdash; from rent-controlled value-add deals to cross-state 1031 exchanges.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="filters" role="group" aria-label="Filter case studies by deal type">
+				<button class="filter-chip is-active" data-filter="">All</button>
+				{
+					Object.entries(dealTypeLabels).map(([key, label]) => (
+						<button class="filter-chip" data-filter={key}>
+							{label}
+						</button>
+					))
+				}
+			</div>
+
+			<div class="cs-grid" id="cs-grid">
+				{
+					caseStudies.map((cs) => (
+						<a href={`/case-studies/${cs.slug}/`} class="cs-card" data-deal-types={cs.dealType.join(',')}>
+							<span class="cs-card__location">{cs.location}</span>
+							<h2>{cs.title}</h2>
+							<p>{cs.summary}</p>
+							<span class="cs-card__tags">
+								{cs.dealType.map((t) => (
+									<span class="tag">{dealTypeLabels[t]}</span>
+								))}
+							</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 720px;
+	}
+
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		margin-bottom: 2rem;
+	}
+
+	.filter-chip {
+		background: transparent;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		padding: 0.5rem 1.1rem;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.filter-chip.is-active {
+		background: var(--navy-dark);
+		border-color: var(--navy-dark);
+		color: #fff;
+	}
+
+	.cs-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.75rem;
+	}
+
+	.cs-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem;
+		color: var(--ink);
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+	}
+
+	.cs-card:hover {
+		border-color: var(--gold);
+		box-shadow: 0 18px 40px -26px rgba(12, 46, 80, 0.35);
+		transform: translateY(-2px);
+		text-decoration: none;
+	}
+
+	.cs-card__location {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+	}
+
+	.cs-card h2 {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.3rem;
+		margin: 0;
+	}
+
+	.cs-card__tags {
+		display: flex;
+		gap: 0.4rem;
+		flex-wrap: wrap;
+		margin-top: 0.5rem;
+	}
+
+	.tag {
+		font-size: 0.68rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		padding: 0.3rem 0.65rem;
+		border-radius: 1px;
+	}
+</style>
+
+<script>
+	const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.filter-chip'));
+	const cards = Array.from(document.querySelectorAll<HTMLAnchorElement>('.cs-card'));
+
+	chips.forEach((chip) => {
+		chip.addEventListener('click', () => {
+			chips.forEach((c) => c.classList.remove('is-active'));
+			chip.classList.add('is-active');
+			const filter = chip.dataset.filter;
+			cards.forEach((card) => {
+				const types = card.dataset.dealTypes?.split(',') ?? [];
+				card.style.display = !filter || types.includes(filter) ? '' : 'none';
+			});
+		});
+	});
+</script>

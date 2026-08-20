@@ -1,0 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+	--navy: #14467a;
+	--navy-dark: #0c2e50;
+	--navy-tint: #eef2f7;
+	--gold: #b6944a;
+	--gold-light: #d9c491;
+	--gold-dark: #8f7136;
+	--ink: #444444;
+	--ink-soft: #5b5b58;
+	--ink-light: #86837c;
+	--paper: #fffdfa;
+	--paper-alt: #f6f2ea;
+	--border: #e7e1d4;
+	--border-soft: #efeade;
+	--success: #3f7a52;
+
+	--font-serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+	--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+	--max-width: 1240px;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	font-family: var(--font-sans);
+	font-size: 16px;
+	color: var(--ink);
+	background: var(--paper);
+	line-height: 1.65;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+	background: var(--gold-light);
+	color: var(--navy-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-serif);
+	font-weight: 500;
+	color: var(--navy-dark);
+	line-height: 1.15;
+	letter-spacing: -0.01em;
+	margin: 0 0 0.55em;
+}
+
+h1 { font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 400; letter-spacing: -0.02em; }
+h2 { font-size: clamp(1.85rem, 3.4vw, 2.75rem); font-weight: 400; letter-spacing: -0.015em; }
+h3 { font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 500; }
+
+p { margin: 0 0 1.15em; }
+
+.lede {
+	font-size: 1.15rem;
+	color: var(--ink-soft);
+	line-height: 1.7;
+}
+
+a {
+	color: var(--navy);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+.container {
+	max-width: var(--max-width);
+	margin: 0 auto;
+	padding: 0 2rem;
+}
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-family: var(--font-sans);
+	font-weight: 600;
+	padding: 0.9rem 1.9rem;
+	border-radius: 2px;
+	text-decoration: none;
+	cursor: pointer;
+	border: 1px solid transparent;
+	font-size: 0.8rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+	white-space: nowrap;
+}
+
+.btn:hover {
+	text-decoration: none;
+}
+
+.btn-gold {
+	background: var(--navy-dark);
+	color: var(--gold-light);
+	border-color: var(--navy-dark);
+}
+
+.btn-gold:hover {
+	background: var(--navy);
+	color: #fff;
+}
+
+.btn-navy {
+	background: var(--navy-dark);
+	color: #fff;
+	border-color: var(--navy-dark);
+}
+
+.btn-navy:hover {
+	background: var(--navy);
+}
+
+.btn-outline {
+	background: transparent;
+	color: var(--navy-dark);
+	border-color: var(--navy-dark);
+}
+
+.btn-outline:hover {
+	background: var(--navy-dark);
+	color: #fff;
+}
+
+.eyebrow {
+	display: block;
+	font-family: var(--font-sans);
+	font-size: 0.72rem;
+	font-weight: 600;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--gold-dark);
+	margin-bottom: 0.85rem;
+}
+
+.section {
+	padding: clamp(4rem, 8vw, 7.5rem) 0;
+}
+
+.section-alt {
+	background: var(--paper-alt);
+}
+
+.card {
+	background: var(--paper);
+	border: 1px solid var(--border);
+	border-radius: 2px;
+	padding: 2rem;
+	transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+a.card:hover {
+	border-color: var(--gold);
+	box-shadow: 0 18px 40px -24px rgba(12, 46, 80, 0.35);
+	transform: translateY(-2px);
+	text-decoration: none;
+}
+
+.rule {
+	border: none;
+	border-top: 1px solid var(--border);
+	margin: 2.5rem 0;
+}
+
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.skip-link {
+	position: absolute;
+	left: -9999px;
+	top: 0;
+	background: var(--navy-dark);
+	color: #fff;
+	padding: 0.75rem 1.25rem;
+	z-index: 1000;
+}
+
+.skip-link:focus {
+	left: 0.5rem;
+	top: 0.5rem;
+}

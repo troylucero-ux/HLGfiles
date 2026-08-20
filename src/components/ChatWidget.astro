@@ -1,0 +1,269 @@
+---
+---
+
+<div id="chat-widget" class="chat-widget">
+	<button id="chat-toggle" class="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+		<span class="chat-toggle__icon" aria-hidden="true">💬</span>
+		<span class="visually-hidden">Chat with us</span>
+	</button>
+
+	<div id="chat-panel" class="chat-panel" hidden role="dialog" aria-modal="false" aria-labelledby="chat-panel-title">
+		<header class="chat-panel__header">
+			<div>
+				<p id="chat-panel-title" class="chat-panel__title">Highlight Assistant</p>
+				<p class="chat-panel__subtitle">Ask about services, submarkets, or the selling process</p>
+			</div>
+			<button id="chat-close" class="chat-panel__close" aria-label="Close chat">&times;</button>
+		</header>
+
+		<div id="chat-messages" class="chat-messages" aria-live="polite">
+			<div class="chat-message chat-message--assistant">
+				Hi, I'm the Highlight Real Estate Group assistant. Ask me about selling an apartment building, 1031 exchanges, trust or probate
+				sales, or any of our LA submarkets.
+			</div>
+		</div>
+
+		<div class="chat-quick-actions">
+			<a href="/contact/?intent=bov">Get a Free BOV</a>
+			<a href="/faqs/">FAQs</a>
+			<a href="/contact/">Talk to a Person</a>
+		</div>
+
+		<form id="chat-form" class="chat-form">
+			<label for="chat-input" class="visually-hidden">Type your question</label>
+			<input id="chat-input" type="text" placeholder="Ask a question..." autocomplete="off" maxlength="2000" required />
+			<button type="submit" class="btn btn-gold">Send</button>
+		</form>
+	</div>
+</div>
+
+<style>
+	.chat-widget {
+		position: fixed;
+		bottom: 1.5rem;
+		right: 1.5rem;
+		z-index: 200;
+	}
+
+	.chat-toggle {
+		width: 58px;
+		height: 58px;
+		border-radius: 50%;
+		background: var(--navy-dark);
+		color: #fff;
+		border: none;
+		font-size: 1.5rem;
+		cursor: pointer;
+		box-shadow: 0 12px 28px rgba(12, 46, 80, 0.4);
+	}
+
+	.chat-toggle:hover {
+		background: var(--navy);
+	}
+
+	.chat-panel {
+		position: fixed;
+		bottom: 5.5rem;
+		right: 1.5rem;
+		width: min(360px, calc(100vw - 2rem));
+		max-height: min(560px, calc(100vh - 8rem));
+		background: var(--paper);
+		border-radius: 3px;
+		box-shadow: 0 24px 56px rgba(12, 46, 80, 0.28);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border: 1px solid var(--border);
+	}
+
+	.chat-panel__header {
+		background: var(--navy-dark);
+		color: #fff;
+		padding: 1.1rem 1.25rem;
+		border-bottom: 2px solid var(--gold);
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+	}
+
+	.chat-panel__title {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.1rem;
+	}
+
+	.chat-panel__subtitle {
+		margin: 0.15rem 0 0;
+		font-size: 0.75rem;
+		color: #d7e0ea;
+	}
+
+	.chat-panel__close {
+		background: none;
+		border: none;
+		color: #fff;
+		font-size: 1.4rem;
+		cursor: pointer;
+		line-height: 1;
+	}
+
+	.chat-messages {
+		flex: 1;
+		overflow-y: auto;
+		padding: 1rem 1.25rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	.chat-message {
+		font-size: 0.9rem;
+		line-height: 1.5;
+		padding: 0.65rem 0.9rem;
+		border-radius: 10px;
+		max-width: 88%;
+	}
+
+	.chat-message--assistant {
+		background: var(--paper-alt);
+		color: var(--ink);
+		align-self: flex-start;
+	}
+
+	.chat-message--user {
+		background: var(--navy);
+		color: #fff;
+		align-self: flex-end;
+	}
+
+	.chat-message--error {
+		background: #fbe9e7;
+		color: #8a3324;
+		align-self: flex-start;
+	}
+
+	.chat-quick-actions {
+		display: flex;
+		gap: 0.5rem;
+		padding: 0 1.25rem 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	.chat-quick-actions a {
+		font-size: 0.75rem;
+		font-weight: 700;
+		background: var(--paper-alt);
+		color: var(--navy);
+		padding: 0.35rem 0.7rem;
+		border-radius: 999px;
+	}
+
+	.chat-quick-actions a:hover {
+		background: var(--gold-light);
+		text-decoration: none;
+	}
+
+	.chat-form {
+		display: flex;
+		gap: 0.5rem;
+		padding: 1rem 1.25rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.chat-form input {
+		flex: 1;
+		padding: 0.6rem 0.75rem;
+		border: 1px solid var(--border);
+		border-radius: 6px;
+		font-family: var(--font-sans);
+	}
+
+	.chat-form button {
+		padding: 0.6rem 1rem;
+		font-size: 0.85rem;
+	}
+
+	.chat-form button:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+	}
+</style>
+
+<script>
+	type Role = 'user' | 'assistant';
+	type ChatMessage = { role: Role; content: string };
+
+	const toggle = document.getElementById('chat-toggle') as HTMLButtonElement;
+	const closeBtn = document.getElementById('chat-close') as HTMLButtonElement;
+	const panel = document.getElementById('chat-panel') as HTMLDivElement;
+	const form = document.getElementById('chat-form') as HTMLFormElement;
+	const input = document.getElementById('chat-input') as HTMLInputElement;
+	const messagesEl = document.getElementById('chat-messages') as HTMLDivElement;
+
+	const history: ChatMessage[] = [];
+
+	function openPanel() {
+		panel.hidden = false;
+		toggle.setAttribute('aria-expanded', 'true');
+		input.focus();
+	}
+
+	function closePanel() {
+		panel.hidden = true;
+		toggle.setAttribute('aria-expanded', 'false');
+	}
+
+	toggle?.addEventListener('click', () => {
+		if (panel.hidden) openPanel();
+		else closePanel();
+	});
+
+	closeBtn?.addEventListener('click', closePanel);
+
+	function appendMessage(role: Role | 'error', text: string) {
+		const el = document.createElement('div');
+		el.className = `chat-message chat-message--${role}`;
+		el.textContent = text;
+		messagesEl.appendChild(el);
+		messagesEl.scrollTop = messagesEl.scrollHeight;
+		return el;
+	}
+
+	form?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const question = input.value.trim();
+		if (!question) return;
+
+		appendMessage('user', question);
+		history.push({ role: 'user', content: question });
+		input.value = '';
+
+		const submitBtn = form.querySelector('button') as HTMLButtonElement;
+		submitBtn.disabled = true;
+		const thinkingEl = appendMessage('assistant', 'Thinking...');
+
+		try {
+			const res = await fetch('/api/chat', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ messages: history }),
+			});
+			const data = await res.json();
+
+			if (!res.ok) {
+				thinkingEl.remove();
+				appendMessage('error', data.error ?? 'Something went wrong. Please try again or contact us directly.');
+				return;
+			}
+
+			thinkingEl.textContent = data.reply;
+			history.push({ role: 'assistant', content: data.reply });
+		} catch {
+			thinkingEl.remove();
+			appendMessage('error', 'Something went wrong. Please try again or contact us directly.');
+		} finally {
+			submitBtn.disabled = false;
+		}
+	});
+</script>

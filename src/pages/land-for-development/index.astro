@@ -1,0 +1,169 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { closings } from '../../data/closings';
+import { formatPrice } from '../../lib/format';
+
+const landSales = closings.filter((c) => c.type === 'development-site');
+
+const capabilities = [
+	{
+		title: 'Zoning Evaluation',
+		body: 'We help owners understand how current zoning affects site value, and how to communicate that clearly to developers during marketing.',
+	},
+	{
+		title: 'Highest & Best Use Analysis',
+		body: 'We analyze state and local law to determine whether marketing for development or for existing use will achieve the higher sale price.',
+	},
+	{
+		title: 'Developer-Focused Positioning',
+		body: 'We use our knowledge of construction trends, financing conditions, and developer underwriting to position sites the way buyers actually evaluate them.',
+	},
+];
+---
+
+<BaseLayout
+	title="Land for Multifamily Development in LA | Highlight Real Estate Group"
+	description="Highlight Real Estate Group markets land for apartment development across Los Angeles, with 135,000+ SF of development land closed for clients."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Land for Development</span>
+			<h1>Marketing Land for Apartment Development Across LA</h1>
+			<p>We guide both landowners and developers through the sale of sites zoned or positioned for multifamily development.</p>
+			<div class="page-hero__stat">
+				<span class="page-hero__stat-num">135,000 SF</span>
+				<span class="page-hero__stat-label">of development land closed</span>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">What We Do</span>
+			<h2>How We Market Development Sites</h2>
+			<div class="capability-grid">
+				{
+					capabilities.map((c) => (
+						<div class="capability-card">
+							<h3>{c.title}</h3>
+							<p>{c.body}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Track Record</span>
+			<h2>Recent Development Site Sales</h2>
+			<div class="land-grid">
+				{
+					landSales.map((sale) => (
+						<div class="land-card">
+							<span class="land-card__location">
+								{sale.city}, {sale.state} {sale.zip}
+							</span>
+							<h3>{sale.name}</h3>
+							<p>{sale.sqft ? `${sale.sqft.toLocaleString()} SF` : ''}{sale.acres ? ` • ${sale.acres} Acres` : ''}</p>
+							<p class="land-card__price">Sold for {formatPrice(sale.price)}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<BOVForm heading="Own Land Zoned for Multifamily?" subheading="Get a free, confidential valuation and highest-and-best-use read on your site." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero h1 {
+		color: #fff;
+	}
+
+	.page-hero p {
+		color: #d7e0ea;
+		max-width: 700px;
+		font-size: 1.05rem;
+	}
+
+	.page-hero__stat {
+		margin-top: 1.5rem;
+	}
+
+	.page-hero__stat-num {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: 2.75rem;
+		font-weight: 400;
+		color: var(--gold-light);
+	}
+
+	.page-hero__stat-label {
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		color: #d7e0ea;
+	}
+
+	.capability-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 2rem;
+		margin-top: 2.5rem;
+	}
+
+	.capability-card {
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.land-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.land-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.5rem;
+		transition: border-color 0.2s ease, transform 0.2s ease;
+	}
+
+	.land-card:hover {
+		border-color: var(--gold);
+		transform: translateY(-2px);
+	}
+
+	.land-card h3 {
+		font-size: 1.15rem;
+	}
+
+	.land-card__location {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+	}
+
+	.land-card__price {
+		font-weight: 700;
+		color: var(--success);
+	}
+</style>

@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+
+const faqs = [
+	{
+		q: 'Do you work directly with trustees and executors, not just family members?',
+		a: 'Yes. We regularly work alongside trustees, executors, probate attorneys, and CPAs to make sure a sale meets fiduciary requirements and court timelines where applicable.',
+	},
+	{
+		q: 'What if the property hasn’t been updated in decades?',
+		a: 'That’s common, and it’s not a barrier. We routinely sell buildings with deferred maintenance and below-market rents by positioning them clearly for value-add buyers who know what they’re taking on.',
+	},
+	{
+		q: 'How long does a trust or probate sale usually take?',
+		a: 'It depends on the estate and any court approval requirements, but once we’re engaged, we move at the pace the family and the process allow, not the other way around.',
+	},
+];
+---
+
+<BaseLayout
+	title="Trust &amp; Estate / Probate Apartment Sales in LA | Highlight Real Estate Group"
+	description="Calm, informed guidance for trustees, executors, and families selling an inherited LA apartment building through a trust or probate sale."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Trust &amp; Estate Sales</span>
+			<h1>Selling an Inherited Apartment Building, Handled With Care</h1>
+			<p>
+				We specialize in guiding long-time owners and their families who may be selling for the first time in decades. We know this is more than
+				numbers &mdash; it's about family, legacy, and peace of mind. Our role is to make an already difficult moment simpler, not harder.
+			</p>
+			<a href="/contact/?intent=probate" class="btn btn-gold">Start a Confidential Conversation</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">How We Help</span>
+			<h2>A Steady Hand Through a Difficult Process</h2>
+			<p>
+				When an apartment building passes through a trust or an estate, the people responsible for it are often managing grief, family dynamics,
+				and unfamiliar legal process all at once. We work at your pace, explain every step in plain language, and coordinate directly with
+				attorneys, CPAs, and co-beneficiaries so no one is left guessing what happens next.
+			</p>
+			<p>
+				Many of the properties we sell for trusts and estates haven't been touched in years: deferred maintenance, below-market rents, and
+				outdated systems are the norm, not the exception. We price and market these properties honestly, to the buyers who understand exactly
+				what they're taking on, so the family isn't asked to fix decades of deferred decisions before they can sell.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Common Questions</span>
+			<h2>Trust &amp; Probate Sale FAQs</h2>
+			<div class="faq-list">
+				{
+					faqs.map((f) => (
+						<details class="faq-item">
+							<summary>{f.q}</summary>
+							<p>{f.a}</p>
+						</details>
+					))
+				}
+			</div>
+			<p class="faq-cta">
+				See more answers on our <a href="/faqs/">full FAQ page</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<BOVForm
+				heading="No Pressure. Just Clarity."
+				subheading="We'll walk you through what the property is worth and what the process looks like, at your pace."
+			/>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		font-size: 1.1rem;
+		line-height: 1.7;
+	}
+
+	.narrow {
+		max-width: 720px;
+	}
+
+	.narrow p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.15rem 1.5rem;
+	}
+
+	.faq-item summary {
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.faq-item p {
+		margin-top: 0.75rem;
+		margin-bottom: 0;
+	}
+
+	.faq-cta {
+		margin-top: 1.5rem;
+		font-size: 0.9rem;
+	}
+</style>
