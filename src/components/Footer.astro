@@ -7,8 +7,20 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
 	<div class="container site-footer__grid">
 		<div class="site-footer__col">
-			<p class="site-footer__logo">HIGHLIGHT <span>Real Estate Group</span></p>
-			<p>{site.brokerage}</p>
+			<img
+				class="site-footer__logo-img"
+				src="/images/brand/hlg-logo-dark-bg.png"
+				alt="Highlight Multifamily Investment Group"
+				width="181"
+				height="100"
+			/>
+			<img
+				class="site-footer__brokerage-logo"
+				src="/images/brand/equity-union-logo-dark-bg.png"
+				alt={site.brokerage}
+				width="142"
+				height="63"
+			/>
 			<p>{site.officeAddress}</p>
 			<p>Office DRE #{site.officeDRE}</p>
 		</div>
@@ -100,23 +112,18 @@ const year = new Date().getFullYear();
 		padding-block: 4.5rem 2.5rem;
 	}
 
-	.site-footer__logo {
-		font-family: var(--font-serif);
-		font-weight: 400;
-		font-size: 1.5rem;
-		color: #fff;
-		letter-spacing: 0.01em;
+	.site-footer__logo-img {
+		width: 140px;
+		height: auto;
+		display: block;
+		margin-bottom: 1.25rem;
 	}
 
-	.site-footer__logo span {
+	.site-footer__brokerage-logo {
+		width: 120px;
+		height: auto;
 		display: block;
-		font-family: var(--font-sans);
-		font-size: 0.6rem;
-		font-weight: 600;
-		color: var(--gold-light);
-		letter-spacing: 0.14em;
-		text-transform: uppercase;
-		margin-top: 0.4rem;
+		margin-bottom: 1.25rem;
 	}
 
 	.site-footer ul {

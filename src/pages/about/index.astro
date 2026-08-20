@@ -133,6 +133,11 @@ import { team, supportTeam, site } from '../../data/site';
 					<span class="stat-row__label">Land for Development Closed</span>
 				</div>
 			</div>
+			<div class="brand-lockup">
+				<img src="/images/brand/hlg-logo.png" alt="Highlight Multifamily Investment Group" width="176" height="101" />
+				<span class="brand-lockup__divider" aria-hidden="true"></span>
+				<img src="/images/brand/equity-union-logo.png" alt={site.brokerage} width="176" height="80" />
+			</div>
 			<p class="office-note">
 				{site.name} operates as part of {site.brokerage}, {site.officeAddress}. Office DRE #{site.officeDRE}.
 			</p>
@@ -290,8 +295,26 @@ import { team, supportTeam, site } from '../../data/site';
 		color: var(--ink-light);
 	}
 
+	.brand-lockup {
+		display: flex;
+		align-items: center;
+		gap: 1.75rem;
+		margin-top: 2.75rem;
+	}
+
+	.brand-lockup img {
+		height: 56px;
+		width: auto;
+	}
+
+	.brand-lockup__divider {
+		width: 1px;
+		height: 40px;
+		background: var(--border);
+	}
+
 	.office-note {
-		margin-top: 2rem;
+		margin-top: 1rem;
 		font-size: 0.85rem;
 		color: var(--ink-light);
 	}
