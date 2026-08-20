@@ -1,5 +1,4 @@
 name = "hlgfiles"
+pages_build_output_dir = "dist"
 compatibility_date = "2026-08-20"
-
-[assets]
-directory = "./dist"
+compatibility_flags = ["nodejs_compat"]
