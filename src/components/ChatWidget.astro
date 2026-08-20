@@ -76,6 +76,13 @@
 		border: 1px solid var(--border);
 	}
 
+	/* The [hidden] attribute has the same CSS specificity as the class rule
+	   above, and author styles win that tie — so without this, "display: flex"
+	   silently overrides "hidden" and the panel never actually closes. */
+	.chat-panel[hidden] {
+		display: none;
+	}
+
 	.chat-panel__header {
 		background: var(--navy-dark);
 		color: #fff;
