@@ -276,6 +276,18 @@ const simpleLinks = [
 		transition: opacity 0.15s ease;
 	}
 
+	/* Invisible bridge over the gap above the submenu so the hover chain
+	   doesn't break while the cursor travels from the nav label down to it. */
+	.main-nav__submenu::before {
+		content: '';
+		position: absolute;
+		top: -0.75rem;
+		left: 0;
+		right: 0;
+		height: 0.75rem;
+		pointer-events: auto;
+	}
+
 	.main-nav__submenu a {
 		display: block;
 		padding: 0.55rem 1.25rem;
