@@ -1,6 +1,6 @@
-# Copy this file to .dev.vars (gitignored) to test the chat and CRM functions locally with `wrangler pages dev`.
-# In production (Cloudflare Pages), set these as encrypted environment variables / secrets in the
-# Pages project settings, not in a committed file.
+# Copy this file to .dev.vars (gitignored) to test the chat and CRM routes locally with `wrangler dev`.
+# In production, set these as encrypted environment variables / secrets on the Cloudflare Worker
+# (dashboard → hlgfiles → Settings → Variables and Secrets), not in a committed file.
 
 ANTHROPIC_API_KEY=sk-ant-your-key-here
 

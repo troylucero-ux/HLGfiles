@@ -1,28 +1,17 @@
 // Accepts Broker Opinion of Value lead submissions and pushes them into Pipedrive as a Person + Lead.
-// Requires PIPEDRIVE_API_TOKEN and PIPEDRIVE_DOMAIN as Cloudflare Pages environment variables/secrets.
+// Requires PIPEDRIVE_API_TOKEN and PIPEDRIVE_DOMAIN as Cloudflare Worker environment variables/secrets.
 // Falls back to logging only (still returns success to the visitor) if those aren't set yet.
 
-import { createLead, createPerson, pipedriveConfigured, type PipedriveEnv } from '../lib/pipedrive';
+import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
+import { corsHeaders, type Env } from './env';
 
-interface Env extends PipedriveEnv {}
+export async function handleBovLead(request: Request, env: Env): Promise<Response> {
+	if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders() });
+	if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: corsHeaders() });
 
-function corsHeaders(): HeadersInit {
-	return {
-		'Content-Type': 'application/json',
-		'Access-Control-Allow-Origin': '*',
-		'Access-Control-Allow-Methods': 'POST, OPTIONS',
-		'Access-Control-Allow-Headers': 'Content-Type',
-	};
-}
-
-export async function onRequestOptions(): Promise<Response> {
-	return new Response(null, { headers: corsHeaders() });
-}
-
-export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
 	let body: { name?: string; email?: string; phone?: string; privacyConsent?: boolean };
 	try {
-		body = await context.request.json();
+		body = await request.json();
 	} catch {
 		return new Response(JSON.stringify({ error: 'Invalid request body.' }), { status: 400, headers: corsHeaders() });
 	}
@@ -36,11 +25,11 @@ export async function onRequestPost(context: { request: Request; env: Env }): Pr
 		});
 	}
 
-	if (pipedriveConfigured(context.env)) {
+	if (pipedriveConfigured(env)) {
 		try {
-			const person = await createPerson(context.env, { name, email, phone });
+			const person = await createPerson(env, { name, email, phone });
 			if (person) {
-				await createLead(context.env, {
+				await createLead(env, {
 					title: `BOV Request — ${name}`,
 					personId: person.id,
 					note: `Broker Opinion of Value request submitted via highlightreg.com.\nEmail: ${email}\nPhone: ${phone}`,

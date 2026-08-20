@@ -1,4 +1,8 @@
 name = "hlgfiles"
-pages_build_output_dir = "dist"
+main = "worker/index.ts"
 compatibility_date = "2026-08-20"
 compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"

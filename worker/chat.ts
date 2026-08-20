@@ -1,10 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { site, team } from '../../src/data/site';
-import { submarkets } from '../../src/data/submarkets';
-
-interface Env {
-	ANTHROPIC_API_KEY: string;
-}
+import { site, team } from '../src/data/site';
+import { submarkets } from '../src/data/submarkets';
+import { corsHeaders, type Env } from './env';
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
@@ -43,21 +40,9 @@ Your role:
 - If you don't know something specific about this business, say so plainly and offer to connect them with Josh or Troy rather than guessing.`;
 }
 
-function corsHeaders(): HeadersInit {
-	return {
-		'Content-Type': 'application/json',
-		'Access-Control-Allow-Origin': '*',
-		'Access-Control-Allow-Methods': 'POST, OPTIONS',
-		'Access-Control-Allow-Headers': 'Content-Type',
-	};
-}
-
-export async function onRequestOptions(): Promise<Response> {
-	return new Response(null, { headers: corsHeaders() });
-}
-
-export async function onRequestPost(context: { request: Request; env: Env }): Promise<Response> {
-	const { request, env } = context;
+export async function handleChat(request: Request, env: Env): Promise<Response> {
+	if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders() });
+	if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: corsHeaders() });
 
 	if (!env.ANTHROPIC_API_KEY) {
 		return new Response(JSON.stringify({ error: 'Chat is not configured.' }), { status: 500, headers: corsHeaders() });

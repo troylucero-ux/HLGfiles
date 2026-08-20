@@ -1,6 +1,6 @@
 // Minimal Pipedrive client for pushing website leads into the CRM.
 // Requires PIPEDRIVE_API_TOKEN and PIPEDRIVE_DOMAIN (the subdomain before .pipedrive.com) as
-// Cloudflare Pages environment variables/secrets. Auth docs: https://pipedrive.readme.io/docs/core-api-concepts-authentication
+// Cloudflare Worker environment variables/secrets. Auth docs: https://pipedrive.readme.io/docs/core-api-concepts-authentication
 
 export interface PipedriveEnv {
 	PIPEDRIVE_API_TOKEN?: string;
