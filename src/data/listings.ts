@@ -37,4 +37,21 @@ export const listings: Listing[] = [
 			'Nine-unit value-add opportunity in Echo Park, built in 1925 across three structures on a 6,904 SF lot just south of Temple St. Two units deliver vacant with roughly 36% rental upside after lease-up; tenants pay trash, landlord pays water.',
 		image: '/images/listings/333-n-union-ave-los-angeles-ca-90026/333-n-union-ave-los-angeles-ca.avif',
 	},
+	{
+		slug: '3815-don-tomaso-dr-los-angeles-ca-90008',
+		name: '3815 Don Tomaso Dr',
+		city: 'Los Angeles',
+		state: 'CA',
+		zip: '90008',
+		units: 6,
+		sqft: 4556,
+		acres: null,
+		askingPrice: 1300000,
+		status: 'active',
+		type: 'apartment',
+		submarket: null,
+		description:
+			'Six-unit value-add opportunity in Baldwin Hills, built in 1954 on a 10,866 SF hillside lot with sweeping views toward Downtown LA. In-place rents sit roughly 47% below market, offering a clear path to increased income through turnover.',
+		image: '/images/listings/3815-don-tomaso-dr-los-angeles-ca-90008/3815-don-tomaso-dr-los-angeles-ca.jpg',
+	},
 ];
