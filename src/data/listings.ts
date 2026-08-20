@@ -19,4 +19,22 @@ export type Listing = {
 	image?: string;
 };
 
-export const listings: Listing[] = [];
+export const listings: Listing[] = [
+	{
+		slug: '333-n-union-ave-los-angeles-ca-90026',
+		name: '333 N Union Ave',
+		city: 'Los Angeles',
+		state: 'CA',
+		zip: '90026',
+		units: 9,
+		sqft: 4558,
+		acres: null,
+		askingPrice: 1050000,
+		status: 'active',
+		type: 'apartment',
+		submarket: 'silver-lake',
+		description:
+			'Nine-unit value-add opportunity in Echo Park, built in 1925 across three structures on a 6,904 SF lot just south of Temple St. Two units deliver vacant with roughly 36% rental upside after lease-up; tenants pay trash, landlord pays water.',
+		image: '/images/listings/333-n-union-ave-los-angeles-ca-90026/333-n-union-ave-los-angeles-ca.avif',
+	},
+];
