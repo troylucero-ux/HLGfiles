@@ -26,12 +26,23 @@ import { team, supportTeam, site } from '../../data/site';
 			{
 				team.map((member) => (
 					<article class="bio-card">
-						<div class="bio-card__photo" aria-hidden="true">
-							{member.name
-								.split(' ')
-								.map((n) => n[0])
-								.join('')}
-						</div>
+						{member.headshot ? (
+							<img
+								class="bio-card__photo"
+								src={member.headshot}
+								alt={`${member.name}, ${member.title} at Highlight Real Estate Group`}
+								width="180"
+								height="180"
+								loading="lazy"
+							/>
+						) : (
+							<div class="bio-card__photo bio-card__photo--fallback" aria-hidden="true">
+								{member.name
+									.split(' ')
+									.map((n) => n[0])
+									.join('')}
+							</div>
+						)}
 						<div class="bio-card__content">
 							<h2>{member.name}</h2>
 							<p class="bio-card__title">
@@ -78,12 +89,23 @@ import { team, supportTeam, site } from '../../data/site';
 				{
 					supportTeam.map((member) => (
 						<div class="support-card">
-							<div class="support-card__photo" aria-hidden="true">
-								{member.name
-									.split(' ')
-									.map((n) => n[0])
-									.join('')}
-							</div>
+							{member.headshot ? (
+								<img
+									class="support-card__photo"
+									src={member.headshot}
+									alt={`${member.name}, ${member.title} at Highlight Real Estate Group`}
+									width="76"
+									height="76"
+									loading="lazy"
+								/>
+							) : (
+								<div class="support-card__photo support-card__photo--fallback" aria-hidden="true">
+									{member.name
+										.split(' ')
+										.map((n) => n[0])
+										.join('')}
+								</div>
+							)}
 							<h3>{member.name}</h3>
 							<p>{member.title}</p>
 						</div>
@@ -148,6 +170,10 @@ import { team, supportTeam, site } from '../../data/site';
 		width: 180px;
 		height: 180px;
 		border-radius: 2px;
+		object-fit: cover;
+	}
+
+	.bio-card__photo--fallback {
 		background: var(--navy-dark);
 		color: var(--gold-light);
 		display: flex;
@@ -215,6 +241,10 @@ import { team, supportTeam, site } from '../../data/site';
 		height: 76px;
 		margin: 0 auto 1.25rem;
 		border-radius: 2px;
+		object-fit: cover;
+	}
+
+	.support-card__photo--fallback {
 		background: var(--navy-tint);
 		color: var(--navy-dark);
 		display: flex;

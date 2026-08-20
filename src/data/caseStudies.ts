@@ -12,6 +12,7 @@ export type CaseStudy = {
 	solution: string;
 	results: string;
 	closingSlug?: string;
+	images?: string[];
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -29,6 +30,7 @@ export const caseStudies: CaseStudy[] = [
 		results:
 			'The Burlington Portfolio sold at an aggressive price, allowing the seller to exchange into two Texas properties with stronger income profiles. Both replacement properties closed smoothly, delivering a meaningful increase in net operating income over the original Los Angeles portfolio.',
 		closingSlug: '131-171-s-burlington-ave-los-angeles-ca-90057',
+		images: ['/images/listings/131-171-s-burlington-ave-los-angeles-ca-90057/the-burlington-portfolio-los-angeles-ca-1.jpg', '/images/listings/131-171-s-burlington-ave-los-angeles-ca-90057/the-burlington-portfolio-los-angeles-ca-2.png'],
 	},
 	{
 		slug: '941-normandie-ave',
@@ -43,6 +45,7 @@ export const caseStudies: CaseStudy[] = [
 			'We went directly to buyers who had purchased comparable non-rent-controlled properties within a two-mile radius over the prior two years. That targeted outreach generated multiple competitive offers in the first week of marketing.',
 		results: 'We procured a buyer who closed quickly at 97% of list price, with both sides satisfied by the pace and terms of the transaction.',
 		closingSlug: '941-n-normandie-ave-los-angeles-ca-90029',
+		images: ['/images/listings/941-n-normandie-ave-los-angeles-ca-90029/941-n-normandie-ave-los-angeles-ca.jpg'],
 	},
 	{
 		slug: '925-n-san-vicente-blvd',
@@ -57,6 +60,7 @@ export const caseStudies: CaseStudy[] = [
 			'We reached out directly to previous buyers in the area and qualified prospects who had shown interest in comparable properties, engaging both principals and buyer-side brokers to generate multiple competitive offers.',
 		results: 'We procured a highly qualified buyer and went under contract in less than a week, with both parties satisfied by the efficient process and terms.',
 		closingSlug: '925-n-san-vicente-blvd-west-hollywood-ca-90069',
+		images: ['/images/listings/925-n-san-vicente-blvd-west-hollywood-ca-90069/925-n-san-vicente-blvd-west-hollywood-ca.png'],
 	},
 	{
 		slug: '6938-coldwater-canyon-ave',
@@ -156,6 +160,7 @@ export const caseStudies: CaseStudy[] = [
 			'We contacted previous buyers in the immediate vicinity and in comparable prestigious neighborhoods, coordinating with buyer brokers to generate multiple competitive offers. A prospect from our own client network who had previously shown interest in our listings emerged as the buyer.',
 		results: 'We procured the buyer and closed escrow within two weeks of going under contract, with both parties satisfied by the efficient process.',
 		closingSlug: '11642-kiowa-ave-los-angeles-ca-90049',
+		images: ['/images/listings/11642-kiowa-ave-los-angeles-ca-90049/11642-kiowa-ave-los-angeles-ca.jpg'],
 	},
 	{
 		slug: '1201-s-orange-grove-ave',
@@ -184,6 +189,7 @@ export const caseStudies: CaseStudy[] = [
 			'We brought in a repeat buyer from a previous, comparable transaction — a buyer with proven capacity and speed — allowing us to present the property confidentially off-market and move past the objections that typically slow large multifamily sales.',
 		results: 'The off-market strategy connected the owner with a highly qualified buyer, and the transaction closed smoothly and efficiently.',
 		closingSlug: '236-s-bonnie-brae-st-los-angeles-ca-90057',
+		images: ['/images/listings/236-s-bonnie-brae-st-los-angeles-ca-90057/236-s-bonnie-brae-st-los-angeles-ca.png'],
 	},
 	{
 		slug: '453-s-gramercy-pl',
@@ -198,6 +204,7 @@ export const caseStudies: CaseStudy[] = [
 			'We identified an off-market buyer with proven expertise acquiring below-market rental properties with established tenants, enabling a direct transaction.',
 		results: 'The sale closed smoothly and quickly. The buyer agreed to assume the soft-story retrofit requirement — a key win for the seller given the complexity involved.',
 		closingSlug: '453-s-gramercy-pl-los-angeles-ca-90020',
+		images: ['/images/listings/453-s-gramercy-pl-los-angeles-ca-90020/453-s-gramercy-pl-los-angeles-ca.jpg'],
 	},
 	{
 		slug: '5455-inglewood-blvd',
@@ -213,5 +220,6 @@ export const caseStudies: CaseStudy[] = [
 		results:
 			'We negotiated favorable pricing while leasing 11 of the 12 market-rate units before closing, demonstrating our buyer’s financial strength and ability to close with certainty — which won the seller’s confidence over other offers.',
 		closingSlug: '5455-inglewood-blvd-culver-city-ca-90230',
+		images: ['/images/listings/5455-inglewood-blvd-culver-city-ca-90230/5455-inglewood-blvd-culver-city-ca.jpg'],
 	},
 ];

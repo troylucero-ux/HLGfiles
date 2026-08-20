@@ -37,6 +37,16 @@ const related = cs.submarket
 			</span>
 
 			{
+				cs.images && cs.images.length > 0 && (
+					<div class={`cs-detail__gallery ${cs.images.length > 1 ? 'cs-detail__gallery--multi' : ''}`}>
+						{cs.images.map((src) => (
+							<img src={src} alt={`${cs.title}, ${cs.location}`} width="760" height="440" loading="lazy" />
+						))}
+					</div>
+				)
+			}
+
+			{
 				closing && (
 					<div class="cs-detail__facts">
 						<div>
@@ -111,6 +121,33 @@ const related = cs.submarket
 		display: flex;
 		gap: 0.5rem;
 		margin: 1rem 0 2rem;
+	}
+
+	.cs-detail__gallery {
+		margin-bottom: 2rem;
+	}
+
+	.cs-detail__gallery img {
+		width: 100%;
+		height: 420px;
+		object-fit: cover;
+		border-radius: 2px;
+	}
+
+	.cs-detail__gallery--multi {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.75rem;
+	}
+
+	.cs-detail__gallery--multi img {
+		height: 280px;
+	}
+
+	@media (max-width: 640px) {
+		.cs-detail__gallery--multi {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.tag {

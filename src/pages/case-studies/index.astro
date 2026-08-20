@@ -40,6 +40,9 @@ const dealTypeLabels: Record<string, string> = {
 				{
 					caseStudies.map((cs) => (
 						<a href={`/case-studies/${cs.slug}/`} class="cs-card" data-deal-types={cs.dealType.join(',')}>
+							{cs.images?.[0] && (
+								<img class="cs-card__image" src={cs.images[0]} alt={`${cs.title}, ${cs.location}`} width="400" height="220" loading="lazy" />
+							)}
 							<span class="cs-card__location">{cs.location}</span>
 							<h2>{cs.title}</h2>
 							<p>{cs.summary}</p>
@@ -116,6 +119,13 @@ const dealTypeLabels: Record<string, string> = {
 		box-shadow: 0 18px 40px -26px rgba(12, 46, 80, 0.35);
 		transform: translateY(-2px);
 		text-decoration: none;
+	}
+
+	.cs-card__image {
+		width: calc(100% + 3.5rem);
+		height: 200px;
+		object-fit: cover;
+		margin: -1.75rem -1.75rem 0.5rem;
 	}
 
 	.cs-card__location {

@@ -34,7 +34,7 @@ export const team = [
 		phone: '310.405.1890',
 		email: 'josh.kaplan@equityunion.com',
 		linkedin: 'https://www.linkedin.com/in/josh-a-kaplan/',
-		headshot: '',
+		headshot: '/images/bio/josh-kaplan-headshot.jpg',
 		bio: [
 			'Josh Kaplan brings more than 20 years of experience in real estate brokerage, acquisitions, and asset management to every transaction. As co-founder of Highlight Real Estate Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
 			'Before founding Highlight, Josh served as Managing Director of Multifamily at Transwestern and as Director of Asset Management at Federal Realty Investment Trust. He spent seven years at Watt Companies, where he sourced and underwrote more than $900 million in acquisitions, and began his career in Deloitte’s financial advisory services group.',
@@ -51,7 +51,7 @@ export const team = [
 		phone: '310.339.5477',
 		email: 'troy.lucero@equityunion.com',
 		linkedin: '',
-		headshot: '',
+		headshot: '/images/bio/troy-lucero-headshot.jpg',
 		bio: [
 			'Troy Lucero has negotiated dispositions, 1031 exchanges, and development site sales for apartment owners across Los Angeles and nationwide. As co-founder of Highlight Real Estate Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
 			'Troy holds a B.S. in Finance from California State University, Northridge, and brings a disciplined, data-driven approach to every listing and every client relationship.',
@@ -62,9 +62,9 @@ export const team = [
 ];
 
 export const supportTeam = [
-	{ slug: 'zach-pomer', name: 'Zach Pomer', title: 'Marketing Director' },
-	{ slug: 'monica-hernandez', name: 'Monica Hernandez', title: 'Transaction Coordinator' },
-	{ slug: 'billy-rhodes', name: 'Billy Rhodes', title: 'Photographer & Videographer' },
+	{ slug: 'zach-pomer', name: 'Zach Pomer', title: 'Marketing Director', headshot: '/images/bio/zach-pomer-headshot.jpg' },
+	{ slug: 'monica-hernandez', name: 'Monica Hernandez', title: 'Transaction Coordinator', headshot: '/images/bio/monica-hernandez-headshot.jpg' },
+	{ slug: 'billy-rhodes', name: 'Billy Rhodes', title: 'Photographer & Videographer', headshot: '/images/bio/billy-rhodes-headshot.jpg' },
 ];
 
 // NOTE: highlightreg.com/success-stories/ currently returns "No Results Found" — no testimonials are

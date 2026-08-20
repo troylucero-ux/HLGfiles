@@ -26,16 +26,17 @@ Custom-coded, SEO-first rebuild of the Highlight Real Estate Group website. Stat
 2. **Lead delivery (Pipedrive).** `worker/bov-lead.ts` and `worker/newsletter.ts` push submissions into Pipedrive (Person + Lead, via `worker/pipedrive.ts`) once configured. Add two Worker environment variables/secrets: `PIPEDRIVE_API_TOKEN` (Settings → Personal Preferences → API in Pipedrive) and `PIPEDRIVE_DOMAIN` (the subdomain before `.pipedrive.com`, e.g. `highlightreg`). Until both are set, submissions still validate and return success to the visitor but only log server-side — nothing is lost, it just doesn't reach the CRM yet. For local testing, add both to `.dev.vars` (never commit that file).
 3. **Legal pages.** `/privacy-policy/` and `/terms/` are working first drafts reflecting this site's actual data practices (BOV form, newsletter, TCPA consent language). Have counsel review both before publishing.
 4. **Testimonials.** `src/data/site.ts` — the 3 testimonials are carried over from the project brief but are not currently live anywhere on highlightreg.com (`/success-stories/` returned "No Results Found" as of 2026-08-20). Verify or replace with sourced quotes (e.g. from Google Business Profile) before publishing.
-5. **Images.** No property photos, team headshots, or hero video have been migrated yet — see below.
+5. **Images — partially done.** Team headshots (all 5), 16 property photos (closings + matching case studies), and a placeholder land-development hero image are in place under `public/images/`, wired into `src/data/*.ts` via `image`/`images`/`headshot` fields, and rendered with descriptive alt text. Still outstanding: photos for the other 45 closed sales, active listings (none exist yet), and a real (non-stock) land parcel photo. Formats are as-received (JPG/PNG) — not yet converted to WebP/compressed for performance.
 6. **Social links.** Only Josh Kaplan's personal LinkedIn was found live on the current site. Add company Instagram/Facebook URLs to `src/data/site.ts` → `social` once available (empty strings currently hide those icons).
 
-## Image Migration (Not Yet Done)
+## Images
 
-The current WordPress site's images live at `highlightreg.com/wp-content/uploads/...`. None have been re-downloaded into this project yet. When ready:
+Photos live under `public/images/<section>/...` and are referenced by path from `src/data/*.ts`:
+- `public/images/listings/<closing-or-case-study-slug>/` — property photos (some entries have 2; the card/thumbnail views show `images[0]`, case study detail pages show all of them)
+- `public/images/bio/` — team headshots, referenced from `team`/`supportTeam` in `src/data/site.ts`
+- `public/images/land/` — Land for Development page hero (currently a generic placeholder, not a real parcel photo)
 
-- Place images under `public/images/<section>/<descriptive-slug>.webp` (e.g. `public/images/closings/236-s-bonnie-brae-st.webp`)
-- Convert to WebP and compress before adding
-- Reference them from the relevant `src/data/*.ts` entry (most types already have an `image`/`headshot` field ready) and add descriptive `alt` text tied to property/location/keyword, not a generic filename
+When adding more: convert to WebP and compress before adding, and give every file a descriptive, keyword-tied name (e.g. `236-s-bonnie-brae-st-westlake-apartment-building.webp`, not `IMG_4821.jpg`) — alt text is already wired to pull from the property/team data, so a new `image`/`images` value just needs to be added to the matching entry.
 
 ## Deployment
 
