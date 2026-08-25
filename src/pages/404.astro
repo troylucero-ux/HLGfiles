@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { submarkets } from '../data/submarkets';
+---
+
+<BaseLayout title="Page Not Found" description="The page you're looking for doesn't exist. Explore Highlight Real Estate Group's closed sales, listings, and LA multifamily submarket coverage." noindex>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">404</span>
+			<h1>We Couldn't Find That Page</h1>
+			<p>The page you're looking for may have moved or no longer exists. Here are a few places to pick back up.</p>
+			<div class="not-found__actions">
+				<a href="/" class="btn btn-gold">Back to Homepage</a>
+				<a href="/closed-sales/" class="btn btn-outline">See Our Closed Sales</a>
+				<a href="/contact/" class="btn btn-outline">Contact Us</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Explore</span>
+			<h2>LA Multifamily Submarkets</h2>
+			<div class="not-found__submarkets">
+				{
+					submarkets.map((sm) => (
+						<a href={`/submarkets/${sm.slug}/`} class="submarket-chip">
+							{sm.name}
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 7vw, 5rem);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 600px;
+		font-size: 1.1rem;
+		color: var(--ink-soft);
+	}
+
+	.not-found__actions {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin-top: 2rem;
+	}
+
+	.not-found__submarkets {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 2rem;
+		margin-top: 2rem;
+	}
+
+	.submarket-chip {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+		border-bottom: 1px solid transparent;
+		padding-bottom: 0.2rem;
+	}
+
+	.submarket-chip:hover {
+		color: var(--gold-dark);
+		border-color: var(--gold);
+		text-decoration: none;
+	}
+</style>

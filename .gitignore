@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# raw uploads awaiting processing into public/images/ — not build output
+_incoming/

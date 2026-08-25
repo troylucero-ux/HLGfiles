@@ -4,7 +4,7 @@ import BOVForm from '../components/BOVForm.astro';
 import { site } from '../data/site';
 import { closings } from '../data/closings';
 import { submarkets } from '../data/submarkets';
-import { testimonials } from '../data/site';
+import { testimonials, press } from '../data/site';
 import { formatPrice } from '../lib/format';
 
 const notableSales = closings.filter((c) => c.city === 'Los Angeles').slice(0, 6);
@@ -30,23 +30,32 @@ const services = [
 		title: 'Broker Opinion of Value',
 		body: 'A free, no-pressure BOV grounded in real closed comps, not guesswork.',
 	},
+	{
+		title: 'Triple Net (NNN) & DSTs',
+		body: 'Introductions to trusted NNN brokers and DST professionals for owners exchanging into a passive, zero-management investment.',
+	},
 ];
 ---
 
 <BaseLayout
 	title="LA Multifamily Investment Sales | Highlight Real Estate Group"
-	description="Highlight Real Estate Group advises Los Angeles apartment building owners on sales, 1031 exchanges, trust and probate sales, and land for development. 1,390+ units closed, $345M+ in sale value."
+	description="Highlight Real Estate Group advises LA apartment owners on sales, 1031 exchanges, and trust or probate sales. 1,390+ units and $345M+ closed to date."
 >
+	<link slot="head" rel="preload" as="image" href="/images/hero/453-s-gramercy-pl-hero.webp" media="(min-width: 701px)" />
+	<link slot="head" rel="preload" as="image" href="/images/hero/453-s-gramercy-pl-hero-mobile.webp" media="(max-width: 700px)" />
+
 	<section class="hero">
+		<div class="hero__bg" aria-hidden="true"></div>
 		<div class="container hero__inner">
 			<span class="eyebrow">Los Angeles Metro Area</span>
 			<h1>Apartment Building<br />Sales Experts</h1>
 			<p class="hero__sub">We do things differently. More than your agents, we're your trusted advisors for LA multifamily investment sales.</p>
 			<div class="hero__actions">
 				<a href="/contact/?intent=bov" class="btn btn-gold">Get a Free Broker Opinion of Value</a>
-				<a href="/closings/" class="hero__link">See Our Closed Sales &rarr;</a>
+				<a href="/closed-sales/" class="hero__link">See Our Closed Sales &rarr;</a>
 			</div>
 		</div>
+		<a href="/case-studies/453-s-gramercy-pl-koreatown-apartments/" class="hero__credit">453 S Gramercy Pl, Koreatown &mdash; sold by Highlight</a>
 	</section>
 
 	<section class="stat-bar">
@@ -87,6 +96,15 @@ const services = [
 				</p>
 				<a href="/about/" class="btn btn-outline">Meet the Team</a>
 			</div>
+			<div class="who-we-are__photo">
+				<img
+					src="/images/bio/josh-kaplan-troy-lucero-together.webp"
+					alt="Josh Kaplan and Troy Lucero, co-founders of Highlight Real Estate Group"
+					width="430"
+					height="430"
+					loading="lazy"
+				/>
+			</div>
 		</div>
 	</section>
 
@@ -114,7 +132,11 @@ const services = [
 			<div class="sales-grid">
 				{
 					notableSales.map((sale) => (
-						<a class="sale-card" href={`/closings/#${sale.slug}`}>
+						<a
+							class="sale-card"
+							href={`/closed-sales/#${sale.slug}`}
+							style={sale.images?.[0] ? `--sale-card-img: url(${sale.images[0]})` : undefined}
+						>
 							<span class="sale-card__location">
 								{sale.city}, {sale.state} {sale.zip}
 							</span>
@@ -129,7 +151,7 @@ const services = [
 					))
 				}
 			</div>
-			<a href="/closings/" class="btn btn-navy" style="margin-top: 2rem;">View All 61 Closed Sales</a>
+			<a href="/closed-sales/" class="btn btn-navy" style="margin-top: 2rem;">View All 61 Closed Sales</a>
 		</div>
 	</section>
 
@@ -160,8 +182,28 @@ const services = [
 						{testimonials.map((t) => (
 							<figure class="testimonial-card">
 								<blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
-								<figcaption>{t.attribution}</figcaption>
+								<figcaption>
+									{t.caseStudySlug ? <a href={`/case-studies/${t.caseStudySlug}/`}>{t.attribution} &rarr;</a> : t.attribution}
+								</figcaption>
 							</figure>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		press.length > 0 && (
+			<section class="section press-section">
+				<div class="container">
+					<span class="eyebrow">In the News</span>
+					<h2>Our Deals Make Headlines</h2>
+					<div class="press-strip">
+						{press.map((p) => (
+							<a href={p.url} target="_blank" rel="noopener noreferrer" class={`press-logo press-logo--${p.name.toLowerCase().replace(/\s+/g, '-')}`}>
+								{p.name}
+							</a>
 						))}
 					</div>
 				</div>
@@ -190,6 +232,31 @@ const services = [
 		color: #fff;
 		padding-block: clamp(5rem, 12vw, 9rem);
 		position: relative;
+		overflow: hidden;
+	}
+
+	.hero__bg {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		background-image: linear-gradient(180deg, rgba(12, 46, 80, 0.86), rgba(12, 46, 80, 0.78)), url('/images/hero/453-s-gramercy-pl-hero.webp');
+		background-size: cover;
+		background-position: center;
+		background-attachment: fixed;
+	}
+
+	@media (max-width: 700px) {
+		.hero__bg {
+			background-image: linear-gradient(180deg, rgba(12, 46, 80, 0.86), rgba(12, 46, 80, 0.78)), url('/images/hero/453-s-gramercy-pl-hero-mobile.webp');
+			/* Fixed attachment is unreliable on mobile browsers and can cause jank; scroll normally instead. */
+			background-attachment: scroll;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.hero__bg {
+			background-attachment: scroll;
+		}
 	}
 
 	.hero::after {
@@ -201,10 +268,30 @@ const services = [
 		height: 1px;
 		background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
 		opacity: 0.5;
+		z-index: 1;
 	}
 
 	.hero__inner {
 		max-width: 780px;
+		position: relative;
+		z-index: 1;
+	}
+
+	.hero__credit {
+		position: absolute;
+		right: 1.25rem;
+		bottom: 0.85rem;
+		z-index: 1;
+		font-size: 0.68rem;
+		letter-spacing: 0.02em;
+		color: rgba(255, 255, 255, 0.55);
+		border-bottom: 1px solid transparent;
+	}
+
+	.hero__credit:hover {
+		color: #fff;
+		border-color: rgba(255, 255, 255, 0.5);
+		text-decoration: none;
 	}
 
 	.hero .eyebrow {
@@ -294,8 +381,37 @@ const services = [
 		color: var(--ink-light);
 	}
 
+	.who-we-are {
+		display: grid;
+		grid-template-columns: 1.3fr 1fr;
+		gap: 3rem;
+		align-items: center;
+	}
+
 	.who-we-are p {
-		max-width: 760px;
+		max-width: 640px;
+	}
+
+	.who-we-are__photo {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.who-we-are__photo img {
+		width: 100%;
+		max-width: 340px;
+		height: auto;
+		display: block;
+		filter: drop-shadow(0 20px 28px rgba(12, 46, 80, 0.16));
+	}
+
+	.who-we-are__photo::after {
+		content: '';
+		width: 110px;
+		height: 2px;
+		margin-top: 1.5rem;
+		background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
 	}
 
 	.services-grid {
@@ -322,6 +438,8 @@ const services = [
 	}
 
 	.sale-card {
+		position: relative;
+		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		gap: 0.3rem;
@@ -333,11 +451,32 @@ const services = [
 		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 	}
 
+	.sale-card::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		background-image: linear-gradient(180deg, rgba(255, 253, 250, 0.88), rgba(255, 253, 250, 0.94)), var(--sale-card-img, none);
+		background-size: cover;
+		background-position: center;
+		filter: grayscale(1);
+		transition: opacity 0.2s ease;
+	}
+
+	.sale-card > * {
+		position: relative;
+		z-index: 1;
+	}
+
 	.sale-card:hover {
 		border-color: var(--gold);
 		box-shadow: 0 18px 40px -24px rgba(12, 46, 80, 0.35);
 		transform: translateY(-2px);
 		text-decoration: none;
+	}
+
+	.sale-card:hover::before {
+		background-image: linear-gradient(180deg, rgba(255, 253, 250, 0.72), rgba(255, 253, 250, 0.82)), var(--sale-card-img, none);
 	}
 
 	.sale-card__location {
@@ -420,6 +559,63 @@ const services = [
 		text-transform: uppercase;
 	}
 
+	.press-section {
+		text-align: center;
+	}
+
+	.press-strip {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 3rem 4rem;
+		margin-top: 2.5rem;
+	}
+
+	.press-logo {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--ink-light);
+		letter-spacing: 0.01em;
+		opacity: 0.75;
+		transition: opacity 0.2s ease, color 0.2s ease;
+	}
+
+	.press-logo:hover {
+		opacity: 1;
+		text-decoration: none;
+	}
+
+	.press-logo--yahoo-finance {
+		font-family: var(--font-sans);
+		font-weight: 800;
+	}
+
+	.press-logo--yahoo-finance:hover {
+		color: #6001d2;
+	}
+
+	.press-logo--traded {
+		font-family: var(--font-serif);
+		font-weight: 600;
+		text-transform: lowercase;
+	}
+
+	.press-logo--traded:hover {
+		color: var(--navy-dark);
+	}
+
+	.press-logo--bisnow {
+		font-family: var(--font-sans);
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+	}
+
+	.press-logo--bisnow:hover {
+		color: #f0501e;
+	}
+
 	.strategy-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -430,6 +626,18 @@ const services = [
 	@media (max-width: 860px) {
 		.stat-bar__grid {
 			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.who-we-are {
+			grid-template-columns: 1fr;
+		}
+
+		.who-we-are__photo {
+			order: -1;
+		}
+
+		.who-we-are__photo img {
+			max-width: 260px;
 		}
 
 		.strategy-grid {

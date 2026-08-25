@@ -34,7 +34,9 @@ export const team = [
 		phone: '310.405.1890',
 		email: 'josh.kaplan@equityunion.com',
 		linkedin: 'https://www.linkedin.com/in/josh-a-kaplan/',
-		headshot: '/images/bio/josh-kaplan-headshot.jpg',
+		instagram: 'https://www.instagram.com/joshkaplanapartments/',
+		facebook: 'https://www.facebook.com/josh.kaplan.549',
+		headshot: '/images/bio/josh-kaplan-headshot.webp',
 		bio: [
 			'Josh Kaplan brings more than 20 years of experience in real estate brokerage, acquisitions, and asset management to every transaction. As co-founder of Highlight Real Estate Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
 			'Before founding Highlight, Josh served as Managing Director of Multifamily at Transwestern and as Director of Asset Management at Federal Realty Investment Trust. He spent seven years at Watt Companies, where he sourced and underwrote more than $900 million in acquisitions, and began his career in Deloitte’s financial advisory services group.',
@@ -50,8 +52,10 @@ export const team = [
 		dre: '02015705',
 		phone: '310.339.5477',
 		email: 'troy.lucero@equityunion.com',
-		linkedin: '',
-		headshot: '/images/bio/troy-lucero-headshot.jpg',
+		linkedin: 'https://www.linkedin.com/in/troylucero/',
+		instagram: 'https://www.instagram.com/troylucero_apartmentguy/',
+		facebook: 'https://www.facebook.com/troy.lucero.980',
+		headshot: '/images/bio/troy-lucero-headshot.webp',
 		bio: [
 			'Troy Lucero has negotiated dispositions, 1031 exchanges, and development site sales for apartment owners across Los Angeles and nationwide. As co-founder of Highlight Real Estate Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
 			'Troy holds a B.S. in Finance from California State University, Northridge, and brings a disciplined, data-driven approach to every listing and every client relationship.',
@@ -62,31 +66,52 @@ export const team = [
 ];
 
 export const supportTeam = [
-	{ slug: 'zach-pomer', name: 'Zach Pomer', title: 'Marketing Director', headshot: '/images/bio/zach-pomer-headshot.jpg' },
-	{ slug: 'monica-hernandez', name: 'Monica Hernandez', title: 'Transaction Coordinator', headshot: '/images/bio/monica-hernandez-headshot.jpg' },
-	{ slug: 'billy-rhodes', name: 'Billy Rhodes', title: 'Photographer & Videographer', headshot: '/images/bio/billy-rhodes-headshot.jpg' },
+	{ slug: 'zach-pomer', name: 'Zach Pomer', title: 'Marketing Director', headshot: '/images/bio/zach-pomer-headshot.webp' },
+	{ slug: 'monica-hernandez', name: 'Monica Hernandez', title: 'Transaction Coordinator', headshot: '/images/bio/monica-hernandez-headshot.webp' },
+	{ slug: 'billy-rhodes', name: 'Billy Rhodes', title: 'Photographer & Videographer', headshot: '/images/bio/billy-rhodes-headshot.webp' },
 ];
 
-// NOTE: highlightreg.com/success-stories/ currently returns "No Results Found" — no testimonials are
-// live on the site as of 2026-08-20. These are drawn from the project brief's content inventory and
-// should be verified/sourced (e.g. from Google Business Profile) before publishing.
+export const press = [
+	{
+		name: 'Yahoo Finance',
+		url: 'https://finance.yahoo.com/news/multifamily-investment-powerhouses-josh-kaplan-014500450.html',
+	},
+	{
+		name: 'Traded',
+		url: 'https://traded.co/agent/josh-kaplan/',
+	},
+	{
+		name: 'Bisnow',
+		url: 'https://www.bisnow.com/news/los-angeles/commercial-real-estate/this-weeks-la-deal-sheet-55971',
+	},
+];
+
+// Real client testimonials provided directly by Troy Lucero (co-founder).
 export const testimonials = [
 	{
 		quote:
-			'They sold my Orange Grove property fast and at full price, even with deferred maintenance and low rents. Smooth, professional, and results-driven.',
-		attribution: 'Seller of a 5-unit building, Los Angeles',
-		verified: false,
+			"Josh and Troy's connections with brokers in Austin made for a smooth 1031 exchange into apartment ownership in Texas.",
+		attribution: 'Seller of 192 Units in Westlake / MacArthur Park',
+		caseStudySlug: 'the-burlington-portfolio-westlake-apartments',
+		verified: true,
 	},
 	{
 		quote:
-			'Josh and Troy negotiated hard, kept our timeline on our terms, and preserved the full value of the building throughout the process.',
-		attribution: 'Seller of an 18-unit building, Glendale',
-		verified: false,
+			'I have done business with other agencies in the past, but none of them are even comparable. I credit Josh and Troy for helping me pick the perfect time to list my property, and for making the sale a complete success.',
+		attribution: 'Seller of 10 units in North Hollywood',
+		caseStudySlug: '6938-coldwater-canyon-ave-north-hollywood-apartments',
+		verified: true,
 	},
 	{
 		quote:
-			'They found a qualified buyer off-market and closed fast, even with deferred maintenance and rents well below market.',
-		attribution: 'Seller of a 65-unit building, Los Angeles',
-		verified: false,
+			'These guys know the LA multifamily market inside and out. They got me strong offers, walked me through everything, and were always straight with me. Selling a building like this can be stressful but they made it a lot smoother than I expected.',
+		attribution: 'Seller of 14 units in Koreatown',
+		verified: true,
+	},
+	{
+		quote:
+			'We needed people we could actually trust, and Troy and Josh delivered on that completely. They were always easy to get ahold of, walked us through every offer that came and summarized all the key points every time so we actually understood what we were looking at and never made us feel rushed or pressured.',
+		attribution: 'Seller of 12 Units in Los Angeles',
+		verified: true,
 	},
 ];

@@ -3,8 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import { team, site } from '../../data/site';
 
-const intent = Astro.url.searchParams.get('intent');
-const heading = intent === 'probate' ? 'Start a Confidential Conversation' : 'Get a Free, Confidential Broker Opinion of Value';
+// This page is statically prerendered, so Astro.url has no access to the request's query string —
+// the ?intent= heading swap has to happen client-side after load (see the script below).
 ---
 
 <BaseLayout
@@ -41,7 +41,7 @@ const heading = intent === 'probate' ? 'Start a Confidential Conversation' : 'Ge
 				</div>
 			</div>
 
-			<BOVForm heading={heading} />
+			<BOVForm />
 		</div>
 	</section>
 </BaseLayout>
@@ -102,3 +102,16 @@ const heading = intent === 'probate' ? 'Start a Confidential Conversation' : 'Ge
 		}
 	}
 </style>
+
+<script>
+	const intentHeadings: Record<string, string> = {
+		probate: 'Start a Confidential Conversation',
+		'nnn-dst': "Let's Talk Through Your Options",
+	};
+	const intent = new URLSearchParams(window.location.search).get('intent');
+	const heading = intent && intentHeadings[intent];
+	if (heading) {
+		const h2 = document.querySelector('.bov-form h2');
+		if (h2) h2.textContent = heading;
+	}
+</script>

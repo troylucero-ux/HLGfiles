@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+
+const helpItems = [
+	{
+		title: 'Triple-Net (NNN) Introductions',
+		body: 'When you’re ready to move out of active apartment management, we introduce you to trusted NNN commercial brokers in the markets you want to be in, anywhere in the country, not just LA. We stay involved throughout the process, coordinating directly with your NNN broker so you always know where things stand, including when contingencies are removed on your sale.',
+	},
+	{
+		title: 'DST Placement Introductions',
+		body: 'A Delaware Statutory Trust lets 1031 exchange proceeds move into institutional-grade real estate with no landlord responsibilities. We’ll walk you through how a DST works in plain language, then connect you with a DST professional who handles the offering, structuring, and execution directly.',
+	},
+];
+
+const faqs = [
+	{
+		q: 'Do you sell DSTs or NNN properties yourselves?',
+		a: 'No. DST interests are securities, so they’re offered and sold by DST sponsors and securities-licensed professionals, not by our real estate team. We introduce you to those specialists and stay involved on our side of the transaction, particularly if you’re exchanging out of a property we’re selling for you.',
+	},
+	{
+		q: 'Is this only for 1031 exchange clients?',
+		a: 'Most owners we introduce to NNN and DST specialists are exchanging out of an apartment building, but you don’t need to be selling through us to ask for an introduction.',
+	},
+];
+---
+
+<BaseLayout
+	title="Triple Net (NNN) & DST Introductions | Highlight Real Estate Group"
+	description="Highlight Real Estate Group connects LA apartment owners with trusted NNN commercial brokers and DST professionals for passive, zero-management investments."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Triple Net (NNN) & DSTs</span>
+			<h1>Passive Investment Introductions: NNN and DSTs</h1>
+			<p>
+				Not every apartment owner wants to keep managing property after a sale. For clients exploring a 1031 exchange or a fresh investment, we
+				connect you with trusted specialists in triple-net (NNN) commercial real estate and Delaware Statutory Trusts (DSTs), and stay involved
+				so you're never navigating the process alone.
+			</p>
+			<a href="/contact/?intent=nnn-dst" class="btn btn-gold">Talk Through Your Options</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">How We Help</span>
+			<h2>Two Paths to a Passive Investment</h2>
+			<div class="help-grid">
+				{
+					helpItems.map((item) => (
+						<div class="help-card">
+							<h3>{item.title}</h3>
+							<p>{item.body}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Common Questions</span>
+			<h2>NNN & DST FAQs</h2>
+			<div class="faq-list">
+				{
+					faqs.map((f) => (
+						<details class="faq-item">
+							<summary>{f.q}</summary>
+							<p>{f.a}</p>
+						</details>
+					))
+				}
+			</div>
+			<p class="faq-cta">
+				See more answers on our <a href="/faqs/">full FAQ page</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<BOVForm heading="Explore NNN & DST Options" subheading="Tell us about your goals and timeline, and we'll walk you through what fits and connect you with the right specialist." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero h1 {
+		color: #fff;
+	}
+
+	.page-hero p {
+		color: #d7e0ea;
+		max-width: 700px;
+		font-size: 1.05rem;
+		line-height: 1.7;
+	}
+
+	.page-hero .btn-gold {
+		background: var(--gold);
+		color: var(--navy-dark);
+		border-color: var(--gold);
+	}
+
+	.page-hero .btn-gold:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+	}
+
+	.help-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 2rem;
+		margin-top: 2rem;
+	}
+
+	.help-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.75rem;
+	}
+
+	.help-card h3 {
+		font-size: 1.2rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.narrow {
+		max-width: 720px;
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.15rem 1.5rem;
+	}
+
+	.faq-item summary {
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.faq-item p {
+		margin-top: 0.75rem;
+		margin-bottom: 0;
+	}
+
+	.faq-cta {
+		margin-top: 1.5rem;
+		font-size: 0.9rem;
+	}
+</style>

@@ -19,7 +19,7 @@ const relatedCaseStudies = caseStudies.filter((cs) => cs.submarket === sm.slug);
 ---
 
 <BaseLayout
-	title={`${sm.name} Apartment Building For Sale | LA Multifamily Submarket`}
+	title={`${sm.name} Apartment Buildings | Highlight Real Estate Group`}
 	description={`${sm.name} multifamily submarket profile: Walk Score, transit, retail, and employment highlights, plus Highlight Real Estate Group's closed sales and case studies in ${sm.name}.`}
 >
 	<section class="page-hero">
@@ -78,7 +78,7 @@ const relatedCaseStudies = caseStudies.filter((cs) => cs.submarket === sm.slug);
 					<h2>Closed Sales in {sm.name}</h2>
 					<div class="closing-grid">
 						{relatedClosings.map((sale) => (
-							<a href={`/closings/#${sale.slug}`} class="closing-card">
+							<a href={`/closed-sales/#${sale.slug}`} class="closing-card">
 								<span>{sale.name}</span>
 								<span class="closing-card__meta">
 									{sale.units ? `${sale.units} Units` : 'Development Site'} &middot; Sold for {formatPrice(sale.price)}

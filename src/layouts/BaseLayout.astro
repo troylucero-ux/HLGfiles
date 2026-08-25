@@ -9,11 +9,13 @@ interface Props {
 	title: string;
 	description: string;
 	noindex?: boolean;
+	image?: string;
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, image = '/images/hero/453-s-gramercy-pl-hero.webp' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const pageTitle = title.includes('Highlight Real Estate Group') ? title : `${title} | Highlight Real Estate Group`;
+const socialImageURL = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -32,9 +34,11 @@ const pageTitle = title.includes('Highlight Real Estate Group') ? title : `${tit
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalURL} />
 		<meta property="og:site_name" content="Highlight Real Estate Group" />
+		<meta property="og:image" content={socialImageURL} />
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={pageTitle} />
 		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={socialImageURL} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<Schema />

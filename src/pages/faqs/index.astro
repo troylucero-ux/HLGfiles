@@ -55,12 +55,29 @@ const faqCategories = [
 		],
 	},
 ];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqCategories.flatMap((cat) =>
+		cat.items.map((f) => ({
+			'@type': 'Question',
+			name: f.q,
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: f.a,
+			},
+		}))
+	),
+};
 ---
 
 <BaseLayout
 	title="Frequently Asked Questions | Highlight Real Estate Group"
 	description="Answers to common questions LA apartment owners ask about selling timelines, fees, 1031 exchanges, and trust or probate sales."
 >
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
 	<section class="page-hero">
 		<div class="container">
 			<span class="eyebrow">FAQs</span>

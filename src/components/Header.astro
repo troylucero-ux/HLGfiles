@@ -13,7 +13,7 @@ const navGroups = [
 		label: 'Properties',
 		links: [
 			{ href: '/listings/', label: 'Listings' },
-			{ href: '/closings/', label: 'Closed Sales' },
+			{ href: '/closed-sales/', label: 'Closed Sales' },
 			{ href: '/land-for-development/', label: 'Land for Development' },
 		],
 	},
@@ -22,6 +22,7 @@ const navGroups = [
 		links: [
 			{ href: '/1031-exchanges/', label: '1031 Exchanges' },
 			{ href: '/trust-and-estate-sales/', label: 'Trust & Estate Sales' },
+			{ href: '/triple-net-dst/', label: 'Triple Net (NNN) & DSTs' },
 			{ href: '/case-studies/', label: 'Case Studies' },
 		],
 	},
@@ -53,8 +54,7 @@ const simpleLinks = [
 <header class="site-header">
 	<div class="container site-header__inner">
 		<a href="/" class="site-header__logo">
-			<span class="site-header__logo-main">HIGHLIGHT</span>
-			<span class="site-header__logo-sub">Real Estate Group</span>
+			<img src="/images/brand/hlg-logo.png" alt="Highlight Real Estate Group" width="83" height="48" />
 		</a>
 
 		<nav class="main-nav" aria-label="Primary">
@@ -184,26 +184,13 @@ const simpleLinks = [
 
 	.site-header__logo {
 		display: flex;
-		flex-direction: column;
-		line-height: 1;
+		align-items: center;
 		flex-shrink: 0;
 	}
 
-	.site-header__logo-main {
-		font-family: var(--font-serif);
-		font-weight: 400;
-		font-size: 1.6rem;
-		letter-spacing: 0.01em;
-		color: var(--navy-dark);
-	}
-
-	.site-header__logo-sub {
-		font-size: 0.62rem;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		color: var(--gold-dark);
-		font-weight: 600;
-		margin-top: 0.3rem;
+	.site-header__logo img {
+		height: 48px;
+		width: auto;
 	}
 
 	.main-nav {
