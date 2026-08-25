@@ -30,7 +30,7 @@ import { team, supportTeam, site } from '../../data/site';
 							<img
 								class="bio-card__photo"
 								src={member.headshot}
-								alt={`${member.name}, ${member.title} at Highlight Real Estate Group`}
+								alt={`${member.name}, ${member.title}, ${member.department} at Highlight Real Estate Group`}
 								width="180"
 								height="180"
 								loading="lazy"
@@ -46,7 +46,10 @@ import { team, supportTeam, site } from '../../data/site';
 						<div class="bio-card__content">
 							<h2>{member.name}</h2>
 							<p class="bio-card__title">
-								{member.title} &middot; DRE #{member.dre}
+								{member.title} | {site.name}
+							</p>
+							<p class="bio-card__department">
+								{member.department} &middot; DRE #{member.dre}
 							</p>
 							{member.bio.map((p) => (
 								<p>{p}</p>
@@ -221,6 +224,16 @@ import { team, supportTeam, site } from '../../data/site';
 		text-transform: uppercase;
 		font-size: 0.72rem;
 		letter-spacing: 0.1em;
+	}
+
+	.bio-card__department {
+		font-family: var(--font-sans);
+		color: var(--ink-light);
+		font-weight: 600;
+		text-transform: uppercase;
+		font-size: 0.72rem;
+		letter-spacing: 0.1em;
+		margin-top: 0.2rem;
 	}
 
 	.bio-card__facts {

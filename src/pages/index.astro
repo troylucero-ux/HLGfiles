@@ -61,18 +61,40 @@ const services = [
 	<section class="stat-bar">
 		<div class="container stat-bar__grid">
 			<div class="stat-bar__item">
+				<svg class="stat-bar__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<rect x="7" y="6" width="18" height="24" rx="1" />
+					<rect x="11" y="10" width="3" height="3" />
+					<rect x="18" y="10" width="3" height="3" />
+					<rect x="11" y="16" width="3" height="3" />
+					<rect x="18" y="16" width="3" height="3" />
+					<rect x="11" y="22" width="3" height="3" />
+					<rect x="18" y="22" width="3" height="3" />
+				</svg>
 				<span class="stat-bar__num">{site.stats.unitsSold}</span>
 				<span class="stat-bar__label">Units Sold</span>
 			</div>
 			<div class="stat-bar__item">
+				<svg class="stat-bar__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<path d="M5 22 L13 14 L18 19 L27 8" stroke-linecap="round" stroke-linejoin="round" />
+					<path d="M20 8 H27 V15" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
 				<span class="stat-bar__num">{site.stats.closedSalesVolume}</span>
 				<span class="stat-bar__label">In Closed Sales</span>
 			</div>
 			<div class="stat-bar__item">
+				<svg class="stat-bar__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<circle cx="16" cy="16" r="10" />
+					<circle cx="16" cy="16" r="6" />
+					<circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none" />
+				</svg>
 				<span class="stat-bar__num">{site.stats.listToSaleRatio}</span>
 				<span class="stat-bar__label">List-to-Sale Price Ratio</span>
 			</div>
 			<div class="stat-bar__item">
+				<svg class="stat-bar__icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+					<path d="M8 12 H24 M20 8 L24 12 L20 16" stroke-linecap="round" stroke-linejoin="round" />
+					<path d="M24 20 H8 M12 16 L8 20 L12 24" stroke-linecap="round" stroke-linejoin="round" />
+				</svg>
 				<span class="stat-bar__num">{site.stats.exchangeSuccessRate}</span>
 				<span class="stat-bar__label">Success Rate on 1031 Exchanges</span>
 			</div>
@@ -364,6 +386,13 @@ const services = [
 
 	.stat-bar__item:first-child {
 		border-left: none;
+	}
+
+	.stat-bar__icon {
+		width: 34px;
+		height: 34px;
+		color: var(--gold);
+		margin-bottom: 0.6rem;
 	}
 
 	.stat-bar__num {

@@ -9,16 +9,26 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 	if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders() });
 	if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: corsHeaders() });
 
-	let body: { name?: string; email?: string; phone?: string; privacyConsent?: boolean };
+	let body: { name?: string; email?: string; phone?: string; address?: string; monthlyGrossRents?: string; privacyConsent?: boolean };
 	try {
 		body = await request.json();
 	} catch {
 		return new Response(JSON.stringify({ error: 'Invalid request body.' }), { status: 400, headers: corsHeaders() });
 	}
 
-	const { name, email, phone, privacyConsent } = body;
+	const { name, email, phone, address, monthlyGrossRents, privacyConsent } = body;
 
-	if (!name || typeof name !== 'string' || !email || typeof email !== 'string' || !/^\S+@\S+\.\S+$/.test(email) || !phone || !privacyConsent) {
+	if (
+		!name ||
+		typeof name !== 'string' ||
+		!email ||
+		typeof email !== 'string' ||
+		!/^\S+@\S+\.\S+$/.test(email) ||
+		!phone ||
+		!address ||
+		typeof address !== 'string' ||
+		!privacyConsent
+	) {
 		return new Response(JSON.stringify({ error: 'Please fill out all fields and accept the privacy policy.' }), {
 			status: 400,
 			headers: corsHeaders(),
@@ -29,10 +39,18 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 		try {
 			const person = await createPerson(env, { name, email, phone });
 			if (person) {
+				const noteLines = [
+					'Broker Opinion of Value request submitted via highlightreg.com.',
+					`Property Address: ${address}`,
+					`Email: ${email}`,
+					`Phone: ${phone}`,
+				];
+				if (monthlyGrossRents) noteLines.push(`Monthly Gross Rents: ${monthlyGrossRents}`);
+
 				await createLead(env, {
-					title: `BOV Request — ${name}`,
+					title: `BOV Request — ${name} — ${address}`,
 					personId: person.id,
-					note: `Broker Opinion of Value request submitted via highlightreg.com.\nEmail: ${email}\nPhone: ${phone}`,
+					note: noteLines.join('\n'),
 				});
 			} else {
 				console.error('Pipedrive person creation failed for BOV lead:', { name, email });
@@ -41,7 +59,7 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 			console.error('Pipedrive BOV lead sync error:', err);
 		}
 	} else {
-		console.log('BOV lead received (Pipedrive not configured):', { name, email, phone });
+		console.log('BOV lead received (Pipedrive not configured):', { name, email, phone, address, monthlyGrossRents });
 	}
 
 	return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders() });

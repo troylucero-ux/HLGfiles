@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { submarkets } from '../../data/submarkets';
 import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
@@ -16,14 +17,22 @@ export function getStaticPaths() {
 const { sm } = Astro.props;
 const relatedClosings = closings.filter((c) => c.submarket === sm.slug);
 const relatedCaseStudies = caseStudies.filter((cs) => cs.submarket === sm.slug);
+
+// Use the submarket's highest-value closed apartment sale as the hero background — a real deal
+// from that neighborhood, same approach as the homepage hero, rather than a generic stock photo.
+const heroSale = relatedClosings
+	.filter((c) => c.type === 'apartment' && c.images?.[0])
+	.sort((a, b) => b.price - a.price)[0];
 ---
 
 <BaseLayout
 	title={`${sm.name} Apartment Buildings | Highlight Real Estate Group`}
 	description={`${sm.name} multifamily submarket profile: Walk Score, transit, retail, and employment highlights, plus Highlight Real Estate Group's closed sales and case studies in ${sm.name}.`}
+	image={heroSale?.images?.[0]}
 >
-	<section class="page-hero">
+	<section class="page-hero" style={heroSale ? `--hero-img: url(${heroSale.images[0]})` : undefined}>
 		<div class="container">
+			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Submarkets', href: '/submarkets/' }, { label: sm.name }]} light />
 			<span class="eyebrow">{sm.region}</span>
 			<h1>{sm.name} Apartment Building Sales</h1>
 			<p>{sm.overview}</p>
@@ -119,7 +128,9 @@ const relatedCaseStudies = caseStudies.filter((cs) => cs.submarket === sm.slug);
 
 <style>
 	.page-hero {
-		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		background:
+			linear-gradient(135deg, rgba(20, 70, 122, 0.88) 0%, rgba(12, 46, 80, 0.92) 100%),
+			var(--hero-img, linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%)) center / cover no-repeat;
 		color: #fff;
 		padding-block: clamp(3rem, 7vw, 5rem);
 	}

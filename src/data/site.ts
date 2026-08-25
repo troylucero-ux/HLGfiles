@@ -5,6 +5,12 @@ export const site = {
 	officeAddress: '16820 Ventura Boulevard, Encino, CA 91436',
 	officeDRE: '01811831',
 	phone: '310.405.1890',
+	// Google Maps Platform API key (Places API enabled), used client-side for address autocomplete
+	// on the BOV form. This is NOT a secret — Google Maps browser keys are visible in page source by
+	// design; you secure it in the Google Cloud Console by restricting it to this site's domain(s)
+	// under "API restrictions" / "Application restrictions", not by hiding it. Leave blank to disable
+	// autocomplete (the address field still works as a plain text input).
+	googleMapsApiKey: '',
 	// Homepage stat-bar figures, as displayed live on highlightreg.com (rounded marketing figures).
 	stats: {
 		unitsSold: '1,400+',
@@ -29,7 +35,8 @@ export const team = [
 	{
 		slug: 'josh-kaplan',
 		name: 'Josh Kaplan',
-		title: 'Director, Multifamily Investments',
+		title: 'Founding Partner',
+		department: 'Multifamily Investments',
 		dre: '01934177',
 		phone: '310.405.1890',
 		email: 'josh.kaplan@equityunion.com',
@@ -38,7 +45,7 @@ export const team = [
 		facebook: 'https://www.facebook.com/josh.kaplan.549',
 		headshot: '/images/bio/josh-kaplan-headshot.webp',
 		bio: [
-			'Josh Kaplan brings more than 20 years of experience in real estate brokerage, acquisitions, and asset management to every transaction. As co-founder of Highlight Real Estate Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
+			'Josh Kaplan brings more than 22 years of experience in real estate brokerage, acquisitions, and asset management to every transaction. As co-founder of Highlight Real Estate Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
 			'Before founding Highlight, Josh served as Managing Director of Multifamily at Transwestern and as Director of Asset Management at Federal Realty Investment Trust. He spent seven years at Watt Companies, where he sourced and underwrote more than $900 million in acquisitions, and began his career in Deloitte’s financial advisory services group.',
 			'Josh holds a B.S. in Economics and History from UCLA. He is an active member of the Apartment Association of Greater Los Angeles Products and Services Council and the UCLA Ziman Real Estate Alumni Group.',
 		],
@@ -48,7 +55,8 @@ export const team = [
 	{
 		slug: 'troy-lucero',
 		name: 'Troy Lucero',
-		title: 'Director, Multifamily Investments, Equity Union Commercial',
+		title: 'Founding Partner',
+		department: 'Multifamily Investments',
 		dre: '02015705',
 		phone: '310.339.5477',
 		email: 'troy.lucero@equityunion.com',
@@ -57,7 +65,7 @@ export const team = [
 		facebook: 'https://www.facebook.com/troy.lucero.980',
 		headshot: '/images/bio/troy-lucero-headshot.webp',
 		bio: [
-			'Troy Lucero has negotiated dispositions, 1031 exchanges, and development site sales for apartment owners across Los Angeles and nationwide. As co-founder of Highlight Real Estate Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
+			'Troy Lucero has spent more than 10 years in commercial real estate, negotiating dispositions, 1031 exchanges, and development site sales for apartment owners across Los Angeles and nationwide. As co-founder of Highlight Real Estate Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
 			'Troy holds a B.S. in Finance from California State University, Northridge, and brings a disciplined, data-driven approach to every listing and every client relationship.',
 		],
 		specialties: ['Seller Representation', 'Buyer Representation', '1031 Exchange Strategy', 'Property Management Advisory'],

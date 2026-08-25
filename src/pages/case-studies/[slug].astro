@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { caseStudies } from '../../data/caseStudies';
 import { closings } from '../../data/closings';
 
@@ -12,6 +13,7 @@ export function getStaticPaths() {
 
 const { cs } = Astro.props;
 const closing = cs.closingSlug ? closings.find((c) => c.slug === cs.closingSlug) : null;
+const socialImage = cs.images?.[0] ?? closing?.images?.[0];
 
 const dealTypeLabels: Record<string, string> = {
 	'1031': '1031 Exchange',
@@ -26,9 +28,10 @@ const related = cs.submarket
 	: [];
 ---
 
-<BaseLayout title={`${cs.title} Case Study | Highlight Real Estate Group`} description={cs.summary}>
+<BaseLayout title={`${cs.title} Case Study | Highlight Real Estate Group`} description={cs.summary} image={socialImage}>
 	<article class="section">
 		<div class="container cs-detail">
+			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Case Studies', href: '/case-studies/' }, { label: cs.title }]} />
 			<span class="eyebrow">Case Study</span>
 			<h1>{cs.title}</h1>
 			<p class="cs-detail__location">{cs.location}</p>
