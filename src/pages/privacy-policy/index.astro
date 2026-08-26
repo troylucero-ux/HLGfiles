@@ -1,6 +1,7 @@
 ---
 // NOTE: This is a starting draft reflecting the site's actual data practices (BOV form, newsletter,
-// contact form, TCPA consent language already used in the BOV form). Have counsel review before publishing.
+// contact form). Marketing consent is scoped to email only — Highlight does not send automated
+// calls or texts, so no TCPA-specific consent language is needed here.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../data/site';
 ---
@@ -24,13 +25,9 @@ import { site } from '../../data/site';
 			<p>
 				We use the information you submit to respond to your inquiry, prepare a Broker Opinion of Value, send our LA multifamily newsletter if
 				you've subscribed, and follow up about services related to buying, selling, or exchanging multifamily property. By submitting a form on
-				this site, you consent to receiving marketing communications from {site.name}, including automated calls, texts, and emails, some of
-				which may use artificial or prerecorded voices. This consent isn't required to purchase any product or service.
+				this site, you consent to receiving marketing emails from {site.name}. This consent isn't required to purchase any product or service.
 			</p>
-			<p>
-				You may opt out of texts at any time by replying "STOP," and out of emails by clicking the unsubscribe link included in each message.
-				Message and data rates may apply.
-			</p>
+			<p>You may opt out of emails at any time by clicking the unsubscribe link included in each message.</p>
 
 			<h2>How We Share Your Information</h2>
 			<p>
@@ -50,8 +47,8 @@ import { site } from '../../data/site';
 
 			<h2>Contact Us</h2>
 			<p>
-				Questions about this policy can be directed to {site.name}, {site.officeAddress}, or by contacting either agent listed on our
-				<a href="/contact/">Contact page</a>.
+				Questions about this policy can be directed to {site.name}, {site.officeAddress}, or by contacting either agent listed on our <a
+					href="/contact/">Contact page</a>.
 			</p>
 		</div>
 	</section>
