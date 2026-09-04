@@ -88,7 +88,7 @@ export const caseStudies: CaseStudy[] = [
 		solution:
 			'A focused marketing push generated multiple offers within seven days. We worked closely with the seller to evaluate every offer and identify the strongest buyer.',
 		results:
-			'The winning buyer had substantial local multifamily ownership and operating experience, with a clear understanding of rehab costs and expense remediation — which made for an expedited, seamless close.',
+			'The winning buyer had substantial local multifamily ownership and operating experience, with a clear understanding of rehab costs and expense remediation, which made for an expedited, seamless close.',
 		closingSlug: '467-s-bonnie-brae-st-los-angeles-ca-90057',
 	},
 	{
@@ -101,7 +101,7 @@ export const caseStudies: CaseStudy[] = [
 		opportunity:
 			'3148 James M. Wood Boulevard was a value-add, 8-unit, rent-controlled apartment building in the heart of Koreatown, with significant deferred maintenance and rents well below market.',
 		solution:
-			'We positioned the property with dual appeal — as both a development prospect and a value-add investment — which generated competitive bids within the first week of marketing.',
+			'We positioned the property with dual appeal, as both a development prospect and a value-add investment, which generated competitive bids within the first week of marketing.',
 		results: 'The property sold $100,000 over list price, with both sides satisfied by the speed of the close and the negotiated terms.',
 		closingSlug: '3148-james-m-wood-blvd-los-angeles-ca-90006',
 	},
@@ -186,7 +186,7 @@ export const caseStudies: CaseStudy[] = [
 		opportunity:
 			'236 S Bonnie Brae St. is a value-add, non-rent-controlled, 65-unit apartment building built in 1989 in Westlake/MacArthur Park. The challenge was marketing a large property off-market while addressing buyer concerns about deferred maintenance and rents well under current market rates.',
 		solution:
-			'We brought in a repeat buyer from a previous, comparable transaction — a buyer with proven capacity and speed — allowing us to present the property confidentially off-market and move past the objections that typically slow large multifamily sales.',
+			'We brought in a repeat buyer from a previous, comparable transaction, one with proven capacity and speed, allowing us to present the property confidentially off-market and move past the objections that typically slow large multifamily sales.',
 		results: 'The off-market strategy connected the owner with a highly qualified buyer, and the transaction closed smoothly and efficiently.',
 		closingSlug: '236-s-bonnie-brae-st-los-angeles-ca-90057',
 		images: ['/images/listings/236-s-bonnie-brae-st-los-angeles-ca-90057/236-s-bonnie-brae-st-los-angeles-ca.webp'],
@@ -202,7 +202,7 @@ export const caseStudies: CaseStudy[] = [
 			'453 S. Gramercy Place is a value-add, rent-controlled, 14-unit apartment building built in 1966 in Western Koreatown/Hancock Park. Most tenants were long-term occupants paying well below market, complicating a sale at full value.',
 		solution:
 			'We identified an off-market buyer with proven expertise acquiring below-market rental properties with established tenants, enabling a direct transaction.',
-		results: 'The sale closed smoothly and quickly. The buyer agreed to assume the soft-story retrofit requirement — a key win for the seller given the complexity involved.',
+		results: 'The sale closed smoothly and quickly. The buyer agreed to assume the soft-story retrofit requirement, a key win for the seller given the complexity involved.',
 		closingSlug: '453-s-gramercy-pl-los-angeles-ca-90020',
 		images: ['/images/listings/453-s-gramercy-pl-los-angeles-ca-90020/453-s-gramercy-pl-los-angeles-ca.webp'],
 	},
@@ -218,7 +218,7 @@ export const caseStudies: CaseStudy[] = [
 		solution:
 			'We used our relationships and market knowledge to secure early access to this off-market opportunity, working directly with the seller and his partners ahead of any broader market exposure.',
 		results:
-			'We negotiated favorable pricing while leasing 11 of the 12 market-rate units before closing, demonstrating our buyer’s financial strength and ability to close with certainty — which won the seller’s confidence over other offers.',
+			'We negotiated favorable pricing while leasing 11 of the 12 market-rate units before closing, demonstrating our buyer’s financial strength and ability to close with certainty, which won the seller’s confidence over other offers.',
 		closingSlug: '5455-inglewood-blvd-culver-city-ca-90230',
 		images: ['/images/listings/5455-inglewood-blvd-culver-city-ca-90230/5455-inglewood-blvd-culver-city-ca.webp'],
 	},

@@ -59,7 +59,7 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 				if (status) {
 					status.hidden = false;
 					if (res.ok) {
-						status.textContent = "Thanks — we'll be in touch shortly.";
+						status.textContent = "Thanks! We'll be in touch shortly.";
 						status.style.color = 'var(--success)';
 						form.reset();
 					} else {
@@ -81,8 +81,8 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 </script>
 
 <script define:vars={{ googleMapsApiKey: site.googleMapsApiKey }}>
-	// Property address autocomplete via Google Places. No-op if no API key is configured yet —
-	// the address field still works as a plain text input in that case.
+	// Property address autocomplete via Google Places. No-op if no API key is configured yet.
+	// The address field still works as a plain text input in that case.
 	if (googleMapsApiKey) {
 		window.__initBovAutocomplete = function () {
 			document.querySelectorAll('.js-bov-form input[name="address"]').forEach((input) => {

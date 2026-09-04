@@ -30,7 +30,9 @@ import { posts } from '../../data/posts';
 					<div class="post-grid">
 						{posts.map((post) => (
 							<a href={`/insights/${post.slug}/`} class="post-card">
-								<span class="post-card__date">{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+								<span class="post-card__date">
+								{new Date(`${post.date}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+							</span>
 								<h2>{post.title}</h2>
 								<p>{post.description}</p>
 							</a>

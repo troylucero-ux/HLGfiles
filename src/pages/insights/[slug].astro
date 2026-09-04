@@ -1,0 +1,110 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
+import { posts } from '../../data/posts';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+	return posts.map((post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+// Appending a time avoids the date being parsed as UTC midnight, which can display as the
+// previous day in timezones behind UTC.
+const dateFormatted = new Date(`${post.date}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: post.title,
+	description: post.description,
+	datePublished: post.date,
+	author: {
+		'@type': 'Organization',
+		name: site.name,
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: site.name,
+	},
+};
+---
+
+<BaseLayout title={`${post.title} | Highlight Real Estate Group`} description={post.description}>
+	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+
+	<article class="section">
+		<div class="container post-detail">
+			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Insights', href: '/insights/' }, { label: post.title }]} />
+			<span class="eyebrow">Insights</span>
+			<h1>{post.title}</h1>
+			<p class="post-detail__date">{dateFormatted}</p>
+
+			<div class="post-detail__body">
+				{
+					post.sections.map((s) => (
+						<>
+							<h2>{s.heading}</h2>
+							{s.paragraphs.map((p) => (
+								<p>{p}</p>
+							))}
+							{s.heading === 'How a 1031 Exchange Makes the Move Tax-Deferred' && <ExchangeTimeline />}
+						</>
+					))
+				}
+			</div>
+
+			<div class="post-detail__links">
+				<a href="/1031-exchanges/" class="btn btn-outline">
+					More on 1031 Exchanges
+				</a>
+				<a href="/triple-net-dst/" class="btn btn-outline">
+					More on NNN &amp; DSTs
+				</a>
+			</div>
+		</div>
+	</article>
+
+	<section class="section section-alt">
+		<div class="container">
+			<BOVForm heading="Exploring a 1031 Exchange?" subheading="Get a free, confidential Broker Opinion of Value and exchange strategy conversation." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.post-detail {
+		max-width: 760px;
+	}
+
+	.post-detail__date {
+		color: var(--ink-light);
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-top: -0.5rem;
+	}
+
+	.post-detail__body {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		margin-top: 2rem;
+	}
+
+	.post-detail__body h2 {
+		margin-top: 2.25rem;
+		font-size: 1.5rem;
+	}
+
+	.post-detail__links {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin: 2.5rem 0 0;
+	}
+</style>

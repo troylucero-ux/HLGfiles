@@ -1,0 +1,110 @@
+---
+// Visual timeline of the two hard IRS deadlines governing a 1031 exchange: 45 days to identify
+// replacement property, 180 days total to close. Reused on the 1031 exchange FAQ and the
+// "1031 exchange into triple-net properties" Insights post.
+---
+
+<div class="exchange-timeline-wrap">
+	<svg
+		viewBox="0 0 900 230"
+		class="exchange-timeline"
+		role="img"
+		aria-label="1031 exchange timeline: Day 0, the relinquished property sale closes. Day 45, the deadline to identify replacement properties. Day 180, the deadline for the exchange to close."
+	>
+		<rect x="50" y="124" width="200" height="12" rx="6" fill="var(--gold)" />
+		<rect x="250" y="124" width="600" height="12" rx="6" fill="var(--navy)" />
+
+		<circle cx="50" cy="130" r="10" fill="var(--paper)" stroke="var(--gold-dark)" stroke-width="3" />
+		<circle cx="250" cy="130" r="10" fill="var(--paper)" stroke="var(--gold-dark)" stroke-width="3" />
+		<circle cx="850" cy="130" r="10" fill="var(--paper)" stroke="var(--navy-dark)" stroke-width="3" />
+
+		<text x="50" y="95" text-anchor="start" class="exchange-timeline__day">DAY 0</text>
+		<text x="250" y="95" text-anchor="middle" class="exchange-timeline__day">DAY 45</text>
+		<text x="850" y="95" text-anchor="end" class="exchange-timeline__day">DAY 180</text>
+
+		<foreignObject x="0" y="158" width="170" height="70">
+			<div xmlns="http://www.w3.org/1999/xhtml" class="exchange-timeline__desc">Relinquished property sale closes</div>
+		</foreignObject>
+		<foreignObject x="145" y="158" width="230" height="70">
+			<div xmlns="http://www.w3.org/1999/xhtml" class="exchange-timeline__desc exchange-timeline__desc--center">
+				Deadline to identify replacement properties
+			</div>
+		</foreignObject>
+		<foreignObject x="680" y="158" width="220" height="70">
+			<div xmlns="http://www.w3.org/1999/xhtml" class="exchange-timeline__desc exchange-timeline__desc--right">Exchange must close</div>
+		</foreignObject>
+	</svg>
+
+	<ul class="exchange-timeline__legend">
+		<li><span class="exchange-timeline__swatch exchange-timeline__swatch--gold" />45-Day Identification Window</li>
+		<li><span class="exchange-timeline__swatch exchange-timeline__swatch--navy" />180-Day Exchange Window</li>
+	</ul>
+</div>
+
+<style>
+	.exchange-timeline-wrap {
+		overflow-x: auto;
+		margin: 2rem 0;
+	}
+
+	.exchange-timeline {
+		display: block;
+		width: 100%;
+		min-width: 620px;
+		height: auto;
+	}
+
+	.exchange-timeline__day {
+		font-family: var(--font-serif);
+		font-size: 22px;
+		font-weight: 500;
+		fill: var(--navy-dark);
+	}
+
+	.exchange-timeline__desc {
+		font-family: var(--font-sans);
+		font-size: 13px;
+		line-height: 1.4;
+		color: var(--ink-light);
+	}
+
+	.exchange-timeline__desc--center {
+		text-align: center;
+	}
+
+	.exchange-timeline__desc--right {
+		text-align: right;
+	}
+
+	.exchange-timeline__legend {
+		display: flex;
+		gap: 2rem;
+		list-style: none;
+		margin: 0.5rem 0 0;
+		padding: 0;
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		min-width: 620px;
+	}
+
+	.exchange-timeline__legend li {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.exchange-timeline__swatch {
+		display: inline-block;
+		width: 12px;
+		height: 12px;
+		border-radius: 3px;
+	}
+
+	.exchange-timeline__swatch--gold {
+		background: var(--gold);
+	}
+
+	.exchange-timeline__swatch--navy {
+		background: var(--navy);
+	}
+</style>

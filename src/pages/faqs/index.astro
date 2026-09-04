@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
 
 const faqCategories = [
 	{
@@ -97,6 +98,7 @@ const faqSchema = {
 								<details class="faq-item">
 									<summary>{f.q}</summary>
 									<p>{f.a}</p>
+									{f.q === 'How does the 1031 exchange timeline work?' && <ExchangeTimeline />}
 								</details>
 							))}
 						</div>
