@@ -3,6 +3,12 @@ main = "worker/index.ts"
 compatibility_date = "2026-08-20"
 compatibility_flags = ["nodejs_compat"]
 
+# Not sensitive (just the Pipedrive account subdomain, part of the API URL) — committed here
+# instead of set as a dashboard variable so it can't be silently wiped by a future deploy the
+# way it was before. PIPEDRIVE_API_TOKEN stays a dashboard-managed secret; never commit that one.
+[vars]
+PIPEDRIVE_DOMAIN = "highlightgroupinc"
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"
