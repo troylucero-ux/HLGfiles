@@ -1,5 +1,6 @@
 import { handleChat } from './chat';
 import { handleBovLead } from './bov-lead';
+import { handleOmLead } from './om-lead';
 import { handleNewsletter } from './newsletter';
 import { redirects } from './redirects';
 import type { Env } from './env';
@@ -10,6 +11,7 @@ export default {
 
 		if (url.pathname === '/api/chat') return handleChat(request, env);
 		if (url.pathname === '/api/bov-lead') return handleBovLead(request, env);
+		if (url.pathname === '/api/om-lead') return handleOmLead(request, env);
 		if (url.pathname === '/api/newsletter') return handleNewsletter(request, env);
 
 		// Old highlightreg.com (WordPress) URLs — redirect before falling through to ASSETS so

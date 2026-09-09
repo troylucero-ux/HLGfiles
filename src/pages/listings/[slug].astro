@@ -131,7 +131,12 @@ const otherActive = listings.filter((l) => l.slug !== listing.slug && l.status =
 						</a>
 					)
 				}
-				<a href="/contact/" class="btn btn-gold">Request Property Details</a>
+				<a
+					href={`/contact/?intent=om&property=${encodeURIComponent(`${listing.name}, ${listing.city}, ${listing.state}`)}`}
+					class="btn btn-gold"
+				>
+					Request Offering Memorandum
+				</a>
 			</div>
 
 			{

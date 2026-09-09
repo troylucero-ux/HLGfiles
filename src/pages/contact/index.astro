@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
+import OMRequestForm from '../../components/OMRequestForm.astro';
 import { team, site } from '../../data/site';
 
 // This page is statically prerendered, so Astro.url has no access to the request's query string —
@@ -44,7 +45,12 @@ import { team, site } from '../../data/site';
 				</div>
 			</div>
 
-			<BOVForm />
+			<div id="bov-form-wrap">
+				<BOVForm />
+			</div>
+			<div id="om-form-wrap" hidden>
+				<OMRequestForm />
+			</div>
 		</div>
 	</section>
 </BaseLayout>
@@ -121,9 +127,17 @@ import { team, site } from '../../data/site';
 		'nnn-dst': "Let's Talk Through Your Options",
 	};
 	const intent = new URLSearchParams(window.location.search).get('intent');
-	const heading = intent && intentHeadings[intent];
-	if (heading) {
-		const h2 = document.querySelector('.bov-form h2');
-		if (h2) h2.textContent = heading;
+
+	if (intent === 'om') {
+		// A buyer requesting a specific listing's Offering Memorandum gets a dedicated, shorter
+		// form instead of the seller-facing BOV form (which asks for the visitor's own property).
+		document.getElementById('bov-form-wrap')?.setAttribute('hidden', '');
+		document.getElementById('om-form-wrap')?.removeAttribute('hidden');
+	} else {
+		const heading = intent && intentHeadings[intent];
+		if (heading) {
+			const h2 = document.querySelector('.bov-form h2');
+			if (h2) h2.textContent = heading;
+		}
 	}
 </script>

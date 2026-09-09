@@ -1,0 +1,162 @@
+---
+interface Props {
+	heading?: string;
+	subheading?: string;
+}
+
+const { heading = 'Request the Offering Memorandum', subheading = "Tell us a bit about yourself and we'll send it right over." } = Astro.props;
+---
+
+<div class="om-form">
+	<h2>{heading}</h2>
+	<p class="om-form__sub">{subheading}</p>
+	<form class="js-om-form" data-endpoint="/api/om-lead">
+		<div class="om-form__row">
+			<label for="om-name" class="visually-hidden">Name</label>
+			<input id="om-name" name="name" type="text" placeholder="Name" required />
+			<label for="om-email" class="visually-hidden">Email</label>
+			<input id="om-email" name="email" type="email" placeholder="Email" required />
+		</div>
+		<label for="om-message" class="visually-hidden">Message</label>
+		<textarea id="om-message" name="message" class="js-om-message" rows="4" required></textarea>
+		<label class="om-form__consent">
+			<input type="checkbox" name="privacyConsent" required />
+			<span>
+				I agree to the <a href="/privacy-policy/">Privacy Policy</a> and consent to receiving marketing emails. You can unsubscribe at any time.
+			</span>
+		</label>
+		<button type="submit" class="btn btn-gold">Submit</button>
+		<p class="om-form__status" role="status" hidden></p>
+	</form>
+</div>
+
+<script>
+	// Pre-fills the message with which property this inquiry is about, when the visitor arrived via
+	// a listing page's "Request Offering Memorandum" link (carries ?property=... in the URL).
+	const textarea = document.querySelector<HTMLTextAreaElement>('.js-om-message');
+	if (textarea && !textarea.value) {
+		const property = new URLSearchParams(window.location.search).get('property');
+		textarea.value = property
+			? `I'd like to request the offering memorandum for ${property}.`
+			: "I'd like to request the offering memorandum.";
+	}
+
+	document.querySelectorAll<HTMLFormElement>('.js-om-form').forEach((form) => {
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			const status = form.querySelector<HTMLParagraphElement>('.om-form__status');
+			const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+			const endpoint = form.dataset.endpoint!;
+			const data = Object.fromEntries(new FormData(form).entries());
+			data.privacyConsent = (form.querySelector('input[name="privacyConsent"]') as HTMLInputElement)?.checked as unknown as string;
+
+			if (button) button.disabled = true;
+			try {
+				const res = await fetch(endpoint, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+				});
+				const result = await res.json();
+				if (status) {
+					status.hidden = false;
+					if (res.ok) {
+						status.textContent = "Thanks! We'll send it right over.";
+						status.style.color = 'var(--success)';
+						form.reset();
+					} else {
+						status.textContent = result.error ?? 'Something went wrong. Please try again.';
+						status.style.color = '#b3261e';
+					}
+				}
+			} catch {
+				if (status) {
+					status.hidden = false;
+					status.textContent = 'Something went wrong. Please try again or contact us directly.';
+					status.style.color = '#b3261e';
+				}
+			} finally {
+				if (button) button.disabled = false;
+			}
+		});
+	});
+</script>
+
+<style>
+	.om-form {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: clamp(2rem, 4vw, 3rem);
+	}
+
+	.om-form h2 {
+		font-size: clamp(1.5rem, 2.6vw, 1.9rem);
+	}
+
+	.om-form__sub {
+		color: var(--ink-light);
+	}
+
+	.om-form__row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.75rem;
+		margin-bottom: 1.25rem;
+	}
+
+	.om-form input[type='text'],
+	.om-form input[type='email'] {
+		width: 100%;
+		padding: 0.75rem 0.9rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-size: 0.95rem;
+		font-family: var(--font-sans);
+		background: var(--paper);
+	}
+
+	.om-form textarea {
+		width: 100%;
+		padding: 0.75rem 0.9rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-size: 0.95rem;
+		font-family: var(--font-sans);
+		background: var(--paper);
+		resize: vertical;
+		margin-bottom: 1.25rem;
+	}
+
+	.om-form input:focus,
+	.om-form textarea:focus {
+		outline: none;
+		border-color: var(--gold);
+	}
+
+	.om-form__consent {
+		display: flex;
+		gap: 0.5rem;
+		align-items: flex-start;
+		font-size: 0.75rem;
+		color: var(--ink-light);
+		margin-bottom: 1.25rem;
+	}
+
+	.om-form__consent input {
+		margin-top: 0.2rem;
+	}
+
+	.om-form__status {
+		margin-top: 0.75rem;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	@media (max-width: 640px) {
+		.om-form__row {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
