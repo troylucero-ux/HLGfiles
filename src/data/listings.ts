@@ -12,7 +12,7 @@ export type Listing = {
 	sqft: number | null;
 	acres: number | null;
 	askingPrice: number | null; // null = "Contact for Pricing"
-	status: 'active' | 'pending' | 'off-market';
+	status: 'active' | 'pending' | 'in-escrow' | 'off-market';
 	type: 'apartment' | 'development-site';
 	submarket: string | null;
 	description: string;
@@ -27,6 +27,36 @@ export type Listing = {
 };
 
 export const listings: Listing[] = [
+	{
+		slug: '4412-4414-lockwood-ave-los-angeles-ca-90029',
+		name: '4412-4414 Lockwood Ave',
+		city: 'Los Angeles',
+		state: 'CA',
+		zip: '90029',
+		units: 7,
+		sqft: 5521,
+		acres: null,
+		askingPrice: 1350000,
+		status: 'in-escrow',
+		type: 'apartment',
+		submarket: null,
+		description:
+			'Rare 7-unit investment in the Virgil Village section of East Hollywood, combining a freestanding five-bedroom single-family residence (built 1946) with an all one-bedroom, six-unit apartment building (built 1960) on a single 9,299 SF lot. Two units deliver vacant with a third possible, offering roughly 57% rental upside after lease-up, plus ADU potential in a separate, currently unrented basement unit.',
+		image: '/images/listings/4412-4414-lockwood-ave-los-angeles-ca-90029/4412-4414-lockwood-ave-los-angeles-ca.webp',
+		capRate: 6.04,
+		grm: 9.9,
+		zoning: 'LARD1.5',
+		pricePerUnit: 192857,
+		pricePerSqft: 245,
+		highlights: [
+			'Major value-add opportunity: approximately 57% additional rental upside after lease-up of vacant units.',
+			'ADU potential: a spacious, separate unrented basement unit in the single-family home includes bedrooms, a kitchen, a bathroom, windows, and a private entrance.',
+			'Additional ADU potential: tuck-under parking in the six-unit apartment building may provide the ability to create additional units.',
+			'Vacant units: two units will be delivered vacant, with the possibility of a third.',
+			'Excellent unit mix: one five-bedroom single-family home alongside a six-unit building consisting of all one-bedroom, one-bath units.',
+			'Prime location, easy walking distance to dining, retail, and entertainment on both Vermont Ave and Virgil Ave, just four blocks from Sunset Junction in Silver Lake.',
+		],
+	},
 	{
 		slug: '5631-whitnall-hwy-los-angeles-ca-91601',
 		name: '5631 Whitnall Hwy',
