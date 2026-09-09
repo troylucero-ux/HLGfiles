@@ -1,0 +1,256 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { listings } from '../../data/listings';
+import { formatPrice, formatPriceFull } from '../../lib/format';
+
+export function getStaticPaths() {
+	return listings.map((listing) => ({
+		params: { slug: listing.slug },
+		props: { listing },
+	}));
+}
+
+const { listing } = Astro.props;
+
+const statusLabels: Record<string, string> = {
+	active: 'Active',
+	pending: 'Pending',
+	'off-market': 'Off-Market',
+};
+
+const seoTitle = `${listing.name}, ${listing.city} | ${listing.units ?? ''}-Unit Apartment For Sale`;
+const seoDescription = `${listing.units ?? ''}-unit apartment building for sale in ${listing.city}, ${listing.state} at ${
+	listing.askingPrice ? formatPriceFull(listing.askingPrice) : 'a price available upon request'
+}${listing.capRate ? `, ${listing.capRate}% cap rate` : ''}. ${listing.description}`.slice(0, 158);
+
+const otherActive = listings.filter((l) => l.slug !== listing.slug && l.status === 'active').slice(0, 3);
+---
+
+<BaseLayout title={seoTitle} description={seoDescription} image={listing.image}>
+	<article class="section">
+		<div class="container listing-detail">
+			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Listings', href: '/listings/' }, { label: listing.name }]} />
+			<span class="listing-detail__status">{statusLabels[listing.status]}</span>
+			<h1>{listing.name}</h1>
+			<p class="listing-detail__location">
+				{listing.city}, {listing.state} {listing.zip}
+			</p>
+
+			{
+				listing.image && (
+					<img
+						class="listing-detail__image"
+						src={listing.image}
+						alt={`${listing.name}, ${listing.city}, ${listing.state}, apartment building for sale`}
+						width="900"
+						height="520"
+						loading="eager"
+					/>
+				)
+			}
+
+			<div class="listing-detail__stats">
+				<div>
+					<dt>List Price</dt>
+					<dd>{listing.askingPrice ? formatPrice(listing.askingPrice) : 'Contact for Pricing'}</dd>
+				</div>
+				{listing.capRate && (
+					<div>
+						<dt>Current Cap Rate</dt>
+						<dd>{listing.capRate}%</dd>
+					</div>
+				)}
+				{listing.grm && (
+					<div>
+						<dt>Current GRM</dt>
+						<dd>{listing.grm}</dd>
+					</div>
+				)}
+				{listing.zoning && (
+					<div>
+						<dt>Zoning</dt>
+						<dd>{listing.zoning}</dd>
+					</div>
+				)}
+				{listing.pricePerUnit && (
+					<div>
+						<dt>Price Per Unit</dt>
+						<dd>{formatPriceFull(listing.pricePerUnit)}</dd>
+					</div>
+				)}
+				{listing.pricePerSqft && (
+					<div>
+						<dt>Price Per Square Foot</dt>
+						<dd>${listing.pricePerSqft}</dd>
+					</div>
+				)}
+				{listing.units && (
+					<div>
+						<dt>Units</dt>
+						<dd>{listing.units}</dd>
+					</div>
+				)}
+				{listing.sqft && (
+					<div>
+						<dt>Building Size</dt>
+						<dd>{listing.sqft.toLocaleString()} SF</dd>
+					</div>
+				)}
+				{listing.yearBuilt && (
+					<div>
+						<dt>Year Built</dt>
+						<dd>{listing.yearBuilt}</dd>
+					</div>
+				)}
+			</div>
+
+			<div class="listing-detail__body">
+				<h2>Investment Overview</h2>
+				<p>{listing.description}</p>
+
+				{
+					listing.highlights && listing.highlights.length > 0 && (
+						<>
+							<h2>Investment Highlights</h2>
+							<ul class="listing-detail__highlights">
+								{listing.highlights.map((h) => <li>{h}</li>)}
+							</ul>
+						</>
+					)
+				}
+			</div>
+
+			<div class="listing-detail__links">
+				{
+					listing.submarket && (
+						<a href={`/submarkets/${listing.submarket}/`} class="btn btn-outline">
+							Explore the {listing.submarket.replace(/-/g, ' ')} Submarket
+						</a>
+					)
+				}
+				<a href="/contact/" class="btn btn-gold">Request Property Details</a>
+			</div>
+
+			{
+				otherActive.length > 0 && (
+					<div class="listing-detail__related">
+						<h2>Other Active Listings</h2>
+						<ul>
+							{otherActive.map((l) => (
+								<li>
+									<a href={`/listings/${l.slug}/`}>{l.name}, {l.city}</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+		</div>
+	</article>
+
+	<section class="section section-alt">
+		<div class="container">
+			<BOVForm heading="Thinking About Selling?" subheading="Get a free, confidential Broker Opinion of Value." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.listing-detail {
+		max-width: 760px;
+	}
+
+	.listing-detail__status {
+		display: inline-block;
+		text-transform: uppercase;
+		font-size: 0.68rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		padding: 0.25rem 0.65rem;
+		border-radius: 1px;
+		margin: 1rem 0 0.5rem;
+	}
+
+	.listing-detail__location {
+		color: var(--ink-light);
+		font-weight: 600;
+		margin-bottom: 1.5rem;
+	}
+
+	.listing-detail__image {
+		width: 100%;
+		height: 420px;
+		object-fit: cover;
+		border-radius: 2px;
+		margin-bottom: 2rem;
+	}
+
+	.listing-detail__stats {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+		gap: 1.5rem;
+		border-top: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
+		padding-block: 1.5rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.listing-detail__stats dt {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+		font-weight: 600;
+	}
+
+	.listing-detail__stats dd {
+		margin: 0.3rem 0 0;
+		font-family: var(--font-serif);
+		font-size: 1.5rem;
+		font-weight: 400;
+		color: var(--navy-dark);
+	}
+
+	.listing-detail__body {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.listing-detail__body h2 {
+		margin-top: 2.25rem;
+		font-size: 1.5rem;
+	}
+
+	.listing-detail__highlights {
+		padding-left: 1.25rem;
+	}
+
+	.listing-detail__highlights li {
+		margin-bottom: 0.75rem;
+	}
+
+	.listing-detail__links {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin: 2.5rem 0;
+	}
+
+	.listing-detail__related {
+		border-top: 1px solid var(--border);
+		padding-top: 1.5rem;
+	}
+
+	.listing-detail__related ul {
+		list-style: none;
+		padding: 0;
+	}
+
+	.listing-detail__related li {
+		margin-bottom: 0.5rem;
+	}
+</style>

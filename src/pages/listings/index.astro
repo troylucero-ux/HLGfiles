@@ -33,7 +33,7 @@ import { formatPrice } from '../../lib/format';
 				) : (
 					<div class="listings-grid">
 						{listings.map((listing) => (
-							<article class="listing-card">
+							<a href={`/listings/${listing.slug}/`} class="listing-card">
 								{listing.image && (
 									<img
 										class="listing-card__image"
@@ -51,7 +51,7 @@ import { formatPrice } from '../../lib/format';
 								</p>
 								<p>{listing.description}</p>
 								<p class="listing-card__price">{listing.askingPrice ? formatPrice(listing.askingPrice) : 'Contact for Pricing'}</p>
-							</article>
+							</a>
 						))}
 					</div>
 				)
@@ -92,6 +92,16 @@ import { formatPrice } from '../../lib/format';
 		border: 1px solid var(--border);
 		border-radius: 2px;
 		padding: 1.75rem;
+		display: block;
+		color: var(--ink);
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+	}
+
+	.listing-card:hover {
+		border-color: var(--gold);
+		box-shadow: 0 18px 40px -26px rgba(12, 46, 80, 0.35);
+		transform: translateY(-2px);
+		text-decoration: none;
 	}
 
 	.listing-card__image {

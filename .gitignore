@@ -29,3 +29,4 @@ pnpm-debug.log*
 
 # raw uploads awaiting processing into public/images/ — not build output
 _incoming/
+Downloads Claude/

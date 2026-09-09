@@ -17,9 +17,47 @@ export type Listing = {
 	submarket: string | null;
 	description: string;
 	image?: string;
+	yearBuilt?: number;
+	capRate?: number;
+	grm?: number;
+	zoning?: string;
+	pricePerUnit?: number;
+	pricePerSqft?: number;
+	highlights?: string[];
 };
 
 export const listings: Listing[] = [
+	{
+		slug: '5631-whitnall-hwy-los-angeles-ca-91601',
+		name: '5631 Whitnall Hwy',
+		city: 'Los Angeles',
+		state: 'CA',
+		zip: '91601',
+		units: 4,
+		sqft: 6015,
+		acres: null,
+		askingPrice: 2600000,
+		status: 'active',
+		type: 'apartment',
+		submarket: 'north-hollywood',
+		description:
+			'Condo-quality four-unit investment in North Hollywood, built in 2021 across two buildings on a 5,000 SF lot. All four homes are large three-bedroom plans averaging 1,504 SF, currently exempt from the LA Rent Stabilization Ordinance and statewide AB 1482. One unit delivers vacant, and in-place rents sit roughly $900 per month below market.',
+		image: '/images/listings/5631-whitnall-hwy-los-angeles-ca-91601/5631-whitnall-hwy-los-angeles-ca.webp',
+		yearBuilt: 2021,
+		capRate: 5.25,
+		grm: 14.6,
+		zoning: 'LAC2',
+		pricePerUnit: 650000,
+		pricePerSqft: 432,
+		highlights: [
+			'New 2021 construction, currently exempt from both the Los Angeles Rent Stabilization Ordinance and CA statewide rent control (AB 1482).',
+			'All large three-bedroom homes: two 3-bed/3.5-bath and two 3-bed/3-bath units, 6,015 SF total and 1,504 SF average, drawing family tenants rather than roommate demand.',
+			'Owner-occupier ready: the vacant unit provides the perfect scenario for a new owner to occupy while receiving steady income from the remaining units.',
+			'Rental upside: in-place rents of $14,800 per month sit roughly $900 below market.',
+			'Low operating burden: estimated expenses of $41,220, or $10,305 per unit, produce a 23.2% expense ratio on in-place income.',
+			'Prime North Hollywood location, walkable to the NoHo Arts District and the Metro B and G Line station, with direct access to the Burbank studio employment base.',
+		],
+	},
 	{
 		slug: '333-n-union-ave-los-angeles-ca-90026',
 		name: '333 N Union Ave',
