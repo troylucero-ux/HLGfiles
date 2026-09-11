@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import { listings } from '../../data/listings';
+import { site } from '../../data/site';
 import { formatPrice, formatPriceFull } from '../../lib/format';
 
 export function getStaticPaths() {
@@ -27,9 +28,43 @@ const seoDescription = `${listing.units ?? ''}-unit apartment building for sale 
 }${listing.capRate ? `, ${listing.capRate}% cap rate` : ''}. ${listing.description}`.slice(0, 158);
 
 const otherActive = listings.filter((l) => l.slug !== listing.slug && l.status === 'active').slice(0, 3);
+
+const listingUrl = `${site.url}/listings/${listing.slug}/`;
+const schema = {
+	'@context': 'https://schema.org',
+	'@type': 'RealEstateListing',
+	name: listing.name,
+	description: listing.description,
+	url: listingUrl,
+	...(listing.image ? { image: new URL(listing.image, site.url).toString() } : {}),
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: listing.name,
+		addressLocality: listing.city,
+		addressRegion: listing.state,
+		postalCode: listing.zip,
+		addressCountry: 'US',
+	},
+	...(listing.units ? { numberOfRooms: listing.units } : {}),
+	...(listing.sqft ? { floorSize: { '@type': 'QuantitativeValue', value: listing.sqft, unitCode: 'FTK' } } : {}),
+	// Only assert an Offer while the property is genuinely available — an in-escrow or off-market
+	// listing shouldn't claim "InStock" availability in structured data.
+	...(listing.askingPrice && (listing.status === 'active' || listing.status === 'pending')
+		? {
+				offers: {
+					'@type': 'Offer',
+					price: listing.askingPrice,
+					priceCurrency: 'USD',
+					availability: 'https://schema.org/InStock',
+					url: listingUrl,
+				},
+			}
+		: {}),
+};
 ---
 
 <BaseLayout title={seoTitle} description={seoDescription} image={listing.image}>
+	<script type="application/ld+json" set:html={JSON.stringify(schema)} />
 	<article class="section">
 		<div class="container listing-detail">
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Listings', href: '/listings/' }, { label: listing.name }]} />
