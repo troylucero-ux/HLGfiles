@@ -12,6 +12,59 @@ export type Post = {
 
 export const posts: Post[] = [
 	{
+		slug: 'utility-bill-diligence-la-apartment-owners',
+		title: 'Why Diligent LA Apartment Owners Track Their Utility Bills Every Month',
+		description:
+			'A quiet water bill increase can run for months before anyone notices, and the cost is bigger than the bill itself. How to catch it early, with two real examples and the cap rate math behind them.',
+		date: '2026-09-14',
+		sections: [
+			{
+				heading: 'An Expense Owners Often Overlook',
+				paragraphs: [
+					'Rent collection gets constant attention. Every owner knows exactly who paid, who is late, and what is owed. Utility bills rarely get the same scrutiny. They get paid on autopilot, whether by the owner directly or by a property management company, and the assumption is usually that the number is just what it is that month.',
+					'That assumption is the problem. A water, sewer, or gas bill is not a fixed cost. It moves for real reasons, and one of the most common reasons is one nobody wants: a leak that started running and never got noticed.',
+				],
+			},
+			{
+				heading: 'The Real Risk: A Leak That Runs for Months',
+				paragraphs: [
+					'In our experience, the biggest risk is not a one-time billing error. It is usually a plumbing leak that starts quietly, does not get caught, and keeps running for months, sometimes closer to a year, before anyone connects it to the bill.',
+					'A leak like that does not announce itself. It just shows up as a slightly higher number every month, easy to miss if nobody is actually comparing bills month over month.',
+				],
+			},
+			{
+				heading: 'What We See When We Take On a New Listing',
+				paragraphs: [
+					'When we first put together a Broker Opinion of Value, we work from normalized expenses, a reasonable estimate of what the property should be running. It is not until we actually sign the listing and pull the real bills, water, sewer, trash, insurance, that we get a true picture of how the property has actually been operating.',
+					'This has happened to us more than once. In the last 12 months alone, it happened twice.',
+					'On one property, a 10-unit building managed by a professional property management company, we noticed a large jump in the water bill that had started roughly a year earlier and never came back down. We recommended bringing in a plumber to check the property for leaks. They found one. Once it was fixed, the water bill normalized almost immediately. That undetected leak cost the owner about $8,000 in extra water expense that could have been avoided if it had been caught when it started.',
+					'On another property, a 7-unit building in Koreatown, the same pattern played out on a smaller scale. We caught the jump, recommended a plumber, and a leak was found and fixed. That one saved the owner roughly $4,000.',
+				],
+			},
+			{
+				heading: 'Translating an $8,000 Water Bill Into $114,000 of Lost Value',
+				paragraphs: [
+					'$8,000 or $4,000 a year does not sound like a lot of money on its own. But an apartment building is not valued on its expenses in isolation, it is valued on its net operating income, capitalized at a market cap rate. Using a rough 7% cap rate, that extra $8,000 a year in water expense translates to roughly $114,000 in suppressed property value. The $4,000 overspend translates to roughly $57,000.',
+					'That is the part that catches most owners off guard. A leak that seems like a maintenance headache is actually a value problem, and at the cap rates apartment buildings trade at, a fairly small monthly overspend has an outsized, almost exponential effect on what the property is ultimately worth.',
+				],
+			},
+			{
+				heading: 'The Best Way to Catch It: Track Your Expenses as a Percentage',
+				paragraphs: [
+					'Our advice to owners is simple: do not just track whether a utility bill was paid, track what percentage of your total monthly expenses that bill represents, in a spreadsheet, updated every month.',
+					'Watch that percentage over time. If your water bill jumps from making up roughly 25% of your monthly expenses one month to 35% the next, that kind of jump is a red flag on its own, regardless of the dollar amount, and it is reason enough to get a plumber out to check for leaks before it runs for another month, let alone another year.',
+				],
+			},
+			{
+				heading: 'Proactive Diligence Pays Off, Whether or Not You Are Selling',
+				paragraphs: [
+					'Even if you have no plans to sell right now, catching a leak early instead of a year later is real, ongoing savings straight to your bottom line. And if you are getting ready to bring a property to market, cleaning up an expense like this before you list is one of the more direct ways to protect, or improve, what you can ask for it.',
+					'If you are not sure whether your property’s expenses are running the way they should be, we are glad to take a look.',
+				],
+			},
+		],
+	},
+	{
 		slug: '1031-exchange-into-triple-net-properties',
 		title: 'Why LA Apartment Owners Are 1031 Exchanging Into Triple-Net Properties',
 		description:
