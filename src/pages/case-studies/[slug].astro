@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { caseStudies } from '../../data/caseStudies';
 import { closings } from '../../data/closings';
+import { site } from '../../data/site';
 
 export function getStaticPaths() {
 	return caseStudies.map((cs) => ({
@@ -26,9 +27,28 @@ const dealTypeLabels: Record<string, string> = {
 const related = cs.submarket
 	? caseStudies.filter((other) => other.submarket === cs.submarket && other.slug !== cs.slug).slice(0, 3)
 	: [];
+
+// No reliable per-case-study date exists in the data yet, so datePublished/dateModified are
+// intentionally omitted rather than guessed — Article schema is still valid without them.
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: cs.title,
+	description: cs.summary,
+	...(socialImage ? { image: new URL(socialImage, site.url).toString() } : {}),
+	author: {
+		'@type': 'Organization',
+		name: site.name,
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: site.name,
+	},
+};
 ---
 
 <BaseLayout title={`${cs.title} Case Study | Highlight Multifamily Group`} description={cs.summary} image={socialImage}>
+	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
 	<article class="section">
 		<div class="container cs-detail">
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Case Studies', href: '/case-studies/' }, { label: cs.title }]} />
