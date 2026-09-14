@@ -1,6 +1,6 @@
 # highlightreg.com
 
-Custom-coded, SEO-first rebuild of the Highlight Real Estate Group website. Static Astro site served by a Cloudflare Worker (via Cloudflare's Workers Builds Git integration — not Pages), with a Claude-powered chat widget and Pipedrive-backed lead capture running as routes in that same Worker.
+Custom-coded, SEO-first rebuild of the Highlight Multifamily Group website. Static Astro site served by a Cloudflare Worker (via Cloudflare's Workers Builds Git integration — not Pages), with a Claude-powered chat widget and Pipedrive-backed lead capture running as routes in that same Worker.
 
 ## Stack
 
