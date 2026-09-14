@@ -5,6 +5,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { submarkets } from '../../data/submarkets';
 import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
+import { listings } from '../../data/listings';
 import { formatPrice } from '../../lib/format';
 
 export function getStaticPaths() {
@@ -17,6 +18,7 @@ export function getStaticPaths() {
 const { sm } = Astro.props;
 const relatedClosings = closings.filter((c) => c.submarket === sm.slug);
 const relatedCaseStudies = caseStudies.filter((cs) => cs.submarket === sm.slug);
+const relatedListings = listings.filter((l) => l.submarket === sm.slug && l.status !== 'off-market');
 
 // Use the submarket's highest-value closed apartment sale as the hero background — a real deal
 // from that neighborhood, same approach as the homepage hero, rather than a generic stock photo.
@@ -80,8 +82,32 @@ const heroSale = relatedClosings
 	</section>
 
 	{
-		relatedClosings.length > 0 && (
+		relatedListings.length > 0 && (
 			<section class="section section-alt">
+				<div class="container">
+					<span class="eyebrow">Active Inventory</span>
+					<h2>Available Listings in {sm.name}</h2>
+					<div class="closing-grid">
+						{relatedListings.map((listing) => (
+							<a href={`/listings/${listing.slug}/`} class="closing-card">
+								<span>
+									{listing.name} <span class="closing-card__status">{listing.status.replace('-', ' ')}</span>
+								</span>
+								<span class="closing-card__meta">
+									{listing.units ? `${listing.units} Units` : 'Development Site'}
+									{listing.askingPrice ? ` · ${formatPrice(listing.askingPrice)}` : ' · Contact for Pricing'}
+								</span>
+							</a>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		relatedClosings.length > 0 && (
+			<section class="section">
 				<div class="container">
 					<span class="eyebrow">Track Record</span>
 					<h2>Closed Sales in {sm.name}</h2>
@@ -236,6 +262,20 @@ const heroSale = relatedClosings
 		border-color: var(--gold);
 		transform: translateY(-2px);
 		text-decoration: none;
+	}
+
+	.closing-card__status {
+		display: inline-block;
+		text-transform: uppercase;
+		font-size: 0.62rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		padding: 0.15rem 0.5rem;
+		border-radius: 1px;
+		vertical-align: middle;
+		margin-left: 0.4rem;
 	}
 
 	.closing-card__meta {
