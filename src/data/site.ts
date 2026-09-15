@@ -122,4 +122,9 @@ export const testimonials = [
 		attribution: 'Seller of 12 Units in Los Angeles',
 		verified: true,
 	},
+	{
+		quote: "I really appreciated Troy and Josh's advice with regard to the LA apartment market. Highly recommend these guys if you want a broker who actually listens.",
+		attribution: 'Jorge Morales, Google Review',
+		verified: true,
+	},
 ];

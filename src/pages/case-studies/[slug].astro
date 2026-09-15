@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { caseStudies } from '../../data/caseStudies';
 import { closings } from '../../data/closings';
-import { site } from '../../data/site';
+import { site, testimonials } from '../../data/site';
 
 export function getStaticPaths() {
 	return caseStudies.map((cs) => ({
@@ -27,6 +27,7 @@ const dealTypeLabels: Record<string, string> = {
 const related = cs.submarket
 	? caseStudies.filter((other) => other.submarket === cs.submarket && other.slug !== cs.slug).slice(0, 3)
 	: [];
+const testimonial = testimonials.find((t) => t.caseStudySlug === cs.slug);
 
 // No reliable per-case-study date exists in the data yet, so datePublished/dateModified are
 // intentionally omitted rather than guessed — Article schema is still valid without them.
@@ -100,6 +101,15 @@ const articleSchema = {
 				<h2>The Results</h2>
 				<p>{cs.results}</p>
 			</div>
+
+			{
+				testimonial && (
+					<figure class="cs-detail__testimonial">
+						<blockquote>&ldquo;{testimonial.quote}&rdquo;</blockquote>
+						<figcaption>{testimonial.attribution}</figcaption>
+					</figure>
+				)
+			}
 
 			<div class="cs-detail__links">
 				{
@@ -182,6 +192,26 @@ const articleSchema = {
 		color: var(--navy-dark);
 		padding: 0.3rem 0.7rem;
 		border-radius: 1px;
+	}
+
+	.cs-detail__testimonial {
+		background: var(--paper-alt);
+		border-left: 4px solid var(--gold);
+		border-radius: 6px;
+		padding: 1.75rem 2rem;
+		margin: 2.5rem 0;
+	}
+
+	.cs-detail__testimonial blockquote {
+		margin: 0 0 0.75rem;
+		font-size: 1.1rem;
+		font-style: italic;
+	}
+
+	.cs-detail__testimonial figcaption {
+		font-weight: 700;
+		color: var(--navy);
+		font-size: 0.9rem;
 	}
 
 	.cs-detail__facts {
