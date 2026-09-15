@@ -106,7 +106,7 @@ export const testimonials = [
 	{
 		quote:
 			'I have done business with other agencies in the past, but none of them are even comparable. I credit Josh and Troy for helping me pick the perfect time to list my property, and for making the sale a complete success.',
-		attribution: 'Seller of 10 units in North Hollywood',
+		attribution: 'Martine, Seller of 6938 Coldwater Canyon Ave',
 		caseStudySlug: '6938-coldwater-canyon-ave-north-hollywood-apartments',
 		verified: true,
 	},
