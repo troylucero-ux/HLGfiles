@@ -23,12 +23,23 @@ const faqs = [
 		a: 'Most owners we introduce to NNN and DST specialists are exchanging out of an apartment building, but you don’t need to be selling through us to ask for an introduction.',
 	},
 ];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((f) => ({
+		'@type': 'Question',
+		name: f.q,
+		acceptedAnswer: { '@type': 'Answer', text: f.a },
+	})),
+};
 ---
 
 <BaseLayout
 	title="Triple Net (NNN) & DSTs | Highlight Multifamily Group"
 	description="Highlight Multifamily Group connects LA apartment owners with trusted NNN commercial brokers and DST professionals for passive, zero-management investments."
 >
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 	<section class="page-hero">
 		<div class="container">
 			<span class="eyebrow">Triple Net (NNN) & DSTs</span>

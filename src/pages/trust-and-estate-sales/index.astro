@@ -16,12 +16,23 @@ const faqs = [
 		a: 'It depends on the estate and any court approval requirements, but once we’re engaged, we move at the pace the family and the process allow, not the other way around.',
 	},
 ];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((f) => ({
+		'@type': 'Question',
+		name: f.q,
+		acceptedAnswer: { '@type': 'Answer', text: f.a },
+	})),
+};
 ---
 
 <BaseLayout
 	title="Trust &amp; Probate Apartment Sales | Highlight Multifamily Group"
 	description="Calm, informed guidance for trustees, executors, and families selling an inherited LA apartment building through a trust or probate sale."
 >
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 	<section class="page-hero">
 		<div class="container">
 			<span class="eyebrow">Trust &amp; Estate Sales</span>
