@@ -12,6 +12,49 @@ export type Post = {
 
 export const posts: Post[] = [
 	{
+		slug: 'ab-1482-rent-cap-2026',
+		title: "AB 1482's Rent Cap Just Reset: What It Means for Post-1978 LA Apartment Buildings",
+		description:
+			"The maximum allowable rent increase under California's statewide AB 1482 cap changed effective August 1, 2026. What the new number is, why it applies to a large share of LA's apartment stock, and why it matters for underwriting.",
+		date: '2026-09-15',
+		sections: [
+			{
+				heading: 'What AB 1482 Actually Caps',
+				paragraphs: [
+					"Assembly Bill 1482, California's statewide Tenant Protection Act, has capped most residential rent increases since 2020 at whichever is lower: 10%, or 5% plus the percentage change in the regional Consumer Price Index (CPI) over the prior year. That CPI figure is not fixed. It is recalculated each year, region by region, which means the actual dollar ceiling on a rent increase moves annually even though the law itself has not changed.",
+				],
+			},
+			{
+				heading: 'Why This Matters Specifically for Post-1978 LA Buildings',
+				paragraphs: [
+					"Los Angeles' own Rent Stabilization Ordinance (RSO) covers apartment buildings with a certificate of occupancy issued before October 1, 1978, and sets its own, generally lower annual increase limit. Buildings built on or after that date typically fall outside the local RSO entirely.",
+					"For those non-RSO buildings, once they age past AB 1482's own 15-year exemption for new construction, the statewide AB 1482 formula, not the city's ordinance, is what actually limits how much you can raise rent each year. For a large share of LA's post-1978 apartment stock, this CPI-based number is the real ceiling owners are working within.",
+				],
+			},
+			{
+				heading: 'The New Maximum, Effective August 1, 2026',
+				paragraphs: [
+					'For increases effective on or after August 1, 2026, the Los Angeles-Long Beach-Anaheim region’s CPI change came in at 3.7%, putting the maximum allowable increase at 8.7%, the CPI change plus 5%. That is up from the prior year’s cap of 8.0% (3.0% CPI plus 5%).',
+				],
+			},
+			{
+				heading: 'Which Number Applies, and When',
+				paragraphs: [
+					'Under the Tenant Relief Act amendment, the CPI figure that applies depends on the increase’s effective date. An increase effective before August 1, 2026 uses the prior year’s CPI change (3.0% for the LA-Long Beach-Anaheim region, an 8.0% maximum). An increase effective on or after August 1, 2026 uses the new figure (3.7%, an 8.7% maximum). All percentages are rounded to the nearest tenth of a point.',
+					'These figures come from the Apartment Association of Greater Los Angeles (AAGLA), citing the U.S. Bureau of Labor Statistics and the California Department of Industrial Relations, and they are updated on this same cycle every year.',
+				],
+			},
+			{
+				heading: 'Why This Matters When You Are Buying or Selling',
+				paragraphs: [
+					'For a buyer underwriting a non-RSO, value-add deal, the AB 1482 cap is a real, legal ceiling on how quickly in-place rents can be brought to market, and it is worth confirming against the actual current figure rather than a remembered number from a prior year.',
+					"For an owner deciding whether and when to push a rent increase, knowing the precise, current cap avoids both leaving money on the table and inadvertently exceeding a limit that moves every year on the same August 1 cycle.",
+					'This is general market information, not legal advice. Confirm the applicable cap and its exact application to your property with your attorney or property manager before implementing any increase.',
+				],
+			},
+		],
+	},
+	{
 		slug: 'utility-bill-diligence-la-apartment-owners',
 		title: 'Why Diligent LA Apartment Owners Track Their Utility Bills Every Month',
 		description:

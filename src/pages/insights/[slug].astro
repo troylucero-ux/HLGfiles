@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
+import CpiRentCapTable from '../../components/CpiRentCapTable.astro';
 import { posts } from '../../data/posts';
 import { site } from '../../data/site';
 
@@ -54,6 +55,7 @@ const articleSchema = {
 								<p>{p}</p>
 							))}
 							{s.heading === 'How a 1031 Exchange Makes the Move Tax-Deferred' && <ExchangeTimeline />}
+							{s.heading === 'The New Maximum, Effective August 1, 2026' && <CpiRentCapTable />}
 						</>
 					))
 				}

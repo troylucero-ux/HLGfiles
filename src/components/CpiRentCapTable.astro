@@ -1,0 +1,130 @@
+---
+// AB 1482 (California Tenant Protection Act) rent-increase cap by region: the lesser of 10%, or
+// 5% + the region's CPI-based percentage change. Source: Apartment Association of Greater Los
+// Angeles (AAGLA), "CPI Chart - A.B. 1482," rev. 6/18/26, citing U.S. Bureau of Labor Statistics
+// and the CA Department of Industrial Relations. Figures below are the "Current" CPI change and
+// resulting maximum, effective for rent increases on or after August 1, 2026.
+const regions = [
+	{ name: 'Western Region', current: 3.5, lastYear: 2.1, max: 8.5, highlight: false },
+	{ name: 'California', current: 3.6, lastYear: 2.7, max: 8.6, highlight: false },
+	{ name: 'Los Angeles-Long Beach-Anaheim', current: 3.7, lastYear: 3.0, max: 8.7, highlight: true },
+	{ name: 'San Francisco-Oakland-Hayward', current: 3.8, lastYear: 1.3, max: 8.8, highlight: false },
+	{ name: 'San Diego-Carlsbad', current: 3.2, lastYear: 3.8, max: 8.2, highlight: false },
+	{ name: 'Riverside-San Bernardino-Ontario', current: 3.1, lastYear: 2.5, max: 8.1, highlight: false },
+];
+---
+
+<div class="cpi-table-wrap">
+	<table class="cpi-table">
+		<caption>AB 1482 Maximum Annual Rent Increase by Region, Effective August 1, 2026</caption>
+		<thead>
+			<tr>
+				<th scope="col">Region</th>
+				<th scope="col">CPI Change</th>
+				<th scope="col">5% + CPI Maximum</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				regions.map((r) => (
+					<tr class={r.highlight ? 'cpi-table__row--highlight' : ''}>
+						<th scope="row">{r.name}</th>
+						<td>{r.current}%</td>
+						<td class="cpi-table__max">{r.max}%</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+	<p class="cpi-table__source">
+		Source: Apartment Association of Greater Los Angeles (AAGLA), citing U.S. Bureau of Labor Statistics and the CA
+		Department of Industrial Relations. Figures shown are the CPI change over the most recent 12-month period and the
+		resulting AB 1482 cap (5% + CPI, subject to a 10% overall ceiling), effective for increases on or after August 1,
+		2026.
+	</p>
+</div>
+
+<style>
+	.cpi-table-wrap {
+		margin: 2rem 0;
+		overflow-x: auto;
+	}
+
+	.cpi-table {
+		width: 100%;
+		min-width: 560px;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+	}
+
+	.cpi-table caption {
+		text-align: left;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		font-weight: 500;
+		color: var(--navy-dark);
+		margin-bottom: 0.85rem;
+	}
+
+	.cpi-table thead th {
+		text-align: left;
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+		padding: 0.75rem 1rem;
+	}
+
+	.cpi-table thead th:not(:first-child),
+	.cpi-table tbody td {
+		text-align: right;
+	}
+
+	.cpi-table tbody th,
+	.cpi-table tbody td {
+		padding: 0.7rem 1rem;
+		border-bottom: 1px solid var(--border);
+		font-weight: 400;
+	}
+
+	.cpi-table tbody th {
+		text-align: left;
+		font-weight: 500;
+		color: var(--ink);
+	}
+
+	.cpi-table tbody tr:last-child th,
+	.cpi-table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.cpi-table__max {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		color: var(--navy-dark);
+	}
+
+	.cpi-table__row--highlight {
+		background: var(--navy-tint);
+	}
+
+	.cpi-table__row--highlight th,
+	.cpi-table__row--highlight .cpi-table__max {
+		color: var(--gold-dark);
+	}
+
+	.cpi-table__source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin-top: 0.85rem;
+		max-width: 640px;
+	}
+
+	@media (max-width: 640px) {
+		.cpi-table {
+			font-size: 0.85rem;
+		}
+	}
+</style>
