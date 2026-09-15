@@ -36,7 +36,7 @@ export const caseStudies: CaseStudy[] = [
 		slug: '941-normandie-ave-east-hollywood-apartments',
 		title: '941 N Normandie Ave',
 		location: 'East Hollywood, Los Angeles, CA',
-		submarket: null,
+		submarket: 'east-hollywood',
 		summary: 'A 7-unit non-rent-controlled East Hollywood building with rents 45% below market sold at 97% of list within one week of marketing.',
 		dealType: ['value-add'],
 		opportunity:

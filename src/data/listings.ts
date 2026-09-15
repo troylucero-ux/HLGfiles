@@ -39,7 +39,7 @@ export const listings: Listing[] = [
 		askingPrice: 1350000,
 		status: 'in-escrow',
 		type: 'apartment',
-		submarket: null,
+		submarket: 'east-hollywood',
 		description:
 			'Rare 7-unit investment in the Virgil Village section of East Hollywood, combining a freestanding five-bedroom single-family residence (built 1946) with an all one-bedroom, six-unit apartment building (built 1960) on a single 9,299 SF lot. Two units deliver vacant with a third possible, offering roughly 57% rental upside after lease-up, plus ADU potential in a separate, currently unrented basement unit.',
 		image: '/images/listings/4412-4414-lockwood-ave-los-angeles-ca-90029/4412-4414-lockwood-ave-los-angeles-ca.webp',

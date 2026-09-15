@@ -65,6 +65,28 @@ export const submarkets: Submarket[] = [
 			'Westlake, anchored by MacArthur Park, is where Highlight closed the Burlington Portfolio, a 192-unit, three-building 1031 exchange transaction, along with the 65-unit 236 S Bonnie Brae St and other value-add sales. The submarket combines LA’s highest transit access with consistently strong multifamily fundamentals.',
 	},
 	{
+		slug: 'east-hollywood',
+		name: 'East Hollywood',
+		region: 'Central LA',
+		blurb: 'A dense, walkable submarket bordering Hollywood, Los Feliz, and Silver Lake, anchored by major medical and educational employers.',
+		walkScore: 90,
+		transitScore: 70,
+		bikeScore: 71,
+		walkScoreLabel: "Walker's Paradise (6th most walkable neighborhood in LA)",
+		transit: [
+			'Metro B Line (Red): Vermont/Santa Monica, Vermont/Beverly & Vermont/Sunset stations',
+			'Dense local bus network along Vermont Ave and Santa Monica Blvd, with direct access to the 101 Freeway',
+		],
+		retail: [
+			'Vermont Ave and Virgil Ave dining, retail, and entertainment corridors',
+			'A diverse mix of ethnic eateries, independent shops, and entertainment venues',
+			'Four blocks from Sunset Junction in neighboring Silver Lake',
+		],
+		employers: ['Kaiser Permanente Los Angeles Medical Center', 'Children’s Hospital Los Angeles', 'Los Angeles City College'],
+		overview:
+			'East Hollywood, bordered by Los Feliz to the north, Silver Lake to the east, and Hollywood to the west, is one of LA’s most walkable and culturally diverse submarkets, anchored by major medical and educational institutions. Highlight closed the 7-unit value-add sale at 941 N Normandie Ave here, and is currently marketing 4412-4414 Lockwood Ave in the submarket’s Virgil Village pocket.',
+	},
+	{
 		slug: 'silver-lake',
 		name: 'Silver Lake',
 		region: 'Eastside LA',
