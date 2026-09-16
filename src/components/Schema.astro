@@ -32,11 +32,13 @@ const orgSchema = {
 		jobTitle: member.title,
 		telephone: member.phone,
 		email: member.email,
+		sameAs: [member.linkedin, member.instagram, member.facebook].filter(Boolean),
 	})),
 	parentOrganization: {
 		'@type': 'RealEstateAgent',
 		name: site.brokerage,
 	},
+	sameAs: [site.social.linkedin, site.social.instagram, site.social.facebook].filter(Boolean),
 };
 
 const localBusinessSchema = {
