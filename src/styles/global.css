@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap');
+/* Font loading moved to a <link rel="stylesheet"> in BaseLayout's <head> -- a CSS @import here
+   forces the browser to download and parse this whole file before it even discovers the font
+   request, adding a full extra network round-trip to the render-blocking chain. */
 
 :root {
 	--navy: #14467a;
@@ -9,7 +11,7 @@
 	--gold-dark: #8f7136;
 	--ink: #444444;
 	--ink-soft: #5b5b58;
-	--ink-light: #86837c;
+	--ink-light: #6b6862; /* darkened from #86837c to clear WCAG AA's 4.5:1 text-contrast minimum */
 	--paper: #fffdfa;
 	--paper-alt: #f6f2ea;
 	--border: #e7e1d4;
@@ -74,6 +76,18 @@ a {
 a:hover {
 	text-decoration: underline;
 	text-underline-offset: 3px;
+}
+
+/* Inline links within running text need a non-color cue at rest, not just on hover, so they're
+   distinguishable without relying on color perception (WCAG 1.4.1). This deliberately targets
+   only prose-embedded links (paragraph text, the form consent line) -- nav menus, footer link
+   columns, breadcrumbs, and "related" list links are whole-line-item links (built from <li><a>)
+   that read as clearly interactive without an underline, so they're left alone. */
+p a,
+.bov-form__consent a,
+.om-form__consent a {
+	text-decoration: underline;
+	text-underline-offset: 2px;
 }
 
 img {
