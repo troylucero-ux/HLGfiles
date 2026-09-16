@@ -141,6 +141,5 @@ export const testimonials = [
 			'Troy and Josh did an excellent job representing us in the purchase of two apartment buildings in Santa Monica. Most recently, they helped us acquire a 6 unit property in Santa Monica as well. They were knowledgeable, responsive, and made the entire process smooth and straightforward. I would highly recommend them to anyone looking to purchase an apartment property.',
 		attribution: 'Arsine, Google Review',
 		verified: true,
-		featured: true,
 	},
 ];
