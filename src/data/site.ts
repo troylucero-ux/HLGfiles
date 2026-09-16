@@ -109,6 +109,7 @@ export const testimonials = [
 		attribution: 'Martine, Seller of 6938 Coldwater Canyon Ave',
 		caseStudySlug: '6938-coldwater-canyon-ave-north-hollywood-apartments',
 		verified: true,
+		featured: true,
 	},
 	{
 		quote:
@@ -126,17 +127,20 @@ export const testimonials = [
 		quote: "I really appreciated Troy and Josh's advice with regard to the LA apartment market. Highly recommend these guys if you want a broker who actually listens.",
 		attribution: 'Jorge, Google Review',
 		verified: true,
+		featured: true,
 	},
 	{
 		quote:
 			'Josh Kaplan and Troy Lucero at Highlight Real Estate Group helped us close on a 9-unit apartment building in Arlington Heights, Los Angeles. Highly recommend this team for anyone buying or selling an apartment building in Los Angeles.',
 		attribution: 'Eman, Google Review',
 		verified: true,
+		featured: true,
 	},
 	{
 		quote:
 			'Troy and Josh did an excellent job representing us in the purchase of two apartment buildings in Santa Monica. Most recently, they helped us acquire a 6 unit property in Santa Monica as well. They were knowledgeable, responsive, and made the entire process smooth and straightforward. I would highly recommend them to anyone looking to purchase an apartment property.',
 		attribution: 'Arsine, Google Review',
 		verified: true,
+		featured: true,
 	},
 ];

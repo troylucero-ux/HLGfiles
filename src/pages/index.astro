@@ -201,15 +201,20 @@ const services = [
 					<span class="eyebrow">What Owners Say</span>
 					<h2>Trusted by LA Apartment Owners</h2>
 					<div class="testimonial-grid">
-						{testimonials.map((t) => (
-							<figure class="testimonial-card">
-								<blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
-								<figcaption>
-									{t.caseStudySlug ? <a href={`/case-studies/${t.caseStudySlug}/`}>{t.attribution} &rarr;</a> : t.attribution}
-								</figcaption>
-							</figure>
-						))}
+						{testimonials
+							.filter((t) => t.featured)
+							.map((t) => (
+								<figure class="testimonial-card">
+									<blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+									<figcaption>
+										{t.caseStudySlug ? <a href={`/case-studies/${t.caseStudySlug}/`}>{t.attribution} &rarr;</a> : t.attribution}
+									</figcaption>
+								</figure>
+							))}
 					</div>
+					<a href="/testimonials/" class="btn btn-outline testimonial-grid__more">
+						Read All Reviews
+					</a>
 				</div>
 			</section>
 		)
@@ -561,6 +566,11 @@ const services = [
 		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 		gap: 3rem;
 		margin-top: 3rem;
+	}
+
+	.testimonial-grid__more {
+		display: inline-block;
+		margin-top: 2.5rem;
 	}
 
 	.testimonial-card {
