@@ -8,7 +8,7 @@
 	--navy-tint: #eef2f7;
 	--gold: #b6944a;
 	--gold-light: #d9c491;
-	--gold-dark: #8f7136;
+	--gold-dark: #715725; /* darkened from #8f7136 -- scored only 4.1:1 against --paper-alt, below WCAG AA's 4.5:1 (this is the .eyebrow label color used on nearly every page) */
 	--ink: #444444;
 	--ink-soft: #5b5b58;
 	--ink-light: #6b6862; /* darkened from #86837c to clear WCAG AA's 4.5:1 text-contrast minimum */
