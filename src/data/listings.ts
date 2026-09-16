@@ -28,6 +28,38 @@ export type Listing = {
 
 export const listings: Listing[] = [
 	{
+		slug: '927-s-berendo-st-los-angeles-ca-90006',
+		name: '927 S Berendo St',
+		city: 'Los Angeles',
+		state: 'CA',
+		zip: '90006',
+		units: 7,
+		sqft: 5294,
+		acres: null,
+		askingPrice: 1800000,
+		status: 'active',
+		type: 'apartment',
+		submarket: 'koreatown',
+		description:
+			'Seven-unit, all two-bedroom apartment investment in Koreatown, built in 1987 on a 7,748 SF lot. Exempt from the Los Angeles Rent Stabilization Ordinance and governed instead by the more favorable statewide AB 1482 cap. Two units deliver vacant and available to lease at market today, with roughly 10% additional rental upside after lease-up.',
+		image: '/images/listings/927-s-berendo-st-los-angeles-ca-90006/927-s-berendo-st-los-angeles-ca.webp',
+		yearBuilt: 1987,
+		capRate: 6.71,
+		grm: 9.61,
+		zoning: 'R4-1',
+		pricePerUnit: 257143,
+		pricePerSqft: 340,
+		highlights: [
+			'Exempt from the LA Rent Stabilization Ordinance: 1987 construction places the property under CA State AB 1482, allowing more favorable 5% plus CPI annual rent increases.',
+			'Two units delivered vacant: Units #3 and #7 are currently vacant, allowing a new owner to lease at market rents.',
+			'All two-bedroom unit mix: seven 2-bed/1-bath units averaging 756 SF across 5,294 SF of building area, the most consistently occupied unit type in the submarket.',
+			'ADU potential: the rear of the large lot includes a freestanding carport, and the rear of the building has a large tuck-under parking area.',
+			'Superior in-place return to comparables: prices to a 6.71% in-place cap rate and 9.61 GRM against a comparable average of 5.94% and 10.64.',
+			'Rental upside: after lease-up of vacant units, the property still allows for almost 10% additional rental upside.',
+			'Prime Koreatown location, minutes from the Wilshire Boulevard corridor, the Metro D Line, Downtown Los Angeles, and the USC and Exposition Park employment base.',
+		],
+	},
+	{
 		slug: '4412-4414-lockwood-ave-los-angeles-ca-90029',
 		name: '4412-4414 Lockwood Ave',
 		city: 'Los Angeles',
