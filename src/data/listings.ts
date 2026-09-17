@@ -92,6 +92,7 @@ export const listings: Listing[] = [
 	},
 	{
 		slug: '5631-whitnall-hwy-los-angeles-ca-91601',
+		youtubeId: 'Bn8asB9XcNk',
 		name: '5631 Whitnall Hwy',
 		city: 'Los Angeles',
 		state: 'CA',
