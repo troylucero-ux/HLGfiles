@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BOVForm from '../../components/BOVForm.astro';
+import YouTubeFacade from '../../components/YouTubeFacade.astro';
 import { listings } from '../../data/listings';
 import { site } from '../../data/site';
 import { formatPrice, formatPriceFull } from '../../lib/format';
@@ -61,10 +62,24 @@ const schema = {
 			}
 		: {}),
 };
+
+// Omitting uploadDate/duration on the VideoObject rather than guessing -- neither is known, and
+// Google's video rich-result guidance treats uploadDate as recommended, not required for validity.
+const videoSchema = listing.youtubeId
+	? {
+			'@context': 'https://schema.org',
+			'@type': 'VideoObject',
+			name: `${listing.name} Video Tour`,
+			description: listing.description,
+			thumbnailUrl: `https://img.youtube.com/vi/${listing.youtubeId}/hqdefault.jpg`,
+			embedUrl: `https://www.youtube-nocookie.com/embed/${listing.youtubeId}`,
+		}
+	: null;
 ---
 
 <BaseLayout title={seoTitle} description={seoDescription} image={listing.image}>
 	<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+	{videoSchema && <script type="application/ld+json" set:html={JSON.stringify(videoSchema)} />}
 	<article class="section">
 		<div class="container listing-detail">
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Listings', href: '/listings/' }, { label: listing.name }]} />
@@ -86,6 +101,8 @@ const schema = {
 					/>
 				)
 			}
+
+			{listing.youtubeId && <YouTubeFacade youtubeId={listing.youtubeId} title={`${listing.name} Video Tour`} />}
 
 			<div class="listing-detail__stats">
 				<div>
@@ -227,6 +244,10 @@ const schema = {
 		height: 420px;
 		object-fit: cover;
 		border-radius: 2px;
+		margin-bottom: 2rem;
+	}
+
+	.listing-detail :global(.yt-facade) {
 		margin-bottom: 2rem;
 	}
 

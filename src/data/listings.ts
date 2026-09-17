@@ -24,6 +24,7 @@ export type Listing = {
 	pricePerUnit?: number;
 	pricePerSqft?: number;
 	highlights?: string[];
+	youtubeId?: string; // the video ID from a youtube.com/watch?v=<id> URL, not the full URL
 };
 
 export const listings: Listing[] = [
