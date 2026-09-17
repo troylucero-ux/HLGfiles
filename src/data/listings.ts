@@ -30,6 +30,7 @@ export type Listing = {
 export const listings: Listing[] = [
 	{
 		slug: '927-s-berendo-st-los-angeles-ca-90006',
+		youtubeId: 'fPCjDEiQNFY',
 		name: '927 S Berendo St',
 		city: 'Los Angeles',
 		state: 'CA',
@@ -62,6 +63,7 @@ export const listings: Listing[] = [
 	},
 	{
 		slug: '4412-4414-lockwood-ave-los-angeles-ca-90029',
+		youtubeId: 'NWHQN79ZvbU',
 		name: '4412-4414 Lockwood Ave',
 		city: 'Los Angeles',
 		state: 'CA',
@@ -124,6 +126,7 @@ export const listings: Listing[] = [
 	},
 	{
 		slug: '333-n-union-ave-los-angeles-ca-90026',
+		youtubeId: 'hNlrT8MSd2M',
 		name: '333 N Union Ave',
 		city: 'Los Angeles',
 		state: 'CA',
@@ -141,6 +144,7 @@ export const listings: Listing[] = [
 	},
 	{
 		slug: '3815-don-tomaso-dr-los-angeles-ca-90008',
+		youtubeId: 'dXbVV9ctKgo',
 		name: '3815 Don Tomaso Dr',
 		city: 'Los Angeles',
 		state: 'CA',
