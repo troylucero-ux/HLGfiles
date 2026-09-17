@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import YouTubeFacade from '../../components/YouTubeFacade.astro';
 import { closings, closingStats } from '../../data/closings';
 import { submarkets } from '../../data/submarkets';
 import { formatPrice } from '../../lib/format';
@@ -77,15 +78,19 @@ const priceBands = [
 								data-price-band={band?.id ?? ''}
 								data-type={sale.type}
 							>
-								{sale.images?.[0] && (
-									<img
-										class="closing-card__image"
-										src={sale.images[0]}
-										alt={`${sale.name}, ${sale.city}, ${sale.state}, ${sale.units ? `${sale.units}-unit apartment building` : 'development site'} sold by Highlight Multifamily Group`}
-										width="400"
-										height="260"
-										loading="lazy"
-									/>
+								{sale.youtubeId ? (
+									<YouTubeFacade youtubeId={sale.youtubeId} title={`${sale.name} Video Tour`} />
+								) : (
+									sale.images?.[0] && (
+										<img
+											class="closing-card__image"
+											src={sale.images[0]}
+											alt={`${sale.name}, ${sale.city}, ${sale.state}, ${sale.units ? `${sale.units}-unit apartment building` : 'development site'} sold by Highlight Multifamily Group`}
+											width="400"
+											height="260"
+											loading="lazy"
+										/>
+									)
 								)}
 								<span class="closing-card__location">
 									{sale.city}, {sale.state} {sale.zip}
@@ -194,6 +199,13 @@ const priceBands = [
 		width: calc(100% + 3rem);
 		height: 180px;
 		object-fit: cover;
+		margin: -1.5rem -1.5rem 1.25rem;
+	}
+
+	.closing-card :global(.yt-facade) {
+		width: calc(100% + 3rem);
+		height: 180px;
+		aspect-ratio: auto;
 		margin: -1.5rem -1.5rem 1.25rem;
 	}
 
