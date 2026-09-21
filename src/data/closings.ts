@@ -17,6 +17,8 @@ export type Closing = {
 	caseStudySlug?: string;
 	images?: string[];
 	youtubeId?: string; // the video ID from a youtube.com/watch?v=<id> URL, not the full URL
+	soldDate?: string; // ISO date (YYYY-MM-DD), only where the closing date is known
+	blurb?: string; // optional real detail about the deal (shown on its page); leave unset rather than guess
 };
 
 export const closings: Closing[] = [
@@ -74,6 +76,7 @@ export const closings: Closing[] = [
 	{ slug: '848-s-mariposa-ave-los-angeles-ca-90005', name: '848 S Mariposa Ave', city: 'Los Angeles', state: 'CA', zip: '90005', units: null, sqft: 8795, acres: null, price: 1500000, type: 'development-site', submarket: 'koreatown', images: ['/images/listings/848-s-mariposa-ave-los-angeles-ca-90005/848-s-mariposa-ave-los-angeles-ca.webp'] },
 	{ slug: '14654-gault-st-van-nuys-ca-91405', name: '14654 Gault St', city: 'Van Nuys', state: 'CA', zip: '91405', units: 4, sqft: null, acres: null, price: 1520000, type: 'apartment', submarket: 'van-nuys', images: ['/images/listings/14654-gault-st-van-nuys-ca-91405/14654-gault-st-van-nuys-ca.webp'] },
 	{ slug: '1421-waterloo-st-los-angeles-ca-90026', name: '1421 Waterloo St', city: 'Los Angeles', state: 'CA', zip: '90026', units: 4, sqft: 3457, acres: null, price: 1450000, type: 'apartment', submarket: 'silver-lake', images: ['/images/listings/1421-waterloo-st-los-angeles-ca-90026/1421-waterloo-st.webp'], youtubeId: 'ovUCjwCJC8Y' },
+	{ slug: '3148-james-m-wood-blvd-los-angeles-ca-90006-2017', name: '3148 James M Wood Blvd', city: 'Los Angeles', state: 'CA', zip: '90006', units: 8, sqft: 6800, acres: null, price: 1450000, type: 'apartment', submarket: 'koreatown', soldDate: '2017-08-11', images: ['/images/listings/3148-james-m-wood-blvd-los-angeles-ca-90006/3148-james-m-wood-blvd.webp'] },
 	{ slug: '2233-w-14th-st-los-angeles-ca-90006', name: '2233 W 14th St', city: 'Los Angeles', state: 'CA', zip: '90006', units: 10, sqft: 4576, acres: null, price: 1300000, type: 'apartment', submarket: 'pico-union', images: ['/images/listings/2233-w-14th-st-los-angeles-ca-90006/2233-w-14th-st.webp'], youtubeId: 'G8gy7LW6edA' },
 	{ slug: '14700-hubbard-st-sylmar-ca-91342', name: '14700 Hubbard St', city: 'Sylmar', state: 'CA', zip: '91342', units: 7, sqft: 6452, acres: null, price: 1175000, type: 'apartment', submarket: null, images: ['/images/listings/14700-hubbard-st-sylmar-ca-91342/14700-hubbard-st.webp'] },
 	{ slug: '3013-w-11th-st-los-angeles-ca-90006', name: '3013 W 11th St', city: 'Los Angeles', state: 'CA', zip: '90006', units: 8, sqft: 5344, acres: null, price: 1000000, type: 'apartment', submarket: 'pico-union', youtubeId: 'dYbOzm5dwkU' },

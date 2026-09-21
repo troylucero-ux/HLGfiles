@@ -113,7 +113,7 @@ const heroSale = relatedClosings
 					<h2>Closed Sales in {sm.name}</h2>
 					<div class="closing-grid">
 						{relatedClosings.map((sale) => (
-							<a href={`/closed-sales/#${sale.slug}`} class="closing-card">
+							<a href={`/closed-sales/${sale.slug}/`} class="closing-card">
 								<span>{sale.name}</span>
 								<span class="closing-card__meta">
 									{sale.units ? `${sale.units} Units` : 'Development Site'} &middot; Sold for {formatPrice(sale.price)}

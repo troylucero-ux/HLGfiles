@@ -1,0 +1,373 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import YouTubeFacade from '../../components/YouTubeFacade.astro';
+import { closings } from '../../data/closings';
+import { caseStudies } from '../../data/caseStudies';
+import { submarkets } from '../../data/submarkets';
+import { listings } from '../../data/listings';
+import { site } from '../../data/site';
+import { formatPrice, formatPriceFull, formatSoldDate } from '../../lib/format';
+
+export function getStaticPaths() {
+	return closings.map((sale) => ({
+		params: { slug: sale.slug },
+		props: { sale },
+	}));
+}
+
+const { sale } = Astro.props;
+const isLand = sale.type === 'development-site';
+const submarket = sale.submarket ? submarkets.find((s) => s.slug === sale.submarket) : null;
+const caseStudy = sale.caseStudySlug ? caseStudies.find((c) => c.slug === sale.caseStudySlug) : null;
+const image = sale.images?.[0];
+
+// Derived from the sale's own recorded figures only; anything that can't be computed is omitted.
+const pricePerUnit = sale.units ? Math.round(sale.price / sale.units) : null;
+const pricePerSf = sale.sqft ? Math.round(sale.price / sale.sqft) : null;
+
+const kind = isLand ? 'development site' : sale.units ? `${sale.units}-unit apartment building` : 'apartment building';
+const article = /^(8|11|18)(\D|$)/.test(kind) || /^[aeiou]/i.test(kind) ? 'an' : 'a';
+const place = [sale.city + ',', sale.state, sale.zip].filter(Boolean).join(' ');
+const summary = [
+	`${sale.name} is ${article} ${kind} in ${place}, closed ${sale.soldDate ? `on ${formatSoldDate(sale.soldDate)} ` : ''}for ${formatPriceFull(sale.price)}.`,
+	pricePerUnit && pricePerSf
+		? `That works out to ${formatPriceFull(pricePerUnit)} per unit and $${pricePerSf.toLocaleString('en-US')} per square foot of building area.`
+		: pricePerSf
+			? `That works out to $${pricePerSf.toLocaleString('en-US')} per square foot${isLand ? ' of land' : ''}.`
+			: pricePerUnit
+				? `That works out to ${formatPriceFull(pricePerUnit)} per unit.`
+				: '',
+]
+	.filter(Boolean)
+	.join(' ');
+
+// Related sales: same submarket first, then the closest by price within the same property type.
+const others = closings.filter((c) => c.slug !== sale.slug);
+const sameSubmarket = sale.submarket ? others.filter((c) => c.submarket === sale.submarket) : [];
+const byPriceProximity = others
+	.filter((c) => c.type === sale.type && !sameSubmarket.includes(c))
+	.sort((a, b) => Math.abs(a.price - sale.price) - Math.abs(b.price - sale.price));
+const related = [...sameSubmarket.sort((a, b) => Math.abs(a.price - sale.price) - Math.abs(b.price - sale.price)), ...byPriceProximity].slice(0, 3);
+
+const activeListings = sale.submarket ? listings.filter((l) => l.submarket === sale.submarket && l.status === 'active').slice(0, 2) : [];
+
+const soldLabel = isLand
+	? `Development Site Sold for ${formatPrice(sale.price)}`
+	: `${sale.units ? `${sale.units}-Unit ` : ''}Apartment Sold for ${formatPrice(sale.price)}`;
+const fullTitle = `${sale.name}, ${sale.city} | ${soldLabel}`;
+// Drop the city when a long property name would push the title past what Google displays.
+const noCityTitle = `${sale.name} | ${soldLabel}`;
+const seoTitle = fullTitle.length <= 65 ? fullTitle : noCityTitle.length <= 65 ? noCityTitle : `${sale.name} | Sold for ${formatPrice(sale.price)}`;
+const seoDescription = `${sale.name} in ${sale.city}, ${sale.state}: ${kind} sold for ${formatPriceFull(sale.price)}. See the price per ${isLand ? 'square foot' : 'unit'} and Highlight's track record.`;
+
+const videoSchema = sale.youtubeId
+	? {
+			'@context': 'https://schema.org',
+			'@type': 'VideoObject',
+			name: `${sale.name} Video Tour`,
+			description: summary,
+			thumbnailUrl: `https://img.youtube.com/vi/${sale.youtubeId}/hqdefault.jpg`,
+			embedUrl: `https://www.youtube-nocookie.com/embed/${sale.youtubeId}`,
+		}
+	: null;
+---
+
+<BaseLayout title={seoTitle} description={seoDescription} image={image}>
+	{videoSchema && <script type="application/ld+json" set:html={JSON.stringify(videoSchema)} />}
+
+	<article class="section">
+		<div class="container sale-detail">
+			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Closed Sales', href: '/closed-sales/' }, { label: sale.name }]} />
+			<span class="eyebrow">Closed Sale</span>
+			<h1>{sale.name}</h1>
+			<p class="sale-detail__location">
+				{place}
+				{
+					submarket && (
+						<>
+							{' '}
+							&middot; <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a>
+						</>
+					)
+				}
+			</p>
+
+			{
+				sale.youtubeId ? (
+					<YouTubeFacade youtubeId={sale.youtubeId} title={`${sale.name} Video Tour`} />
+				) : (
+					image && (
+						<img
+							class="sale-detail__image"
+							src={image}
+							alt={`${sale.name}, ${sale.city}, ${sale.state}: ${kind} (closed sale)`}
+							width="900"
+							height="520"
+							loading="eager"
+						/>
+					)
+				)
+			}
+
+			<dl class="sale-detail__facts">
+				<div>
+					<dt>Sale Price</dt>
+					<dd>{formatPriceFull(sale.price)}</dd>
+				</div>
+				{
+					sale.soldDate && (
+						<div>
+							<dt>Sale Date</dt>
+							<dd>{formatSoldDate(sale.soldDate)}</dd>
+						</div>
+					)
+				}
+				{
+					sale.units && (
+						<div>
+							<dt>Units</dt>
+							<dd>{sale.units}</dd>
+						</div>
+					)
+				}
+				{
+					sale.sqft && (
+						<div>
+							<dt>{isLand ? 'Land Area' : 'Building Size'}</dt>
+							<dd>{sale.sqft.toLocaleString('en-US')} SF</dd>
+						</div>
+					)
+				}
+				{
+					pricePerUnit && (
+						<div>
+							<dt>Price Per Unit</dt>
+							<dd>{formatPriceFull(pricePerUnit)}</dd>
+						</div>
+					)
+				}
+				{
+					pricePerSf && (
+						<div>
+							<dt>{isLand ? 'Price Per Land SF' : 'Price Per SF'}</dt>
+							<dd>${pricePerSf.toLocaleString('en-US')}</dd>
+						</div>
+					)
+				}
+				{
+					sale.acres && (
+						<div>
+							<dt>Acres</dt>
+							<dd>{sale.acres}</dd>
+						</div>
+					)
+				}
+			</dl>
+
+			<div class="sale-detail__body">
+				<h2>Sale Summary</h2>
+				<p>{summary}</p>
+				{sale.blurb && <p>{sale.blurb}</p>}
+				{
+					submarket && (
+						<p>
+							The property sits in the <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a> submarket ({submarket.region}), which scores {submarket.walkScore} for Walk
+							Score and {submarket.transitScore} for Transit Score.
+						</p>
+					)
+				}
+				<p>
+					This sale is one of the <a href="/closed-sales/">{closings.length} transactions</a> in the Highlight Multifamily Group track record.
+				</p>
+			</div>
+
+			{
+				caseStudy && (
+					<a href={`/case-studies/${caseStudy.slug}/`} class="sale-detail__casestudy">
+						<span class="eyebrow">Case Study</span>
+						<strong>{caseStudy.title}</strong>
+						<span>{caseStudy.summary}</span>
+						<span class="sale-detail__casestudy-cta">Read the full case study &rarr;</span>
+					</a>
+				)
+			}
+
+			{
+				related.length > 0 && (
+					<div class="sale-detail__related">
+						<h2>{sameSubmarket.length >= 3 && submarket ? `More Sales in ${submarket.name}` : 'Related Closed Sales'}</h2>
+						<ul>
+							{related.map((r) => (
+								<li>
+									<a href={`/closed-sales/${r.slug}/`}>
+										<span>{r.name}</span>
+										<span class="sale-detail__related-meta">
+											{r.city}, {r.state} &middot; {r.units ? `${r.units} Units` : 'Development Site'} &middot; Sold for {formatPrice(r.price)}{r.soldDate ? ` (${formatSoldDate(r.soldDate)})` : ''}
+										</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+
+			{
+				activeListings.length > 0 && (
+					<div class="sale-detail__related">
+						<h2>Available Now{submarket ? ` in ${submarket.name}` : ''}</h2>
+						<ul>
+							{activeListings.map((l) => (
+								<li>
+									<a href={`/listings/${l.slug}/`}>
+										<span>{l.name}</span>
+										<span class="sale-detail__related-meta">
+											{l.units ? `${l.units} Units` : 'Development Site'} &middot; {l.askingPrice ? formatPrice(l.askingPrice) : 'Contact for Pricing'}
+										</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
+		</div>
+	</article>
+
+	<section class="section section-alt">
+		<div class="container">
+			<BOVForm heading="Own a Similar Building?" subheading="Get a free, confidential Broker Opinion of Value grounded in real closed comps." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.sale-detail {
+		max-width: 760px;
+	}
+
+	.sale-detail__location {
+		color: var(--ink-light);
+		font-weight: 600;
+		margin-bottom: 1.5rem;
+	}
+
+	.sale-detail__image {
+		width: 100%;
+		height: 420px;
+		object-fit: cover;
+		border-radius: 2px;
+		margin-bottom: 2rem;
+	}
+
+	.sale-detail :global(.yt-facade) {
+		margin-bottom: 2rem;
+	}
+
+	.sale-detail__facts {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 1.5rem;
+		border-top: 1px solid var(--border);
+		border-bottom: 1px solid var(--border);
+		padding-block: 1.5rem;
+		margin: 0 0 2.5rem;
+	}
+
+	.sale-detail__facts dt {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+		font-weight: 600;
+	}
+
+	.sale-detail__facts dd {
+		margin: 0.3rem 0 0;
+		font-family: var(--font-serif);
+		font-size: 1.5rem;
+		color: var(--navy-dark);
+	}
+
+	.sale-detail__body {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.sale-detail__body h2 {
+		font-size: 1.5rem;
+	}
+
+	.sale-detail__casestudy {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		margin: 2.5rem 0;
+		padding: 1.5rem;
+		background: var(--paper-alt);
+		border-left: 4px solid var(--gold);
+		border-radius: 2px;
+		color: var(--ink);
+	}
+
+	.sale-detail__casestudy:hover {
+		text-decoration: none;
+	}
+
+	.sale-detail__casestudy strong {
+		font-family: var(--font-serif);
+		font-size: 1.2rem;
+		font-weight: 500;
+		color: var(--navy-dark);
+	}
+
+	.sale-detail__casestudy-cta {
+		font-weight: 600;
+		font-size: 0.85rem;
+		color: var(--navy);
+	}
+
+	.sale-detail__related {
+		border-top: 1px solid var(--border);
+		padding-top: 1.5rem;
+		margin-top: 2rem;
+	}
+
+	.sale-detail__related h2 {
+		font-size: 1.35rem;
+	}
+
+	.sale-detail__related ul {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.sale-detail__related a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		padding: 1rem 1.25rem;
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		font-family: var(--font-serif);
+		font-weight: 500;
+		color: var(--navy-dark);
+		transition: border-color 0.2s ease;
+	}
+
+	.sale-detail__related a:hover {
+		border-color: var(--gold);
+		text-decoration: none;
+	}
+
+	.sale-detail__related-meta {
+		font-family: var(--font-sans);
+		font-weight: 400;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+</style>

@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import YouTubeFacade from '../../components/YouTubeFacade.astro';
 import { closings, closingStats } from '../../data/closings';
 import { submarkets } from '../../data/submarkets';
-import { formatPrice } from '../../lib/format';
+import { formatPrice, formatSoldDate } from '../../lib/format';
 
 const submarketNames = Object.fromEntries(submarkets.map((s) => [s.slug, s.name]));
 
@@ -101,13 +101,18 @@ const priceBands = [
 										</>
 									)}
 								</span>
-								<h2 class="closing-card__name">{sale.name}</h2>
+								<h2 class="closing-card__name">
+									<a href={`/closed-sales/${sale.slug}/`}>{sale.name}</a>
+								</h2>
 								<p class="closing-card__meta">
 									{sale.units ? `${sale.units} Units` : 'Development Site'}
 									{sale.sqft ? ` • ${sale.sqft.toLocaleString()} SF` : ''}
 									{sale.acres ? ` • ${sale.acres} Acres` : ''}
 								</p>
-								<p class="closing-card__price">Sold for {formatPrice(sale.price)}</p>
+								<p class="closing-card__price">Sold for {formatPrice(sale.price)}{sale.soldDate ? ` (${formatSoldDate(sale.soldDate)})` : ''}</p>
+								<a href={`/closed-sales/${sale.slug}/`} class="closing-card__link">
+									View sale details &rarr;
+								</a>
 								{sale.caseStudySlug && (
 									<a href={`/case-studies/${sale.caseStudySlug}/`} class="closing-card__link">
 										Read the case study &rarr;
@@ -236,7 +241,13 @@ const priceBands = [
 		margin-bottom: 0.25rem;
 	}
 
+	.closing-card__name a {
+		color: inherit;
+	}
+
 	.closing-card__link {
+		display: block;
+		margin-top: 0.4rem;
 		font-size: 0.85rem;
 		font-weight: 600;
 	}

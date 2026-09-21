@@ -9,3 +9,11 @@ export function formatPrice(price: number): string {
 export function formatPriceFull(price: number): string {
 	return `$${price.toLocaleString('en-US')}`;
 }
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+// 'YYYY-MM-DD' -> 'August 11, 2017' (parsed by hand so the date never shifts with the build machine's timezone)
+export function formatSoldDate(iso: string): string {
+	const [y, m, d] = iso.split('-').map(Number);
+	return `${MONTHS[m - 1]} ${d}, ${y}`;
+}
