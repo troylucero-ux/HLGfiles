@@ -14,7 +14,12 @@ interface Props {
 
 const { title, description, noindex = false, image = '/images/hero/453-s-gramercy-pl-hero.webp' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const pageTitle = title.includes('Highlight Multifamily Group') ? title : `${title} | Highlight Multifamily Group`;
+// Append the brand name only when the full title still fits in a search result (~65 chars). Long,
+// keyword-rich titles (listings, articles) get truncated by Google if the suffix pushes them over,
+// and the descriptive part matters more than the brand on those pages.
+const BRAND = 'Highlight Multifamily Group';
+const withBrand = `${title} | ${BRAND}`;
+const pageTitle = title.includes(BRAND) ? title : withBrand.length <= 65 ? withBrand : title;
 const socialImageURL = new URL(image, Astro.site);
 ---
 

@@ -28,8 +28,8 @@ const heroSale = relatedClosings
 ---
 
 <BaseLayout
-	title={`${sm.name} Apartment Buildings | Highlight Multifamily Group`}
-	description={`${sm.name} multifamily submarket profile: Walk Score, transit, retail, and employment highlights, plus Highlight Multifamily Group's closed sales and case studies in ${sm.name}.`}
+	title={`${sm.name.replace(/\s*\(.*\)/, '')} Apartment Buildings | Highlight Multifamily Group`}
+	description={`${sm.name} apartment building sales: Walk Score, transit, retail, and employers, plus Highlight's closed sales and case studies there.`}
 	image={heroSale?.images?.[0]}
 >
 	<section class="page-hero" style={heroSale ? `--hero-img: url(${heroSale.images[0]})` : undefined}>

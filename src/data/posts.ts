@@ -5,7 +5,8 @@
 export type Post = {
 	slug: string;
 	title: string;
-	description: string;
+	seoTitle?: string; // shorter <title> tag (aim for 60 chars or fewer); falls back to `title`
+	description: string; // also used as the meta description, so keep it to ~155 characters
 	date: string; // ISO date
 	sections: { heading: string; paragraphs: string[] }[];
 };
@@ -14,8 +15,9 @@ export const posts: Post[] = [
 	{
 		slug: 'ab-1482-rent-cap-2026',
 		title: "AB 1482's Rent Cap Just Reset: What It Means for Post-1978 LA Apartment Buildings",
+		seoTitle: 'AB 1482 Rent Cap 2026: What LA Apartment Owners Need to Know',
 		description:
-			"The maximum allowable rent increase under California's statewide AB 1482 cap changed effective August 1, 2026. What the new number is, why it applies to a large share of LA's apartment stock, and why it matters for underwriting.",
+			'The AB 1482 rent cap reset on August 1, 2026. See the new 8.7% LA maximum, which buildings it covers, and why it matters when you buy or sell.',
 		date: '2026-09-15',
 		sections: [
 			{
@@ -57,8 +59,9 @@ export const posts: Post[] = [
 	{
 		slug: 'utility-bill-diligence-la-apartment-owners',
 		title: 'Why Diligent LA Apartment Owners Track Their Utility Bills Every Month',
+		seoTitle: 'Why LA Apartment Owners Should Track Utility Bills',
 		description:
-			'A quiet water bill increase can run for months before anyone notices, and the cost is bigger than the bill itself. How to catch it early, with two real examples and the cap rate math behind them.',
+			'A quiet water leak can cost an owner $100K+ in property value. Two real LA examples, the cap rate math, and the monthly habit that catches it early.',
 		date: '2026-09-14',
 		sections: [
 			{
@@ -110,8 +113,9 @@ export const posts: Post[] = [
 	{
 		slug: '1031-exchange-into-triple-net-properties',
 		title: 'Why LA Apartment Owners Are 1031 Exchanging Into Triple-Net Properties',
+		seoTitle: '1031 Exchange Into Triple-Net (NNN) Properties for LA Owners',
 		description:
-			'How and why LA multifamily owners use a 1031 exchange to move out of active apartment management and into passive triple-net (NNN) investments, including a recent client example.',
+			'How LA apartment owners use a 1031 exchange to move into passive triple-net (NNN) investments, with a real example: a 24-unit sale into two NNN properties.',
 		date: '2026-08-28',
 		sections: [
 			{
