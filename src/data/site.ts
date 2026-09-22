@@ -135,6 +135,7 @@ export const testimonials = [
 		attribution: 'Eman, Google Review',
 		verified: true,
 		featured: true,
+		caseStudySlug: '1513-arlington-ave-arlington-heights-apartments',
 	},
 	{
 		quote:

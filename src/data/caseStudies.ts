@@ -222,4 +222,20 @@ export const caseStudies: CaseStudy[] = [
 		closingSlug: '5455-inglewood-blvd-culver-city-ca-90230',
 		images: ['/images/listings/5455-inglewood-blvd-culver-city-ca-90230/5455-inglewood-blvd-culver-city-ca.webp'],
 	},
+	{
+		slug: '1513-arlington-ave-arlington-heights-apartments',
+		title: '1513 Arlington Ave',
+		location: 'Arlington Heights, Los Angeles, CA',
+		submarket: null,
+		summary: 'Dual representation on a 9-unit Arlington Heights building drew 12 offers, shifting deferred electrical and balcony work to the buyer for our seller’s 1031 exchange.',
+		dealType: ['1031', 'value-add'],
+		opportunity:
+			'1513 Arlington Ave is a 9-unit apartment building in Arlington Heights. Our selling client did not want to fund two costly items before close: replacing the property’s Federal Pacific electrical sub-panels, which insurers are increasingly requiring owners to replace, and completing the SB 721 inspection of its two exterior balconies, a state-mandated safety inspection of balconies, decks, stairways, and walkways on multifamily buildings with three or more units.',
+		solution:
+			'We hosted an open house so brokers, their clients, and buyers from our own database could walk the vacant units and see the opportunity firsthand. The listing drew offers from 12 individual buyers. In negotiating the counters, we made sure every buyer in contention agreed to take on both the electrical sub-panel replacement and the SB 721 inspection after close of escrow, keeping those costs off our seller’s side of the ledger. The winning buyer came from our own database, a seasoned investor experienced operating RSO buildings across LA. We coordinated closely with our seller’s 1031 exchange team throughout escrow.',
+		results:
+			'The property sold for $1,400,000 with the buyer contractually responsible for the electrical sub-panel replacement and SB 721 inspection. Our seller successfully completed his 1031 exchange.',
+		closingSlug: '1513-arlington-ave-los-angeles-ca-90019',
+		images: ['/images/listings/1513-arlington-ave-los-angeles-ca-90019/1513-arlington-ave.webp'],
+	},
 ];
