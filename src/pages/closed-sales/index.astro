@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import YouTubeFacade from '../../components/YouTubeFacade.astro';
 import { closings, closingStats } from '../../data/closings';
 import { submarkets } from '../../data/submarkets';
-import { formatPrice, formatSoldDate } from '../../lib/format';
+import { formatPrice } from '../../lib/format';
 
 const submarketNames = Object.fromEntries(submarkets.map((s) => [s.slug, s.name]));
 
@@ -109,7 +109,7 @@ const priceBands = [
 									{sale.sqft ? ` • ${sale.sqft.toLocaleString()} SF` : ''}
 									{sale.acres ? ` • ${sale.acres} Acres` : ''}
 								</p>
-								<p class="closing-card__price">Sold for {formatPrice(sale.price)}{sale.soldDate ? ` (${formatSoldDate(sale.soldDate)})` : ''}</p>
+								<p class="closing-card__price">Sold for {formatPrice(sale.price)}</p>
 								<a href={`/closed-sales/${sale.slug}/`} class="closing-card__link">
 									View sale details &rarr;
 								</a>
