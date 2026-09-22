@@ -32,7 +32,9 @@ const { youtubeId, title } = Astro.props;
 				const id = facade.dataset.youtubeId;
 				const title = facade.dataset.title ?? 'Video';
 				const iframe = document.createElement('iframe');
-				iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
+				// rel=0 limits "suggested next video" cards to this channel instead of anything on YouTube,
+				// iv_load_policy=3 hides the in-video annotation/info cards, modestbranding trims the YouTube logo.
+				iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3&playsinline=1`;
 				iframe.title = title;
 				iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
 				iframe.allowFullscreen = true;
