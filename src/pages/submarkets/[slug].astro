@@ -7,7 +7,7 @@ import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
 import { listings } from '../../data/listings';
 import { formatPrice, formatPriceFull } from '../../lib/format';
-import { SUBMARKET_CAP_RATES, SUBMARKET_SALES_STATS, COUNTY_WIDE_CAP_RATE, VALUATION_DATA_AS_OF } from '../../data/valuationAssumptions';
+import { statFor, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, type AgeGroup } from '../../data/valuationAssumptions';
 
 export function getStaticPaths() {
 	return submarkets.map((sm) => ({
@@ -27,8 +27,24 @@ const heroSale = relatedClosings
 	.filter((c) => c.type === 'apartment' && c.images?.[0])
 	.sort((a, b) => b.price - a.price)[0];
 
-const capRate = SUBMARKET_CAP_RATES[sm.slug];
-const salesStat = SUBMARKET_SALES_STATS[sm.slug];
+// Each age group is shown separately (RSO buildings trade differently than 1978-and-newer ones). A
+// metric uses this submarket's own figure when it has at least 10 comps, else the LA County figure.
+const fmtCap = (r: { low: number; high: number }) => `${(r.low * 100).toFixed(2)}% – ${(r.high * 100).toFixed(2)}%`;
+const salesGroups = (['rso', 'post1978'] as AgeGroup[]).map((group) => {
+	const ppu = statFor(sm.slug, group, 'pricePerUnit');
+	const psf = statFor(sm.slug, group, 'pricePerSf');
+	const cap = statFor(sm.slug, group, 'capRate');
+	const source = (m: { usedCountyFallback: boolean; value: { compCount: number } }) =>
+		m.usedCountyFallback ? `LA County, ${m.value.compCount.toLocaleString("en-US")} sales` : `${m.value.compCount} ${sm.name} sales`;
+	return {
+		title: AGE_GROUP_LABELS[group].title,
+		rows: [
+			{ label: 'Median Price Per Unit', value: formatPriceFull(ppu.value.median), note: source(ppu) },
+			{ label: 'Median Price Per SF', value: `$${psf.value.median.toLocaleString('en-US')}`, note: source(psf) },
+			{ label: 'Typical Cap Rate', value: fmtCap(cap.value), note: source(cap) },
+		],
+	};
+});
 ---
 
 <BaseLayout
@@ -89,43 +105,27 @@ const salesStat = SUBMARKET_SALES_STATS[sm.slug];
 		<div class="container sales-data">
 			<span class="eyebrow">2026 Sales Data</span>
 			<h2>{sm.name} Multifamily Sales So Far This Year</h2>
-			<div class="sales-data__grid">
+			<p class="sales-data__intro">
+				Buildings built before 1978 fall under the LA Rent Stabilization Ordinance (RSO) and trade differently than newer buildings under AB 1482, so we
+				break them out separately. Confirmed sales through {VALUATION_DATA_AS_OF}. Where {sm.name} had fewer than 10 sales in a category, we show the LA
+				County figure instead.
+			</p>
+			<div class="sales-data__groups">
 				{
-					salesStat ? (
-						<div class="sales-data__stat">
-							<span class="sales-data__num">{formatPriceFull(salesStat.medianPricePerUnit)}</span>
-							<span class="sales-data__label">Median Price Per Unit</span>
-							<span class="sales-data__note">Based on {salesStat.compCount} confirmed {sm.name} sales through {VALUATION_DATA_AS_OF}</span>
+					salesGroups.map((group) => (
+						<div class="sales-data__group">
+							<h3>{group.title}</h3>
+							<dl>
+								{group.rows.map((row) => (
+									<div class="sales-data__stat">
+										<dt class="sales-data__label">{row.label}</dt>
+										<dd class="sales-data__num">{row.value}</dd>
+										<dd class="sales-data__note">{row.note}</dd>
+									</div>
+								))}
+							</dl>
 						</div>
-					) : (
-						<div class="sales-data__stat">
-							<span class="sales-data__num">Limited Data</span>
-							<span class="sales-data__label">Median Price Per Unit</span>
-							<span class="sales-data__note">Fewer than 10 confirmed {sm.name} sales through {VALUATION_DATA_AS_OF} to report a reliable median</span>
-						</div>
-					)
-				}
-				{
-					capRate ? (
-						<div class="sales-data__stat">
-							<span class="sales-data__num">
-								{(capRate.low * 100).toFixed(2)}% – {(capRate.high * 100).toFixed(2)}%
-							</span>
-							<span class="sales-data__label">Typical Cap Rate</span>
-							<span class="sales-data__note">Based on {capRate.compCount} confirmed {sm.name} sales through {VALUATION_DATA_AS_OF}</span>
-						</div>
-					) : (
-						<div class="sales-data__stat">
-							<span class="sales-data__num">
-								{(COUNTY_WIDE_CAP_RATE.low * 100).toFixed(2)}% – {(COUNTY_WIDE_CAP_RATE.high * 100).toFixed(2)}%
-							</span>
-							<span class="sales-data__label">Typical Cap Rate (LA County)</span>
-							<span class="sales-data__note">
-								Not enough {sm.name}-specific sales this year for a reliable range; shown is the Los Angeles County-wide rate across{' '}
-								{COUNTY_WIDE_CAP_RATE.compCount} confirmed sales
-							</span>
-						</div>
-					)
+					))
 				}
 			</div>
 			<p class="sales-data__cta">
@@ -276,16 +276,22 @@ const salesStat = SUBMARKET_SALES_STATS[sm.slug];
 	}
 
 	.sales-data h2 {
-		margin-bottom: 1.5rem;
+		margin-bottom: 0.75rem;
 	}
 
-	.sales-data__grid {
+	.sales-data__intro {
+		max-width: 760px;
+		color: var(--ink-light);
+		margin-bottom: 1.75rem;
+	}
+
+	.sales-data__groups {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 		gap: 1.5rem;
 	}
 
-	.sales-data__stat {
+	.sales-data__group {
 		background: var(--paper);
 		border: 1px solid var(--border);
 		border-top: 3px solid var(--gold);
@@ -293,29 +299,44 @@ const salesStat = SUBMARKET_SALES_STATS[sm.slug];
 		padding: 1.75rem 2rem;
 	}
 
-	.sales-data__num {
-		display: block;
-		font-family: var(--font-serif);
-		font-size: 2rem;
-		font-weight: 400;
-		color: var(--navy-dark);
+	.sales-data__group h3 {
+		font-size: 1.15rem;
+		margin-bottom: 1rem;
+	}
+
+	.sales-data__group dl {
+		margin: 0;
+	}
+
+	.sales-data__stat {
+		padding-block: 0.9rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.sales-data__stat:first-child {
+		border-top: 0;
+		padding-top: 0;
 	}
 
 	.sales-data__label {
-		display: block;
 		font-size: 0.72rem;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		color: var(--gold-dark);
 		font-weight: 600;
-		margin-top: 0.4rem;
+	}
+
+	.sales-data__num {
+		margin: 0.2rem 0 0;
+		font-family: var(--font-serif);
+		font-size: 1.75rem;
+		color: var(--navy-dark);
 	}
 
 	.sales-data__note {
-		display: block;
+		margin: 0.15rem 0 0;
 		font-size: 0.8rem;
 		color: var(--ink-light);
-		margin-top: 0.5rem;
 	}
 
 	.sales-data__cta {

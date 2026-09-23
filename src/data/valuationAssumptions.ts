@@ -1,72 +1,127 @@
-// Cap rate and expense ratio assumptions for the free property value calculator (/property-value/).
+// Sales statistics and valuation assumptions for the free property value calculator
+// (/property-value/) and the "2026 Sales Data" section on each submarket page.
 //
 // Source: "LA County Sales 01.01.26 to 09.22.26.xlsx" (CoStar export supplied by the user),
 // filtered to Sale Status = Sold and Property Type = Multifamily (1,321 comps).
 //
-// Cap rate ranges are the 25th-75th percentile of each submarket's own comps with a recorded
-// "Actual Cap Rate." Submarkets with fewer than ~10 such comps this year (Pico-Union, Westlake,
-// Brentwood) fall back to the county-wide range instead of publishing a thin, unreliable number.
+// RSO buildings (built before 1978, under the LA Rent Stabilization Ordinance) trade differently
+// than buildings built 1978 or later (AB 1482), so every figure is computed separately for each
+// age group. Cap rate ranges are the 25th-75th percentile of comps with a recorded "Actual Cap
+// Rate"; price per unit and price per SF are medians. A metric is only published for a submarket
+// when it has at least 10 comps in that age group this year; otherwise it is null and callers fall
+// back to the LA County figure for the same age group (see statFor below). No submarket has 10 or
+// more post-1978 comps yet, so those all fall back to county-wide.
 //
-// Expense ratios are IMPLIED from real comps, not assumed: Cap Rate = (1 - Expense Ratio) / GRM,
-// so Expense Ratio = 1 - (Cap Rate x GRM), computed only for the 967 comps reporting both figures,
-// then split by building-age bracket (25th-75th percentile per bracket).
+// Expense ratios are set by the brokers (RSO buildings run higher than newer ones): 37%-42% for
+// RSO buildings and 32%-36% for 1978-or-later buildings. They are used as given rather than derived
+// from the export, which only carries cap rate and GRM.
 //
 // This goes stale as comps age. Re-derive it from a fresh county sales export every quarter or
-// two — send Claude the new file and ask it to rerun the analysis and update this file.
+// two: send Claude the new file and ask it to rerun the analysis and update this file.
 
 export const VALUATION_DATA_AS_OF = 'September 2026';
 export const VALUATION_DATA_SOURCE = 'LA County sold multifamily transactions, January-September 2026';
 
-export interface CapRateRange {
-	low: number; // decimal, e.g. 0.0583 = 5.83%
-	high: number;
-	compCount: number;
-	areaLabel: string;
-}
+export type AgeGroup = 'rso' | 'post1978';
 
-export const COUNTY_WIDE_CAP_RATE: CapRateRange = {
-	low: 0.0512,
-	high: 0.0656,
-	compCount: 879,
-	areaLabel: 'Los Angeles County',
+export const AGE_GROUP_LABELS: Record<AgeGroup, { title: string; short: string }> = {
+	rso: { title: 'Built Before 1978 (RSO)', short: 'built before 1978' },
+	post1978: { title: 'Built 1978 or Later (AB 1482)', short: 'built 1978 or later' },
 };
 
-// null = too few comps this year to trust a submarket-specific range; falls back to county-wide.
-export const SUBMARKET_CAP_RATES: Record<string, CapRateRange | null> = {
-	koreatown: { low: 0.0583, high: 0.0734, compCount: 27, areaLabel: 'Koreatown' },
-	'pico-union': null,
-	westlake: null,
-	'east-hollywood': { low: 0.06, high: 0.0677, compCount: 11, areaLabel: 'East Hollywood' },
-	'silver-lake': { low: 0.0544, high: 0.063, compCount: 9, areaLabel: 'Silver Lake' },
-	brentwood: null,
-	'santa-monica': { low: 0.0497, high: 0.0596, compCount: 21, areaLabel: 'Santa Monica' },
-	'north-hollywood': { low: 0.0552, high: 0.0687, compCount: 30, areaLabel: 'North Hollywood' },
-	'van-nuys': { low: 0.054, high: 0.0606, compCount: 15, areaLabel: 'Van Nuys' },
-};
-
-export function capRateForSubmarket(submarket: string | null): CapRateRange {
-	const found = submarket ? SUBMARKET_CAP_RATES[submarket] : null;
-	return found ?? COUNTY_WIDE_CAP_RATE;
+export interface GroupStats {
+	pricePerUnit: { median: number; compCount: number } | null;
+	pricePerSf: { median: number; compCount: number } | null;
+	capRate: { low: number; high: number; compCount: number } | null; // decimals, e.g. 0.0586 = 5.86%
 }
 
-// Same source export as the cap rate figures above. Median price/unit, shown on each submarket
-// page when a submarket has at least 10 comps reporting it this year; null below that threshold.
-export interface SalesStat {
-	compCount: number;
-	medianPricePerUnit: number;
-}
+const NONE: GroupStats = { pricePerUnit: null, pricePerSf: null, capRate: null };
 
-export const SUBMARKET_SALES_STATS: Record<string, SalesStat | null> = {
-	koreatown: { compCount: 36, medianPricePerUnit: 175862 },
-	'pico-union': { compCount: 11, medianPricePerUnit: 184000 },
-	westlake: null, // fewer than 10 comps reporting price/unit this year
-	'east-hollywood': { compCount: 17, medianPricePerUnit: 225000 },
-	'silver-lake': { compCount: 13, medianPricePerUnit: 230556 },
-	brentwood: null, // fewer than 10 comps reporting price/unit this year
-	'santa-monica': { compCount: 37, medianPricePerUnit: 405833 },
-	'north-hollywood': { compCount: 34, medianPricePerUnit: 195000 },
-	'van-nuys': { compCount: 19, medianPricePerUnit: 225000 },
+// Submarkets not listed here (or metrics that are null) fall back to the county-wide figure.
+export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
+	county: {
+		rso: {
+			pricePerUnit: { median: 220000, compCount: 1028 },
+			pricePerSf: { median: 284, compCount: 1028 },
+			capRate: { low: 0.0521, high: 0.0661, compCount: 719 },
+		},
+		post1978: {
+			pricePerUnit: { median: 331250, compCount: 218 },
+			pricePerSf: { median: 328, compCount: 218 },
+			capRate: { low: 0.0497, high: 0.063, compCount: 154 },
+		},
+	},
+	koreatown: {
+		rso: {
+			pricePerUnit: { median: 173684, compCount: 34 },
+			pricePerSf: { median: 230, compCount: 34 },
+			capRate: { low: 0.0586, high: 0.0734, compCount: 26 },
+		},
+		post1978: NONE,
+	},
+	'pico-union': {
+		rso: {
+			pricePerUnit: { median: 184000, compCount: 11 },
+			pricePerSf: { median: 294, compCount: 11 },
+			capRate: null,
+		},
+		post1978: NONE,
+	},
+	'east-hollywood': {
+		rso: {
+			pricePerUnit: { median: 186667, compCount: 13 },
+			pricePerSf: { median: 245, compCount: 13 },
+			capRate: null,
+		},
+		post1978: NONE,
+	},
+	'silver-lake': {
+		rso: {
+			pricePerUnit: { median: 225000, compCount: 11 },
+			pricePerSf: { median: 270, compCount: 11 },
+			capRate: null,
+		},
+		post1978: NONE,
+	},
+	'santa-monica': {
+		rso: {
+			pricePerUnit: { median: 388333, compCount: 34 },
+			pricePerSf: { median: 398, compCount: 34 },
+			capRate: { low: 0.0481, high: 0.0596, compCount: 19 },
+		},
+		post1978: NONE,
+	},
+	'north-hollywood': {
+		rso: {
+			pricePerUnit: { median: 189500, compCount: 27 },
+			pricePerSf: { median: 247, compCount: 27 },
+			capRate: { low: 0.0555, high: 0.0698, compCount: 24 },
+		},
+		post1978: NONE,
+	},
+	'van-nuys': {
+		rso: {
+			pricePerUnit: { median: 178167, compCount: 12 },
+			pricePerSf: { median: 230, compCount: 12 },
+			capRate: { low: 0.054, high: 0.0606, compCount: 10 },
+		},
+		post1978: NONE,
+	},
+	// westlake and brentwood: fewer than 10 comps in either age group this year, so both fall back
+	// to county-wide for every metric.
 };
+
+// Returns the submarket's own figure when it has one, otherwise the county-wide figure, plus
+// whether the fallback was used so the UI can label the source honestly.
+export function statFor<K extends keyof GroupStats>(
+	submarket: string | null,
+	group: AgeGroup,
+	metric: K
+): { value: NonNullable<GroupStats[K]>; usedCountyFallback: boolean } {
+	const local = submarket ? SALES_STATS[submarket]?.[group]?.[metric] : null;
+	if (local) return { value: local as NonNullable<GroupStats[K]>, usedCountyFallback: false };
+	return { value: SALES_STATS.county[group][metric] as NonNullable<GroupStats[K]>, usedCountyFallback: true };
+}
 
 export interface AgeBracket {
 	id: string;
@@ -75,35 +130,24 @@ export interface AgeBracket {
 	expenseRatioHigh: number;
 }
 
-// Brackets mirror LA's actual rent-control framework (same one explained in the AB 1482 Insights
-// post): pre-1978 buildings fall under the LA Rent Stabilization Ordinance; 1978-but-older-than-15-
-// years fall under statewide AB 1482; anything newer sits inside AB 1482's rolling 15-year
-// new-construction exemption. The exemption cutoff year is computed live (see bracketForYear)
-// rather than hardcoded, since it moves forward every year.
-export const AGE_BRACKETS: Record<'rso' | 'ab1482' | 'exempt', AgeBracket> = {
+// Expense ratio brackets follow the same split as the sales stats: buildings built before 1978
+// fall under the LA Rent Stabilization Ordinance; 1978-or-later buildings fall under statewide
+// AB 1482. Ratios are broker-specified (see the note at the top of this file).
+export const AGE_BRACKETS: Record<'rso' | 'ab1482', AgeBracket> = {
 	rso: {
 		id: 'rso',
 		label: 'apartment buildings built before 1978, under the LA Rent Stabilization Ordinance',
-		expenseRatioLow: 0.303,
-		expenseRatioHigh: 0.395,
+		expenseRatioLow: 0.37,
+		expenseRatioHigh: 0.42,
 	},
 	ab1482: {
 		id: 'ab1482',
-		label: "apartment buildings built 1978 or later but more than 15 years ago, under AB 1482's rent cap",
-		expenseRatioLow: 0.303,
-		expenseRatioHigh: 0.389,
-	},
-	exempt: {
-		id: 'exempt',
-		label: 'new-construction apartment buildings built within the last 15 years',
-		expenseRatioLow: 0.207,
-		expenseRatioHigh: 0.298,
+		label: "apartment buildings built 1978 or later, under AB 1482's rent cap",
+		expenseRatioLow: 0.32,
+		expenseRatioHigh: 0.36,
 	},
 };
 
 export function bracketForYear(yearBuilt: number): AgeBracket {
-	const exemptCutoff = new Date().getFullYear() - 15;
-	if (yearBuilt >= exemptCutoff) return AGE_BRACKETS.exempt;
-	if (yearBuilt >= 1978) return AGE_BRACKETS.ab1482;
-	return AGE_BRACKETS.rso;
+	return yearBuilt < 1978 ? AGE_BRACKETS.rso : AGE_BRACKETS.ab1482;
 }

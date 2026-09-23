@@ -2,7 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import { submarkets } from '../../data/submarkets';
-import { COUNTY_WIDE_CAP_RATE, SUBMARKET_CAP_RATES, AGE_BRACKETS, VALUATION_DATA_AS_OF, VALUATION_DATA_SOURCE } from '../../data/valuationAssumptions';
+import { SALES_STATS, AGE_BRACKETS, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, VALUATION_DATA_SOURCE } from '../../data/valuationAssumptions';
+
+const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.name]));
 ---
 
 <BaseLayout
@@ -91,22 +93,23 @@ import { COUNTY_WIDE_CAP_RATE, SUBMARKET_CAP_RATES, AGE_BRACKETS, VALUATION_DATA
 	</section>
 </BaseLayout>
 
-<script define:vars={{ countyWide: COUNTY_WIDE_CAP_RATE, submarketRates: SUBMARKET_CAP_RATES, ageBrackets: AGE_BRACKETS, dataSource: VALUATION_DATA_SOURCE }}>
+<script define:vars={{ salesStats: SALES_STATS, submarketNames, ageGroupLabels: AGE_GROUP_LABELS, ageBrackets: AGE_BRACKETS, dataSource: VALUATION_DATA_SOURCE }}>
 	function formatDollar(n) {
 		if (n >= 1000000) return `$${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 2)}M`;
 		return `$${Math.round(n).toLocaleString('en-US')}`;
 	}
 
 	function bracketForYear(yearBuilt) {
-		const exemptCutoff = new Date().getFullYear() - 15;
-		if (yearBuilt >= exemptCutoff) return ageBrackets.exempt;
-		if (yearBuilt >= 1978) return ageBrackets.ab1482;
-		return ageBrackets.rso;
+		return yearBuilt < 1978 ? ageBrackets.rso : ageBrackets.ab1482;
 	}
 
-	function capRateForSubmarket(submarket) {
-		const found = submarket ? submarketRates[submarket] : null;
-		return found ?? countyWide;
+	// RSO (pre-1978) and 1978-or-newer buildings trade at different cap rates, so each is priced off
+	// its own comps. Uses the submarket's own range when it has 10+ comps in that group, else the
+	// LA County range for the same group.
+	function capRateFor(submarket, group) {
+		const local = submarket ? salesStats[submarket]?.[group]?.capRate : null;
+		if (local) return { ...local, areaLabel: submarketNames[submarket] };
+		return { ...salesStats.county[group].capRate, areaLabel: 'Los Angeles County' };
 	}
 
 	const form = document.getElementById('valuation-form');
@@ -124,7 +127,8 @@ import { COUNTY_WIDE_CAP_RATE, SUBMARKET_CAP_RATES, AGE_BRACKETS, VALUATION_DATA
 		if (!address || !yearBuilt || !monthlyRent) return;
 
 		const bracket = bracketForYear(yearBuilt);
-		const capRate = capRateForSubmarket(submarketSlug);
+		const ageGroup = yearBuilt < 1978 ? 'rso' : 'post1978';
+		const capRate = capRateFor(submarketSlug, ageGroup);
 		const annualGrossRent = monthlyRent * 12;
 
 		// Low end pairs the higher expense ratio with the higher cap rate (the conservative case);
@@ -136,7 +140,7 @@ import { COUNTY_WIDE_CAP_RATE, SUBMARKET_CAP_RATES, AGE_BRACKETS, VALUATION_DATA
 
 		document.getElementById('result-range').textContent = `${formatDollar(valueLow)} - ${formatDollar(valueHigh)}`;
 		document.getElementById('result-based-on').textContent =
-			`Based on ${capRate.compCount} apartment building sales in ${capRate.areaLabel} in 2026.`;
+			`Based on ${capRate.compCount.toLocaleString("en-US")} sales of apartment buildings ${ageGroupLabels[ageGroup].short} in ${capRate.areaLabel} in 2026.`;
 
 		const ppuEl = document.getElementById('result-ppu');
 		if (units && units > 0) {
@@ -176,7 +180,7 @@ import { COUNTY_WIDE_CAP_RATE, SUBMARKET_CAP_RATES, AGE_BRACKETS, VALUATION_DATA
 				estimateLow: formatDollar(valueLow),
 				estimateHigh: formatDollar(valueHigh),
 				compCount: String(capRate.compCount),
-				compArea: capRate.areaLabel,
+				compArea: `${capRate.areaLabel} (${ageGroupLabels[ageGroup].short})`,
 			}),
 		}).catch(() => {});
 	});
