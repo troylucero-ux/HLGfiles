@@ -7,10 +7,10 @@
 // RSO buildings (built before 1978, under the LA Rent Stabilization Ordinance) trade differently
 // than buildings built 1978 or later (AB 1482), so every figure is computed separately for each
 // age group. Cap rate ranges are the 25th-75th percentile of comps with a recorded "Actual Cap
-// Rate"; price per unit and price per SF are medians. A metric is only published for a submarket
-// when it has at least 10 comps in that age group this year; otherwise it is null and callers fall
-// back to the LA County figure for the same age group (see statFor below). No submarket has 10 or
-// more post-1978 comps yet, so those all fall back to county-wide.
+// Rate" and are only published with at least 5 such comps (null otherwise); price per unit and
+// price per SF are submarket medians with the sale count shown alongside (null only when the
+// submarket had no sales in that group). The county-wide entry exists solely as the calculator's
+// cap rate fallback when a submarket has too few cap rates; the submarket pages never use it.
 //
 // Expense ratios are set by the brokers (RSO buildings run higher than newer ones): 37%-42% for
 // RSO buildings and 32%-36% for 1978-or-later buildings. They are used as given rather than derived
@@ -21,6 +21,14 @@
 
 export const VALUATION_DATA_AS_OF = 'September 2026';
 export const VALUATION_DATA_SOURCE = 'LA County sold multifamily transactions, January-September 2026';
+
+// Minimum comps before a figure is shown. The submarket pages show a cap rate range from 5
+// reported cap rates and a median price from 3 sales; the calculator, which turns the cap rate
+// into a dollar estimate, only trusts a submarket's own range from 10 and otherwise uses the LA
+// County range for the same age group.
+export const MIN_PRICE_COMPS_PAGE = 3;
+export const MIN_CAP_RATE_COMPS_PAGE = 5;
+export const MIN_CAP_RATE_COMPS_CALCULATOR = 10;
 
 export type AgeGroup = 'rso' | 'post1978';
 
@@ -35,9 +43,6 @@ export interface GroupStats {
 	capRate: { low: number; high: number; compCount: number } | null; // decimals, e.g. 0.0586 = 5.86%
 }
 
-const NONE: GroupStats = { pricePerUnit: null, pricePerSf: null, capRate: null };
-
-// Submarkets not listed here (or metrics that are null) fall back to the county-wide figure.
 export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 	county: {
 		rso: {
@@ -57,31 +62,67 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			pricePerSf: { median: 230, compCount: 34 },
 			capRate: { low: 0.0586, high: 0.0734, compCount: 26 },
 		},
-		post1978: NONE,
+		post1978: {
+			pricePerUnit: { median: 250000, compCount: 2 },
+			pricePerSf: { median: 256, compCount: 2 },
+			capRate: null,
+		},
 	},
 	'pico-union': {
 		rso: {
 			pricePerUnit: { median: 184000, compCount: 11 },
 			pricePerSf: { median: 294, compCount: 11 },
+			capRate: { low: 0.07, high: 0.08, compCount: 5 },
+		},
+		post1978: { pricePerUnit: null, pricePerSf: null, capRate: null },
+	},
+	westlake: {
+		rso: {
+			pricePerUnit: { median: 133150, compCount: 7 },
+			pricePerSf: { median: 237, compCount: 7 },
+			capRate: { low: 0.0528, high: 0.062, compCount: 6 },
+		},
+		post1978: {
+			pricePerUnit: { median: 198611, compCount: 1 },
+			pricePerSf: { median: 227, compCount: 1 },
 			capRate: null,
 		},
-		post1978: NONE,
 	},
 	'east-hollywood': {
 		rso: {
 			pricePerUnit: { median: 186667, compCount: 13 },
 			pricePerSf: { median: 245, compCount: 13 },
+			capRate: { low: 0.06, high: 0.0655, compCount: 7 },
+		},
+		post1978: {
+			pricePerUnit: { median: 339286, compCount: 4 },
+			pricePerSf: { median: 324, compCount: 4 },
 			capRate: null,
 		},
-		post1978: NONE,
 	},
 	'silver-lake': {
 		rso: {
 			pricePerUnit: { median: 225000, compCount: 11 },
 			pricePerSf: { median: 270, compCount: 11 },
+			capRate: { low: 0.0544, high: 0.063, compCount: 7 },
+		},
+		post1978: {
+			pricePerUnit: { median: 302250, compCount: 2 },
+			pricePerSf: { median: 235, compCount: 2 },
 			capRate: null,
 		},
-		post1978: NONE,
+	},
+	brentwood: {
+		rso: {
+			pricePerUnit: { median: 475000, compCount: 3 },
+			pricePerSf: { median: 363, compCount: 3 },
+			capRate: null,
+		},
+		post1978: {
+			pricePerUnit: { median: 687417, compCount: 2 },
+			pricePerSf: { median: 464, compCount: 2 },
+			capRate: null,
+		},
 	},
 	'santa-monica': {
 		rso: {
@@ -89,7 +130,11 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			pricePerSf: { median: 398, compCount: 34 },
 			capRate: { low: 0.0481, high: 0.0596, compCount: 19 },
 		},
-		post1978: NONE,
+		post1978: {
+			pricePerUnit: { median: 561000, compCount: 3 },
+			pricePerSf: { median: 485, compCount: 3 },
+			capRate: null,
+		},
 	},
 	'north-hollywood': {
 		rso: {
@@ -97,7 +142,11 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			pricePerSf: { median: 247, compCount: 27 },
 			capRate: { low: 0.0555, high: 0.0698, compCount: 24 },
 		},
-		post1978: NONE,
+		post1978: {
+			pricePerUnit: { median: 230000, compCount: 7 },
+			pricePerSf: { median: 288, compCount: 7 },
+			capRate: { low: 0.05, high: 0.058, compCount: 6 },
+		},
 	},
 	'van-nuys': {
 		rso: {
@@ -105,23 +154,13 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			pricePerSf: { median: 230, compCount: 12 },
 			capRate: { low: 0.054, high: 0.0606, compCount: 10 },
 		},
-		post1978: NONE,
+		post1978: {
+			pricePerUnit: { median: 327586, compCount: 7 },
+			pricePerSf: { median: 345, compCount: 7 },
+			capRate: { low: 0.0583, high: 0.0597, compCount: 5 },
+		},
 	},
-	// westlake and brentwood: fewer than 10 comps in either age group this year, so both fall back
-	// to county-wide for every metric.
 };
-
-// Returns the submarket's own figure when it has one, otherwise the county-wide figure, plus
-// whether the fallback was used so the UI can label the source honestly.
-export function statFor<K extends keyof GroupStats>(
-	submarket: string | null,
-	group: AgeGroup,
-	metric: K
-): { value: NonNullable<GroupStats[K]>; usedCountyFallback: boolean } {
-	const local = submarket ? SALES_STATS[submarket]?.[group]?.[metric] : null;
-	if (local) return { value: local as NonNullable<GroupStats[K]>, usedCountyFallback: false };
-	return { value: SALES_STATS.county[group][metric] as NonNullable<GroupStats[K]>, usedCountyFallback: true };
-}
 
 export interface AgeBracket {
 	id: string;

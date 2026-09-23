@@ -7,7 +7,7 @@ import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
 import { listings } from '../../data/listings';
 import { formatPrice, formatPriceFull } from '../../lib/format';
-import { statFor, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, type AgeGroup } from '../../data/valuationAssumptions';
+import { SALES_STATS, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, MIN_PRICE_COMPS_PAGE, MIN_CAP_RATE_COMPS_PAGE, type AgeGroup } from '../../data/valuationAssumptions';
 
 export function getStaticPaths() {
 	return submarkets.map((sm) => ({
@@ -27,21 +27,37 @@ const heroSale = relatedClosings
 	.filter((c) => c.type === 'apartment' && c.images?.[0])
 	.sort((a, b) => b.price - a.price)[0];
 
-// Each age group is shown separately (RSO buildings trade differently than 1978-and-newer ones). A
-// metric uses this submarket's own figure when it has at least 10 comps, else the LA County figure.
+// Each age group is shown separately (RSO buildings trade differently than 1978-and-newer ones), using
+// this submarket's own sales only. A median price needs at least 3 sales and a cap rate at least 5 reported cap
+// rates, otherwise the card says there isn't enough data.
 const fmtCap = (r: { low: number; high: number }) => `${(r.low * 100).toFixed(2)}% – ${(r.high * 100).toFixed(2)}%`;
+const plural = (n: number) => `${n} ${sm.name} sale${n === 1 ? '' : 's'}`;
+const NOT_ENOUGH = 'Not enough data';
 const salesGroups = (['rso', 'post1978'] as AgeGroup[]).map((group) => {
-	const ppu = statFor(sm.slug, group, 'pricePerUnit');
-	const psf = statFor(sm.slug, group, 'pricePerSf');
-	const cap = statFor(sm.slug, group, 'capRate');
-	const source = (m: { usedCountyFallback: boolean; value: { compCount: number } }) =>
-		m.usedCountyFallback ? `LA County, ${m.value.compCount.toLocaleString("en-US")} sales` : `${m.value.compCount} ${sm.name} sales`;
+	const stats = SALES_STATS[sm.slug]?.[group];
+	const enoughPrice = (m?: { compCount: number } | null) => (m && m.compCount >= MIN_PRICE_COMPS_PAGE ? m : null);
+	const ppu = enoughPrice(stats?.pricePerUnit);
+	const psf = enoughPrice(stats?.pricePerSf);
+	const cap = stats?.capRate && stats.capRate.compCount >= MIN_CAP_RATE_COMPS_PAGE ? stats.capRate : null;
+	const noPriceNote = `Fewer than ${MIN_PRICE_COMPS_PAGE} ${sm.name} sales in this category`;
 	return {
 		title: AGE_GROUP_LABELS[group].title,
 		rows: [
-			{ label: 'Median Price Per Unit', value: formatPriceFull(ppu.value.median), note: source(ppu) },
-			{ label: 'Median Price Per SF', value: `$${psf.value.median.toLocaleString('en-US')}`, note: source(psf) },
-			{ label: 'Typical Cap Rate', value: fmtCap(cap.value), note: source(cap) },
+			{
+				label: 'Median Price Per Unit',
+				value: ppu ? formatPriceFull(ppu.median) : NOT_ENOUGH,
+				note: ppu ? plural(ppu.compCount) : noPriceNote,
+			},
+			{
+				label: 'Median Price Per SF',
+				value: psf ? `$${psf.median.toLocaleString('en-US')}` : NOT_ENOUGH,
+				note: psf ? plural(psf.compCount) : noPriceNote,
+			},
+			{
+				label: 'Typical Cap Rate',
+				value: cap ? fmtCap(cap) : NOT_ENOUGH,
+				note: cap ? plural(cap.compCount) : `Fewer than ${MIN_CAP_RATE_COMPS_PAGE} ${sm.name} sales reporting a cap rate`,
+			},
 		],
 	};
 });
@@ -107,8 +123,7 @@ const salesGroups = (['rso', 'post1978'] as AgeGroup[]).map((group) => {
 			<h2>{sm.name} Multifamily Sales So Far This Year</h2>
 			<p class="sales-data__intro">
 				Buildings built before 1978 fall under the LA Rent Stabilization Ordinance (RSO) and trade differently than newer buildings under AB 1482, so we
-				break them out separately. Confirmed sales through {VALUATION_DATA_AS_OF}. Where {sm.name} had fewer than 10 sales in a category, we show the LA
-				County figure instead.
+				break them out separately. Confirmed {sm.name} sales through {VALUATION_DATA_AS_OF}. Figures are shown only when there are enough sales to be meaningful.
 			</p>
 			<div class="sales-data__groups">
 				{

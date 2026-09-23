@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import { submarkets } from '../../data/submarkets';
-import { SALES_STATS, AGE_BRACKETS, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, VALUATION_DATA_SOURCE } from '../../data/valuationAssumptions';
+import { SALES_STATS, AGE_BRACKETS, AGE_GROUP_LABELS, MIN_CAP_RATE_COMPS_CALCULATOR, VALUATION_DATA_AS_OF, VALUATION_DATA_SOURCE } from '../../data/valuationAssumptions';
 
 const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.name]));
 ---
@@ -93,7 +93,7 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 	</section>
 </BaseLayout>
 
-<script define:vars={{ salesStats: SALES_STATS, submarketNames, ageGroupLabels: AGE_GROUP_LABELS, ageBrackets: AGE_BRACKETS, dataSource: VALUATION_DATA_SOURCE }}>
+<script define:vars={{ salesStats: SALES_STATS, submarketNames, ageGroupLabels: AGE_GROUP_LABELS, ageBrackets: AGE_BRACKETS, minComps: MIN_CAP_RATE_COMPS_CALCULATOR, dataSource: VALUATION_DATA_SOURCE }}>
 	function formatDollar(n) {
 		if (n >= 1000000) return `$${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 2)}M`;
 		return `$${Math.round(n).toLocaleString('en-US')}`;
@@ -104,11 +104,11 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 	}
 
 	// RSO (pre-1978) and 1978-or-newer buildings trade at different cap rates, so each is priced off
-	// its own comps. Uses the submarket's own range when it has 10+ comps in that group, else the
+	// its own comps. Uses the submarket's own range when it has enough comps in that group, else the
 	// LA County range for the same group.
 	function capRateFor(submarket, group) {
 		const local = submarket ? salesStats[submarket]?.[group]?.capRate : null;
-		if (local) return { ...local, areaLabel: submarketNames[submarket] };
+		if (local && local.compCount >= minComps) return { ...local, areaLabel: submarketNames[submarket] };
 		return { ...salesStats.county[group].capRate, areaLabel: 'Los Angeles County' };
 	}
 
