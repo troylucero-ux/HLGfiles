@@ -76,7 +76,12 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 					<details class="calc-result__detail">
 						<summary>How we calculated this</summary>
 						<p id="result-methodology"></p>
+						<p>
+							This estimate is built from your total rent and market averages. It does not take into consideration your property's unit mix,
+							condition, deferred maintenance, or upside potential, and it is not an appraisal.
+						</p>
 					</details>
+					<p class="calc-result__precise">For a more precise number from a broker, click the button below.</p>
 					<a href="#bov-form" class="btn btn-navy calc-result__cta">Get a Precise Number From a Broker &rarr;</a>
 				</div>
 			</div>
@@ -312,8 +317,14 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 		line-height: 1.6;
 	}
 
+	.calc-result__precise {
+		font-weight: 600;
+		color: var(--navy-dark);
+		margin: 0 0 1rem;
+	}
+
 	.calc-result__cta {
-		margin-top: 0.5rem;
+		margin-top: 0;
 	}
 
 	@media (max-width: 640px) {
