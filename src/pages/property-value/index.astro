@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import { submarkets } from '../../data/submarkets';
-import { SALES_STATS, AGE_BRACKETS, AGE_GROUP_LABELS, MIN_CAP_RATE_COMPS_CALCULATOR, VALUATION_DATA_AS_OF, VALUATION_DATA_SOURCE } from '../../data/valuationAssumptions';
+import { SALES_STATS, AGE_BRACKETS, AGE_GROUP_LABELS, MIN_CAP_RATE_COMPS, VALUATION_DATA_AS_OF, VALUATION_DATA_PERIOD } from '../../data/valuationAssumptions';
 
 const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.name]));
 ---
@@ -34,14 +34,15 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 					<div class="calc-row">
 						<div class="calc-field">
 							<label for="val-submarket">Neighborhood</label>
-							<select id="val-submarket" name="submarket">
-								<option value="">Other / Los Angeles County</option>
+							<select id="val-submarket" name="submarket" required>
+								<option value="" disabled selected>Select your neighborhood</option>
 								{
 									submarkets.map((sm) => (
 										<option value={sm.slug}>{sm.name}</option>
 									))
 								}
-							</select>
+							<option value="other">Other / Not Listed</option>
+								</select>
 						</div>
 						<div class="calc-field">
 							<label for="val-year">Year Built</label>
@@ -69,11 +70,11 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 				</form>
 
 				<div id="valuation-result" class="calc-result" hidden>
-					<span class="eyebrow">Estimated Value</span>
+					<span class="eyebrow" id="result-eyebrow">Estimated Value</span>
 					<p class="calc-result__range" id="result-range"></p>
 					<p class="calc-result__based-on" id="result-based-on"></p>
 					<p class="calc-result__ppu" id="result-ppu" hidden></p>
-					<details class="calc-result__detail">
+					<details class="calc-result__detail" id="result-details">
 						<summary>How we calculated this</summary>
 						<p id="result-methodology"></p>
 						<p>
@@ -81,7 +82,7 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 							condition, deferred maintenance, or upside potential, and it is not an appraisal.
 						</p>
 					</details>
-					<p class="calc-result__precise">For a more precise number from a broker, click the button below.</p>
+					<p class="calc-result__precise" id="result-precise">For a more precise number from a broker, click the button below.</p>
 					<a href="#bov-form" class="btn btn-navy calc-result__cta">Get a Precise Number From a Broker &rarr;</a>
 				</div>
 			</div>
@@ -98,7 +99,7 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 	</section>
 </BaseLayout>
 
-<script define:vars={{ salesStats: SALES_STATS, submarketNames, ageGroupLabels: AGE_GROUP_LABELS, ageBrackets: AGE_BRACKETS, minComps: MIN_CAP_RATE_COMPS_CALCULATOR, dataSource: VALUATION_DATA_SOURCE }}>
+<script define:vars={{ salesStats: SALES_STATS, submarketNames, ageGroupLabels: AGE_GROUP_LABELS, ageBrackets: AGE_BRACKETS, minComps: MIN_CAP_RATE_COMPS, dataPeriod: VALUATION_DATA_PERIOD }}>
 	function formatDollar(n) {
 		if (n >= 1000000) return `$${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 2)}M`;
 		return `$${Math.round(n).toLocaleString('en-US')}`;
@@ -109,12 +110,11 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 	}
 
 	// RSO (pre-1978) and 1978-or-newer buildings trade at different cap rates, so each is priced off
-	// its own comps. Uses the submarket's own range when it has enough comps in that group, else the
-	// LA County range for the same group.
+	// its own comps, and only from the selected submarket's own sales. There is no LA County
+	// fallback: with too few cap rates reported, no estimate is shown.
 	function capRateFor(submarket, group) {
 		const local = submarket ? salesStats[submarket]?.[group]?.capRate : null;
-		if (local && local.compCount >= minComps) return { ...local, areaLabel: submarketNames[submarket] };
-		return { ...salesStats.county[group].capRate, areaLabel: 'Los Angeles County' };
+		return local && local.compCount >= minComps ? local : null;
 	}
 
 	const form = document.getElementById('valuation-form');
@@ -133,34 +133,54 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 
 		const bracket = bracketForYear(yearBuilt);
 		const ageGroup = yearBuilt < 1978 ? 'rso' : 'post1978';
+		const areaName = submarketNames[submarketSlug] ?? null;
 		const capRate = capRateFor(submarketSlug, ageGroup);
 		const annualGrossRent = monthlyRent * 12;
 
-		// Low end pairs the higher expense ratio with the higher cap rate (the conservative case);
-		// high end pairs the lower expense ratio with the lower cap rate (the optimistic case).
-		const noiLow = annualGrossRent * (1 - bracket.expenseRatioHigh);
-		const noiHigh = annualGrossRent * (1 - bracket.expenseRatioLow);
-		const valueLow = noiLow / capRate.high;
-		const valueHigh = noiHigh / capRate.low;
-
-		document.getElementById('result-range').textContent = `${formatDollar(valueLow)} - ${formatDollar(valueHigh)}`;
-		document.getElementById('result-based-on').textContent =
-			`Based on ${capRate.compCount.toLocaleString("en-US")} sales of apartment buildings ${ageGroupLabels[ageGroup].short} in ${capRate.areaLabel} in 2026.`;
-
+		const rangeEl = document.getElementById('result-range');
+		const basedOnEl = document.getElementById('result-based-on');
 		const ppuEl = document.getElementById('result-ppu');
-		if (units && units > 0) {
-			ppuEl.textContent = `That's roughly ${formatDollar(valueLow / units)} - ${formatDollar(valueHigh / units)} per unit.`;
-			ppuEl.hidden = false;
-		} else {
-			ppuEl.hidden = true;
-		}
+		const detailsEl = document.getElementById('result-details');
+		let valueLow = null;
+		let valueHigh = null;
 
-		document.getElementById('result-methodology').textContent =
-			`We estimated a net operating income range using an expense ratio of ${Math.round(bracket.expenseRatioLow * 100)}%-${Math.round(
-				bracket.expenseRatioHigh * 100
-			)}% (typical for ${bracket.label}), then capitalized it using a ${(capRate.low * 100).toFixed(2)}%-${(capRate.high * 100).toFixed(
-				2
-			)}% cap rate range from ${dataSource}.`;
+		if (capRate) {
+			// Low end pairs the higher expense ratio with the higher cap rate (the conservative case);
+			// high end pairs the lower expense ratio with the lower cap rate (the optimistic case).
+			const noiLow = annualGrossRent * (1 - bracket.expenseRatioHigh);
+			const noiHigh = annualGrossRent * (1 - bracket.expenseRatioLow);
+			valueLow = noiLow / capRate.high;
+			valueHigh = noiHigh / capRate.low;
+
+			rangeEl.textContent = `${formatDollar(valueLow)} - ${formatDollar(valueHigh)}`;
+			rangeEl.classList.remove('calc-result__range--none');
+			basedOnEl.textContent = `Based on ${capRate.compCount.toLocaleString('en-US')} sales of apartment buildings ${ageGroupLabels[ageGroup].short} in ${areaName} in 2026.`;
+
+			if (units && units > 0) {
+				ppuEl.textContent = `That's roughly ${formatDollar(valueLow / units)} - ${formatDollar(valueHigh / units)} per unit.`;
+				ppuEl.hidden = false;
+			} else {
+				ppuEl.hidden = true;
+			}
+
+			document.getElementById('result-methodology').textContent =
+				`We estimated a net operating income range using an expense ratio of ${Math.round(bracket.expenseRatioLow * 100)}%-${Math.round(
+					bracket.expenseRatioHigh * 100
+				)}% (typical for ${bracket.label}), then capitalized it using a ${(capRate.low * 100).toFixed(2)}%-${(capRate.high * 100).toFixed(
+					2
+				)}% cap rate range from ${capRate.compCount} ${areaName} sales of apartment buildings ${ageGroupLabels[ageGroup].short}, ${dataPeriod}.`;
+			detailsEl.hidden = false;
+			document.getElementById('result-precise').textContent = 'For a more precise number from a broker, click the button below.';
+		} else {
+			rangeEl.textContent = 'Not enough data for an estimated range';
+			rangeEl.classList.add('calc-result__range--none');
+			basedOnEl.textContent = areaName
+				? `We don't have enough recent ${areaName} sales of apartment buildings ${ageGroupLabels[ageGroup].short} to give you a reliable range.`
+				: "We don't yet publish estimates for neighborhoods outside the ones listed.";
+			ppuEl.hidden = true;
+			detailsEl.hidden = true;
+			document.getElementById('result-precise').textContent = 'For a value you can rely on, request a free Broker Opinion of Value from a broker below.';
+		}
 
 		result.hidden = false;
 		result.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -178,14 +198,14 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				address,
-				submarket: submarketSlug || 'Other / LA County',
+				submarket: areaName ?? 'Other / Not Listed',
 				monthlyGrossRents: data.monthlyGrossRents,
 				yearBuilt: String(yearBuilt),
 				units: units ? String(units) : undefined,
-				estimateLow: formatDollar(valueLow),
-				estimateHigh: formatDollar(valueHigh),
-				compCount: String(capRate.compCount),
-				compArea: `${capRate.areaLabel} (${ageGroupLabels[ageGroup].short})`,
+				estimateLow: capRate ? formatDollar(valueLow) : undefined,
+				estimateHigh: capRate ? formatDollar(valueHigh) : undefined,
+				compCount: capRate ? String(capRate.compCount) : undefined,
+				compArea: capRate ? `${areaName} (${ageGroupLabels[ageGroup].short})` : undefined,
 			}),
 		}).catch(() => {});
 	});
@@ -286,6 +306,10 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 		font-size: clamp(2rem, 5vw, 2.75rem);
 		color: var(--navy-dark);
 		margin: 0.4rem 0;
+	}
+
+	.calc-result__range--none {
+		font-size: clamp(1.4rem, 3.5vw, 1.9rem);
 	}
 
 	.calc-result__based-on {

@@ -51,7 +51,7 @@ export async function handleValuationLead(request: Request, env: Env): Promise<R
 					`Monthly Gross Rent Entered: ${monthlyGrossRents}`,
 					yearBuilt ? `Year Built: ${yearBuilt}` : null,
 					units ? `Units: ${units}` : null,
-					estimateLow && estimateHigh ? `Estimated Range Shown: ${estimateLow} - ${estimateHigh}` : null,
+					estimateLow && estimateHigh ? `Estimated Range Shown: ${estimateLow} - ${estimateHigh}` : 'No estimate shown (not enough sales data for this neighborhood and building age).',
 					compCount && compArea ? `Based on ${compCount} comps in ${compArea}` : null,
 				].filter((line): line is string => Boolean(line));
 

@@ -7,7 +7,7 @@ import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
 import { listings } from '../../data/listings';
 import { formatPrice, formatPriceFull } from '../../lib/format';
-import { SALES_STATS, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, MIN_PRICE_COMPS_PAGE, MIN_CAP_RATE_COMPS_PAGE, type AgeGroup } from '../../data/valuationAssumptions';
+import { SALES_STATS, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, MIN_PRICE_COMPS_PAGE, MIN_CAP_RATE_COMPS, type AgeGroup } from '../../data/valuationAssumptions';
 
 export function getStaticPaths() {
 	return submarkets.map((sm) => ({
@@ -38,7 +38,7 @@ const salesGroups = (['rso', 'post1978'] as AgeGroup[]).map((group) => {
 	const enoughPrice = (m?: { compCount: number } | null) => (m && m.compCount >= MIN_PRICE_COMPS_PAGE ? m : null);
 	const ppu = enoughPrice(stats?.pricePerUnit);
 	const psf = enoughPrice(stats?.pricePerSf);
-	const cap = stats?.capRate && stats.capRate.compCount >= MIN_CAP_RATE_COMPS_PAGE ? stats.capRate : null;
+	const cap = stats?.capRate && stats.capRate.compCount >= MIN_CAP_RATE_COMPS ? stats.capRate : null;
 	const noPriceNote = `Fewer than ${MIN_PRICE_COMPS_PAGE} ${sm.name} sales in this category`;
 	return {
 		title: AGE_GROUP_LABELS[group].title,
@@ -56,7 +56,7 @@ const salesGroups = (['rso', 'post1978'] as AgeGroup[]).map((group) => {
 			{
 				label: 'Typical Cap Rate',
 				value: cap ? fmtCap(cap) : NOT_ENOUGH,
-				note: cap ? plural(cap.compCount) : `Fewer than ${MIN_CAP_RATE_COMPS_PAGE} ${sm.name} sales reporting a cap rate`,
+				note: cap ? plural(cap.compCount) : `Fewer than ${MIN_CAP_RATE_COMPS} ${sm.name} sales reporting a cap rate`,
 			},
 		],
 	};

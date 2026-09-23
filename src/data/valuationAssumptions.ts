@@ -6,11 +6,12 @@
 //
 // RSO buildings (built before 1978, under the LA Rent Stabilization Ordinance) trade differently
 // than buildings built 1978 or later (AB 1482), so every figure is computed separately for each
-// age group. Cap rate ranges are the 25th-75th percentile of comps with a recorded "Actual Cap
-// Rate" and are only published with at least 5 such comps (null otherwise); price per unit and
-// price per SF are submarket medians with the sale count shown alongside (null only when the
-// submarket had no sales in that group). The county-wide entry exists solely as the calculator's
-// cap rate fallback when a submarket has too few cap rates; the submarket pages never use it.
+// age group, and only from the submarket's own sales. Nothing here falls back to LA County averages.
+// Cap rate ranges are the 25th-75th percentile of comps with a recorded "Actual Cap Rate"; price
+// per unit and price per SF are medians with the sale count shown alongside (null only when the
+// submarket had no sales in that group). A submarket page or the calculator only shows a cap rate
+// range when at least MIN_CAP_RATE_COMPS comps reported one, and the pages only show a median price
+// from MIN_PRICE_COMPS_PAGE sales; otherwise they say there isn't enough data.
 //
 // Expense ratios are set by the brokers (RSO buildings run higher than newer ones): 37%-42% for
 // RSO buildings and 32%-36% for 1978-or-later buildings. They are used as given rather than derived
@@ -20,15 +21,11 @@
 // two: send Claude the new file and ask it to rerun the analysis and update this file.
 
 export const VALUATION_DATA_AS_OF = 'September 2026';
-export const VALUATION_DATA_SOURCE = 'LA County sold multifamily transactions, January-September 2026';
+export const VALUATION_DATA_PERIOD = 'January-September 2026';
 
-// Minimum comps before a figure is shown. The submarket pages show a cap rate range from 5
-// reported cap rates and a median price from 3 sales; the calculator, which turns the cap rate
-// into a dollar estimate, only trusts a submarket's own range from 10 and otherwise uses the LA
-// County range for the same age group.
+// Minimum comps before a figure is shown (see the note at the top of this file).
 export const MIN_PRICE_COMPS_PAGE = 3;
-export const MIN_CAP_RATE_COMPS_PAGE = 5;
-export const MIN_CAP_RATE_COMPS_CALCULATOR = 10;
+export const MIN_CAP_RATE_COMPS = 5;
 
 export type AgeGroup = 'rso' | 'post1978';
 
@@ -44,18 +41,6 @@ export interface GroupStats {
 }
 
 export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
-	county: {
-		rso: {
-			pricePerUnit: { median: 220000, compCount: 1028 },
-			pricePerSf: { median: 284, compCount: 1028 },
-			capRate: { low: 0.0521, high: 0.0661, compCount: 719 },
-		},
-		post1978: {
-			pricePerUnit: { median: 331250, compCount: 218 },
-			pricePerSf: { median: 328, compCount: 218 },
-			capRate: { low: 0.0497, high: 0.063, compCount: 154 },
-		},
-	},
 	koreatown: {
 		rso: {
 			pricePerUnit: { median: 173684, compCount: 34 },
