@@ -1,0 +1,320 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { submarkets } from '../../data/submarkets';
+import { COUNTY_WIDE_CAP_RATE, SUBMARKET_CAP_RATES, AGE_BRACKETS, VALUATION_DATA_AS_OF, VALUATION_DATA_SOURCE } from '../../data/valuationAssumptions';
+---
+
+<BaseLayout
+	title="Free LA Apartment Building Value Calculator"
+	description="Estimate your LA apartment building's value in seconds, based on real 2026 Los Angeles County multifamily sales, not a generic online estimate."
+>
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Free Tool</span>
+			<h1>What's Your Apartment Building Worth?</h1>
+			<p>
+				Enter your property's rent roll and we'll estimate a value range using real, recently closed apartment sales in your area, not a generic
+				online guess. Data as of {VALUATION_DATA_AS_OF}.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container calc-layout">
+			<div class="calc-card">
+				<form id="valuation-form">
+					<div class="calc-field">
+						<label for="val-address">Property Address</label>
+						<input id="val-address" name="address" type="text" placeholder="123 Main St, Los Angeles, CA" required />
+					</div>
+
+					<div class="calc-row">
+						<div class="calc-field">
+							<label for="val-submarket">Neighborhood</label>
+							<select id="val-submarket" name="submarket">
+								<option value="">Other / Los Angeles County</option>
+								{
+									submarkets.map((sm) => (
+										<option value={sm.slug}>{sm.name}</option>
+									))
+								}
+							</select>
+						</div>
+						<div class="calc-field">
+							<label for="val-year">Year Built</label>
+							<input id="val-year" name="yearBuilt" type="number" inputmode="numeric" min="1880" max="2026" placeholder="1985" required />
+						</div>
+					</div>
+
+					<div class="calc-row">
+						<div class="calc-field">
+							<label for="val-rent">Total Monthly Rent Collected</label>
+							<input id="val-rent" name="monthlyGrossRents" type="number" inputmode="numeric" min="0" placeholder="12,000" required />
+							<span class="calc-field__hint">Across all units, what you actually collect today, not asking or market rent.</span>
+						</div>
+						<div class="calc-field">
+							<label for="val-units">Number of Units <span class="calc-field__optional">(optional)</span></label>
+							<input id="val-units" name="units" type="number" inputmode="numeric" min="1" placeholder="8" />
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-gold">See My Estimated Value</button>
+					<p class="calc-disclaimer">
+						This is an automated estimate for informational purposes only. It is not an appraisal and does not account for your property's
+						condition, unit mix, deferred maintenance, or upside potential.
+					</p>
+				</form>
+
+				<div id="valuation-result" class="calc-result" hidden>
+					<span class="eyebrow">Estimated Value</span>
+					<p class="calc-result__range" id="result-range"></p>
+					<p class="calc-result__based-on" id="result-based-on"></p>
+					<p class="calc-result__ppu" id="result-ppu" hidden></p>
+					<details class="calc-result__detail">
+						<summary>How we calculated this</summary>
+						<p id="result-methodology"></p>
+					</details>
+					<a href="#bov-form" class="btn btn-navy calc-result__cta">Get a Precise Number From a Broker &rarr;</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="bov-form">
+		<div class="container">
+			<BOVForm
+				heading="Want a More Precise Valuation?"
+				subheading="A calculator can't see your unit mix, condition, or upside. A free Broker Opinion of Value from Highlight Multifamily Group can."
+			/>
+		</div>
+	</section>
+</BaseLayout>
+
+<script define:vars={{ countyWide: COUNTY_WIDE_CAP_RATE, submarketRates: SUBMARKET_CAP_RATES, ageBrackets: AGE_BRACKETS, dataSource: VALUATION_DATA_SOURCE }}>
+	function formatDollar(n) {
+		if (n >= 1000000) return `$${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 2)}M`;
+		return `$${Math.round(n).toLocaleString('en-US')}`;
+	}
+
+	function bracketForYear(yearBuilt) {
+		const exemptCutoff = new Date().getFullYear() - 15;
+		if (yearBuilt >= exemptCutoff) return ageBrackets.exempt;
+		if (yearBuilt >= 1978) return ageBrackets.ab1482;
+		return ageBrackets.rso;
+	}
+
+	function capRateForSubmarket(submarket) {
+		const found = submarket ? submarketRates[submarket] : null;
+		return found ?? countyWide;
+	}
+
+	const form = document.getElementById('valuation-form');
+	const result = document.getElementById('valuation-result');
+
+	form?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const data = Object.fromEntries(new FormData(form).entries());
+		const address = String(data.address ?? '').trim();
+		const submarketSlug = String(data.submarket ?? '');
+		const yearBuilt = Number(data.yearBuilt);
+		const monthlyRent = Number(data.monthlyGrossRents);
+		const units = data.units ? Number(data.units) : null;
+
+		if (!address || !yearBuilt || !monthlyRent) return;
+
+		const bracket = bracketForYear(yearBuilt);
+		const capRate = capRateForSubmarket(submarketSlug);
+		const annualGrossRent = monthlyRent * 12;
+
+		// Low end pairs the higher expense ratio with the higher cap rate (the conservative case);
+		// high end pairs the lower expense ratio with the lower cap rate (the optimistic case).
+		const noiLow = annualGrossRent * (1 - bracket.expenseRatioHigh);
+		const noiHigh = annualGrossRent * (1 - bracket.expenseRatioLow);
+		const valueLow = noiLow / capRate.high;
+		const valueHigh = noiHigh / capRate.low;
+
+		document.getElementById('result-range').textContent = `${formatDollar(valueLow)} - ${formatDollar(valueHigh)}`;
+		document.getElementById('result-based-on').textContent =
+			`Based on ${capRate.compCount} apartment building sales in ${capRate.areaLabel} in 2026.`;
+
+		const ppuEl = document.getElementById('result-ppu');
+		if (units && units > 0) {
+			ppuEl.textContent = `That's roughly ${formatDollar(valueLow / units)} - ${formatDollar(valueHigh / units)} per unit.`;
+			ppuEl.hidden = false;
+		} else {
+			ppuEl.hidden = true;
+		}
+
+		document.getElementById('result-methodology').textContent =
+			`We estimated a net operating income range using an expense ratio of ${Math.round(bracket.expenseRatioLow * 100)}%-${Math.round(
+				bracket.expenseRatioHigh * 100
+			)}% (typical for ${bracket.label}), then capitalized it using a ${(capRate.low * 100).toFixed(2)}%-${(capRate.high * 100).toFixed(
+				2
+			)}% cap rate range from ${dataSource}.`;
+
+		result.hidden = false;
+		result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+		// Prefill the BOV form below so a visitor who wants a precise number doesn't have to retype it.
+		const bovAddress = document.querySelector('.js-bov-form input[name="address"]');
+		const bovRent = document.querySelector('.js-bov-form input[name="monthlyGrossRents"]');
+		if (bovAddress) bovAddress.value = address;
+		if (bovRent) bovRent.value = data.monthlyGrossRents;
+
+		// Log every submission to Pipedrive, even if the visitor never requests a full BOV, so it
+		// can be followed up on directly. Fire-and-forget: never blocks or fails the visitor's result.
+		fetch('/api/valuation-lead', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				address,
+				submarket: submarketSlug || 'Other / LA County',
+				monthlyGrossRents: data.monthlyGrossRents,
+				yearBuilt: String(yearBuilt),
+				units: units ? String(units) : undefined,
+				estimateLow: formatDollar(valueLow),
+				estimateHigh: formatDollar(valueHigh),
+				compCount: String(capRate.compCount),
+				compArea: capRate.areaLabel,
+			}),
+		}).catch(() => {});
+	});
+</script>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 6vw, 4.5rem);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		font-size: 1.1rem;
+		color: var(--ink-soft);
+	}
+
+	.calc-layout {
+		display: flex;
+		justify-content: center;
+	}
+
+	.calc-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: clamp(2rem, 4vw, 3rem);
+		max-width: 640px;
+		width: 100%;
+	}
+
+	.calc-field {
+		margin-bottom: 1.25rem;
+	}
+
+	.calc-field label {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 700;
+		margin-bottom: 0.35rem;
+		color: var(--navy-dark);
+	}
+
+	.calc-field__optional {
+		font-weight: 400;
+		color: var(--ink-light);
+		text-transform: none;
+	}
+
+	.calc-field__hint {
+		display: block;
+		font-size: 0.75rem;
+		color: var(--ink-light);
+		margin-top: 0.3rem;
+	}
+
+	.calc-field input,
+	.calc-field select {
+		width: 100%;
+		padding: 0.75rem 0.9rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-size: 0.95rem;
+		font-family: var(--font-sans);
+		background: var(--paper);
+	}
+
+	.calc-field input:focus,
+	.calc-field select:focus {
+		outline: none;
+		border-color: var(--gold);
+	}
+
+	.calc-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
+
+	.calc-disclaimer {
+		font-size: 0.72rem;
+		color: var(--ink-light);
+		margin-top: 1rem;
+		line-height: 1.5;
+	}
+
+	.calc-result {
+		margin-top: 2.5rem;
+		padding-top: 2rem;
+		border-top: 1px solid var(--border);
+		text-align: center;
+	}
+
+	.calc-result__range {
+		font-family: var(--font-serif);
+		font-size: clamp(2rem, 5vw, 2.75rem);
+		color: var(--navy-dark);
+		margin: 0.4rem 0;
+	}
+
+	.calc-result__based-on {
+		color: var(--ink-light);
+		font-size: 0.9rem;
+	}
+
+	.calc-result__ppu {
+		font-size: 0.9rem;
+		color: var(--ink-light);
+		margin-top: -0.5rem;
+	}
+
+	.calc-result__detail {
+		text-align: left;
+		margin: 1.5rem 0;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	.calc-result__detail summary {
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--navy);
+	}
+
+	.calc-result__detail p {
+		margin-top: 0.5rem;
+		line-height: 1.6;
+	}
+
+	.calc-result__cta {
+		margin-top: 0.5rem;
+	}
+
+	@media (max-width: 640px) {
+		.calc-row {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

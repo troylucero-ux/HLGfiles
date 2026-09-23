@@ -6,7 +6,8 @@ import { submarkets } from '../../data/submarkets';
 import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
 import { listings } from '../../data/listings';
-import { formatPrice } from '../../lib/format';
+import { formatPrice, formatPriceFull } from '../../lib/format';
+import { SUBMARKET_CAP_RATES, SUBMARKET_SALES_STATS, COUNTY_WIDE_CAP_RATE, VALUATION_DATA_AS_OF } from '../../data/valuationAssumptions';
 
 export function getStaticPaths() {
 	return submarkets.map((sm) => ({
@@ -25,6 +26,9 @@ const relatedListings = listings.filter((l) => l.submarket === sm.slug && l.stat
 const heroSale = relatedClosings
 	.filter((c) => c.type === 'apartment' && c.images?.[0])
 	.sort((a, b) => b.price - a.price)[0];
+
+const capRate = SUBMARKET_CAP_RATES[sm.slug];
+const salesStat = SUBMARKET_SALES_STATS[sm.slug];
 ---
 
 <BaseLayout
@@ -78,6 +82,55 @@ const heroSale = relatedClosings
 					{sm.employers.map((t) => <li>{t}</li>)}
 				</ul>
 			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container sales-data">
+			<span class="eyebrow">2026 Sales Data</span>
+			<h2>{sm.name} Multifamily Sales So Far This Year</h2>
+			<div class="sales-data__grid">
+				{
+					salesStat ? (
+						<div class="sales-data__stat">
+							<span class="sales-data__num">{formatPriceFull(salesStat.medianPricePerUnit)}</span>
+							<span class="sales-data__label">Median Price Per Unit</span>
+							<span class="sales-data__note">Based on {salesStat.compCount} confirmed {sm.name} sales through {VALUATION_DATA_AS_OF}</span>
+						</div>
+					) : (
+						<div class="sales-data__stat">
+							<span class="sales-data__num">Limited Data</span>
+							<span class="sales-data__label">Median Price Per Unit</span>
+							<span class="sales-data__note">Fewer than 10 confirmed {sm.name} sales through {VALUATION_DATA_AS_OF} to report a reliable median</span>
+						</div>
+					)
+				}
+				{
+					capRate ? (
+						<div class="sales-data__stat">
+							<span class="sales-data__num">
+								{(capRate.low * 100).toFixed(2)}% – {(capRate.high * 100).toFixed(2)}%
+							</span>
+							<span class="sales-data__label">Typical Cap Rate</span>
+							<span class="sales-data__note">Based on {capRate.compCount} confirmed {sm.name} sales through {VALUATION_DATA_AS_OF}</span>
+						</div>
+					) : (
+						<div class="sales-data__stat">
+							<span class="sales-data__num">
+								{(COUNTY_WIDE_CAP_RATE.low * 100).toFixed(2)}% – {(COUNTY_WIDE_CAP_RATE.high * 100).toFixed(2)}%
+							</span>
+							<span class="sales-data__label">Typical Cap Rate (LA County)</span>
+							<span class="sales-data__note">
+								Not enough {sm.name}-specific sales this year for a reliable range; shown is the Los Angeles County-wide rate across{' '}
+								{COUNTY_WIDE_CAP_RATE.compCount} confirmed sales
+							</span>
+						</div>
+					)
+				}
+			</div>
+			<p class="sales-data__cta">
+				Curious what your own {sm.name} property could be worth? <a href="/property-value/">Try our free value calculator &rarr;</a>
+			</p>
 		</div>
 	</section>
 
@@ -220,6 +273,54 @@ const heroSale = relatedClosings
 		font-size: 0.8rem;
 		margin-top: 0.4rem;
 		color: var(--ink-light);
+	}
+
+	.sales-data h2 {
+		margin-bottom: 1.5rem;
+	}
+
+	.sales-data__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.sales-data__stat {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 1px;
+		padding: 1.75rem 2rem;
+	}
+
+	.sales-data__num {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: 2rem;
+		font-weight: 400;
+		color: var(--navy-dark);
+	}
+
+	.sales-data__label {
+		display: block;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--gold-dark);
+		font-weight: 600;
+		margin-top: 0.4rem;
+	}
+
+	.sales-data__note {
+		display: block;
+		font-size: 0.8rem;
+		color: var(--ink-light);
+		margin-top: 0.5rem;
+	}
+
+	.sales-data__cta {
+		margin-top: 1.5rem;
+		font-weight: 600;
 	}
 
 	.detail-grid {
