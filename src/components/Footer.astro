@@ -9,17 +9,10 @@ const year = new Date().getFullYear();
 		<div class="site-footer__col">
 			<img
 				class="site-footer__logo-img"
-				src="/images/brand/hlg-logo-dark-bg.png"
-				alt="Highlight Multifamily Investment Group"
-				width="181"
-				height="100"
-			/>
-			<img
-				class="site-footer__brokerage-logo"
-				src="/images/brand/equity-union-logo-dark-bg.png"
-				alt={site.brokerage}
-				width="142"
-				height="63"
+				src="/images/brand/hlg-eu-logo-dark.svg"
+				alt="Highlight Multifamily Group, Equity Union Commercial"
+				width="240"
+				height="61"
 			/>
 			<p>{site.officeAddress}</p>
 			<p>Office DRE #{site.officeDRE}</p>
@@ -115,14 +108,8 @@ const year = new Date().getFullYear();
 	}
 
 	.site-footer__logo-img {
-		width: 140px;
-		height: auto;
-		display: block;
-		margin-bottom: 1.25rem;
-	}
-
-	.site-footer__brokerage-logo {
-		width: 120px;
+		width: 100%;
+		max-width: 240px;
 		height: auto;
 		display: block;
 		margin-bottom: 1.25rem;
