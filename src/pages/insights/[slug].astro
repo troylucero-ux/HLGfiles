@@ -15,6 +15,20 @@ export function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+
+// Paragraphs are plain text, with [link text](/internal-path/) supported for internal links.
+const linkPattern = /\[([^\]]+)\]\((\/[^)\s]*)\)/g;
+function toParts(paragraph: string) {
+	const parts: { text: string; href?: string }[] = [];
+	let last = 0;
+	for (const m of paragraph.matchAll(linkPattern)) {
+		if (m.index! > last) parts.push({ text: paragraph.slice(last, m.index) });
+		parts.push({ text: m[1], href: m[2] });
+		last = m.index! + m[0].length;
+	}
+	if (last < paragraph.length) parts.push({ text: paragraph.slice(last) });
+	return parts;
+}
 // Appending a time avoids the date being parsed as UTC midnight, which can display as the
 // previous day in timezones behind UTC.
 const dateFormatted = new Date(`${post.date}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -52,7 +66,7 @@ const articleSchema = {
 						<>
 							<h2>{s.heading}</h2>
 							{s.paragraphs.map((p) => (
-								<p>{p}</p>
+								<p>{toParts(p).map((part) => (part.href ? <a href={part.href}>{part.text}</a> : part.text))}</p>
 							))}
 							{s.heading === 'How a 1031 Exchange Makes the Move Tax-Deferred' && <ExchangeTimeline />}
 							{s.heading === 'The New Maximum, Effective August 1, 2026' && <CpiRentCapTable />}

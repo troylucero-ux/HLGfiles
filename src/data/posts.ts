@@ -13,6 +13,50 @@ export type Post = {
 
 export const posts: Post[] = [
 	{
+		slug: 'selling-la-apartment-building-before-year-end',
+		title: 'Thinking About Selling? The Year-End Clock Starts Now',
+		seoTitle: 'Selling an LA Apartment Building Before Year-End: Timeline',
+		description:
+			'A typical LA apartment sale takes 60 to 90 days. Here is how to time a December or January close, and what it means for a 1031 exchange.',
+		date: '2026-09-25',
+		sections: [
+			{
+				heading: 'Why October Is the Month to Decide',
+				paragraphs: [
+					'If you are thinking about selling your apartment building, October is the month to decide which tax year you want the sale to land in. In general, a sale is reported for the year it closes, not the year you list it or sign the contract, so the calendar matters more than most owners expect.',
+				],
+			},
+			{
+				heading: 'How Long an LA Apartment Sale Typically Takes',
+				paragraphs: [
+					'A typical Los Angeles apartment sale takes 60 to 90 days from listing to closing: a few weeks of marketing, then 30 to 45 days of escrow. Every deal is different, and pricing, buyer financing, and due diligence can all move the date, but that range is a useful planning number.',
+					'Work backward from that and the year-end picture gets clear. List now and a December 31 closing is realistic. Wait until November and you are likely closing in 2027.',
+				],
+			},
+			{
+				heading: 'December Close vs. January Close',
+				paragraphs: [
+					'Neither is automatically better. A December close puts the gain on your 2026 return. A January close pushes that tax bill out a full year. Which one works for you depends on your income this year and next, your other deductions and plans, and where you want the proceeds to go, which is a conversation to have with your CPA before you list, not after you are under contract.',
+				],
+			},
+			{
+				heading: 'If You Are Planning a 1031 Exchange, the Calendar Matters Even More',
+				paragraphs: [
+					'A 1031 exchange gives you 45 days from closing to identify a replacement property and 180 days to close on it. There is a catch for year-end sales: the 180 days ends early if your tax return for the year of the sale is due first, unless you file an extension. With a December sale, the 180 days would run past the April tax deadline, so ask your CPA about filing an extension to keep the full window.',
+					'For a closer look at how exchanges work, see our guide to [1031 exchanges](/1031-exchanges/) and our article on [why LA apartment owners are exchanging into triple-net properties](/insights/1031-exchange-into-triple-net-properties/).',
+				],
+			},
+			{
+				heading: 'Start With Your Goals, Then Build the Timeline',
+				paragraphs: [
+					'The right timeline starts with what you want the sale to accomplish: a particular tax year, a particular price, or a smooth handoff into a 1031 exchange. From there, the first step is knowing what your building is worth. You can get a quick range from our [free property value calculator](/property-value/), and a free Broker Opinion of Value gives you a number grounded in your building’s actual rents, condition, and unit mix.',
+					'If you want a sale timeline built around your goals, we would be glad to map it out with you. Reach out to Josh Kaplan or Troy Lucero at Highlight Multifamily Group.',
+					'This article is general information, not tax or legal advice. Please talk with your CPA or tax attorney about how the timing of a sale affects you.',
+				],
+			},
+		],
+	},
+	{
 		slug: 'ab-1482-rent-cap-2026',
 		title: "AB 1482's Rent Cap Just Reset: What It Means for Post-1978 LA Apartment Buildings",
 		seoTitle: 'AB 1482 Rent Cap 2026: What LA Apartment Owners Need to Know',
