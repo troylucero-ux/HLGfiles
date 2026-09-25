@@ -106,6 +106,7 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 	}
 
 	function bracketForYear(yearBuilt) {
+		if (yearBuilt < 1935) return ageBrackets.pre1935;
 		return yearBuilt < 1978 ? ageBrackets.rso : ageBrackets.ab1482;
 	}
 

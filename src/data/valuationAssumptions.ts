@@ -13,8 +13,8 @@
 // range when at least MIN_CAP_RATE_COMPS comps reported one, and the pages only show a median price
 // from MIN_PRICE_COMPS_PAGE sales; otherwise they say there isn't enough data.
 //
-// Expense ratios are set by the brokers (RSO buildings run higher than newer ones): 37%-42% for
-// RSO buildings and 32%-36% for 1978-or-later buildings. They are used as given rather than derived
+// Expense ratios are set by the brokers (older buildings run higher): 37%-47% for buildings built
+// before 1935, 37%-42% for other RSO buildings (1935-1977), and 32%-36% for 1978-or-later buildings. They are used as given rather than derived
 // from the export, which only carries cap rate and GRM.
 //
 // This goes stale as comps age. Re-derive it from a fresh county sales export every quarter or
@@ -157,7 +157,13 @@ export interface AgeBracket {
 // Expense ratio brackets follow the same split as the sales stats: buildings built before 1978
 // fall under the LA Rent Stabilization Ordinance; 1978-or-later buildings fall under statewide
 // AB 1482. Ratios are broker-specified (see the note at the top of this file).
-export const AGE_BRACKETS: Record<'rso' | 'ab1482', AgeBracket> = {
+export const AGE_BRACKETS: Record<'pre1935' | 'rso' | 'ab1482', AgeBracket> = {
+	pre1935: {
+		id: 'pre1935',
+		label: 'apartment buildings built before 1935, under the LA Rent Stabilization Ordinance',
+		expenseRatioLow: 0.37,
+		expenseRatioHigh: 0.47,
+	},
 	rso: {
 		id: 'rso',
 		label: 'apartment buildings built before 1978, under the LA Rent Stabilization Ordinance',
@@ -173,5 +179,6 @@ export const AGE_BRACKETS: Record<'rso' | 'ab1482', AgeBracket> = {
 };
 
 export function bracketForYear(yearBuilt: number): AgeBracket {
+	if (yearBuilt < 1935) return AGE_BRACKETS.pre1935;
 	return yearBuilt < 1978 ? AGE_BRACKETS.rso : AGE_BRACKETS.ab1482;
 }
