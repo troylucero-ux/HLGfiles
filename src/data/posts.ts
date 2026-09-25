@@ -8,6 +8,7 @@ export type Post = {
 	seoTitle?: string; // shorter <title> tag (aim for 60 chars or fewer); falls back to `title`
 	description: string; // also used as the meta description, so keep it to ~155 characters
 	date: string; // ISO date
+	image?: { src: string; alt: string; width: number; height: number }; // optional graphic shown under the date and used for social sharing
 	sections: { heading: string; paragraphs: string[] }[];
 };
 
@@ -19,6 +20,12 @@ export const posts: Post[] = [
 		description:
 			'A typical LA apartment sale takes 60 to 90 days. Here is how to time a December or January close, and what it means for a 1031 exchange.',
 		date: '2026-09-25',
+		image: {
+			src: '/images/insights/year-end-sale-clock.webp',
+			alt: 'Timeline graphic: list in October, escrow in November, close by December 31. Tax year 2026 or 2027? Timing is your choice.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Why October Is the Month to Decide',
