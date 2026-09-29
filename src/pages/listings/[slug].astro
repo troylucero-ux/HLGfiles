@@ -90,19 +90,21 @@ const videoSchema = listing.youtubeId
 			</p>
 
 			{
-				listing.image && (
-					<img
-						class="listing-detail__image"
-						src={listing.image}
-						alt={`${listing.name}, ${listing.city}, ${listing.state}, apartment building for sale`}
-						width="900"
-						height="520"
-						loading="eager"
-					/>
+				listing.youtubeId ? (
+					<YouTubeFacade youtubeId={listing.youtubeId} title={`${listing.name} Video Tour`} />
+				) : (
+					listing.image && (
+						<img
+							class="listing-detail__image"
+							src={listing.image}
+							alt={`${listing.name}, ${listing.city}, ${listing.state}, apartment building for sale`}
+							width="900"
+							height="520"
+							loading="eager"
+						/>
+					)
 				)
 			}
-
-			{listing.youtubeId && <YouTubeFacade youtubeId={listing.youtubeId} title={`${listing.name} Video Tour`} />}
 
 			<div class="listing-detail__stats">
 				<div>
