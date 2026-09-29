@@ -38,8 +38,11 @@ const { youtubeId, title } = Astro.props;
 				iframe.title = title;
 				iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
 				iframe.allowFullscreen = true;
-				iframe.width = '100%';
-				iframe.height = '100%';
+				// Set sizing inline rather than relying on the scoped <style> block below: Astro scopes
+				// that CSS to elements present at build time, so it never matches an iframe created here
+				// at runtime. Without this, the iframe fell back to its ~150px default height while
+				// staying full width, and YouTube's player pillarboxed the video into a narrow strip.
+				iframe.style.cssText = 'display:block; width:100%; aspect-ratio:16/9; border:0; border-radius:2px;';
 				facade.replaceWith(iframe);
 			},
 			{ once: true }
@@ -86,12 +89,5 @@ const { youtubeId, title } = Astro.props;
 
 	.yt-facade:hover .yt-facade__play svg {
 		transform: scale(1.08);
-	}
-
-	iframe {
-		aspect-ratio: 16 / 9;
-		width: 100%;
-		border: 0;
-		border-radius: 2px;
 	}
 </style>
