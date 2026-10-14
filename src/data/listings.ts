@@ -141,6 +141,21 @@ export const listings: Listing[] = [
 		description:
 			'Nine-unit value-add opportunity in Echo Park, built in 1925 across three structures on a 6,904 SF lot just south of Temple St. Two units deliver vacant with roughly 36% rental upside after lease-up; tenants pay trash, landlord pays water.',
 		image: '/images/listings/333-n-union-ave-los-angeles-ca-90026/333-n-union-ave-los-angeles-ca.avif',
+		yearBuilt: 1925,
+		capRate: 8.03,
+		grm: 7.7,
+		pricePerUnit: 116667,
+		pricePerSqft: 230,
+		highlights: [
+			'Strong in-place return: priced to an 8.03% cap rate and 7.7 GRM on in-place rents, rising to an 11.96% cap rate and 5.6 GRM at pro forma rents.',
+			'Rental upside: in-place rents sit roughly 36% below market, a loss to lease of about $4,083 per month.',
+			'Two units delivered vacant: the two vacant guest rooms (Units 1 and 4) allow a new owner to lease at market rents.',
+			'Excellent unit mix: five 1-bed/1-bath apartments and four guest rooms across three separate structures, a front four-plex, a freestanding bungalow, and a rear four-plex.',
+			'Character and amenities: the 1-bed/1-bath units have 11-foot ceilings, and some feature crown molding, built-in fireplaces, wood floors, and split AC systems. A large, well-maintained common yard and garden serves all tenants.',
+			'Low operating costs: tenants pay trash, the front four units are separately metered for electricity and gas, and electrical upgrades have recently been completed.',
+			'Guest room upside: investors can explore the Los Angeles Municipal Code to legally upgrade the guest rooms to a light housekeeping designation, which would allow a permanent two-burner stovetop and oven.',
+			'Walkable South Echo Park location: a Walk Score of 89, steps from dining and retail on Temple St, with quick access to the 101 and 110 freeways.',
+		],
 	},
 	{
 		slug: '3815-don-tomaso-dr-los-angeles-ca-90008',
@@ -159,5 +174,21 @@ export const listings: Listing[] = [
 		description:
 			'Six-unit value-add opportunity in Baldwin Hills, built in 1954 on a 10,866 SF hillside lot with sweeping views toward Downtown LA. In-place rents sit roughly 47% below market, offering a clear path to increased income through turnover.',
 		image: '/images/listings/3815-don-tomaso-dr-los-angeles-ca-90008/3815-don-tomaso-dr-los-angeles-ca.webp',
+		yearBuilt: 1954,
+		capRate: 6.04,
+		grm: 10.35,
+		zoning: 'LARD1.5',
+		pricePerUnit: 216667,
+		pricePerSqft: 285,
+		highlights: [
+			'Value-add upside: in-place rents sit roughly 47% below market, a loss to lease of $4,904 per month. Capturing it through natural turnover lifts NOI from $78,553 to $129,231 and the cap rate from 6.04% to 9.94%.',
+			'Fully occupied: stable in-place income while a new owner works toward market rents.',
+			'Diverse unit mix: four 1-bed/1-bath units, one 2-bed/2-bath unit, and one 3-bed/3-bath ADU, all within a single building.',
+			'Views and privacy: the building rises above the street on a 10,866 SF hillside lot, with views from the upper levels reaching Downtown LA and beyond.',
+			'Outdoor space: Units E and F at the top feature large private patios off the master bedrooms, and a quiet second-level courtyard could be improved into a tenant gathering space.',
+			'Low operating burden: all units are separately metered for electricity and gas with their own water heaters, and tenants pay their own trash.',
+			'Added income potential: the laundry room is not currently used by tenants, and investors may explore adding washers and dryers in each unit.',
+			'Central Baldwin Hills location near Crenshaw Boulevard retail and dining, the Metro K Line, and Kenneth Hahn State Recreation Area.',
+		],
 	},
 ];
