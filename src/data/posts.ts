@@ -14,6 +14,113 @@ export type Post = {
 
 const allPosts: Post[] = [
 	{
+		slug: 'how-to-choose-a-multifamily-broker-in-los-angeles',
+		title: 'How to Choose the Best Multifamily Broker in Los Angeles',
+		seoTitle: 'How to Choose the Best Multifamily Broker in Los Angeles',
+		description:
+			'Hiring a broker to sell your LA apartment building? Seven things to check, the questions to ask, and the red flags to watch for before you sign.',
+		date: '2026-10-16',
+		image: {
+			src: '/images/insights/how-to-choose-multifamily-broker.webp',
+			alt: 'Graphic: seven things to check before you hire a multifamily broker. Verify the track record, ask for recent local sales, and call references.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'The broker you hire affects your sale price, your tax outcome, and how smooth the process feels. It is worth interviewing more than one.',
+					'Look for a specialist in apartment buildings, with closed sales you can verify, recent experience in your neighborhood, and a clear plan for finding buyers.',
+					'Be careful with the broker who offers the highest price. A pricing opinion is only useful if it is backed by comparable sales and a realistic net-proceeds estimate.',
+					'Ask for references and check the broker’s license before you sign anything.',
+				],
+			},
+			{
+				heading: 'Why Apartment Buildings Need a Specialist',
+				paragraphs: [
+					'Selling an apartment building is a different job from selling a house or a retail center. The buyer is an investor, so the price rests on income, expenses, and risk. In Los Angeles, rent control, building age, and local taxes can move the number by hundreds of thousands of dollars. A broker who works mostly in other property types will be learning those rules on your sale.',
+					'It also affects who sees your building. Apartment buyers work with brokers they already know, and the best offers often come from investors who track the market closely.',
+				],
+			},
+			{
+				heading: '1. A Track Record You Can Verify',
+				paragraphs: [
+					'Ask for a list of recent apartment sales, with addresses, unit counts, and prices, and focus on buildings similar to yours in size, age, and neighborhood. Then check it. Sale prices of recorded transactions are public, and a broker who is proud of a track record will welcome the check.',
+					'Pay attention to how the broker was involved. Some brokers may count deals they only assisted with, or deals from a previous firm. It is fair to ask which ones they represented directly and when.',
+					'As an example of what a verifiable record looks like, our [closed sales](/closed-sales/) page lists every sale with its address, unit count, size, and price, and more than 1,390 units and $345 million in closed sales are behind it.',
+				],
+			},
+			{
+				heading: '2. Knowledge of Your Neighborhood',
+				paragraphs: [
+					'Los Angeles is a collection of very different markets. A building in Koreatown trades on different numbers from one in Santa Monica or North Hollywood, and the right comparable sales are in your own area, not across the county. Ask the broker for the three most relevant recent sales near your building and why they apply.',
+					'A broker who knows the area can also tell you what local buyers care about, from walkability and transit to the condition of the neighborhood’s building stock. We publish real sales figures for each of our [neighborhoods](/submarkets/), including median price per unit and typical cap rates, so you can see what a local broker should already know.',
+				],
+			},
+			{
+				heading: '3. An Honest Pricing Opinion',
+				paragraphs: [
+					'Some brokers win listings by promising a high price. That can leave you with a building that sits on the market, then sells for less after a price cut, having lost weeks and credibility with buyers.',
+					'A trustworthy opinion of value shows its work. It should include comparable sales, the cap rate and gross rent multiplier it assumes, your income and expenses, and an estimate of what you would net after taxes and costs. If a broker cannot explain how they arrived at the number, treat it as a sales pitch. Our guide to [how apartment buildings are valued](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains what to look for, and our [free property value calculator](/property-value/) gives you a quick range to compare against.',
+				],
+			},
+			{
+				heading: '4. A Plan for Reaching Buyers',
+				paragraphs: [
+					'Ask the broker how they will find buyers, not only whether they will list the building. A good answer covers a database of active investors, relationships with other brokers, an accurate offering memorandum, an open house, and in some cases an off-market approach.',
+					'Two examples from our own work show how different plans fit different buildings. At 1513 Arlington Ave, an open house for brokers and buyers drew offers from 12 buyers, as we describe in the [case study](/case-studies/1513-arlington-ave-arlington-heights-apartments/). At 236 S Bonnie Brae St, a confidential off-market sale to a proven repeat buyer worked better for a large, quietly marketed building, as described in that [case study](/case-studies/236-s-bonnie-brae-st-westlake-apartments/).',
+				],
+			},
+			{
+				heading: '5. Knowledge of the Rules and the Tax Side',
+				paragraphs: [
+					'In Los Angeles, a good broker has to understand more than the real estate. Rent stabilization and statewide rent caps shape your income and how buyers underwrite your building, as we explain in our guides to the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/) and to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/). The City’s Measure ULA transfer tax can change what you net on a larger sale, as covered in our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/).',
+					'If you plan to defer your tax with a 1031 exchange, ask whether the broker can help you find replacement property and work with your exchange advisor. If you are selling a building from an estate or trust, ask about their experience with that process, which has its own timing and paperwork. Brokers are not tax advisors, so a good one will also work with your CPA. See our guides to [1031 exchanges](/1031-exchanges/), [trust and estate sales](/trust-and-estate-sales/), and [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/).',
+				],
+			},
+			{
+				heading: '6. Who Will Actually Do the Work',
+				paragraphs: [
+					'In some firms, the person who pitches you is not the person who handles your sale. Ask who will prepare the offering memorandum, return your calls, and negotiate with buyers, and how often you can expect an update. Ask how many buildings the broker is handling at once.',
+					'At Highlight Multifamily Group, the two founding partners, Josh Kaplan and Troy Lucero, work every listing themselves. They make the calls to investors and other brokers directly, negotiate directly with buyers, and are the main contacts on every deal. They follow up persistently, collect buyer feedback, and relay it to the selling client. You can read more about them on our [team page](/about/).',
+				],
+			},
+			{
+				heading: '7. References and Reviews',
+				paragraphs: [
+					'Ask for the names of past sellers you can call, preferably owners of buildings like yours. Online reviews are a useful start, but a phone call tells you how the broker handled the hard moments, such as an offer that fell through or a tenant issue. You can read what our clients have said on our [testimonials](/testimonials/) page.',
+				],
+			},
+			{
+				heading: 'Questions to Ask Every Broker You Interview',
+				paragraphs: [
+					'Which recent apartment sales have you personally closed, and can I see the addresses and prices?',
+					'What are the three best comparable sales for my building, and how did you choose them?',
+					'What price do you recommend, and what would I net after taxes and costs?',
+					'How will you market the building, and who is likely to buy it?',
+					'Who will handle my sale day to day, and how often will I hear from you?',
+					'What are your listing terms, including the commission, the length of the agreement, and any fees?',
+					'Can I speak with two or three owners you have represented?',
+				],
+			},
+			{
+				heading: 'Red Flags',
+				paragraphs: [
+					'Watch for a price far above every other opinion, with no comparable sales to support it. Be careful with pressure to sign quickly, vague answers about the broker’s own track record, a long listing agreement with no way out, and a reluctance to provide references.',
+					'You can also check that a broker is licensed through the [California Department of Real Estate license lookup](https://www2.dre.ca.gov/PublicASP/pplinfo.asp).',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'We would be glad to be one of the brokers you interview. Start with a quick range from our [free property value calculator](/property-value/), then request a free [Broker Opinion of Value](/contact/?intent=bov) and we will walk you through our approach, our recent sales, and your options. If you are still deciding whether to sell, read our [seven questions to ask first](/insights/should-i-sell-my-la-apartment-building/).',
+					'This article is general information, not legal or financial advice.',
+				],
+			},
+		],
+	},
+	{
 		slug: 'how-to-value-an-apartment-building-in-los-angeles',
 		title: 'How to Value an Apartment Building in Los Angeles',
 		seoTitle: 'How to Value an LA Apartment Building: 10 Factors Buyers Use',
