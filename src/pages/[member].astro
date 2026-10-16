@@ -1,0 +1,371 @@
+---
+// Individual profile pages for the two founding partners at /josh-kaplan/ and /troy-lucero/ (the
+// URLs the old WordPress site used). Everything shown comes from the team data in site.ts, the
+// case studies, and the testimonials, so the About page and these pages can't drift apart.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import BOVForm from '../components/BOVForm.astro';
+import { site, team, testimonials } from '../data/site';
+import { caseStudies } from '../data/caseStudies';
+
+export function getStaticPaths() {
+	return team.map((member) => ({
+		params: { member: member.slug },
+		props: { member },
+	}));
+}
+
+const { member } = Astro.props;
+const first = member.name.split(' ')[0];
+const partner = team.find((m) => m.slug !== member.slug)!;
+const featuredReviews = testimonials.filter((t) => t.featured).slice(0, 3);
+const profileCaseStudies = [
+	'the-burlington-portfolio-westlake-apartments',
+	'236-s-bonnie-brae-st-westlake-apartments',
+	'1513-arlington-ave-arlington-heights-apartments',
+	'6938-coldwater-canyon-ave-north-hollywood-apartments',
+]
+	.map((slug) => caseStudies.find((c) => c.slug === slug))
+	.filter(Boolean) as typeof caseStudies;
+
+const url = `${site.url}/${member.slug}/`;
+const personSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: member.name,
+	jobTitle: `${member.title}, ${member.department}`,
+	url,
+	image: `${site.url}${member.headshot}`,
+	telephone: member.phone,
+	email: member.email,
+	worksFor: { '@type': 'Organization', name: `${site.name}, ${site.brokerage}`, url: site.url },
+	knowsAbout: member.specialties,
+	alumniOf: member.education,
+	identifier: `California DRE #${member.dre}`,
+	sameAs: [member.linkedin, member.instagram, member.facebook].filter(Boolean),
+};
+---
+
+<BaseLayout
+	title={`${member.name}, LA Multifamily Broker | ${site.name}`}
+	description={`${member.name} is a founding partner of ${site.name}, advising Los Angeles apartment owners on sales, 1031 exchanges, and trust and estate sales.`}
+	image={member.headshot}
+>
+	<script type="application/ld+json" set:html={JSON.stringify(personSchema)} slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'About', href: '/about/' }, { label: member.name }]} />
+			<span class="eyebrow">{member.title}</span>
+			<h1>{member.name}</h1>
+			<p>
+				{member.department} at {site.name}, part of {site.brokerage}. DRE #{member.dre}.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container profile">
+			<img class="profile__photo" src={member.headshot} alt={`${member.name}, ${member.title} at ${site.name}`} width="364" height="364" loading="eager" />
+			<div class="profile__content">
+				{member.bio.map((p) => <p>{p}</p>)}
+
+				<dl class="profile__facts">
+					<div>
+						<dt>Education</dt>
+						<dd>{member.education}</dd>
+					</div>
+					<div>
+						<dt>Specialties</dt>
+						<dd>{member.specialties.join(', ')}</dd>
+					</div>
+					<div>
+						<dt>License</dt>
+						<dd>California DRE #{member.dre}</dd>
+					</div>
+				</dl>
+
+				<div class="profile__contact">
+					<a href={`tel:${member.phone.replace(/\D/g, '')}`} class="btn btn-gold">Call {first}: {member.phone}</a>
+					<a href={`mailto:${member.email}`} class="btn btn-outline">Email {first}</a>
+				</div>
+
+				<ul class="profile__social">
+					{member.linkedin && (
+						<li>
+							<a href={member.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+						</li>
+					)}
+					{member.instagram && (
+						<li>
+							<a href={member.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
+						</li>
+					)}
+					{member.facebook && (
+						<li>
+							<a href={member.facebook} target="_blank" rel="noopener noreferrer">Facebook</a>
+						</li>
+					)}
+				</ul>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Track Record</span>
+			<h2>The Highlight Multifamily Group Record</h2>
+			<div class="stat-row">
+				<div>
+					<span class="stat-row__num">{site.statsPrecise.units.toLocaleString('en-US')}+</span>
+					<span class="stat-row__label">Units Closed</span>
+				</div>
+				<div>
+					<span class="stat-row__num">${Math.round(site.statsPrecise.volume / 1000000)}M+</span>
+					<span class="stat-row__label">In Sale Value</span>
+				</div>
+				<div>
+					<span class="stat-row__num">{site.statsPrecise.landSqFt.toLocaleString('en-US')} SF</span>
+					<span class="stat-row__label">Land for Development Closed</span>
+				</div>
+			</div>
+			<p>
+				Every sale is listed with its address, size, and price on our <a href="/closed-sales/">closed sales</a> page.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container how">
+			<span class="eyebrow">How {first} Works</span>
+			<h2>Direct, Persistent, and Hands-On</h2>
+			<p>
+				{first} and {partner.name.split(' ')[0]} work every listing themselves. They make the calls to investors and other brokers directly, negotiate directly with
+				buyers, and are the main contacts on every deal. They follow up persistently, collect buyer feedback, and relay it to the selling client.
+			</p>
+			<p>
+				If you are thinking about selling, start with our <a href="/property-value/">free property value calculator</a> or our guide to
+				<a href="/insights/how-to-choose-a-multifamily-broker-in-los-angeles/">choosing a multifamily broker</a>. You can also read about
+				<a href={`/${partner.slug}/`}>{partner.name}</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Recent Work</span>
+			<h2>Case Studies</h2>
+			<div class="cs-grid">
+				{
+					profileCaseStudies.map((cs) => (
+						<a href={`/case-studies/${cs.slug}/`} class="cs-card">
+							<strong>{cs.title}</strong>
+							<span>{cs.summary}</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Client Reviews</span>
+			<h2>What Clients Say About Working With Josh and Troy</h2>
+			<div class="reviews">
+				{
+					featuredReviews.map((t) => (
+						<figure class="review">
+							<blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+							<figcaption>{t.attribution}</figcaption>
+						</figure>
+					))
+				}
+			</div>
+			<p>
+				<a href="/testimonials/">Read all reviews &rarr;</a>
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<BOVForm heading={`Talk With ${first}`} subheading="Request a free, confidential Broker Opinion of Value for your apartment building." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		color: var(--ink-soft);
+	}
+
+	.profile {
+		display: grid;
+		grid-template-columns: 260px 1fr;
+		gap: 3rem;
+		align-items: start;
+	}
+
+	.profile__photo {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+		border-radius: 2px;
+	}
+
+	.profile__content p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.profile__facts {
+		display: grid;
+		gap: 1rem;
+		margin: 2rem 0;
+		padding-block: 1.5rem;
+		border-block: 1px solid var(--border);
+	}
+
+	.profile__facts dt {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--gold-dark);
+		font-weight: 600;
+	}
+
+	.profile__facts dd {
+		margin: 0.2rem 0 0;
+	}
+
+	.profile__contact {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.profile__social {
+		display: flex;
+		gap: 1.25rem;
+		list-style: none;
+		padding: 0;
+		margin: 1.5rem 0 0;
+		font-weight: 600;
+	}
+
+	.stat-row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2.5rem;
+		margin: 1.5rem 0;
+	}
+
+	.stat-row__num {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: 2.25rem;
+		color: var(--navy-dark);
+	}
+
+	.stat-row__label {
+		display: block;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+		font-weight: 600;
+	}
+
+	.how {
+		max-width: 780px;
+	}
+
+	.how p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.cs-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+
+	.cs-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.5rem;
+		color: var(--ink);
+		transition: border-color 0.2s ease;
+	}
+
+	.cs-card:hover {
+		border-color: var(--gold);
+		text-decoration: none;
+	}
+
+	.cs-card strong {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+	}
+
+	.cs-card span {
+		font-size: 0.9rem;
+		color: var(--ink-light);
+	}
+
+	.reviews {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+		gap: 1.5rem;
+		margin: 1.5rem 0;
+	}
+
+	.review {
+		margin: 0;
+		padding: 1.5rem;
+		background: var(--paper-alt);
+		border-left: 4px solid var(--gold);
+		border-radius: 2px;
+	}
+
+	.review blockquote {
+		margin: 0 0 0.75rem;
+		font-style: italic;
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.review figcaption {
+		font-weight: 700;
+		color: var(--navy);
+		font-size: 0.85rem;
+	}
+
+	@media (max-width: 760px) {
+		.profile {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+
+		.profile__photo {
+			max-width: 260px;
+		}
+	}
+</style>

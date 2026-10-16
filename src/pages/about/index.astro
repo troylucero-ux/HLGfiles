@@ -71,6 +71,9 @@ import { team, supportTeam, site } from '../../data/site';
 								<a href={`mailto:${member.email}`} class="btn btn-outline">
 									Email {member.name.split(' ')[0]}
 								</a>
+								<a href={`/${member.slug}/`} class="btn btn-outline">
+									Full profile
+								</a>
 							</div>
 							<ul class="bio-card__social">
 								{member.linkedin && (

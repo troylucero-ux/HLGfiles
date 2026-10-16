@@ -20,7 +20,5 @@ export const redirects: Record<string, string> = {
 	'/project/5455-inglewood-blvd-culver-city-ca-90230': '/case-studies/5455-inglewood-blvd-culver-city-apartments/',
 
 	'/success-stories': '/testimonials/',
-	'/josh-kaplan': '/about/',
-	'/troy-lucero': '/about/',
 	'/privacy-policy-2': '/privacy-policy/',
 };
