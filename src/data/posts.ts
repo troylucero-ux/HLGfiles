@@ -790,7 +790,7 @@ const allPosts: Post[] = [
 			{
 				heading: 'A Recent Example: One LA Building, Two NNN Properties',
 				paragraphs: [
-					'We recently guided a client through exactly this kind of exchange: she sold her 24-unit apartment building here in Los Angeles and exchanged the proceeds into two separate triple-net properties, one in Florida and one in Georgia. Splitting the exchange across two assets in two different states let her diversify both her tenant risk and her geographic exposure in a single transaction, while fully deferring the capital gains tax on the sale.',
+					'We recently guided a client through exactly this kind of exchange: she sold her 24-unit apartment building here in Los Angeles ([1136 S Alvarado St](/closed-sales/1136-s-alvarado-st-los-angeles-ca-90006/)) and exchanged the proceeds into two separate triple-net properties, one in Florida and one in Georgia. Splitting the exchange across two assets in two different states let her diversify both her tenant risk and her geographic exposure in a single transaction, while fully deferring the capital gains tax on the sale.',
 					'As with any multi-property, multi-state exchange, the work was in the coordination: keeping both replacement acquisitions moving in parallel against the same 45- and 180-day clock, and working with NNN specialists in each market to get her comfortable with the tenant, lease terms, and location before committing.',
 				],
 			},
