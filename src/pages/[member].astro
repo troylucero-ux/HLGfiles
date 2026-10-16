@@ -1,5 +1,5 @@
 ---
-// Individual profile pages for the two founding partners at /josh-kaplan/ and /troy-lucero/ (the
+// Individual profile pages for the two co-founders at /josh-kaplan/ and /troy-lucero/ (the
 // URLs the old WordPress site used). Everything shown comes from the team data in site.ts, the
 // case studies, and the testimonials, so the About page and these pages can't drift apart.
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -48,7 +48,7 @@ const personSchema = {
 
 <BaseLayout
 	title={`${member.name}, LA Multifamily Broker | ${site.name}`}
-	description={`${member.name} is a founding partner of ${site.name}, advising Los Angeles apartment owners on sales, 1031 exchanges, and trust and estate sales.`}
+	description={`${member.name} is a co-founder of ${site.name}, advising Los Angeles apartment owners on sales, 1031 exchanges, and trust and estate sales.`}
 	image={member.headshot}
 >
 	<script type="application/ld+json" set:html={JSON.stringify(personSchema)} slot="head" />

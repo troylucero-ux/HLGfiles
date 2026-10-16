@@ -29,7 +29,7 @@ const orgSchema = {
 	employee: team.map((member) => ({
 		'@type': 'Person',
 		name: member.name,
-		jobTitle: member.title,
+		jobTitle: `${member.title}, ${member.department}`,
 		telephone: member.phone,
 		email: member.email,
 		sameAs: [member.linkedin, member.instagram, member.facebook].filter(Boolean),

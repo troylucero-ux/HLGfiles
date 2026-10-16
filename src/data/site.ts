@@ -35,7 +35,7 @@ export const team = [
 	{
 		slug: 'josh-kaplan',
 		name: 'Josh Kaplan',
-		title: 'Founding Partner',
+		title: 'Director',
 		department: 'Multifamily Investments',
 		dre: '01934177',
 		phone: '310.405.1890',
@@ -55,7 +55,7 @@ export const team = [
 	{
 		slug: 'troy-lucero',
 		name: 'Troy Lucero',
-		title: 'Founding Partner',
+		title: 'Director',
 		department: 'Multifamily Investments',
 		dre: '02015705',
 		phone: '310.339.5477',

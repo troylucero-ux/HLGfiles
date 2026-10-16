@@ -83,7 +83,7 @@ const allPosts: Post[] = [
 				heading: '6. Who Will Actually Do the Work',
 				paragraphs: [
 					'In some firms, the person who pitches you is not the person who handles your sale. Ask who will prepare the offering memorandum, return your calls, and negotiate with buyers, and how often you can expect an update. Ask how many buildings the broker is handling at once.',
-					'At Highlight Multifamily Group, the two founding partners, Josh Kaplan and Troy Lucero, work every listing themselves. They make the calls to investors and other brokers directly, negotiate directly with buyers, and are the main contacts on every deal. They follow up persistently, collect buyer feedback, and relay it to the selling client. You can read more about them on our [team page](/about/).',
+					'At Highlight Multifamily Group, the two co-founders, Josh Kaplan and Troy Lucero, work every listing themselves. They make the calls to investors and other brokers directly, negotiate directly with buyers, and are the main contacts on every deal. They follow up persistently, collect buyer feedback, and relay it to the selling client. You can read more about them on our [team page](/about/).',
 				],
 			},
 			{
