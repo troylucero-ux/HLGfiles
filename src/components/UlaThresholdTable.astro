@@ -1,0 +1,142 @@
+---
+// Illustrates how the Measure ULA transfer tax applies to the ENTIRE sale price once a threshold is
+// crossed. Thresholds and rates are the City of Los Angeles Office of Finance figures for closings
+// after June 30, 2026 (https://finance.lacity.gov/faq/measure-ula): no ULA tax at or below $5.4M,
+// 4% above $5.4M and below $10.9M, 5.5% at $10.9M or more. Rows are computed from those rules
+// so the math can't drift from the rates.
+const LOWER = 5_400_000;
+const UPPER = 10_900_000;
+const rateFor = (price: number) => (price > LOWER ? (price >= UPPER ? 0.055 : 0.04) : 0);
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+const rows = [
+	{ price: 5_400_000, note: 'At the lower threshold', highlight: false },
+	{ price: 5_500_000, note: 'Just over it', highlight: true },
+	{ price: 5_625_000, note: 'Break-even with $5.4M', highlight: false },
+	{ price: 10_800_000, note: 'Just under the upper threshold', highlight: false },
+	{ price: 10_900_000, note: 'At the upper threshold', highlight: true },
+	{ price: 10_975_000, note: 'About break-even with $10.8M', highlight: false },
+].map((r) => {
+	const rate = rateFor(r.price);
+	const tax = r.price * rate;
+	return { ...r, rate, tax, left: r.price - tax };
+});
+---
+
+<div class="ula-table-wrap">
+	<table class="ula-table">
+		<caption>Measure ULA Tax at Each Threshold (Closings After June 30, 2026)</caption>
+		<thead>
+			<tr>
+				<th scope="col">Sale Price</th>
+				<th scope="col">ULA Rate</th>
+				<th scope="col">ULA Tax</th>
+				<th scope="col">Left After ULA</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				rows.map((r) => (
+					<tr class={r.highlight ? 'ula-table__row--highlight' : ''}>
+						<th scope="row">
+							{money(r.price)}
+							<span class="ula-table__note">{r.note}</span>
+						</th>
+						<td>{r.rate === 0 ? 'None' : `${(r.rate * 100).toFixed(1).replace('.0', '')}%`}</td>
+						<td>{money(r.tax)}</td>
+						<td class="ula-table__left">{money(r.left)}</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+	<p class="ula-table__source">
+		Illustration only. Shows the ULA tax alone, before the City&rsquo;s regular transfer tax, commissions, and other closing costs. Rates and
+		thresholds from the City of Los Angeles Office of Finance.
+	</p>
+</div>
+
+<style>
+	.ula-table-wrap {
+		margin: 2rem 0;
+		overflow-x: auto;
+	}
+
+	.ula-table {
+		width: 100%;
+		min-width: 560px;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+	}
+
+	.ula-table caption {
+		text-align: left;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		font-weight: 500;
+		color: var(--navy-dark);
+		margin-bottom: 0.85rem;
+	}
+
+	.ula-table thead th {
+		text-align: left;
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+		padding: 0.75rem 1rem;
+	}
+
+	.ula-table thead th:not(:first-child),
+	.ula-table tbody td {
+		text-align: right;
+	}
+
+	.ula-table tbody th,
+	.ula-table tbody td {
+		padding: 0.7rem 1rem;
+		border-bottom: 1px solid var(--border);
+		font-weight: 400;
+	}
+
+	.ula-table tbody th {
+		text-align: left;
+		font-weight: 500;
+		color: var(--ink);
+	}
+
+	.ula-table__note {
+		display: block;
+		font-size: 0.74rem;
+		font-weight: 400;
+		color: var(--ink-light);
+	}
+
+	.ula-table tbody tr:last-child th,
+	.ula-table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.ula-table__left {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		color: var(--navy-dark);
+	}
+
+	.ula-table__row--highlight {
+		background: var(--navy-tint);
+	}
+
+	.ula-table__row--highlight th,
+	.ula-table__row--highlight .ula-table__left {
+		color: var(--gold-dark);
+	}
+
+	.ula-table__source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin-top: 0.75rem;
+	}
+</style>

@@ -42,7 +42,7 @@ export const posts: Post[] = [
 			{
 				heading: '3. What Would You Actually Net After Taxes and Costs?',
 				paragraphs: [
-					'The sale price is not what lands in your account. Federal and California capital gains tax, depreciation recapture, commissions, and closing costs all come out first, and for buildings near the top of the market the City of Los Angeles transfer tax can matter a great deal. Read our guides to capital gains and depreciation recapture and to Measure ULA price thresholds before you decide, and ask your CPA to estimate your tax on a sale.',
+					'The sale price is not what lands in your account. Federal and California capital gains tax, depreciation recapture, commissions, and closing costs all come out first, and for buildings near the top of the market the City of Los Angeles transfer tax can matter a great deal. Read our guides to [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/) and to [Measure ULA price thresholds](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/) before you decide, and ask your CPA to estimate your tax on a sale.',
 				],
 			},
 			{
@@ -55,7 +55,7 @@ export const posts: Post[] = [
 			{
 				heading: '5. Where Are Your Rents Compared With the Market?',
 				paragraphs: [
-					'In Los Angeles, rent rules shape what a building can earn and what a buyer will pay. Buildings built before October 1, 1978 are covered by the City’s Rent Stabilization Ordinance, and newer buildings generally fall under the statewide cap explained in our article on the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/). If your tenants have been in place a long time at below-market rents, a buyer will price in that gap. Our guide to selling with tenants under rent control explains how.',
+					'In Los Angeles, rent rules shape what a building can earn and what a buyer will pay. Buildings built before October 1, 1978 are covered by the City’s Rent Stabilization Ordinance, and newer buildings generally fall under the statewide cap explained in our article on the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/). If your tenants have been in place a long time at below-market rents, a buyer will price in that gap. Our guide to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/) explains how.',
 				],
 			},
 			{
@@ -75,6 +75,216 @@ export const posts: Post[] = [
 				paragraphs: [
 					'If you are weighing a sale, we are glad to talk it through with no obligation. You can see how we have helped other owners in our [case studies](/case-studies/) and [closed sales](/closed-sales/), or reach out to Josh Kaplan or Troy Lucero at Highlight Multifamily Group for a free, confidential conversation.',
 					'This article is general information, not tax, legal, or financial advice. Please talk with your CPA, attorney, and financial advisor about your own situation.',
+				],
+			},
+		],
+	},
+	{
+		slug: 'selling-la-apartment-building-with-tenants-rent-control',
+		title: 'Selling an LA Apartment Building With Tenants Under Rent Control',
+		seoTitle: 'Selling an LA Apartment Building With Rent-Controlled Tenants',
+		description:
+			'Yes, you can sell an occupied LA apartment building. How rent control and long-term tenants affect price, preparation, and your sale timeline.',
+		date: '2026-10-15',
+		sections: [
+			{
+				heading: 'Can You Sell a Building With Tenants in It?',
+				paragraphs: [
+					'Yes. Most apartment buildings in Los Angeles sell with tenants in place, and many buyers specifically look for occupied buildings with stable income. A sale does not by itself end anyone’s tenancy. The leases and the rent rules that apply to the building stay with the building, so the new owner steps into the owner’s position.',
+					'That is also why rent control matters so much to value. A buyer is not paying for what the building could earn at today’s market rents. They are paying for what it earns under the rules that apply to your tenants.',
+				],
+			},
+			{
+				heading: 'Which Rent Rules Apply to Your Building',
+				paragraphs: [
+					'In Los Angeles, apartment buildings with a certificate of occupancy issued before October 1, 1978 are generally covered by the City’s Rent Stabilization Ordinance (RSO), which limits annual increases and adds eviction protections. Newer buildings typically fall under the statewide AB 1482 cap instead. Our article on the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/) explains the current numbers.',
+					'Which set of rules applies to your property affects your income, your expenses, and how buyers underwrite the deal, so it is the first thing we confirm.',
+				],
+			},
+			{
+				heading: 'How Below-Market Rents Affect Price',
+				paragraphs: [
+					'Long-term tenants in rent-controlled units often pay well below what a vacant unit would rent for today. Buyers call this the loss to lease, and they value it carefully. They will usually price the building on the rents in place, then add some value for the upside they can capture as units turn over naturally. A building with all long-term tenants sells differently from one with several vacant units.',
+					'Two examples from our own work show how it plays out. At 453 S Gramercy Pl, most tenants were long-term occupants paying well below market, and we found an off-market buyer experienced with exactly that kind of property, as we describe in our [case study](/case-studies/453-s-gramercy-pl-koreatown-apartments/). At 1513 Arlington Ave, vacant units gave buyers a clear way to see the opportunity, which we cover in that [case study](/case-studies/1513-arlington-ave-arlington-heights-apartments/).',
+				],
+			},
+			{
+				heading: 'Vacant Units',
+				paragraphs: [
+					'Under California law, a unit that becomes vacant can generally be re-rented at market rent, which is why units delivered vacant are attractive to buyers. If you have vacant units, they are often worth highlighting. Any agreement to have a tenant move out voluntarily has to follow state and City rules, so talk to a landlord-tenant attorney before offering or signing one.',
+				],
+			},
+			{
+				heading: 'Getting Ready to Sell With Tenants in Place',
+				paragraphs: [
+					'A few steps make the process smoother and protect your price.',
+					'Build an accurate rent roll. Buyers will check every rent, lease start date, and unit against your records and the leases, and mistakes cost credibility.',
+					'Gather your lease files. Have each tenant’s lease, any addenda, and notices ready, along with a clear record of security deposits, since deposits transfer to the buyer.',
+					'Confirm your City compliance. Make sure your RSO registration and fees are current, because a buyer’s attorney will ask.',
+					'Expect estoppel requests. Buyers often ask tenants to confirm the terms of their tenancy during escrow, and clean files make this quick.',
+					'Keep your rental practices normal. Continue to follow the usual rules for repairs and for giving tenants proper written notice before entering a unit, including for showings.',
+				],
+			},
+			{
+				heading: 'Talking With Your Tenants',
+				paragraphs: [
+					'Tell tenants about a sale honestly, and do not promise anything on a buyer’s behalf. Most tenants just want to know that their lease and their rent stay the same, and in a sale of an occupied building they generally do. Showings, inspections, and estoppels all require some access to units, so plan for them with proper notice.',
+				],
+			},
+			{
+				heading: 'Measure ULA and Other Costs of Selling',
+				paragraphs: [
+					'Rent rules are only part of the picture. For buildings priced near $5.4 million or $10.9 million inside the City of Los Angeles, the Measure ULA transfer tax can change what you net, as we explain in our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/). And if you are still deciding whether to sell, start with our list of [seven questions to ask first](/insights/should-i-sell-my-la-apartment-building/).',
+				],
+			},
+			{
+				heading: 'Start With a Number',
+				paragraphs: [
+					'We help owners sell occupied, rent-controlled buildings across Los Angeles every year. Start with our [free property value calculator](/property-value/), then request a free [Broker Opinion of Value](/contact/?intent=bov) and we will walk you through how your rent roll, your tenants, and your timeline affect your price.',
+					'This article is general information, not legal advice. Rent control and tenant laws are detailed and change, so please confirm how they apply to your building with a landlord-tenant attorney.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[Los Angeles Housing Department: Rental Property Owners](https://housing.lacity.gov/rental-property-owners)',
+				],
+			},
+		],
+	},
+	{
+		slug: 'capital-gains-depreciation-recapture-selling-la-apartment-building',
+		title: 'Capital Gains and Depreciation Recapture When You Sell an LA Apartment Building',
+		seoTitle: 'Capital Gains & Depreciation Recapture: LA Apartment Sale',
+		description:
+			'Selling an LA apartment building? How federal and California capital gains tax and depreciation recapture work, and how a 1031 exchange can defer both.',
+		date: '2026-10-15',
+		sections: [
+			{
+				heading: 'Why the Tax Bill Surprises Many Owners',
+				paragraphs: [
+					'For many apartment owners, the biggest cost of selling is not the commission. It is the tax. Owners who bought years ago, and who have been taking depreciation deductions every year since, are often surprised by how much of the sale price is taxable. Understanding the pieces before you list lets you plan around them instead of discovering them at closing.',
+				],
+			},
+			{
+				heading: 'How Your Gain Is Figured',
+				paragraphs: [
+					'Your taxable gain is generally the amount you realize from the sale, after selling costs, minus your adjusted basis. Your adjusted basis starts with what you paid for the property, adds the cost of capital improvements, and subtracts the depreciation you took or were allowed to take. Because depreciation lowers your basis every year, a building that has been depreciated for decades can have a basis far below what you paid.',
+				],
+			},
+			{
+				heading: 'Federal Capital Gains Tax',
+				paragraphs: [
+					'If you owned the property for more than a year, the gain is generally a long-term capital gain, taxed at 0%, 15%, or 20% federally depending on your taxable income. According to the IRS, the 20% rate applies once income is above the threshold for the 15% rate, and those thresholds are adjusted every year. Sellers with a large gain often land in the 15% or 20% bracket, because the gain itself counts toward taxable income.',
+					'High-income sellers may also owe the 3.8% net investment income tax, which applies to net gains from selling real estate when income is above certain levels, for example $200,000 for a single filer and $250,000 for a married couple filing jointly.',
+				],
+			},
+			{
+				heading: 'Depreciation Recapture',
+				paragraphs: [
+					'Residential rental property is generally depreciated over 27.5 years, which gives owners a deduction every year they hold it. When you sell, the part of your gain that comes from that depreciation is not taxed at the regular capital gains rates. The IRS treats it as unrecaptured section 1250 gain, taxed at a maximum federal rate of 25%.',
+					'As a simple illustration, if you have claimed $600,000 of depreciation over the years, up to $600,000 of your gain can be taxed at that higher rate, with the rest of the gain taxed at the regular capital gains rates. The IRS generally measures this by the depreciation you were allowed to take, whether or not you claimed it, so it is not something an owner can avoid by skipping the deductions.',
+				],
+			},
+			{
+				heading: 'California Taxes the Gain Too',
+				paragraphs: [
+					'California does not have a lower rate for capital gains. According to the Franchise Tax Board, all capital gains are taxed as ordinary income. For a seller with a large gain, that means the state tax can be substantial on top of the federal tax.',
+				],
+			},
+			{
+				heading: 'Ways Owners Manage the Tax',
+				paragraphs: [
+					'There are legitimate ways to reduce, defer, or time the tax, and the right one depends on your situation. A few of the most common are below.',
+					'A 1031 exchange. If you reinvest the proceeds into like-kind investment property, you can defer both the capital gains tax and the depreciation recapture. The rules are strict, including 45 days to identify a replacement property and 180 days to close. Read our [1031 exchange guide](/1031-exchanges/) and our article on [exchanging into triple-net properties](/insights/1031-exchange-into-triple-net-properties/).',
+					'Timing the sale. Closing in December or January puts the gain in a different tax year, which can matter for your overall income. See our article on [timing a sale before year-end](/insights/selling-la-apartment-building-before-year-end/).',
+					'Estate planning. Property inherited at death generally receives a new, stepped-up basis, which can eliminate much of the gain for heirs. If you are handling a building after an owner’s death, see our [trust and estate sales](/trust-and-estate-sales/) page.',
+					'Records. Keep documentation of capital improvements you have made over the years, since they add to your basis and reduce your gain.',
+				],
+			},
+			{
+				heading: 'Do Not Forget the Other Costs of Selling',
+				paragraphs: [
+					'Income tax is only part of what comes out of a sale. If your building is priced near $5.4 million or $10.9 million inside the City of Los Angeles, the Measure ULA transfer tax can matter just as much, as we explain in our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/). And if you are still deciding whether selling makes sense, our [seven questions to ask first](/insights/should-i-sell-my-la-apartment-building/) is a good place to start.',
+				],
+			},
+			{
+				heading: 'Plan Before You List',
+				paragraphs: [
+					'The best time to talk about taxes is before you list, not after you are under contract. Bring your CPA into the conversation early, and we will help with the real estate side: what your building is likely to sell for, what a buyer will pay, and how timing and structure affect your options. Start with our [free property value calculator](/property-value/) or request a free [Broker Opinion of Value](/contact/?intent=bov).',
+					'This article is general information, not tax or legal advice. Tax rules and income thresholds change, so please confirm everything with your CPA or tax attorney.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[IRS Topic No. 409: Capital gains and losses](https://www.irs.gov/taxtopics/tc409)',
+					'[IRS Topic No. 559: Net investment income tax](https://www.irs.gov/taxtopics/tc559)',
+					'[IRS Publication 527: Residential Rental Property](https://www.irs.gov/publications/p527)',
+					'[IRS Publication 544: Sales and Other Dispositions of Assets](https://www.irs.gov/publications/p544)',
+					'[California Franchise Tax Board: Capital gains and losses](https://www.ftb.ca.gov/file/personal/income-types/capital-gains-and-losses.html)',
+				],
+			},
+		],
+	},
+	{
+		slug: 'measure-ula-2026-thresholds-selling-la-apartment-building',
+		title: 'Selling Near a Measure ULA Threshold? Why Price and Timing Matter',
+		seoTitle: 'Measure ULA 2026 Thresholds: What LA Apartment Sellers Owe',
+		description:
+			'Measure ULA thresholds rose to $5.4M and $10.9M. See how a price just over the line can cut your net proceeds, and what LA apartment sellers can do.',
+		date: '2026-10-15',
+		sections: [
+			{
+				heading: 'What Changed on July 1, 2026',
+				paragraphs: [
+					'Measure ULA is the City of Los Angeles transfer tax, often called the mansion tax, on property sales above a set price. Its price thresholds are adjusted for inflation every year, and the latest adjustment applies to sales closing after June 30, 2026. The thresholds are now $5.4 million and $10.9 million, up from $5.3 million and $10.6 million a year earlier.',
+					'Sales above $5.4 million but below $10.9 million pay a 4% ULA tax. Sales at $10.9 million or more pay 5.5%. The tax applies only to property inside the City of Los Angeles, and it is in addition to the City\u2019s regular transfer tax of 0.45%.',
+				],
+			},
+			{
+				heading: 'Why a Price Just Over the Line Costs So Much',
+				paragraphs: [
+					'The key detail is that the tax is not marginal. The ULA tax applies to the entire sale price, not only the portion above the threshold. A building that sells for $5,400,000 owes no ULA tax. A building that sells for $5,400,001 owes 4% of the full price, about $216,000.',
+				],
+			},
+			{
+				heading: 'The Dead Zone Above Each Threshold',
+				paragraphs: [
+					'That creates a stretch of prices where a higher number puts less money in your pocket. At $5.5 million, a seller keeps $120,000 less after ULA than at $5.4 million, and it takes a price of about $5.625 million to net the same. The pattern repeats at the upper line: a sale at $10.9 million leaves about $67,500 less than a sale at $10.8 million, and the price has to reach roughly $10.97 million to catch up.',
+					'The figures above are before commissions, the regular transfer tax, and other closing costs, so your actual numbers will differ, but the shape of the problem does not. Also keep in mind that the tax is calculated on the gross value of the sale, including any loan the buyer assumes, so assuming debt does not lower the taxable amount.',
+				],
+			},
+			{
+				heading: 'What Sellers Near a Threshold Can Do',
+				paragraphs: [
+					'If your building is priced near either number, a few things are worth weighing before you list.',
+					'Price with the threshold in mind. Sometimes a modest price adjustment leaves you with more money than a higher price that crosses the line. We model your net proceeds at several price points before you list, not after you are under contract.',
+					'Watch the calendar. The thresholds are adjusted each year for inflation, so a building priced just above a line today may fall under it after the next adjustment. If you are close, ask us how your closing date interacts with the adjustment.',
+					'Do not count on a 1031 exchange to reduce the tax. A 1031 exchange can defer your capital gains tax, but it does not exempt a sale from Measure ULA, and exchanges are not among the exemptions the City lists. The tax is calculated on the sale of your building either way. An exchange is still a powerful tool for the gain, and you can read more in our guide to [1031 exchanges](/1031-exchanges/), but it solves a different problem.',
+					'Know who the buyer is. In narrow cases the buyer matters. Sales to certain qualified affordable housing nonprofits and to government agencies are exempt from ULA, and the exemption for qualified affordable housing organizations has to be requested through the Los Angeles Housing Department. For most private sales it will not apply, but it is worth asking.',
+				],
+			},
+			{
+				heading: 'Where Things Stand Today',
+				paragraphs: [
+					'There has been a lot of talk about changing Measure ULA, but as of this writing in October 2026, the rates and thresholds above are the current rules. In July, the Los Angeles City Council shelved a proposal to put an exemption for new multifamily construction on the November ballot, so that measure will not go before voters this fall. Rules like this can change, so we confirm the current thresholds and exemptions with the City\u2019s Office of Finance before we price any building near a line.',
+				],
+			},
+			{
+				heading: 'Run the Numbers Before You List',
+				paragraphs: [
+					'If your building could land near $5.4 million or $10.9 million, the time to look at the math is before you set a price. Start with our [free property value calculator](/property-value/) for a quick range, then request a [free Broker Opinion of Value](/contact/?intent=bov) and we will show you what you would net at different prices and closing dates.',
+					'Planning around year-end? Our article on [timing a sale before December 31](/insights/selling-la-apartment-building-before-year-end/) covers how closing dates affect your taxes.',
+					'This article is general information, not tax or legal advice. Please confirm how Measure ULA applies to your sale with your CPA or tax attorney.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[City of Los Angeles Office of Finance: Real Property Transfer Tax and Measure ULA FAQ](https://finance.lacity.gov/faq/measure-ula)',
+					'[Apartment Association of Greater Los Angeles: Measure ULA update on the July 2025 thresholds](https://members.aagla.org/news/city-of-la-measure-ula-update--increased-thresholds-eff-july-1st-)',
+					'[Bisnow: LA City Council kills ballot measure for ULA multifamily exemption](https://www.bisnow.com/los-angeles/news/construction-development/ballot-measure-to-exempt-new-housing-construction-from-ula-dead-after-council-vote-135271)',
 				],
 			},
 		],
