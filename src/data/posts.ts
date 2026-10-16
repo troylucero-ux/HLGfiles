@@ -12,7 +12,7 @@ export type Post = {
 	sections: { heading: string; paragraphs: string[] }[];
 };
 
-export const posts: Post[] = [
+const allPosts: Post[] = [
 	{
 		slug: 'should-i-sell-my-la-apartment-building',
 		title: 'Should I Sell My Apartment Building? 7 Questions to Ask First',
@@ -555,3 +555,11 @@ export const posts: Post[] = [
 		],
 	},
 ];
+
+// Scheduled publishing: a post dated in the future is held back until that date (Pacific time). The
+// site is static, so it only appears once a build runs on or after its date; a daily GitHub Action
+// (.github/workflows/publish-scheduled.yml) triggers that build on any morning with something due.
+const todayPacific = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date());
+
+export const posts: Post[] = allPosts.filter((post) => post.date <= todayPacific);
+export const scheduledPosts: Post[] = allPosts.filter((post) => post.date > todayPacific);

@@ -1,0 +1,37 @@
+# Scheduled publishing. The site is static, so a post dated in the future is held back at build time
+# (see src/data/posts.ts) and only appears once a build runs on or after its date. Cloudflare rebuilds
+# the site whenever something is pushed to main, so this job pushes an empty commit on any morning that
+# has content scheduled for that day.
+name: Publish scheduled content
+
+on:
+  schedule:
+    # 14:00 UTC = 7:00 AM Pacific Daylight Time (6:00 AM Pacific Standard Time)
+    - cron: '0 14 * * *'
+  push:
+    paths:
+      - '.github/workflows/publish-scheduled.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trigger a rebuild if something is scheduled for today
+        run: |
+          TODAY=$(TZ=America/Los_Angeles date +%F)
+          echo "Today (Pacific): $TODAY  Event: ${{ github.event_name }}"
+          # A manual run or a change to this workflow always rebuilds, so the pipeline can be tested.
+          if [ "${{ github.event_name }}" != "schedule" ] || grep -rqE "(date|publishDate): '$TODAY'" src/data; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit --allow-empty -m "Publish content scheduled for $TODAY"
+            git push
+          else
+            echo "Nothing scheduled for $TODAY"
+          fi

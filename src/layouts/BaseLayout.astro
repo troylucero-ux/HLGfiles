@@ -21,12 +21,15 @@ const BRAND = 'Highlight Multifamily Group';
 const withBrand = `${title} | ${BRAND}`;
 const pageTitle = title.includes(BRAND) ? title : withBrand.length <= 65 ? withBrand : title;
 const socialImageURL = new URL(image, Astro.site);
+// Stamped into every page so a deploy can be confirmed from the live HTML.
+const builtAt = new Date().toISOString();
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="built-at" content={builtAt} />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<!-- Font requests need to be discovered by the browser's preload scanner as early as
