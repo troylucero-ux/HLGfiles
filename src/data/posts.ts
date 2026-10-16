@@ -14,12 +14,118 @@ export type Post = {
 
 const allPosts: Post[] = [
 	{
+		slug: 'how-to-value-an-apartment-building-in-los-angeles',
+		title: 'How to Value an Apartment Building in Los Angeles',
+		seoTitle: 'How to Value an LA Apartment Building: 10 Factors Buyers Use',
+		description:
+			'How LA apartment buildings are valued: NOI, cap rate, GRM, price per unit, rent control, and condition, with real 2026 sales figures by neighborhood.',
+		date: '2026-10-16',
+		image: {
+			src: '/images/insights/how-to-value-apartment-building.webp',
+			alt: "Graphic: income drives the value of an apartment building. Net operating income, cap rate, and real comparable sales.",
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Buyers value an apartment building mainly on its income, not its looks or its asking price. The core measure is net operating income (NOI) divided by a market cap rate, checked against recent comparable sales.',
+					'In Los Angeles, rent control and building age change the math. Buildings built before 1978 (rent stabilized) trade differently from newer ones, so comparable sales have to match.',
+					'Condition, deferred maintenance, and in-place rents versus market rents move the price as much as the headline numbers do.',
+					'A calculator or a rule of thumb gives you a range. A Broker Opinion of Value built on your actual rent roll and expenses gives you a number you can plan around.',
+				],
+			},
+			{
+				heading: '1. Net Operating Income: The Core of Value',
+				paragraphs: [
+					'Net operating income is the building’s collected rent and other income, minus the cost of operating it. It does not include your mortgage payment, depreciation, or income taxes. Because a buyer is paying for that income stream, NOI drives price more than any other number.',
+					'Two things trip owners up. First, buyers use realistic expenses, not just what you happen to pay today. They will re-underwrite property taxes, because California reassesses a building when it sells, and our offering memorandums typically assume about 1.2% of the sale price. Second, hidden expense problems come out in due diligence, which is why we recommend owners watch their bills, as we explain in our article on [tracking utility bills](/insights/utility-bill-diligence-la-apartment-owners/).',
+				],
+			},
+			{
+				heading: '2. Capitalization Rate (Cap Rate)',
+				paragraphs: [
+					'The cap rate is NOI divided by price. Flip it around and you get a quick estimate of value: NOI divided by the cap rate. For example, a building with $100,000 of NOI that buyers are pricing at a 5.5% cap rate is worth about $1.8 million. A lower cap rate means buyers are paying more for each dollar of income.',
+					'Cap rates are not one number across Los Angeles. In 2026 sales through September, rent-stabilized buildings (built before 1978) with a recorded cap rate traded at a typical range of 5.86% to 7.34% in Koreatown, 5.55% to 6.98% in North Hollywood, and 4.81% to 5.96% in Santa Monica. We publish these ranges, with the number of sales behind each, on our [neighborhood pages](/submarkets/).',
+				],
+			},
+			{
+				heading: '3. Gross Rent Multiplier (GRM)',
+				paragraphs: [
+					'The gross rent multiplier is price divided by annual gross rent. It is a fast screen, and buyers and brokers use it to compare buildings at a glance, but it ignores expenses, so two buildings with the same GRM can have very different NOI.',
+					'A real example: our listing at [3815 Don Tomaso Dr](/listings/3815-don-tomaso-dr-los-angeles-ca-90008/) is priced at $1,300,000, which is a 10.35 GRM and a 6.04% cap rate on in-place rents. The two numbers tell different parts of the story, which is why we look at both.',
+				],
+			},
+			{
+				heading: '4. Price Per Unit and Price Per Square Foot',
+				paragraphs: [
+					'Price per unit and price per square foot are the quickest ways to compare a building with recent sales. They are sanity checks, not valuations, because they ignore income, condition, and rent levels.',
+					'They also vary widely by neighborhood. Among rent-stabilized buildings sold so far in 2026, the median price per unit was about $173,700 in Koreatown, $189,500 in North Hollywood, and $388,300 in Santa Monica, and the median price per square foot was $230, $247, and $398. A figure from the wrong neighborhood can be off by hundreds of thousands of dollars.',
+				],
+			},
+			{
+				heading: '5. In-Place Income Versus Pro Forma',
+				paragraphs: [
+					'Buyers look at two sets of numbers: what the building earns today (in-place) and what it could earn at market rents (pro forma). The gap between them is called loss to lease, and it is where much of the negotiation happens.',
+					'At 3815 Don Tomaso, in-place rents sit about 47% below market, a loss to lease of $4,904 per month. Reaching market rents through normal turnover would lift NOI from $78,553 to $129,231 and the cap rate from 6.04% to 9.94%. Buyers will pay for that upside, but only partly, because under rent control they cannot capture it until units turn over. We explain how in our guide to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
+				],
+			},
+			{
+				heading: '6. Comparable Sales and Market Evidence',
+				paragraphs: [
+					'The strongest evidence of value is what similar buildings actually sold for. A good comparable is recent, in the same neighborhood, close to your size and age, and has the same rent-control status. Sales of buildings built before 1978 and after 1978 should not be mixed, because the price per unit gap is large: across LA County in 2026 the median was about $220,000 per unit for pre-1978 buildings and about $331,000 for newer ones.',
+					'You can see how we have priced and sold buildings across Los Angeles on our [closed sales](/closed-sales/) page.',
+				],
+			},
+			{
+				heading: '7. Physical Condition and Capital Expenses',
+				paragraphs: [
+					'Buyers subtract what they expect to spend. Roofs, plumbing, electrical systems, and required inspections all come off the price. At 1513 Arlington Ave, for example, the building had Federal Pacific electrical sub-panels that insurers increasingly require owners to replace, plus a state-mandated balcony inspection under SB 721. Our seller did not want to pay for either before closing, so we structured the sale for the buyer to take them on, as described in the [case study](/case-studies/1513-arlington-ave-arlington-heights-apartments/).',
+					'In general, we advise sellers against spending money on the property before a sale, because they rarely get it back from buyers. Experienced investors have their own plans and cost-effective ways to bring a building up to market.',
+				],
+			},
+			{
+				heading: '8. Rent Rules and Regulation',
+				paragraphs: [
+					'Rent control limits how fast income can grow, so it directly affects value. Buildings built before October 1, 1978 are generally covered by the City’s Rent Stabilization Ordinance, and newer buildings fall under the statewide cap explained in our article on the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/).',
+					'Taxes on the sale itself matter too. In the City of Los Angeles, a building sold above about $5.4 million is hit by Measure ULA, which can change your net proceeds sharply. Read our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/) before pricing a building near that line.',
+				],
+			},
+			{
+				heading: '9. Financing and the Buyer Pool',
+				paragraphs: [
+					'Interest rates and lending standards decide what buyers can pay. When financing is expensive, cap rates rise and values fall, and when it loosens, the reverse happens. A building also sells for more when it reaches the widest pool of qualified buyers, including investors who are exchanging out of another property.',
+				],
+			},
+			{
+				heading: '10. How the Building Is Positioned for Sale',
+				paragraphs: [
+					'The same building can sell for different prices depending on how it is marketed. An accurate offering memorandum, an open house for brokers and buyers, and a clear story about upside all help. At 1513 Arlington Ave, an open house for brokers and buyers drew offers from 12 buyers.',
+				],
+			},
+			{
+				heading: 'What Is Your Building Worth?',
+				paragraphs: [
+					'For a quick range, try our [free property value calculator](/property-value/), which uses real 2026 sales in your neighborhood and splits rent-stabilized buildings from newer ones. For a number you can plan around, request a free [Broker Opinion of Value](/contact/?intent=bov) and we will build it from your actual rent roll, expenses, and condition. If you are still deciding whether to sell, start with our [seven questions to ask first](/insights/should-i-sell-my-la-apartment-building/).',
+					'Sales figures are medians or ranges from closed LA County multifamily transactions in 2026 through September, and only appear where enough sales reported the figure. This article is general information, not an appraisal or investment advice.',
+				],
+			},
+		],
+	},
+	{
 		slug: 'should-i-sell-my-la-apartment-building',
 		title: 'Should I Sell My Apartment Building? 7 Questions to Ask First',
 		seoTitle: 'Should I Sell My LA Apartment Building? 7 Questions to Ask',
 		description:
 			'Thinking about selling your LA apartment building? Seven questions about goals, value, taxes, costs, and timing to answer before you decide.',
 		date: '2026-10-15',
+		image: {
+			src: '/images/insights/should-i-sell-7-questions.webp',
+			alt: "Graphic: 7 questions to ask before you decide to sell your apartment building, from your goals to your timeline.",
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'There Is No Single Right Answer',
@@ -86,6 +192,12 @@ const allPosts: Post[] = [
 		description:
 			'Yes, you can sell an occupied LA apartment building. How rent control and long-term tenants affect price, preparation, and your sale timeline.',
 		date: '2026-10-15',
+		image: {
+			src: '/images/insights/selling-with-rent-controlled-tenants.webp',
+			alt: "Graphic: yes, you can sell an apartment building with rent-controlled tenants. Leases carry over, rent control still applies, and buyers price in the rent gap.",
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Can You Sell a Building With Tenants in It?',
@@ -159,6 +271,12 @@ const allPosts: Post[] = [
 		description:
 			'Selling an LA apartment building? How federal and California capital gains tax and depreciation recapture work, and how a 1031 exchange can defer both.',
 		date: '2026-10-15',
+		image: {
+			src: '/images/insights/capital-gains-depreciation-recapture.webp',
+			alt: "Graphic: federal capital gains rates of 0%, 15%, or 20%, depreciation recapture of up to 25%, and California taxing gains as ordinary income.",
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Why the Tax Bill Surprises Many Owners',
@@ -234,6 +352,12 @@ const allPosts: Post[] = [
 		description:
 			'Measure ULA thresholds rose to $5.4M and $10.9M. See how a price just over the line can cut your net proceeds, and what LA apartment sellers can do.',
 		date: '2026-10-15',
+		image: {
+			src: '/images/insights/measure-ula-thresholds.webp',
+			alt: "Graphic: a building sold for $5,400,000 owes no Measure ULA tax, but at $5,400,001 the 4% tax applies to the full price, about $216,000.",
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'What Changed on July 1, 2026',
@@ -412,6 +536,12 @@ const allPosts: Post[] = [
 		description:
 			'The AB 1482 rent cap reset on August 1, 2026. See the new 8.7% LA maximum, which buildings it covers, and why it matters when you buy or sell.',
 		date: '2026-09-15',
+		image: {
+			src: '/images/insights/ab-1482-rent-cap.webp',
+			alt: "Graphic: the AB 1482 rent cap is the CPI change of 3.7% plus 5%, a maximum annual increase of 8.7%.",
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'What AB 1482 Actually Caps',
@@ -456,6 +586,12 @@ const allPosts: Post[] = [
 		description:
 			'A quiet water leak can cost an owner $100K+ in property value. Two real LA examples, the cap rate math, and the monthly habit that catches it early.',
 		date: '2026-09-14',
+		image: {
+			src: '/images/insights/utility-bill-leak-value.webp',
+			alt: "Graphic: an undetected leak costing $8,000 a year can suppress property value by about $114,000 at a 7% cap rate.",
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'An Expense Owners Often Overlook',
@@ -510,6 +646,12 @@ const allPosts: Post[] = [
 		description:
 			'How LA apartment owners use a 1031 exchange to move into passive triple-net (NNN) investments, with a real example: a 24-unit sale into two NNN properties.',
 		date: '2026-08-28',
+		image: {
+			src: '/images/insights/1031-exchange-triple-net.webp',
+			alt: "Graphic: a 1031 exchange from apartments into triple-net properties, with 45 days to identify and 180 days to close.",
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'What Is a 1031 Exchange?',
