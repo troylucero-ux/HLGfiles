@@ -14,6 +14,72 @@ export type Post = {
 
 export const posts: Post[] = [
 	{
+		slug: 'should-i-sell-my-la-apartment-building',
+		title: 'Should I Sell My Apartment Building? 7 Questions to Ask First',
+		seoTitle: 'Should I Sell My LA Apartment Building? 7 Questions to Ask',
+		description:
+			'Thinking about selling your LA apartment building? Seven questions about goals, value, taxes, costs, and timing to answer before you decide.',
+		date: '2026-10-15',
+		sections: [
+			{
+				heading: 'There Is No Single Right Answer',
+				paragraphs: [
+					'Whether to sell an apartment building is one of the biggest financial decisions an owner makes, and the right answer depends on your goals as much as on the market. Some owners are better off holding. Others are better off selling now, or selling into a 1031 exchange. The seven questions below are the ones we walk through with owners before anyone lists a property.',
+				],
+			},
+			{
+				heading: '1. What Do You Want the Building to Do for You?',
+				paragraphs: [
+					'Start with the goal, not the price. Do you want steady income, less work, a simpler estate for your family, cash for another venture, or a way out of managing tenants altogether? A building that fits your goals ten years ago may not fit them today.',
+				],
+			},
+			{
+				heading: '2. What Is It Worth Today?',
+				paragraphs: [
+					'You cannot weigh selling against holding without a realistic number. Our [free property value calculator](/property-value/) gives you a quick range based on real, recent LA County sales, and a free [Broker Opinion of Value](/contact/?intent=bov) goes further by looking at your actual rents, condition, and unit mix.',
+				],
+			},
+			{
+				heading: '3. What Would You Actually Net After Taxes and Costs?',
+				paragraphs: [
+					'The sale price is not what lands in your account. Federal and California capital gains tax, depreciation recapture, commissions, and closing costs all come out first, and for buildings near the top of the market the City of Los Angeles transfer tax can matter a great deal. Read our guides to capital gains and depreciation recapture and to Measure ULA price thresholds before you decide, and ask your CPA to estimate your tax on a sale.',
+				],
+			},
+			{
+				heading: '4. What Is the Building Going to Cost You Over the Next Five Years?',
+				paragraphs: [
+					'Look ahead as well as back. Aging roofs, plumbing, and electrical systems, rising insurance premiums, and the cost of keeping up with new rules all affect what the building will really earn. A water leak that goes unnoticed can quietly cost an owner tens of thousands of dollars in value, which we explain in our article on [tracking utility bills](/insights/utility-bill-diligence-la-apartment-owners/).',
+					'Deferred maintenance also tends to show up in the sale price, because buyers deduct for it. Fixing the right things before you list, or choosing not to, is a decision worth making deliberately.',
+				],
+			},
+			{
+				heading: '5. Where Are Your Rents Compared With the Market?',
+				paragraphs: [
+					'In Los Angeles, rent rules shape what a building can earn and what a buyer will pay. Buildings built before October 1, 1978 are covered by the City’s Rent Stabilization Ordinance, and newer buildings generally fall under the statewide cap explained in our article on the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/). If your tenants have been in place a long time at below-market rents, a buyer will price in that gap. Our guide to selling with tenants under rent control explains how.',
+				],
+			},
+			{
+				heading: '6. What Are Your Options Besides Selling Outright?',
+				paragraphs: [
+					'Selling is not all or nothing. Depending on your situation, you could keep the building and bring in better management, refinance, or sell and defer your capital gains tax with a [1031 exchange](/1031-exchanges/). Owners who want to stop managing property but keep the income often look at [triple-net (NNN) and DST investments](/triple-net-dst/), which we cover in our article on [exchanging into triple-net properties](/insights/1031-exchange-into-triple-net-properties/). If you are handling a building after the death of an owner, our [trust and estate sales](/trust-and-estate-sales/) page explains that process.',
+				],
+			},
+			{
+				heading: '7. What Is Your Timeline?',
+				paragraphs: [
+					'A typical Los Angeles apartment sale takes 60 to 90 days from listing to closing, though every deal is different. If you want a sale to land in a particular tax year, or you are working against a 1031 exchange deadline, the calendar matters. Our article on [timing a sale before year-end](/insights/selling-la-apartment-building-before-year-end/) walks through how.',
+				],
+			},
+			{
+				heading: 'Talk It Through With Us',
+				paragraphs: [
+					'If you are weighing a sale, we are glad to talk it through with no obligation. You can see how we have helped other owners in our [case studies](/case-studies/) and [closed sales](/closed-sales/), or reach out to Josh Kaplan or Troy Lucero at Highlight Multifamily Group for a free, confidential conversation.',
+					'This article is general information, not tax, legal, or financial advice. Please talk with your CPA, attorney, and financial advisor about your own situation.',
+				],
+			},
+		],
+	},
+	{
 		slug: 'el-nino-2026-la-apartment-owners-checklist',
 		title: 'El Niño Emergency Declared: What LA Apartment Owners Should Know',
 		seoTitle: 'El Niño 2026: What LA Apartment Owners Should Do Now',
