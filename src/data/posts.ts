@@ -812,3 +812,20 @@ const todayPacific = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_A
 
 export const posts: Post[] = allPosts.filter((post) => post.date <= todayPacific);
 export const scheduledPosts: Post[] = allPosts.filter((post) => post.date > todayPacific);
+
+// "Related reading" shown at the end of each article: three hand-picked posts per slug, chosen by
+// topic so each article links onward to the ones a reader would want next. Slugs that are not live
+// yet (scheduled) are skipped at render time, so a post can be listed here before it publishes.
+export const relatedPostSlugs: Record<string, string[]> = {
+	'how-to-choose-a-multifamily-broker-in-los-angeles': ['should-i-sell-my-la-apartment-building', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-before-year-end'],
+	'how-to-value-an-apartment-building-in-los-angeles': ['should-i-sell-my-la-apartment-building', 'measure-ula-2026-thresholds-selling-la-apartment-building', 'selling-la-apartment-building-with-tenants-rent-control'],
+	'should-i-sell-my-la-apartment-building': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end', 'how-to-choose-a-multifamily-broker-in-los-angeles'],
+	'selling-la-apartment-building-with-tenants-rent-control': ['ab-1482-rent-cap-2026', 'how-to-value-an-apartment-building-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
+	'capital-gains-depreciation-recapture-selling-la-apartment-building': ['1031-exchange-into-triple-net-properties', 'measure-ula-2026-thresholds-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end'],
+	'measure-ula-2026-thresholds-selling-la-apartment-building': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-before-year-end'],
+	'el-nino-2026-la-apartment-owners-checklist': ['ab-1482-rent-cap-2026', 'selling-la-apartment-building-with-tenants-rent-control', 'utility-bill-diligence-la-apartment-owners'],
+	'selling-la-apartment-building-before-year-end': ['capital-gains-depreciation-recapture-selling-la-apartment-building', '1031-exchange-into-triple-net-properties', 'should-i-sell-my-la-apartment-building'],
+	'ab-1482-rent-cap-2026': ['selling-la-apartment-building-with-tenants-rent-control', 'el-nino-2026-la-apartment-owners-checklist', 'how-to-value-an-apartment-building-in-los-angeles'],
+	'utility-bill-diligence-la-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'el-nino-2026-la-apartment-owners-checklist', 'should-i-sell-my-la-apartment-building'],
+	'1031-exchange-into-triple-net-properties': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end', 'should-i-sell-my-la-apartment-building'],
+};

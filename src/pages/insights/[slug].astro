@@ -5,7 +5,7 @@ import BOVForm from '../../components/BOVForm.astro';
 import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
 import CpiRentCapTable from '../../components/CpiRentCapTable.astro';
 import UlaThresholdTable from '../../components/UlaThresholdTable.astro';
-import { posts } from '../../data/posts';
+import { posts, relatedPostSlugs } from '../../data/posts';
 import { site } from '../../data/site';
 
 export function getStaticPaths() {
@@ -16,6 +16,9 @@ export function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+
+// Hand-picked onward reading for this article. Posts that are not live yet are skipped.
+const related = (relatedPostSlugs[post.slug] ?? []).map((slug) => posts.find((p) => p.slug === slug)).filter((p): p is NonNullable<typeof p> => Boolean(p));
 
 // Paragraphs are plain text, with [link text](/internal-path/) or [link text](https://...) links supported.
 const linkPattern = /\[([^\]]+)\]\((\/[^)\s]*|https?:\/\/[^)\s]+)\)/g;
@@ -79,6 +82,25 @@ const articleSchema = {
 				}
 			</div>
 
+			{
+				related.length > 0 && (
+					<aside class="related" aria-labelledby="related-heading">
+						<h2 id="related-heading">Related Reading</h2>
+						<ul class="related__list">
+							{related.map((r) => (
+								<li>
+									<a href={`/insights/${r.slug}/`}>{r.title}</a>
+									<span>{r.description}</span>
+								</li>
+							))}
+						</ul>
+						<p class="related__explore">
+							Explore more: <a href="/property-value/">Free Property Value Calculator</a> · <a href="/closed-sales/">Our Closed Sales</a> · <a href="/submarkets/">LA Submarkets</a> · <a href="/1031-exchanges/">1031 Exchanges</a>
+						</p>
+					</aside>
+				)
+			}
+
 			<div class="post-detail__links">
 				<a href="/insights/" class="btn btn-outline">
 					More Insights
@@ -127,6 +149,46 @@ const articleSchema = {
 	.post-detail__body h2 {
 		margin-top: 2.25rem;
 		font-size: 1.5rem;
+	}
+
+	.related {
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.related h2 {
+		font-size: 1.25rem;
+		margin: 0 0 1rem;
+	}
+
+	.related__list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.related__list li {
+		display: grid;
+		gap: 0.2rem;
+	}
+
+	.related__list a {
+		font-weight: 600;
+	}
+
+	.related__list span {
+		color: var(--ink-light);
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.related__explore {
+		margin-top: 1.5rem;
+		font-size: 0.95rem;
+		font-weight: 600;
 	}
 
 	.post-detail__links {

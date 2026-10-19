@@ -69,8 +69,10 @@ const builtAt = new Date().toISOString();
 		<script async src="https://www.googletagmanager.com/gtag/js?id=G-P4GNC7QLNX"></script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
-			function gtag(...args: unknown[]) {
-				window.dataLayer.push(args);
+			// gtag.js only acts on commands pushed as the built-in `arguments` object. Pushing a
+			// rest-parameter array (the previous version) made it silently ignore every command.
+			function gtag(..._args: unknown[]) {
+				window.dataLayer.push(arguments);
 			}
 			// @ts-expect-error — gtag's own global signature isn't declared in this project
 			window.gtag = gtag;

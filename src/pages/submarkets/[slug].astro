@@ -6,6 +6,7 @@ import { submarkets } from '../../data/submarkets';
 import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
 import { listings } from '../../data/listings';
+import { posts } from '../../data/posts';
 import { formatPrice, formatPriceFull } from '../../lib/format';
 import { SALES_STATS, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, MIN_PRICE_COMPS_PAGE, MIN_CAP_RATE_COMPS, type AgeGroup } from '../../data/valuationAssumptions';
 
@@ -158,6 +159,17 @@ const nearbyMap: Record<string, string[]> = {
 	'north-hollywood': ['van-nuys'],
 	'van-nuys': ['north-hollywood'],
 };
+// Seller guides linked from every neighborhood page. Measure ULA and the LA rent control rules apply
+// to the City of Los Angeles only, so Santa Monica (its own city and rent board) gets the general ones.
+const ownerGuideSlugs = [
+	'how-to-value-an-apartment-building-in-los-angeles',
+	'should-i-sell-my-la-apartment-building',
+	...(sm.slug === 'santa-monica' ? [] : ['selling-la-apartment-building-with-tenants-rent-control', 'measure-ula-2026-thresholds-selling-la-apartment-building']),
+	'capital-gains-depreciation-recapture-selling-la-apartment-building',
+	'how-to-choose-a-multifamily-broker-in-los-angeles',
+];
+const ownerGuides = ownerGuideSlugs.map((slug) => posts.find((p) => p.slug === slug)).filter((p): p is NonNullable<typeof p> => Boolean(p));
+
 const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x.slug === slug)).filter(Boolean) as typeof submarkets;
 ---
 
@@ -305,6 +317,25 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 							<a href={`/case-studies/${cs.slug}/`} class="closing-card">
 								<span>{cs.title}</span>
 								<span class="closing-card__meta">{cs.summary}</span>
+							</a>
+						))}
+					</div>
+				</div>
+			</section>
+		)
+	}
+
+	{
+		ownerGuides.length > 0 && (
+			<section class="section">
+				<div class="container">
+					<span class="eyebrow">Guides for Owners</span>
+					<h2>Thinking of Selling an Apartment Building in {shortName}?</h2>
+					<div class="closing-grid">
+						{ownerGuides.map((g) => (
+							<a href={`/insights/${g.slug}/`} class="closing-card">
+								<span>{g.title}</span>
+								<span class="closing-card__meta">{g.description}</span>
 							</a>
 						))}
 					</div>
