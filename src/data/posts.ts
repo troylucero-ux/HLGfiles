@@ -816,7 +816,7 @@ const allPosts: Post[] = [
 		seoTitle: 'LA Apartment Cap Rates and Price Per Unit by Neighborhood',
 		description:
 			'What LA apartment buildings sold for in 2026: median price per unit, price per SF, and cap rate ranges for our neighborhoods, from real sales.',
-		date: '2026-10-23',
+		date: '2026-10-21',
 		image: {
 			src: '/images/insights/la-apartment-cap-rates-by-neighborhood.webp',
 			alt: 'Graphic: what LA apartment buildings really sold for. Median price per unit and cap rate ranges by neighborhood, from real 2026 sales.',
@@ -888,7 +888,7 @@ const allPosts: Post[] = [
 		seoTitle: 'How to Sell an LA Apartment Building: Step by Step',
 		description:
 			'The steps to sell an LA apartment building, from pricing and paperwork to offers, escrow, and closing, plus how long each stage typically takes.',
-		date: '2026-10-26',
+		date: '2026-10-21',
 		image: {
 			src: '/images/insights/how-to-sell-apartment-building-la.webp',
 			alt: 'Graphic: eight steps from decision to closing. Prepare with goals, value, broker, and documents. Market and review offers. Close through escrow and due diligence.',
@@ -971,7 +971,7 @@ const allPosts: Post[] = [
 		seoTitle: 'Broker Opinion of Value vs. Appraisal for Apartment Buildings',
 		description:
 			'A Broker Opinion of Value and an appraisal answer different questions. What each is, what it costs, and which one an LA apartment seller needs first.',
-		date: '2026-10-28',
+		date: '2026-10-21',
 		image: {
 			src: '/images/insights/bov-vs-appraisal.webp',
 			alt: 'Graphic: two valuations, two purposes. A Broker Opinion of Value sets your price. An appraisal supports the buyer’s loan. Start with a BOV.',
@@ -1039,7 +1039,7 @@ const allPosts: Post[] = [
 		seoTitle: 'Selling a Fourplex or Small Apartment Building in LA',
 		description:
 			'Selling a fourplex or small apartment building in Los Angeles? How buyers, financing, rent control, and pricing differ from larger buildings.',
-		date: '2026-10-30',
+		date: '2026-10-21',
 		image: {
 			src: '/images/insights/selling-fourplex-small-building.webp',
 			alt: 'Graphic: a fourplex sells differently. Two kinds of buyers, owner-occupants and investors. Buildings of one to four units often use residential loans. Price with local comparable sales.',
@@ -1109,7 +1109,7 @@ const allPosts: Post[] = [
 		seoTitle: 'Off-Market or Listed? How to Sell an LA Apartment Building',
 		description:
 			'Should you sell your LA apartment building off-market or list it openly? The tradeoffs in price, privacy, speed, and tenant disruption.',
-		date: '2026-11-03',
+		date: '2026-10-21',
 		image: {
 			src: '/images/insights/off-market-vs-listed.webp',
 			alt: 'Graphic: off-market or listed? Off-market is private with fewer buyers. A public listing creates competition. A targeted sale to a curated buyer list is the middle path.',
