@@ -5,6 +5,7 @@ import BOVForm from '../../components/BOVForm.astro';
 import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
 import CpiRentCapTable from '../../components/CpiRentCapTable.astro';
 import UlaThresholdTable from '../../components/UlaThresholdTable.astro';
+import SubmarketStatsTable from '../../components/SubmarketStatsTable.astro';
 import { posts, relatedPostSlugs } from '../../data/posts';
 import { site } from '../../data/site';
 
@@ -77,6 +78,8 @@ const articleSchema = {
 							{s.heading === 'How a 1031 Exchange Makes the Move Tax-Deferred' && <ExchangeTimeline />}
 							{s.heading === 'The New Maximum, Effective August 1, 2026' && <CpiRentCapTable />}
 							{s.heading === 'Why a Price Just Over the Line Costs So Much' && <UlaThresholdTable />}
+							{s.heading === 'Pre-1978 (RSO) Buildings by Neighborhood' && <SubmarketStatsTable group="rso" />}
+							{s.heading === 'Newer Buildings (1978 and Later)' && <SubmarketStatsTable group="post1978" />}
 						</>
 					))
 				}

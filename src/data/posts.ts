@@ -295,9 +295,9 @@ const allPosts: Post[] = [
 	{
 		slug: 'selling-la-apartment-building-with-tenants-rent-control',
 		title: 'Selling an LA Apartment Building With Tenants Under Rent Control',
-		seoTitle: 'Selling an LA Apartment Building With Rent-Controlled Tenants',
+		seoTitle: 'Selling a Rent-Controlled Apartment Building in Los Angeles',
 		description:
-			'Yes, you can sell an occupied LA apartment building. How rent control and long-term tenants affect price, preparation, and your sale timeline.',
+			'Selling a rent-controlled apartment building in Los Angeles? How rent control and long-term tenants affect price, the broker and buyer you need, and your timeline.',
 		date: '2026-10-15',
 		image: {
 			src: '/images/insights/selling-with-rent-controlled-tenants.webp',
@@ -354,6 +354,13 @@ const allPosts: Post[] = [
 				heading: 'Measure ULA and Other Costs of Selling',
 				paragraphs: [
 					'Rent rules are only part of the picture. For buildings priced near $5.4 million or $10.9 million inside the City of Los Angeles, the Measure ULA transfer tax can change what you net, as we explain in our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/). And if you are still deciding whether to sell, start with our list of [seven questions to ask first](/insights/should-i-sell-my-la-apartment-building/).',
+				],
+			},
+			{
+				heading: 'Choosing a Broker to Sell a Rent-Controlled Building',
+				paragraphs: [
+					'A rent-controlled building is priced on its rents in place, its loss to lease, and its tenants, so the broker you hire needs real experience with those details. Ask whether they have sold similar rent-stabilized buildings in your neighborhood recently, how they would present your rent roll and the upside to buyers, and which buyers they would approach, since some investors specialize in buildings with long-term, below-market tenants.',
+					'Our guide on [how to choose a multifamily broker](/insights/how-to-choose-a-multifamily-broker-in-los-angeles/) lists seven things to check before you sign, and our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows how the process runs from pricing to closing.',
 				],
 			},
 			{
@@ -803,6 +810,375 @@ const allPosts: Post[] = [
 			},
 		],
 	},
+	{
+		slug: 'la-apartment-cap-rates-and-prices-by-neighborhood-2026',
+		title: 'LA Apartment Cap Rates and Prices Per Unit by Neighborhood, 2026',
+		seoTitle: 'LA Apartment Cap Rates and Price Per Unit by Neighborhood',
+		description:
+			'What LA apartment buildings sold for in 2026: median price per unit, price per SF, and cap rate ranges for our neighborhoods, from real sales.',
+		date: '2026-10-23',
+		image: {
+			src: '/images/insights/la-apartment-cap-rates-by-neighborhood.webp',
+			alt: 'Graphic: what LA apartment buildings really sold for. Median price per unit and cap rate ranges by neighborhood, from real 2026 sales.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'What a Cap Rate Tells You',
+				paragraphs: [
+					'A capitalization rate, or cap rate, is a building’s net operating income (NOI) divided by its price. If a building earns $100,000 in NOI after operating expenses and sells for $1,600,000, its cap rate is 6.25%. Buyers use it to compare buildings quickly: the lower the cap rate, the more the buyer is paying for each dollar of income.',
+					'Cap rates are not the same everywhere. They move with the neighborhood, the age of the building, how much rent control limits future rent growth, the building’s condition, and interest rates. That is why one citywide or countywide number is not very useful, and why we show the neighborhoods one at a time below.',
+				],
+			},
+			{
+				heading: 'Where This Data Comes From',
+				paragraphs: [
+					'The figures below come from sold multifamily properties in Los Angeles County in 2026, taken from CoStar sales data and analyzed by Highlight Multifamily Group. We split the sales by building age, because older buildings generally fall under rent stabilization while buildings built in 1978 or later fall under the statewide AB 1482 cap, and the two groups trade differently. Santa Monica has its own rent control rules, separate from the City of Los Angeles.',
+					'We only show a number when enough sales stand behind it. If a neighborhood did not have enough sales or reported cap rates, the table says so, rather than guessing.',
+				],
+			},
+			{
+				heading: 'Pre-1978 (RSO) Buildings by Neighborhood',
+				paragraphs: [
+					'Older buildings make up most of the sales, so this is the table most owners will care about. Neighborhoods are listed from the highest median price per unit to the lowest.',
+				],
+			},
+			{
+				heading: 'Newer Buildings (1978 and Later)',
+				paragraphs: [
+					'Buildings built in 1978 or later are less common, so only neighborhoods with at least three sales appear here. Where both groups have enough sales, newer buildings generally trade at higher prices per unit than older buildings in the same neighborhood, partly because their rents are less restricted.',
+				],
+			},
+			{
+				heading: 'How to Read These Numbers',
+				paragraphs: [
+					'Price per unit is the quickest way to compare buildings of different sizes, but it ignores how big the units are. Price per square foot adjusts for that. A building of large two-bedroom units and a building of small studios can have the same price per unit and very different values.',
+					'Notice how far apart the neighborhoods are. Westside markets such as Santa Monica and Brentwood trade at far higher prices per unit than Koreatown, Westlake, or Pico-Union, and Santa Monica’s cap rates run lower than most of the others. Buyers accept a lower income yield where they expect stronger long-term demand and rent growth.',
+					'Cap rates also vary inside a single neighborhood, which is why we show a range, not one number. The range is the middle half of the sales that reported a cap rate, so a few unusually high or low sales do not distort it.',
+				],
+			},
+			{
+				heading: 'Why Your Building May Sell Above or Below the Range',
+				paragraphs: [
+					'A neighborhood range is a starting point, not a price for your building. Several things move a building toward the high or low end.',
+					'Rents compared with the market. Buildings with rents well below market are valued on the rents in place, with some credit for the upside, which is why we cover the loss to lease in our article on [selling with rent-controlled tenants](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
+					'Condition and deferred maintenance. Roofs, plumbing, electrical, and required retrofits affect what a buyer will pay.',
+					'Unit mix, parking, and lot size. Larger units, on-site parking, and extra land can all add value, and a lot that could support new construction can change the math entirely.',
+					'The buyer and the timing. A 1031 exchange buyer on a deadline, a change in interest rates, or a competitive bidding process can all shift the price.',
+				],
+			},
+			{
+				heading: 'Turn the Range Into a Number for Your Building',
+				paragraphs: [
+					'For an estimate built on your own rents and expenses, use our [free property value calculator](/property-value/), which draws on the same sales data. For a number you can plan around, request a free [Broker Opinion of Value](/contact/?intent=bov). Our article on [how buyers value an LA apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) walks through the math step by step, and each neighborhood page, including [Koreatown](/submarkets/koreatown/), [Silver Lake](/submarkets/silver-lake/), and [Santa Monica](/submarkets/santa-monica/), has the full local breakdown. You can see them all on our [submarkets](/submarkets/) page.',
+				],
+			},
+			{
+				heading: 'About This Data',
+				paragraphs: [
+					'Sales data goes stale, so we refresh it every quarter or two as new sales close. Cap rates in public and commercial databases are sometimes incomplete or estimated, so treat the ranges as a guide, not a guarantee. This article is general information, not an appraisal or investment advice.',
+				],
+			},
+		],
+	},
+	{
+		slug: 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step',
+		title: 'How to Sell an Apartment Building in Los Angeles: The Step-by-Step Process',
+		seoTitle: 'How to Sell an LA Apartment Building: Step by Step',
+		description:
+			'The steps to sell an LA apartment building, from pricing and paperwork to offers, escrow, and closing, plus how long each stage typically takes.',
+		date: '2026-10-26',
+		image: {
+			src: '/images/insights/how-to-sell-apartment-building-la.webp',
+			alt: 'Graphic: eight steps from decision to closing. Prepare with goals, value, broker, and documents. Market and review offers. Close through escrow and due diligence.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'How Long Does It Take?',
+				paragraphs: [
+					'A typical Los Angeles apartment sale takes 60 to 90 days from listing to closing: a few weeks of marketing, then 30 to 45 days of escrow. The preparation before you list comes on top of that, and it is time well spent. Every deal is different, but the steps below are the same on almost every sale.',
+				],
+			},
+			{
+				heading: 'Step 1: Decide What You Want From the Sale',
+				paragraphs: [
+					'Start with your goal: the highest price, a certain closing date, a smooth 1031 exchange, a quiet sale, or a clean exit. Your goal shapes the pricing, the marketing, and the timeline. If you are still deciding whether to sell at all, our [seven questions to ask first](/insights/should-i-sell-my-la-apartment-building/) is a good place to start.',
+				],
+			},
+			{
+				heading: 'Step 2: Find Out What the Building Is Worth',
+				paragraphs: [
+					'Get a realistic number before you commit to anything. Start with our [free property value calculator](/property-value/) for a quick range, then ask for a Broker Opinion of Value, which looks at your actual rents, condition, and comparable sales. We explain how it differs from a formal appraisal in our article on [Broker Opinion of Value vs. appraisal](/insights/broker-opinion-of-value-vs-appraisal-apartment-building/). A price that matches the market draws more and better offers than one that is too high and has to be cut later.',
+				],
+			},
+			{
+				heading: 'Step 3: Choose a Broker and Sign a Listing Agreement',
+				paragraphs: [
+					'The broker you hire runs the process, so choose carefully. Our guide on [how to choose a multifamily broker](/insights/how-to-choose-a-multifamily-broker-in-los-angeles/) covers what to check. The listing agreement sets how long the listing lasts, the commission, and what happens if the building sells to a buyer you already know. Read it closely, and negotiate the terms before you sign.',
+				],
+			},
+			{
+				heading: 'Step 4: Gather Your Documents',
+				paragraphs: [
+					'Buyers ask for the same items on day one, and having them ready keeps momentum. Typically that means a current rent roll, the leases, and the last two to three years of income and expenses, along with your utility bills, property tax bill, insurance, permits, inspection reports, and records of major repairs. In Los Angeles, have your Rent Stabilization Ordinance registration and fee records ready as well.',
+					'Accurate numbers matter more than polished ones, because buyers check everything against your records and the leases. Utility bills deserve special attention, as we explain in our article on [why diligent owners track them every month](/insights/utility-bill-diligence-la-apartment-owners/).',
+				],
+			},
+			{
+				heading: 'Step 5: Market the Building',
+				paragraphs: [
+					'Your broker prepares an offering memorandum that presents the building’s income, expenses, rent roll, unit mix, photos, and the case for buying it, and then gets it in front of buyers. Good marketing means calling investors and other brokers directly, not just posting a listing and waiting. It also includes professional photos, often a property video, and clear answers to the questions buyers always ask.',
+				],
+			},
+			{
+				heading: 'Step 6: Review Offers and Negotiate',
+				paragraphs: [
+					'Offers usually arrive over a few weeks. Price matters, but so do the buyer’s financing, the length of the due diligence period, the size of the deposit, and how likely the buyer is to close. The highest offer is not always the best one. Your broker should help you compare offers on net proceeds and certainty, and negotiate the terms of the purchase agreement before you accept.',
+				],
+			},
+			{
+				heading: 'Step 7: Open Escrow and Go Through Due Diligence',
+				paragraphs: [
+					'After you accept an offer, escrow opens and the buyer begins due diligence: reviewing the leases, the financials, and the physical condition, often with inspections and tenant estoppels. This is the stage where price reductions are most often requested, so the accurate documents from Step 4 pay off. The buyer’s lender will usually order an appraisal during this period, which is one more reason to price the building on real comparable sales.',
+				],
+			},
+			{
+				heading: 'Step 8: Close',
+				paragraphs: [
+					'In the final weeks, the buyer removes contingencies and funds the purchase, and escrow records the deed and sends you your net proceeds. Plan for the costs of selling, including the broker’s commission, transfer taxes, and, for buildings in the City of Los Angeles priced above $5.4 million, [Measure ULA](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/). If you are doing a 1031 exchange, remember the clock: you have [45 days to identify and 180 days to close](/1031-exchanges/) on your replacement property, so line up that plan before you list. The calendar can also affect your taxes, as we explain in our article on [selling before year-end](/insights/selling-la-apartment-building-before-year-end/).',
+				],
+			},
+			{
+				heading: 'Where Sales Go Wrong',
+				paragraphs: [
+					'Three problems come up again and again: pricing too high at the start, rent roll or expense numbers that do not hold up in due diligence, and a buyer whose financing falls through. All three are easier to prevent than to fix, which is why the early steps matter most.',
+				],
+			},
+			{
+				heading: 'Ready to Start?',
+				paragraphs: [
+					'We guide LA apartment owners through each of these steps. To see where your building stands, request a free [Broker Opinion of Value](/contact/?intent=bov) or start with the [calculator](/property-value/). This article is general information, not legal or tax advice. Please talk with your attorney and CPA about your situation.',
+				],
+			},
+		],
+	},
+	{
+		slug: 'broker-opinion-of-value-vs-appraisal-apartment-building',
+		title: 'Broker Opinion of Value vs. Appraisal: Which Do You Need to Sell?',
+		seoTitle: 'Broker Opinion of Value vs. Appraisal for Apartment Buildings',
+		description:
+			'A Broker Opinion of Value and an appraisal answer different questions. What each is, what it costs, and which one an LA apartment seller needs first.',
+		date: '2026-10-28',
+		image: {
+			src: '/images/insights/bov-vs-appraisal.webp',
+			alt: 'Graphic: two valuations, two purposes. A Broker Opinion of Value sets your price. An appraisal supports the buyer’s loan. Start with a BOV.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'A Broker Opinion of Value (BOV) is a broker’s estimate of what your building would likely sell for. An appraisal is a formal valuation by a licensed appraiser, usually ordered by a lender. They serve different purposes.',
+					'A BOV helps you decide whether and when to sell and what to list for. An appraisal comes up later, when a buyer’s lender needs one to approve a loan.',
+					'Most sellers need a BOV first, and they usually do not need to order an appraisal at all.',
+				],
+			},
+			{
+				heading: 'What a Broker Opinion of Value Is',
+				paragraphs: [
+					'A BOV is prepared by a real estate broker who works in your market. It looks at your building’s actual rents and expenses, its condition and unit mix, and recent comparable sales, and arrives at a likely sale price or price range. It also reflects things a formal report may not, such as which buyers are active right now and how they are pricing buildings like yours.',
+					'A BOV is not a formal appraisal, and it is not a guarantee of what a buyer will pay. It is a professional opinion, grounded in the market, about where your building is likely to sell.',
+				],
+			},
+			{
+				heading: 'What an Appraisal Is',
+				paragraphs: [
+					'An appraisal is a formal, written opinion of a property’s market value prepared by a licensed or certified appraiser who follows professional standards. Lenders require one before they make a loan, so the buyer’s lender will order an appraisal of your building during escrow. The appraiser works for the lender, not for you.',
+					'Owners also use appraisals in situations that call for a formal valuation, such as an estate, a partnership buyout, or a dispute.',
+				],
+			},
+			{
+				heading: 'The Main Differences',
+				paragraphs: [
+					'Who prepares it. A broker prepares a BOV. A licensed appraiser prepares an appraisal.',
+					'Why it exists. A BOV helps you price and market a sale. An appraisal supports a loan or another formal need.',
+					'What it costs. Brokers typically provide a BOV at no charge when you are considering a sale, while an appraisal is paid for, usually by whoever needs it.',
+					'How it is used. A BOV is a planning and pricing tool with no formal standing. An appraisal is the document lenders and other institutions rely on.',
+				],
+			},
+			{
+				heading: 'Which One Do You Need Before Selling?',
+				paragraphs: [
+					'If you are deciding whether to sell or setting your asking price, you want a BOV. It is faster, it costs you nothing from a broker, and it is built around how buyers are actually pricing buildings right now. You do not need an appraisal to list a building.',
+					'If you need a formal valuation for a reason other than a typical sale, such as an estate or a legal dispute, ask your attorney or CPA whether an appraisal is required.',
+				],
+			},
+			{
+				heading: 'Why the Buyer’s Appraisal Still Matters to Your Sale',
+				paragraphs: [
+					'Even though you do not order it, the buyer’s lender will. If the appraiser values the building below the agreed price, the buyer may have to bring more cash, ask for a lower price, or walk away if their agreement allows it. That is why a well-supported price at the start matters: a price backed by real comparable sales is more likely to hold up when the appraiser checks it.',
+					'A BOV that uses recent sales and your actual rent roll helps you set that price. We use the same kind of neighborhood sales data that appears in our article on [LA apartment cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/).',
+				],
+			},
+			{
+				heading: 'What to Expect From Our BOV',
+				paragraphs: [
+					'Our Broker Opinion of Value is free and confidential, and it is grounded in your building’s actual rents, condition, and unit mix. We will walk you through how your rents, tenants, and timeline affect the price, so you understand the number and not just the total. To see how buyers think about value, read our guide on [how to value an LA apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/).',
+					'You can start with the [free property value calculator](/property-value/) for a quick range, then request a [Broker Opinion of Value](/contact/?intent=bov) when you want a number you can plan around. This article is general information, not legal, tax, or appraisal advice.',
+				],
+			},
+		],
+	},
+	{
+		slug: 'selling-a-fourplex-or-small-apartment-building-in-los-angeles',
+		title: 'Selling a Fourplex or Small Apartment Building in Los Angeles',
+		seoTitle: 'Selling a Fourplex or Small Apartment Building in LA',
+		description:
+			'Selling a fourplex or small apartment building in Los Angeles? How buyers, financing, rent control, and pricing differ from larger buildings.',
+		date: '2026-10-30',
+		image: {
+			src: '/images/insights/selling-fourplex-small-building.webp',
+			alt: 'Graphic: a fourplex sells differently. Two kinds of buyers, owner-occupants and investors. Buildings of one to four units often use residential loans. Price with local comparable sales.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Buildings with two to four units sell differently from larger apartment buildings. The buyers, the financing, and the way the price is set are all different.',
+					'Many small-building buyers are owner-occupants or smaller investors who finance with a residential loan, while buildings with five or more units are financed with commercial loans and valued mostly on income.',
+					'Accurate rents, organized records, and a clear picture of the building’s condition matter just as much in a small sale as in a large one.',
+				],
+			},
+			{
+				heading: 'Who Buys a Fourplex',
+				paragraphs: [
+					'Fourplexes and other two-to-four-unit buildings attract two main kinds of buyers. Owner-occupants live in one unit and rent out the rest, which can let them put less money down than an investor would. Smaller investors, including owners exchanging out of other property, buy for the income and the long-term appreciation.',
+					'Because the buyer pool includes people who want the property as a place to live, small buildings can sometimes sell for more than their income alone would support.',
+				],
+			},
+			{
+				heading: 'How Financing Differs',
+				paragraphs: [
+					'In general, buildings with up to four units can be financed with residential mortgages, while buildings with five or more units need commercial loans. A residential loan leans heavily on the buyer’s income and credit, and the property’s own income plays a smaller role. A commercial loan looks hard at the building’s net operating income and cap rate.',
+					'That difference changes who can buy your building and how a lender’s appraisal will treat it, so it is worth knowing which side of the line your building falls on.',
+				],
+			},
+			{
+				heading: 'How the Price Is Set',
+				paragraphs: [
+					'Small buildings are usually priced by comparing recent sales of similar buildings nearby, using price per unit, price per square foot, and the gross rent multiplier, which is the price divided by the yearly rent. Larger buildings lean more on net operating income and cap rate.',
+					'For a fourplex, the most useful comparables are other small buildings in the same neighborhood, not large apartment complexes. A [Broker Opinion of Value](/contact/?intent=bov) built on those comparables and your own rents is the most reliable way to set a price, and our article on [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains the main measures.',
+				],
+			},
+			{
+				heading: 'Rent Control Still Applies',
+				paragraphs: [
+					'Being small does not take a building out of the rent rules. In the City of Los Angeles, the Rent Stabilization Ordinance generally covers multi-unit buildings with a certificate of occupancy issued before October 1, 1978, including smaller ones, and newer buildings typically fall under the statewide AB 1482 cap unless they are exempt. Our articles on [selling with rent-controlled tenants](/insights/selling-la-apartment-building-with-tenants-rent-control/) and the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/) explain how those rules affect price.',
+				],
+			},
+			{
+				heading: 'Preparing a Small Building for Sale',
+				paragraphs: [
+					'With only a few units, each one matters. A single vacant unit, or one tenant paying far below market, can change the numbers noticeably. Buyers will look closely at the unit mix, the condition of the roof, plumbing, and electrical, and the age of the major systems.',
+					'Fixing small issues first, confirming your rents and lease terms, and organizing your leases and expense records keep the sale moving. The same steps apply as in a larger sale, which we lay out in our guide to the [step-by-step process of selling an LA apartment building](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/).',
+				],
+			},
+			{
+				heading: 'An Example From Our Closed Sales',
+				paragraphs: [
+					'We have sold small buildings across Los Angeles. At [14654 Gault St in Van Nuys](/closed-sales/14654-gault-st-van-nuys-ca-91405/), a four-unit building, our selling client used a [1031 exchange](/1031-exchanges/) to move into a newer fourplex in North Hollywood. You can see the rest of our sales on the [closed sales](/closed-sales/) page.',
+				],
+			},
+			{
+				heading: 'Next Steps',
+				paragraphs: [
+					'If you own a fourplex or a small apartment building in Los Angeles and want to know what it would sell for, request a free, confidential [Broker Opinion of Value](/contact/?intent=bov). This article is general information, not legal or tax advice. Please talk with your attorney and CPA about your situation.',
+				],
+			},
+		],
+	},
+	{
+		slug: 'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles',
+		title: 'Off-Market or Listed? How to Sell an LA Apartment Building',
+		seoTitle: 'Off-Market or Listed? How to Sell an LA Apartment Building',
+		description:
+			'Should you sell your LA apartment building off-market or list it openly? The tradeoffs in price, privacy, speed, and tenant disruption.',
+		date: '2026-11-03',
+		image: {
+			src: '/images/insights/off-market-vs-listed.webp',
+			alt: 'Graphic: off-market or listed? Off-market is private with fewer buyers. A public listing creates competition. A targeted sale to a curated buyer list is the middle path.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Selling off-market means offering your building to a limited group of buyers instead of marketing it publicly. Selling with a public listing means marketing it widely to as many qualified buyers as possible.',
+					'Off-market can offer privacy and less disruption. A wide listing usually offers the best chance at the highest price. The right choice depends on what matters most to you.',
+					'There is a middle path: targeted marketing to a curated list of proven buyers.',
+				],
+			},
+			{
+				heading: 'What an Off-Market Sale Is',
+				paragraphs: [
+					'An off-market sale, sometimes called a quiet or private sale, happens without a public listing. The broker contacts a small group of qualified buyers directly, often investors who have bought similar buildings before. Tenants and neighbors may never know the building is for sale.',
+				],
+			},
+			{
+				heading: 'What a Listed Sale Looks Like',
+				paragraphs: [
+					'In a listed sale, the broker markets the building to the whole buyer pool: investors, other brokers, and 1031 exchange buyers, using an offering memorandum, photos, video, and direct outreach. The goal is competition, because several interested buyers tend to push the price and the terms in the seller’s favor.',
+				],
+			},
+			{
+				heading: 'The Case for Selling Off-Market',
+				paragraphs: [
+					'Privacy. Some owners do not want tenants, employees, or neighbors to know a sale is possible, and families handling an inheritance often prefer discretion, as we describe in our guide to [trust and estate sales](/trust-and-estate-sales/).',
+					'Less disruption. With fewer buyers touring, there are fewer showings and fewer visits to tenants’ units.',
+					'Speed and simplicity. When a motivated buyer already knows the building type and neighborhood, the process can move quickly.',
+				],
+			},
+			{
+				heading: 'The Case for Listing Openly',
+				paragraphs: [
+					'More buyers means more competition, and competition is the surest way to find out what the market will actually pay. A public process also gives you a clear view of the true price, which matters if you are not certain of your building’s value. And buyers who are on a deadline, such as 1031 exchange buyers, are often in the market and ready to compete.',
+				],
+			},
+			{
+				heading: 'The Tradeoff',
+				paragraphs: [
+					'The main risk of an off-market sale is that you never learn what you left on the table. If only a few buyers see the building, the best offer may be lower than a wider market would have produced. The main risk of a listed sale is exposure: more people know, tenants may hear about it, and a building that sits on the market can start to look stale.',
+				],
+			},
+			{
+				heading: 'A Middle Path: Targeted Marketing',
+				paragraphs: [
+					'Many owners choose something in between. The broker contacts a curated list of buyers who are active in your neighborhood and your building type, without a public listing. This keeps the sale confidential while still creating some competition.',
+					'At 453 S Gramercy Pl in Koreatown, for example, we found an off-market buyer who was experienced with long-term, below-market tenancies, as we describe in the [case study](/case-studies/453-s-gramercy-pl-koreatown-apartments/).',
+				],
+			},
+			{
+				heading: 'How to Decide',
+				paragraphs: [
+					'Ask yourself how important privacy is, how sure you are of your building’s value, how soon you need to close, and whether you are exchanging into other property on a deadline.',
+					'Then ask your broker how many qualified buyers they would contact, and how they know those buyers will pay a market price. A good answer includes names, recent purchases, and a plan for what happens if the first round does not produce a strong offer. Our guide on [how to choose a multifamily broker](/insights/how-to-choose-a-multifamily-broker-in-los-angeles/) lists more questions to ask, and our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows where marketing fits in the process.',
+				],
+			},
+			{
+				heading: 'Start the Conversation',
+				paragraphs: [
+					'We can walk through the options for your building and your goals. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov), or see what you might expect with the [free calculator](/property-value/). This article is general information, not legal or tax advice. Please talk with your attorney and CPA about your situation.',
+				],
+			},
+		],
+	},
 ];
 
 // Scheduled publishing: a post dated in the future is held back until that date (Pacific time). The
@@ -817,10 +1193,10 @@ export const scheduledPosts: Post[] = allPosts.filter((post) => post.date > toda
 // topic so each article links onward to the ones a reader would want next. Slugs that are not live
 // yet (scheduled) are skipped at render time, so a post can be listed here before it publishes.
 export const relatedPostSlugs: Record<string, string[]> = {
-	'how-to-choose-a-multifamily-broker-in-los-angeles': ['should-i-sell-my-la-apartment-building', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-before-year-end'],
-	'how-to-value-an-apartment-building-in-los-angeles': ['should-i-sell-my-la-apartment-building', 'measure-ula-2026-thresholds-selling-la-apartment-building', 'selling-la-apartment-building-with-tenants-rent-control'],
-	'should-i-sell-my-la-apartment-building': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end', 'how-to-choose-a-multifamily-broker-in-los-angeles'],
-	'selling-la-apartment-building-with-tenants-rent-control': ['ab-1482-rent-cap-2026', 'how-to-value-an-apartment-building-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
+	'how-to-choose-a-multifamily-broker-in-los-angeles': ['how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
+	'how-to-value-an-apartment-building-in-los-angeles': ['should-i-sell-my-la-apartment-building', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'broker-opinion-of-value-vs-appraisal-apartment-building'],
+	'should-i-sell-my-la-apartment-building': ['how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'capital-gains-depreciation-recapture-selling-la-apartment-building', 'how-to-choose-a-multifamily-broker-in-los-angeles'],
+	'selling-la-apartment-building-with-tenants-rent-control': ['ab-1482-rent-cap-2026', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'selling-a-fourplex-or-small-apartment-building-in-los-angeles'],
 	'capital-gains-depreciation-recapture-selling-la-apartment-building': ['1031-exchange-into-triple-net-properties', 'measure-ula-2026-thresholds-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end'],
 	'measure-ula-2026-thresholds-selling-la-apartment-building': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-before-year-end'],
 	'el-nino-2026-la-apartment-owners-checklist': ['ab-1482-rent-cap-2026', 'selling-la-apartment-building-with-tenants-rent-control', 'utility-bill-diligence-la-apartment-owners'],
@@ -828,4 +1204,9 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'ab-1482-rent-cap-2026': ['selling-la-apartment-building-with-tenants-rent-control', 'el-nino-2026-la-apartment-owners-checklist', 'how-to-value-an-apartment-building-in-los-angeles'],
 	'utility-bill-diligence-la-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'el-nino-2026-la-apartment-owners-checklist', 'should-i-sell-my-la-apartment-building'],
 	'1031-exchange-into-triple-net-properties': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end', 'should-i-sell-my-la-apartment-building'],
+	'la-apartment-cap-rates-and-prices-by-neighborhood-2026': ['how-to-value-an-apartment-building-in-los-angeles', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'should-i-sell-my-la-apartment-building'],
+	'how-to-sell-an-apartment-building-in-los-angeles-step-by-step': ['should-i-sell-my-la-apartment-building', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'selling-la-apartment-building-before-year-end'],
+	'broker-opinion-of-value-vs-appraisal-apartment-building': ['how-to-value-an-apartment-building-in-los-angeles', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-choose-a-multifamily-broker-in-los-angeles'],
+	'selling-a-fourplex-or-small-apartment-building-in-los-angeles': ['how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step'],
+	'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles': ['how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
 };

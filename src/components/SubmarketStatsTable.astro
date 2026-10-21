@@ -1,0 +1,152 @@
+---
+// Neighborhood sales table for the cap rate and price-per-unit article. Every number comes from
+// SALES_STATS (the same CoStar-derived figures behind the free calculator and each submarket page),
+// so refreshing that file refreshes this table. The same minimum-comp rules apply as on the
+// submarket pages: a price needs MIN_PRICE_COMPS_PAGE sales and a cap rate range needs
+// MIN_CAP_RATE_COMPS reported cap rates, otherwise the cell says there isn't enough data.
+import { submarkets } from '../data/submarkets';
+import {
+	SALES_STATS,
+	AGE_GROUP_LABELS,
+	MIN_PRICE_COMPS_PAGE,
+	MIN_CAP_RATE_COMPS,
+	VALUATION_DATA_AS_OF,
+	VALUATION_DATA_PERIOD,
+	type AgeGroup,
+} from '../data/valuationAssumptions';
+
+interface Props {
+	group: AgeGroup;
+}
+
+const { group } = Astro.props;
+
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+const pct = (n: number) => `${(n * 100).toFixed(2)}%`;
+
+const rows = submarkets
+	.map((sm) => {
+		const stats = SALES_STATS[sm.slug]?.[group];
+		const ppu = stats?.pricePerUnit && stats.pricePerUnit.compCount >= MIN_PRICE_COMPS_PAGE ? stats.pricePerUnit : null;
+		const psf = stats?.pricePerSf && stats.pricePerSf.compCount >= MIN_PRICE_COMPS_PAGE ? stats.pricePerSf : null;
+		const cap = stats?.capRate && stats.capRate.compCount >= MIN_CAP_RATE_COMPS ? stats.capRate : null;
+		return { slug: sm.slug, name: sm.name.replace(/\s*\(.*\)/, ''), ppu, psf, cap };
+	})
+	// Only list neighborhoods that have enough sales in this age group to say anything at all.
+	.filter((r) => r.ppu)
+	.sort((a, b) => (b.ppu?.median ?? 0) - (a.ppu?.median ?? 0));
+---
+
+<div class="stats-table-wrap">
+	<table class="stats-table">
+		<caption>{AGE_GROUP_LABELS[group].title}: {VALUATION_DATA_PERIOD} Multifamily Sales</caption>
+		<thead>
+			<tr>
+				<th scope="col">Neighborhood</th>
+				<th scope="col">Median Price Per Unit</th>
+				<th scope="col">Median Price Per SF</th>
+				<th scope="col">Typical Cap Rate Range</th>
+			</tr>
+		</thead>
+		<tbody>
+			{
+				rows.map((r) => (
+					<tr>
+						<th scope="row">
+							<a href={`/submarkets/${r.slug}/`}>{r.name}</a>
+						</th>
+						<td>
+							{money(r.ppu!.median)}
+							<span class="stats-table__note">{r.ppu!.compCount} sales</span>
+						</td>
+						<td>{r.psf ? money(r.psf.median) : 'n/a'}</td>
+						<td>
+							{r.cap ? (
+								<>
+									{pct(r.cap.low)} to {pct(r.cap.high)}
+									<span class="stats-table__note">{r.cap.compCount} reported cap rates</span>
+								</>
+							) : (
+								<span class="stats-table__note">Not enough reported cap rates</span>
+							)}
+						</td>
+					</tr>
+				))
+			}
+		</tbody>
+	</table>
+	<p class="stats-table__source">
+		Source: Highlight Multifamily Group analysis of CoStar sold multifamily comps, {VALUATION_DATA_PERIOD}, data as of {VALUATION_DATA_AS_OF}. Prices and
+		prices per square foot are medians. The cap rate range is the middle half of sales that reported an actual cap rate. Neighborhoods with
+		fewer than {MIN_PRICE_COMPS_PAGE} sales in this group are left out, and cap rate ranges need at least {MIN_CAP_RATE_COMPS} reported cap rates. Santa Monica has its own rent control rules, separate from the City of Los Angeles and AB 1482.
+	</p>
+</div>
+
+<style>
+	.stats-table-wrap {
+		margin: 2rem 0;
+		overflow-x: auto;
+	}
+
+	.stats-table {
+		width: 100%;
+		min-width: 620px;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+	}
+
+	.stats-table caption {
+		text-align: left;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		font-weight: 500;
+		color: var(--navy-dark);
+		margin-bottom: 0.85rem;
+	}
+
+	.stats-table thead th {
+		text-align: left;
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+		padding: 0.75rem 1rem;
+	}
+
+	.stats-table thead th:not(:first-child),
+	.stats-table tbody td {
+		text-align: right;
+	}
+
+	.stats-table tbody th,
+	.stats-table tbody td {
+		padding: 0.7rem 1rem;
+		border-bottom: 1px solid var(--border);
+		font-weight: 400;
+	}
+
+	.stats-table tbody th {
+		text-align: left;
+		font-weight: 500;
+	}
+
+	.stats-table__note {
+		display: block;
+		font-size: 0.74rem;
+		font-weight: 400;
+		color: var(--ink-light);
+	}
+
+	.stats-table tbody tr:last-child th,
+	.stats-table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.stats-table__source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin-top: 0.75rem;
+	}
+</style>
