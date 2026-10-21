@@ -23,6 +23,19 @@ const submarket = sale.submarket ? submarkets.find((s) => s.slug === sale.submar
 const caseStudy = sale.caseStudySlug ? caseStudies.find((c) => c.slug === sale.caseStudySlug) : null;
 const image = sale.images?.[0];
 
+// The blurb is plain text, with [link text](/internal-path/) links supported (same format as Insights posts).
+const linkPattern = /\[([^\]]+)\]\((\/[^)\s]*)\)/g;
+const blurbParts: { text: string; href?: string }[] = [];
+if (sale.blurb) {
+	let last = 0;
+	for (const m of sale.blurb.matchAll(linkPattern)) {
+		if (m.index! > last) blurbParts.push({ text: sale.blurb.slice(last, m.index) });
+		blurbParts.push({ text: m[1], href: m[2] });
+		last = m.index! + m[0].length;
+	}
+	if (last < sale.blurb.length) blurbParts.push({ text: sale.blurb.slice(last) });
+}
+
 // Derived from the sale's own recorded figures only; anything that can't be computed is omitted.
 const pricePerUnit = sale.units ? Math.round(sale.price / sale.units) : null;
 const pricePerSf = sale.sqft ? Math.round(sale.price / sale.sqft) : null;
@@ -169,7 +182,7 @@ const videoSchema = sale.youtubeId
 			<div class="sale-detail__body">
 				<h2>Sale Summary</h2>
 				<p>{summary}</p>
-				{sale.blurb && <p>{sale.blurb}</p>}
+				{sale.blurb && <p>{blurbParts.map((part) => (part.href ? <a href={part.href}>{part.text}</a> : part.text))}</p>}
 				{
 					submarket && (
 						<p>
