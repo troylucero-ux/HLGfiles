@@ -1200,6 +1200,12 @@ const allPosts: Post[] = [
 		description:
 			'LA County apartment sales through September 2026: median price per unit, cap rates, quarter-by-quarter trends, and how far below asking buildings sold.',
 		date: '2026-10-22',
+		image: {
+			src: '/images/insights/la-apartment-market-update-q3-2026.png',
+			alt: 'Graphic: LA apartment prices held steady in 2026. Median price per unit of $220,000 for older buildings, a median sale price of 94% of asking, and 1,180 LA County sales from January 1 to September 22.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',
