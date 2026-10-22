@@ -1228,67 +1228,67 @@ export type PostFaq = { q: string; a: string };
 export const postFaqs: Record<string, PostFaq[]> = {
 	'how-to-choose-a-multifamily-broker-in-los-angeles': [
 		{
-			q: 'What should I look for when hiring a multifamily broker in Los Angeles?',
+			q: 'How do I choose a good real estate broker to sell my apartment building in Los Angeles?',
 			a: 'Look for a specialist in apartment buildings, with closed sales you can verify, recent experience in your neighborhood, an honest pricing opinion backed by comparable sales, a clear plan for reaching buyers, and references from past sellers. It is worth interviewing more than one broker.',
 		},
 		{
-			q: 'How can I verify a broker’s track record?',
+			q: 'How do I know if a real estate broker is any good? How can I check their track record?',
 			a: 'Ask for a list of recent apartment sales with addresses, unit counts, and prices, then check them, since sale prices of recorded transactions are public. Also ask which sales the broker represented directly and when, because some brokers count deals they only assisted with or deals from a previous firm. Our [closed sales](/closed-sales/) page shows what a verifiable record looks like.',
 		},
 		{
-			q: 'Should I hire the broker who offers the highest price?',
+			q: 'Should I hire the real estate agent who tells me the highest price for my building?',
 			a: 'Not on that basis alone. A broker who promises a high price can leave you with a building that sits on the market and then sells for less after a price cut. A trustworthy opinion of value shows its work: comparable sales, the cap rate it assumes, your income and expenses, and an estimate of what you would net after taxes and costs.',
 		},
 		{
-			q: 'What questions should I ask every broker I interview?',
+			q: 'What questions should I ask a broker before I list my apartment building?',
 			a: 'Ask which recent apartment sales they have personally closed, what the three best comparable sales for your building are and why, what price they recommend and what you would net, how they will market the building, who will handle your sale day to day, what their listing terms are, and whether you can speak with owners they have represented.',
 		},
 		{
-			q: 'What are the red flags when choosing a broker?',
+			q: 'What are the warning signs of a bad real estate broker?',
 			a: 'Watch for a price far above every other opinion with no comparable sales to support it, pressure to sign quickly, vague answers about the broker’s own track record, a long listing agreement with no way out, and a reluctance to provide references.',
 		},
 		{
-			q: 'How do I check that a broker is licensed in California?',
+			q: 'How do I check if a real estate broker is licensed in California?',
 			a: 'Use the [California Department of Real Estate license lookup](https://www2.dre.ca.gov/PublicASP/pplinfo.asp) to confirm a broker’s license before you sign anything.',
 		},
 	],
 	'how-to-value-an-apartment-building-in-los-angeles': [
 		{
-			q: 'How do buyers value an apartment building in Los Angeles?',
+			q: 'How is an apartment building valued in Los Angeles, and how do I figure out what mine is worth?',
 			a: 'Mainly on its income, not its looks or its asking price. The core measure is net operating income (NOI) divided by a market cap rate, checked against recent comparable sales. In Los Angeles, rent control, building age, condition, and in-place rents versus market rents also move the price.',
 		},
 		{
-			q: 'What is a cap rate, and how does it estimate value?',
+			q: 'What is a cap rate, and how do I use it to figure out what my building is worth?',
 			a: 'The cap rate is NOI divided by price. Flip it around and value is NOI divided by the cap rate. For example, a building with $100,000 of NOI that buyers are pricing at a 5.5% cap rate is worth about $1.8 million. A lower cap rate means buyers are paying more for each dollar of income.',
 		},
 		{
-			q: 'What cap rates do LA apartment buildings trade at?',
+			q: 'What is a good cap rate for an apartment building in Los Angeles?',
 			a: 'It depends on the neighborhood. In 2026 sales through September, rent-stabilized buildings (built before 1978) with a recorded cap rate traded at a typical range of 5.86% to 7.34% in Koreatown, 5.55% to 6.98% in North Hollywood, and 4.81% to 5.96% in Santa Monica. See our [cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/) and each [neighborhood page](/submarkets/) for the number of sales behind each range.',
 		},
 		{
-			q: 'Is price per unit enough to value my building?',
+			q: 'How much is an apartment building worth per unit in Los Angeles?',
 			a: 'No. Price per unit and price per square foot are quick sanity checks, not valuations, because they ignore income, condition, and rent levels. They also vary widely: among rent-stabilized buildings sold so far in 2026, the median price per unit was about $173,700 in Koreatown, $189,500 in North Hollywood, and $388,300 in Santa Monica.',
 		},
 		{
-			q: 'How does rent control affect what my building is worth?',
+			q: 'Does rent control lower the value of my apartment building?',
 			a: 'Rent control limits how fast income can grow, so it directly affects value. Buildings built before October 1, 1978 are generally covered by the City’s Rent Stabilization Ordinance, and newer buildings fall under the statewide cap. Buyers price a building on the rents in place and give only partial credit for upside, because under rent control they cannot capture it until units turn over.',
 		},
 		{
-			q: 'How can I find out what my building is worth?',
+			q: 'How can I find out how much my apartment building is worth for free?',
 			a: 'For a quick range, try our [free property value calculator](/property-value/), which uses real 2026 sales in your neighborhood. For a number you can plan around, request a free [Broker Opinion of Value](/contact/?intent=bov), built from your actual rent roll, expenses, and condition.',
 		},
 	],
 	'should-i-sell-my-la-apartment-building': [
 		{
-			q: 'How do I know if it is the right time to sell my apartment building?',
+			q: 'Is now a good time to sell my apartment building, and how do I decide?',
 			a: 'There is no single right answer, because it depends on your goals as much as on the market. Seven questions help: what you want the building to do for you, what it is worth today, what you would net after taxes and costs, what it will cost you over the next five years, where your rents sit compared with the market, what your options are besides selling, and what your timeline is.',
 		},
 		{
-			q: 'How much would I actually net after selling?',
+			q: 'How much money will I actually walk away with if I sell my apartment building?',
 			a: 'Less than the sale price. Federal and California capital gains tax, depreciation recapture, commissions, and closing costs all come out first, and for buildings near the top of the market the City of Los Angeles transfer tax can matter a great deal. See our guides to [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/) and [Measure ULA](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/), and ask your CPA to estimate your tax.',
 		},
 		{
-			q: 'Are there alternatives to selling outright?',
+			q: 'What are my options besides selling my apartment building?',
 			a: 'Yes. Depending on your situation, you could keep the building and bring in better management, refinance, or sell and defer your capital gains tax with a [1031 exchange](/1031-exchanges/). Owners who want to stop managing property but keep the income often look at [triple-net (NNN) and DST investments](/triple-net-dst/).',
 		},
 		{
@@ -1296,95 +1296,95 @@ export const postFaqs: Record<string, PostFaq[]> = {
 			a: 'A typical Los Angeles apartment sale takes 60 to 90 days from listing to closing, though every deal is different. If you want a sale to land in a particular tax year, or you are working against a 1031 exchange deadline, the calendar matters. See [selling before year-end](/insights/selling-la-apartment-building-before-year-end/).',
 		},
 		{
-			q: 'How do I find out what my building is worth before I decide?',
+			q: 'How do I find out what my rental property is worth before I decide to sell?',
 			a: 'Start with our [free property value calculator](/property-value/) for a quick range based on real, recent LA County sales. A free [Broker Opinion of Value](/contact/?intent=bov) goes further by looking at your actual rents, condition, and unit mix.',
 		},
 	],
 	'selling-la-apartment-building-with-tenants-rent-control': [
 		{
-			q: 'Can I sell an apartment building with tenants in it?',
+			q: 'Can I sell my apartment building with tenants still living in it?',
 			a: 'Yes. Most apartment buildings in Los Angeles sell with tenants in place, and many buyers look for occupied buildings with stable income. A sale does not by itself end anyone’s tenancy. The leases and the rent rules that apply to the building stay with the building, so the new owner steps into the owner’s position.',
 		},
 		{
-			q: 'Which rent rules apply to my building?',
+			q: 'How do I know if my building is rent controlled in Los Angeles?',
 			a: 'Apartment buildings in Los Angeles with a certificate of occupancy issued before October 1, 1978 are generally covered by the City’s Rent Stabilization Ordinance (RSO), which limits annual increases and adds eviction protections. Newer buildings typically fall under the statewide AB 1482 cap instead. See our article on the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/).',
 		},
 		{
-			q: 'How do below-market rents affect my sale price?',
+			q: 'My tenants pay low rent. How does that affect what I can sell my building for?',
 			a: 'Buyers call the gap between in-place and market rents the loss to lease, and they value it carefully. They usually price the building on the rents in place, then add some value for the upside they can capture as units turn over naturally. A building with all long-term tenants sells differently from one with several vacant units.',
 		},
 		{
-			q: 'Can a vacant unit be re-rented at market rent?',
+			q: 'Can I raise the rent to market price when a tenant moves out of a rent-controlled unit?',
 			a: 'Under California law, a unit that becomes vacant can generally be re-rented at market rent, which is why units delivered vacant are attractive to buyers. Any agreement to have a tenant move out voluntarily has to follow state and City rules, so talk to a landlord-tenant attorney before offering or signing one.',
 		},
 		{
-			q: 'What should I prepare before selling with tenants in place?',
+			q: 'What do I need to get ready before selling a building with tenants?',
 			a: 'Build an accurate rent roll, gather each tenant’s lease and a clear record of security deposits (which transfer to the buyer), confirm your RSO registration and fees are current, and expect buyers to request estoppels, in which tenants confirm the terms of their tenancy during escrow.',
 		},
 		{
-			q: 'What should I tell my tenants about the sale?',
+			q: 'What should I tell my tenants when I am selling the building?',
 			a: 'Tell them honestly, and do not promise anything on a buyer’s behalf. Most tenants just want to know that their lease and their rent stay the same, and in a sale of an occupied building they generally do. Showings, inspections, and estoppels require some access to units, so plan for them with proper written notice.',
 		},
 	],
 	'capital-gains-depreciation-recapture-selling-la-apartment-building': [
 		{
-			q: 'What taxes will I owe when I sell an LA apartment building?',
+			q: 'How much tax will I pay if I sell my rental property in California?',
 			a: 'If you owned the property for more than a year, the gain is generally a long-term capital gain, taxed federally at 0%, 15%, or 20% depending on your taxable income. Depreciation recapture is taxed at up to 25%, high-income sellers may owe the 3.8% net investment income tax, and California taxes the gain as ordinary income.',
 		},
 		{
-			q: 'What is depreciation recapture?',
+			q: 'What is depreciation recapture, and why am I taxed on it when I sell?',
 			a: 'Residential rental property is generally depreciated over 27.5 years. When you sell, the part of your gain that comes from that depreciation is treated by the IRS as unrecaptured section 1250 gain, taxed at a maximum federal rate of 25%. The IRS generally measures it by the depreciation you were allowed to take, whether or not you claimed it.',
 		},
 		{
-			q: 'How is my taxable gain figured?',
+			q: 'How do I figure out my taxable gain when I sell my rental property?',
 			a: 'Your taxable gain is generally the amount you realize from the sale, after selling costs, minus your adjusted basis. Your adjusted basis starts with what you paid for the property, adds the cost of capital improvements, and subtracts the depreciation you took or were allowed to take.',
 		},
 		{
-			q: 'Does California tax capital gains at a lower rate?',
+			q: 'Does California have a lower tax rate on capital gains from selling real estate?',
 			a: 'No. According to the California Franchise Tax Board, all capital gains are taxed as ordinary income, so for a seller with a large gain the state tax can be substantial on top of the federal tax.',
 		},
 		{
-			q: 'Can a 1031 exchange defer these taxes?',
+			q: 'How can I defer capital gains tax when I sell my rental property? Does a 1031 exchange work?',
 			a: 'Yes. If you reinvest the proceeds into like-kind investment property, you can defer both the capital gains tax and the depreciation recapture. The rules are strict, including 45 days to identify a replacement property and 180 days to close. See our [1031 exchange guide](/1031-exchanges/).',
 		},
 		{
-			q: 'Do heirs owe tax on a building they inherit?',
+			q: 'Do I owe capital gains tax if I inherit an apartment building and sell it?',
 			a: 'Property inherited at death generally receives a new, stepped-up basis, which can eliminate much of the gain for heirs. If you are handling a building after an owner’s death, see our [trust and estate sales](/trust-and-estate-sales/) page, and confirm the details with your CPA or tax attorney.',
 		},
 	],
 	'measure-ula-2026-thresholds-selling-la-apartment-building': [
 		{
-			q: 'What are the Measure ULA thresholds in 2026?',
+			q: 'What is the LA mansion tax (Measure ULA) in 2026, and at what price does it start?',
 			a: 'The thresholds are $5.4 million and $10.9 million for sales closing after June 30, 2026, up from $5.3 million and $10.6 million a year earlier. Sales above $5.4 million but below $10.9 million pay a 4% ULA tax, and sales at $10.9 million or more pay 5.5%, in addition to the City’s regular transfer tax of 0.45%.',
 		},
 		{
-			q: 'Does the ULA tax apply to the whole price or only the amount above the threshold?',
+			q: 'Does the LA mansion tax apply to the whole sale price or just the part above $5.4 million?',
 			a: 'The whole price. The tax is not marginal. A building that sells for $5,400,000 owes no ULA tax, but one that sells for $5,400,001 owes 4% of the full price, about $216,000.',
 		},
 		{
-			q: 'Can a 1031 exchange avoid Measure ULA?',
+			q: 'Can I avoid the LA mansion tax (Measure ULA) with a 1031 exchange?',
 			a: 'No. A 1031 exchange can defer your capital gains tax, but it does not exempt a sale from Measure ULA, and exchanges are not among the exemptions the City lists. The tax is calculated on the sale of your building either way. See our [1031 exchange guide](/1031-exchanges/) for what an exchange does cover.',
 		},
 		{
-			q: 'Does Measure ULA apply in West Hollywood or Santa Monica?',
+			q: 'Do I pay Measure ULA if my building is in West Hollywood or Santa Monica?',
 			a: 'No. Measure ULA applies only inside the City of Los Angeles. West Hollywood is a separate city, so ULA does not apply there, and West Hollywood has no city transfer tax of its own. Santa Monica is also exempt from ULA but has its own version, Measure GS, which takes 5.6% of the full price at $8 million and up. See our [West Hollywood](/submarkets/west-hollywood/) and [Santa Monica](/submarkets/santa-monica/) pages.',
 		},
 		{
-			q: 'Are any sales exempt from Measure ULA?',
+			q: 'Is anyone exempt from the LA mansion tax (Measure ULA)?',
 			a: 'In narrow cases. Sales to certain qualified affordable housing nonprofits and to government agencies are exempt, and the exemption for qualified affordable housing organizations has to be requested through the Los Angeles Housing Department. For most private sales it will not apply.',
 		},
 		{
-			q: 'What can I do if my building is priced near a threshold?',
+			q: 'What should I do if my building is priced right around $5.4 million?',
 			a: 'Price with the threshold in mind, since a modest price adjustment can leave you with more money than a higher price that crosses the line. Watch the calendar, because the thresholds adjust each year for inflation, and run the numbers before you list. A [free Broker Opinion of Value](/contact/?intent=bov) can show what you would net at different prices and closing dates.',
 		},
 	],
 	'la-apartment-cap-rates-and-prices-by-neighborhood-2026': [
 		{
-			q: 'What is a cap rate?',
+			q: 'What is a cap rate on an apartment building, in plain English?',
 			a: 'A capitalization rate is a building’s net operating income (NOI) divided by its price. If a building earns $100,000 in NOI after operating expenses and sells for $1,600,000, its cap rate is 6.25%. The lower the cap rate, the more the buyer is paying for each dollar of income.',
 		},
 		{
-			q: 'What cap rates do LA apartment buildings sell at?',
+			q: 'What cap rate should I expect when I sell my apartment building in LA?',
 			a: 'It varies by neighborhood, building age, rent control, condition, and interest rates, which is why one citywide number is not very useful. The tables in this article show the typical range for each neighborhood. Santa Monica’s cap rates run lower than most of the others, and Westside markets trade at far higher prices per unit than Koreatown, Westlake, or Pico-Union.',
 		},
 		{
@@ -1396,11 +1396,11 @@ export const postFaqs: Record<string, PostFaq[]> = {
 			a: 'The range is the middle half of the sales that reported a cap rate, so a few unusually high or low sales do not distort it. Cap rates in public and commercial databases are sometimes incomplete or estimated, so treat the ranges as a guide, not a guarantee.',
 		},
 		{
-			q: 'Why do newer buildings sell for more per unit than older ones?',
+			q: 'Why do newer apartment buildings sell for more per unit than older rent-controlled ones?',
 			a: 'Where both groups have enough sales, buildings built in 1978 or later generally trade at higher prices per unit than older buildings in the same neighborhood, partly because their rents are less restricted. Older buildings generally fall under rent stabilization, while newer ones fall under the statewide AB 1482 cap.',
 		},
 		{
-			q: 'Why might my building sell above or below the neighborhood range?',
+			q: 'Why might my building sell for more or less than other buildings in my neighborhood?',
 			a: 'A neighborhood range is a starting point, not a price for your building. Rents compared with the market, condition and deferred maintenance, unit mix, parking and lot size, and the buyer and timing can all move a building toward the high or low end. For a number built on your own rents, use our [free calculator](/property-value/) or request a [Broker Opinion of Value](/contact/?intent=bov).',
 		},
 	],
@@ -1410,23 +1410,23 @@ export const postFaqs: Record<string, PostFaq[]> = {
 			a: 'A typical sale takes 60 to 90 days from listing to closing: a few weeks of marketing, then 30 to 45 days of escrow. The preparation before you list comes on top of that. Every deal is different, but the steps are the same on almost every sale.',
 		},
 		{
-			q: 'What are the steps to sell an apartment building?',
+			q: 'What are the steps to selling an apartment building from start to finish?',
 			a: 'There are eight: decide what you want from the sale, find out what the building is worth, choose a broker and sign a listing agreement, gather your documents, market the building, review offers and negotiate, open escrow and go through due diligence, and close.',
 		},
 		{
-			q: 'What documents do I need to sell?',
+			q: 'What paperwork do I need to sell my apartment building?',
 			a: 'Typically a current rent roll, the leases, and the last two to three years of income and expenses, along with your utility bills, property tax bill, insurance, permits, inspection reports, and records of major repairs. In Los Angeles, have your Rent Stabilization Ordinance registration and fee records ready as well.',
 		},
 		{
-			q: 'Is the highest offer always the best one?',
+			q: 'Should I always take the highest offer on my building?',
 			a: 'No. Price matters, but so do the buyer’s financing, the length of the due diligence period, the size of the deposit, and how likely the buyer is to close. Your broker should help you compare offers on net proceeds and certainty.',
 		},
 		{
-			q: 'What costs come out of my proceeds at closing?',
+			q: 'What fees and taxes come out of the money when I sell my apartment building?',
 			a: 'Plan for the broker’s commission, transfer taxes, and, for buildings in the City of Los Angeles priced above $5.4 million, [Measure ULA](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/). If you are doing a 1031 exchange, you have 45 days to identify and 180 days to close on your replacement property.',
 		},
 		{
-			q: 'Where do apartment sales go wrong?',
+			q: 'What can go wrong when selling an apartment building?',
 			a: 'Three problems come up again and again: pricing too high at the start, rent roll or expense numbers that do not hold up in due diligence, and a buyer whose financing falls through. All three are easier to prevent than to fix, which is why the early steps matter most.',
 		},
 	],
@@ -1436,7 +1436,7 @@ export const postFaqs: Record<string, PostFaq[]> = {
 			a: 'A BOV is a broker’s estimate of what your building would likely sell for. It looks at your actual rents and expenses, the building’s condition and unit mix, and recent comparable sales. It is a professional opinion grounded in the market, not a formal appraisal and not a guarantee of what a buyer will pay.',
 		},
 		{
-			q: 'What is the difference between a BOV and an appraisal?',
+			q: 'What is the difference between a broker opinion of value and an appraisal?',
 			a: 'A broker prepares a BOV to help you price and market a sale, and it has no formal standing. A licensed appraiser prepares an appraisal, which lenders and other institutions rely on to support a loan or another formal need.',
 		},
 		{
@@ -1444,39 +1444,39 @@ export const postFaqs: Record<string, PostFaq[]> = {
 			a: 'No. If you are deciding whether to sell or setting your asking price, you want a BOV, and you do not need an appraisal to list a building. If you need a formal valuation for another reason, such as an estate or a legal dispute, ask your attorney or CPA whether an appraisal is required.',
 		},
 		{
-			q: 'How much does a Broker Opinion of Value cost?',
+			q: 'How much does it cost to find out what my building is worth? Is a BOV free?',
 			a: 'Brokers typically provide a BOV at no charge when you are considering a sale. Ours is free and confidential. You can [request a Broker Opinion of Value](/contact/?intent=bov) or start with our [free property value calculator](/property-value/).',
 		},
 		{
-			q: 'Why does the buyer’s appraisal still matter to my sale?',
+			q: 'What happens if the buyer’s appraisal comes in lower than the price we agreed on?',
 			a: 'The buyer’s lender will order an appraisal during escrow. If the appraiser values the building below the agreed price, the buyer may have to bring more cash, ask for a lower price, or walk away if their agreement allows it. A price backed by real comparable sales is more likely to hold up.',
 		},
 	],
 	'selling-a-fourplex-or-small-apartment-building-in-los-angeles': [
 		{
-			q: 'Who buys a fourplex or small apartment building?',
+			q: 'Who buys a fourplex, and can I sell it to someone who wants to live in one unit?',
 			a: 'Two main kinds of buyers: owner-occupants, who live in one unit and rent out the rest, which can let them put less money down than an investor would, and smaller investors, including owners exchanging out of other property. Because the pool includes people who want a place to live, small buildings can sometimes sell for more than their income alone would support.',
 		},
 		{
-			q: 'How is financing different for a small building?',
+			q: 'How do buyers get a loan for a fourplex compared with a bigger apartment building?',
 			a: 'In general, buildings with up to four units can be financed with residential mortgages, while buildings with five or more units need commercial loans. A residential loan leans heavily on the buyer’s income and credit, while a commercial loan looks hard at the building’s net operating income and cap rate.',
 		},
 		{
-			q: 'How is a fourplex priced?',
+			q: 'How do I figure out what my fourplex is worth?',
 			a: 'Usually by comparing recent sales of similar small buildings nearby, using price per unit, price per square foot, and the gross rent multiplier, which is the price divided by the yearly rent. Larger buildings lean more on net operating income and cap rate. A [Broker Opinion of Value](/contact/?intent=bov) built on those comparables and your own rents is the most reliable way to set a price.',
 		},
 		{
-			q: 'Does rent control apply to small buildings?',
+			q: 'Does rent control apply to my duplex, triplex, or fourplex in LA?',
 			a: 'Yes. In the City of Los Angeles, the Rent Stabilization Ordinance generally covers multi-unit buildings with a certificate of occupancy issued before October 1, 1978, including smaller ones, and newer buildings typically fall under the statewide AB 1482 cap unless they are exempt.',
 		},
 		{
-			q: 'How should I prepare a small building for sale?',
+			q: 'How do I get my fourplex ready to sell?',
 			a: 'With only a few units, each one matters, so confirm your rents and lease terms, organize your leases and expense records, and fix small issues first. Buyers will look closely at the unit mix and the age of the roof, plumbing, electrical, and other major systems.',
 		},
 	],
 	'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles': [
 		{
-			q: 'What is an off-market sale?',
+			q: 'What does it mean to sell my apartment building off-market, or quietly?',
 			a: 'An off-market sale, sometimes called a quiet or private sale, happens without a public listing. The broker contacts a small group of qualified buyers directly, often investors who have bought similar buildings before, and tenants and neighbors may never know the building is for sale.',
 		},
 		{
@@ -1484,7 +1484,7 @@ export const postFaqs: Record<string, PostFaq[]> = {
 			a: 'Possibly. The main risk of an off-market sale is that you never learn what you left on the table, because if only a few buyers see the building, the best offer may be lower than a wider market would have produced. A wide listing usually offers the best chance at the highest price.',
 		},
 		{
-			q: 'Why list an apartment building openly?',
+			q: 'Should I put my apartment building on the market publicly?',
 			a: 'More buyers means more competition, which tends to push the price and terms in the seller’s favor, and it shows you what the market will actually pay. Buyers on a deadline, such as 1031 exchange buyers, are often in the market and ready to compete.',
 		},
 		{
@@ -1492,8 +1492,138 @@ export const postFaqs: Record<string, PostFaq[]> = {
 			a: 'Yes. The broker contacts a curated list of buyers who are active in your neighborhood and building type, without a public listing. This keeps the sale confidential while still creating some competition. See our [case study of 453 S Gramercy Pl](/case-studies/453-s-gramercy-pl-koreatown-apartments/), where we found an off-market buyer experienced with long-term, below-market tenancies.',
 		},
 		{
-			q: 'How do I decide which approach is right for me?',
+			q: 'How do I decide whether to sell quietly or list my building publicly?',
 			a: 'Ask how important privacy is, how sure you are of your building’s value, how soon you need to close, and whether you are exchanging into other property on a deadline. Then ask your broker how many qualified buyers they would contact and how they know those buyers will pay a market price. Families handling an inheritance often prefer discretion, as we describe in our guide to [trust and estate sales](/trust-and-estate-sales/).',
+		},
+	],
+	'el-nino-2026-la-apartment-owners-checklist': [
+		{
+			q: 'Is there an El Niño state of emergency in California, and what does it mean for my rental property?',
+			a: 'Yes. On September 21, 2026, Governor Newsom proclaimed a statewide state of emergency ahead of what forecasters expect to be a very strong El Niño this winter, citing a better than 90% chance of a very strong event. The City of Long Beach proclaimed a local emergency the same day, and Los Angeles County Supervisor Hilda Solis issued a county proclamation on September 23.',
+		},
+		{
+			q: 'Can I raise rent during a state of emergency in California?',
+			a: 'Not currently at the state level. California’s price gouging law (Penal Code section 396) ordinarily kicks in when an emergency is declared and generally prohibits raising rents more than 10% above pre-emergency levels, but according to the California Apartment Association, the governor’s proclamation expressly suspends those restrictions “at this time.” The governor could change that later, and a local declaration can trigger its own protections, so confirm the rules for your city with an attorney or apartment association before sending an increase above 10%.',
+		},
+		{
+			q: 'Does rent control still apply during a state of emergency?',
+			a: 'Yes. If your building is covered by the LA Rent Stabilization Ordinance or by AB 1482, those caps are unaffected. For the current AB 1482 numbers, see our article on the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/).',
+		},
+		{
+			q: 'Does my landlord insurance cover flood damage, and do I need flood insurance for my rental property?',
+			a: 'Standard property insurance policies generally exclude flood damage. Flood policies through the National Flood Insurance Program usually do not take effect until 30 days after purchase, so waiting for the first storm is too late. Also check your deductible and whether you carry loss-of-rents coverage.',
+		},
+		{
+			q: 'How do I get my apartment building ready for heavy rain and El Niño?',
+			a: 'Clear and test your drainage, including roofs, gutters, downspouts, and sump pumps in driveways and subterranean parking. Fix leaks quickly and keep a record of each repair, take photos and video of your roof, ceilings, and parking areas today, line up roofers and plumbers early, and give tenants one number or email address to report leaks. Non-emergency inspections still generally require 24 hours’ written notice before entering a unit.',
+		},
+		{
+			q: 'Why do older LA apartment buildings leak or flood more in heavy rain?',
+			a: 'Older buildings tend to have flat roofs that pond water, parapets and roof flashing that have aged, and drains and downspouts that have not been cleaned or tested in years. Subterranean and driveway-level parking can also take on water fast when drainage backs up. A wet winter exposes deferred maintenance, and buyers price it in.',
+		},
+	],
+	'selling-la-apartment-building-before-year-end': [
+		{
+			q: 'Do I pay taxes for the year I list my building or the year it closes?',
+			a: 'In general, a sale is reported for the year it closes, not the year you list it or sign the contract, so the calendar matters more than most owners expect.',
+		},
+		{
+			q: 'Should I close my apartment sale in December or January?',
+			a: 'Neither is automatically better. A December close puts the gain on your 2026 return, while a January close pushes that tax bill out a full year. Which works for you depends on your income this year and next, your other deductions and plans, and where you want the proceeds to go, so talk to your CPA before you list, not after you are under contract.',
+		},
+		{
+			q: 'How long does it take to sell an apartment building in LA, and can I still close before the end of the year?',
+			a: 'A typical Los Angeles apartment sale takes 60 to 90 days from listing to closing: a few weeks of marketing, then 30 to 45 days of escrow. If you list in October, a December 31 closing is realistic. Wait until November and you are likely closing in 2027. Pricing, buyer financing, and due diligence can all move the date.',
+		},
+		{
+			q: 'How does a 1031 exchange work if I sell my building in December?',
+			a: 'A 1031 exchange gives you 45 days from closing to identify a replacement property and 180 days to close on it. For a year-end sale, the 180 days ends early if your tax return for the year of the sale is due first, unless you file an extension. With a December sale, the 180 days would run past the April tax deadline, so ask your CPA about filing an extension to keep the full window. See our [1031 exchange guide](/1031-exchanges/).',
+		},
+		{
+			q: 'What should I do first if I want to sell my apartment building this year?',
+			a: 'Start with your goals: a particular tax year, a particular price, or a smooth handoff into a 1031 exchange. Then find out what your building is worth, using our [free property value calculator](/property-value/) for a quick range, and request a free [Broker Opinion of Value](/contact/?intent=bov) for a number grounded in your actual rents, condition, and unit mix.',
+		},
+	],
+	'ab-1482-rent-cap-2026': [
+		{
+			q: 'How much can I raise rent in Los Angeles in 2026?',
+			a: 'For increases effective on or after August 1, 2026, the Los Angeles-Long Beach-Anaheim region’s CPI change came in at 3.7%, putting the maximum allowable increase at 8.7%, which is the CPI change plus 5%. That is up from the prior year’s cap of 8.0% (3.0% CPI plus 5%).',
+		},
+		{
+			q: 'How is the California rent cap (AB 1482) calculated?',
+			a: 'AB 1482, California’s statewide Tenant Protection Act, has capped most residential rent increases since 2020 at whichever is lower: 10%, or 5% plus the percentage change in the regional Consumer Price Index (CPI) over the prior year. The CPI figure is recalculated each year, region by region, so the actual ceiling moves annually even though the law has not changed.',
+		},
+		{
+			q: 'Does my LA apartment building have rent control, and does the AB 1482 rent cap apply to it?',
+			a: 'Los Angeles’ Rent Stabilization Ordinance (RSO) covers buildings with a certificate of occupancy issued before October 1, 1978, and sets its own, generally lower annual increase limit. Buildings built on or after that date typically fall outside the RSO, and once they age past AB 1482’s own 15-year exemption for new construction, the statewide formula is what limits how much rent can rise each year.',
+		},
+		{
+			q: 'Which rent cap applies if I raise rent before or after August 1, 2026?',
+			a: 'It depends on the increase’s effective date. An increase effective before August 1, 2026 uses the prior year’s CPI change (3.0%, an 8.0% maximum). An increase effective on or after August 1, 2026 uses the new figure (3.7%, an 8.7% maximum). All percentages are rounded to the nearest tenth of a point.',
+		},
+		{
+			q: 'Where does the 8.7% rent cap number come from, and when does it change?',
+			a: 'They come from the Apartment Association of Greater Los Angeles, citing the U.S. Bureau of Labor Statistics and the California Department of Industrial Relations, and they are updated on the same August 1 cycle every year. Confirm the applicable cap and how it applies to your property with your attorney or property manager before implementing any increase.',
+		},
+		{
+			q: 'How does the rent cap affect what my apartment building is worth when I sell or buy?',
+			a: 'For a buyer underwriting a non-RSO, value-add deal, the cap is a real, legal ceiling on how quickly in-place rents can be brought to market, so it is worth checking against the current figure rather than a remembered number from a prior year. For an owner deciding when to raise rents, knowing the exact cap avoids both leaving money on the table and exceeding a limit that moves every year. See also [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
+		},
+	],
+	'utility-bill-diligence-la-apartment-owners': [
+		{
+			q: 'Can a water leak lower the value of my apartment building?',
+			a: 'An apartment building is valued on its net operating income, capitalized at a market cap rate. Using a rough 7% cap rate, an extra $8,000 a year in water expense translates to roughly $114,000 in suppressed property value, and an extra $4,000 translates to roughly $57,000. A leak that seems like a maintenance headache is actually a value problem.',
+		},
+		{
+			q: 'My water bill went up. How do I know if my apartment building has a leak?',
+			a: 'Do not just track whether a utility bill was paid. Track what percentage of your total monthly expenses each bill represents, in a spreadsheet updated every month. If your water bill jumps from roughly 35% of monthly expenses to 45% the next month, that is a red flag regardless of the dollar amount, and reason enough to get a plumber out before it runs another month.',
+		},
+		{
+			q: 'Why do landlords miss water leaks for months?',
+			a: 'Utility bills often get paid on autopilot, by the owner or a property management company, on the assumption that the number is just what it is that month. A leak does not announce itself. It shows up as a slightly higher number every month, easy to miss if nobody is comparing bills month over month, and it can run for months, sometimes closer to a year.',
+		},
+		{
+			q: 'How much does a water leak cost an apartment owner? Are there real LA examples?',
+			a: 'On a 10-unit building in Pico-Union managed by a professional property management company, we noticed a jump in the water bill that started about a year earlier and never came back down. A plumber found a leak, and the bill normalized once it was fixed. The undetected leak cost the owner about $8,000 in avoidable water expense. A similar leak at a 7-unit building in Koreatown saved the owner roughly $4,000 once it was caught.',
+		},
+		{
+			q: 'Should I track my utility bills if I am not selling my building?',
+			a: 'Yes. Even with no plans to sell, catching a leak early instead of a year later is real, ongoing savings straight to your bottom line. If you are getting ready to bring a property to market, cleaning up an expense like this before you list is one of the more direct ways to protect what you can ask for it.',
+		},
+		{
+			q: 'Do buyers and brokers look at my utility bills when pricing my building?',
+			a: 'Not at first. When we put together a Broker Opinion of Value, we work from normalized expenses, a reasonable estimate of what the property should be running. It is not until we sign the listing and pull the real bills, including water, sewer, trash, and insurance, that we see how the property has actually been operating. You can [request a free Broker Opinion of Value](/contact/?intent=bov) to see where your building stands.',
+		},
+	],
+	'1031-exchange-into-triple-net-properties': [
+		{
+			q: 'I am tired of being a landlord. How can I sell my apartment building without a huge tax bill?',
+			a: 'Owning an apartment building in Los Angeles has gotten harder, with statewide rent control under AB 1482, local rent stabilization ordinances, rising insurance costs, and tenant turnover pushing many long-term owners to ask whether it still makes sense. Selling outright means a large capital gains tax bill. A 1031 exchange into a triple-net (NNN) property lets you defer that tax while moving into a passive investment with no apartment management, and it is often the answer for owners nearing retirement, managing from out of state, or simply tired of the 2 a.m. phone calls.',
+		},
+		{
+			q: 'What is a 1031 exchange, in simple terms?',
+			a: 'Named for Section 1031 of the Internal Revenue Code, a 1031 exchange lets you sell an investment property and defer the capital gains tax you would otherwise owe, as long as you reinvest the proceeds into another investment property of equal or greater value. The tax is not eliminated, only deferred until you eventually sell without exchanging again.',
+		},
+		{
+			q: 'What are the 45-day and 180-day rules for a 1031 exchange?',
+			a: 'There are two strict IRS deadlines, and both are hard cutoffs, not guidelines: 45 days to identify a replacement property and 180 days to close on it. You can never touch the sale proceeds directly. A Qualified Intermediary holds the funds from your sale and uses them to buy your replacement property on your behalf. See our [1031 exchange guide](/1031-exchanges/).',
+		},
+		{
+			q: 'Can I sell my apartment building and buy a triple-net (NNN) property with a 1031 exchange?',
+			a: 'Yes. Multifamily and commercial real estate both qualify as like-kind to each other under current tax code, which is what makes an apartment-to-NNN exchange possible.',
+		},
+		{
+			q: 'What does triple net lease mean for a landlord, and why do owners want one?',
+			a: 'In a triple-net lease, the tenant, not the owner, is responsible for property taxes, insurance, and maintenance. NNN properties are also typically leased to a single commercial tenant on a long-term lease, so the day-to-day tenant management that comes with dozens of residential units goes away. Because NNN opportunities exist all over the country, an exchange also lets an owner diversify geographically and step outside California rent control exposure.',
+		},
+		{
+			q: 'Is there a real example of someone trading an LA apartment building for NNN properties?',
+			a: 'We guided a client who sold her 24-unit apartment building at [1136 S Alvarado St](/closed-sales/1136-s-alvarado-st-los-angeles-ca-90006/) and exchanged the proceeds into two separate triple-net properties, one in Florida and one in Georgia. Splitting the exchange diversified both her tenant risk and her geographic exposure while fully deferring the capital gains tax on the sale.',
+		},
+		{
+			q: 'Is an NNN exchange right for my apartment building?',
+			a: 'Not every owner should exchange into a triple-net property, and not every apartment building is the right one to sell right now. The first conversation is about your goals: stopping management altogether, reducing your workload without fully exiting real estate, or moving capital out of California. See our [triple-net and DST page](/triple-net-dst/), or [request a free Broker Opinion of Value](/contact/?intent=bov) to start.',
 		},
 	],
 };
