@@ -9,7 +9,7 @@ export type Submarket = {
 	region: string;
 	blurb: string;
 	walkScore: number;
-	transitScore: number;
+	transitScore?: number;
 	bikeScore?: number;
 	walkScoreLabel: string;
 	transit: string[];
@@ -20,6 +20,8 @@ export type Submarket = {
 	// Angeles, where the LA Rent Stabilization Ordinance and Measure ULA apply.
 	city?: 'santa-monica' | 'west-hollywood';
 	metaDescription?: string;
+	// Shows the City of LA owner's guide (rent control, Measure ULA by building size, pre-listing moves).
+	laOwnerGuide?: boolean;
 };
 
 export const submarkets: Submarket[] = [
@@ -137,6 +139,29 @@ export const submarkets: Submarket[] = [
 		city: 'santa-monica',
 		metaDescription:
 			'Santa Monica multifamily broker: 2026 apartment sale prices and cap rates, the Measure GS transfer tax explained, and a free valuation for owners.',
+	},
+	// Walk Score is walkscore.com's published score for 5200 Wilshire Blvd, at the center of the
+	// neighborhood (checked 2026-10-22); its neighborhood page was unavailable, so no Transit or Bike
+	// Score is shown rather than a guess. The D Line extension's first three stations opened May 8, 2026.
+	{
+		slug: 'mid-wilshire',
+		name: 'Mid-Wilshire',
+		region: 'Central LA',
+		blurb: 'The Miracle Mile and Museum Row, with three new Metro D Line subway stations that opened in May 2026.',
+		walkScore: 92,
+		walkScoreLabel: "Walker's Paradise (5200 Wilshire Blvd)",
+		transit: [
+			'Metro D Line (Purple): Wilshire/La Brea and Wilshire/Fairfax stations, opened May 8, 2026, with Wilshire/La Cienega just west',
+			'Metro bus lines along Wilshire Blvd, La Brea Ave, and Fairfax Ave',
+			'A direct subway ride to Koreatown and Downtown LA',
+		],
+		retail: ['Museum Row: LACMA, the Academy Museum, and the Petersen', 'La Brea Ave shops and restaurants', 'The Grove and the Original Farmers Market (just north)'],
+		employers: ['Wilshire Blvd office corridor', 'LACMA and the Museum Row institutions', 'Cedars-Sinai Medical Center and CBS Television City (nearby)'],
+		overview:
+			'Mid-Wilshire, home to the Miracle Mile and Museum Row, gained three new subway stations when the Metro D Line extension opened in May 2026. Its older rent-controlled buildings line the side streets between Wilshire and Pico, from Fairfax to La Brea and beyond. Highlight sold 1201 S Orange Grove Ave, a 5-unit rent-controlled building with structural issues and minimal parking, at full price on an accelerated timeline.',
+		metaDescription:
+			'Mid-Wilshire multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, the new D Line stations, and a free valuation.',
+		laOwnerGuide: true,
 	},
 	// Walk and Transit Scores are walkscore.com's city-wide averages (checked 2026-10-22); its Bike Score
 	// page was unavailable, so none is shown.

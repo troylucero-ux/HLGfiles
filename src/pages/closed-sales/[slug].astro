@@ -187,7 +187,7 @@ const videoSchema = sale.youtubeId
 					submarket && (
 						<p>
 							The property sits in the <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a> submarket ({submarket.region}), which scores {submarket.walkScore} for Walk
-							Score and {submarket.transitScore} for Transit Score.
+							Score{submarket.transitScore !== undefined ? ` and ${submarket.transitScore} for Transit Score` : ''}.
 						</p>
 					)
 				}

@@ -4,6 +4,8 @@ import BOVForm from '../../components/BOVForm.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import WestHollywoodGuide from '../../components/WestHollywoodGuide.astro';
 import MeasureGsCliff from '../../components/MeasureGsCliff.astro';
+import LaCityOwnerGuide from '../../components/LaCityOwnerGuide.astro';
+import MidWilshireLocal from '../../components/MidWilshireLocal.astro';
 import { submarkets } from '../../data/submarkets';
 import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
@@ -149,6 +151,36 @@ if (isSantaMonica) {
 	});
 }
 
+if (sm.laOwnerGuide) {
+	const ulaUnits = rsoPpu ? Math.ceil(5_400_000 / rsoPpu.median) : null;
+	faqs.push(
+		{
+			q: `How much can landlords raise rent on rent-controlled apartments in ${shortName}?`,
+			a: `Under the LA Rent Stabilization Ordinance, the allowable increase is 3% from July 1, 2026 through June 30, 2027. Rent can go up once every 12 months, with proper notice, and only if the building's registration with the LA Housing Department is current.`,
+			links: [{ label: 'Selling with rent-controlled tenants', href: '/insights/selling-la-apartment-building-with-tenants-rent-control/' }],
+		},
+		{
+			q: `Does Measure ULA apply to ${shortName} apartment buildings?`,
+			a: `Yes. ${shortName} is in the City of Los Angeles, so sales above $5.4 million pay a 4% ULA tax on the entire price, and sales at $10.9 million or more pay 5.5%.${
+				ulaUnits ? ` At ${shortName}'s 2026 median of ${formatPriceFull(rsoPpu!.median)} per unit for older buildings, a building of about ${ulaUnits} units or more is likely to cross the $5.4 million line.` : ''
+			}`,
+			links: [{ label: 'Measure ULA thresholds explained', href: '/insights/measure-ula-2026-thresholds-selling-la-apartment-building/' }],
+		},
+	);
+}
+if (sm.slug === 'mid-wilshire') {
+	faqs.push(
+		{
+			q: 'Which Metro subway stations are in Mid-Wilshire?',
+			a: 'The Metro D Line extension opened Wilshire/La Brea, Wilshire/Fairfax, and Wilshire/La Cienega stations on May 8, 2026, connecting Mid-Wilshire directly to Koreatown and Downtown LA. Stations in Beverly Hills, Century City, and Westwood are projected to open in 2027.',
+		},
+		{
+			q: 'Is Mid-Wilshire in a historic district?',
+			a: 'Part of it is. The Miracle Mile Historic Preservation Overlay Zone (HPOZ), approved by the City Council in 2017, covers much of the area south of Wilshire between Fairfax and La Brea. Inside it, exterior changes and new construction go through design review. Check your parcel on the city’s ZIMAS site before you price a sale.',
+		},
+	);
+}
+
 if (closedHere.length > 0) {
 	const top = closedHere.slice(0, 3);
 	faqs.push({
@@ -160,7 +192,7 @@ if (closedHere.length > 0) {
 
 faqs.push({
 	q: `Why do investors buy apartment buildings in ${shortName}?`,
-	a: `${shortName} is in ${sm.region}, with a Walk Score of ${sm.walkScore} (${walkLabel}) and a Transit Score of ${sm.transitScore}. Transit includes ${sm.transit[0]}. Nearby employers and anchors include ${joinList(sm.employers)}.${sm.walkScore >= 70 ? ' Walkable, transit-connected neighborhoods with local jobs tend to keep renter demand steady.' : ''}`,
+	a: `${shortName} is in ${sm.region}, with a Walk Score of ${sm.walkScore} (${walkLabel})${sm.transitScore !== undefined ? ` and a Transit Score of ${sm.transitScore}` : ''}. Transit includes ${sm.transit[0]}. Nearby employers and anchors include ${joinList(sm.employers)}.${sm.walkScore >= 70 ? ' Walkable, transit-connected neighborhoods with local jobs tend to keep renter demand steady.' : ''}`,
 });
 
 faqs.push({
@@ -189,14 +221,15 @@ const faqSchema = {
 
 // Neighborhoods that border each other, for the "nearby" links.
 const nearbyMap: Record<string, string[]> = {
-	koreatown: ['pico-union', 'westlake', 'east-hollywood'],
+	koreatown: ['pico-union', 'westlake', 'east-hollywood', 'mid-wilshire'],
+	'mid-wilshire': ['koreatown', 'west-hollywood', 'pico-union'],
 	'pico-union': ['koreatown', 'westlake'],
 	westlake: ['pico-union', 'koreatown', 'silver-lake'],
 	'east-hollywood': ['silver-lake', 'koreatown'],
 	'silver-lake': ['east-hollywood', 'westlake'],
 	brentwood: ['santa-monica', 'west-hollywood'],
 	'santa-monica': ['brentwood', 'west-hollywood'],
-	'west-hollywood': ['santa-monica', 'brentwood', 'east-hollywood'],
+	'west-hollywood': ['mid-wilshire', 'santa-monica', 'brentwood', 'east-hollywood'],
 	'north-hollywood': ['van-nuys'],
 	'van-nuys': ['north-hollywood'],
 };
@@ -239,10 +272,14 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 				<span class="score-card__label">Walk Score</span>
 				<span class="score-card__note">{sm.walkScoreLabel}</span>
 			</div>
-			<div class="score-card">
-				<span class="score-card__num">{sm.transitScore}</span>
-				<span class="score-card__label">Transit Score</span>
-			</div>
+			{
+				sm.transitScore !== undefined && (
+					<div class="score-card">
+						<span class="score-card__num">{sm.transitScore}</span>
+						<span class="score-card__label">Transit Score</span>
+					</div>
+				)
+			}
 			{
 				sm.bikeScore !== undefined && (
 					<div class="score-card">
@@ -312,6 +349,8 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 
 	{isWestHollywood && <WestHollywoodGuide />}
 	{isSantaMonica && <MeasureGsCliff />}
+	{sm.slug === 'mid-wilshire' && <MidWilshireLocal />}
+	{sm.laOwnerGuide && <LaCityOwnerGuide sm={sm} />}
 
 	{
 		relatedListings.length > 0 && (

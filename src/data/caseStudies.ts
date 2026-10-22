@@ -166,7 +166,7 @@ export const caseStudies: CaseStudy[] = [
 		slug: '1201-s-orange-grove-ave-mid-wilshire-apartments',
 		title: '1201 S Orange Grove Ave',
 		location: 'Mid-Wilshire, Los Angeles, CA',
-		submarket: null,
+		submarket: 'mid-wilshire',
 		summary: 'A 5-unit Mid-Wilshire building with structural issues and low parking sold at full price on an accelerated timeline.',
 		dealType: ['value-add', 'family-legacy'],
 		opportunity:

@@ -11,8 +11,8 @@
 //   UlaThresholdTable.astro.
 // - Soft-story: City of West Hollywood Ordinance 17-1004 and Resolution 24-103.
 // Sales figures come from SALES_STATS, so they refresh with that file.
-import { submarkets } from '../data/submarkets';
-import { SALES_STATS, MIN_PRICE_COMPS_PAGE, VALUATION_DATA_PERIOD } from '../data/valuationAssumptions';
+import PricePerUnitChart from './PricePerUnitChart.astro';
+import { SALES_STATS, VALUATION_DATA_PERIOD } from '../data/valuationAssumptions';
 
 const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
 
@@ -42,16 +42,6 @@ const EX_UNITS = 10;
 const EX_RENT = 2000;
 const extraYearly = EX_UNITS * EX_RENT * (CURRENT_AGA / 100) * 12;
 const extraValue = Math.round(extraYearly / midCap / 1000) * 1000;
-
-// ---- Price per unit for older (rent-controlled) buildings across the neighborhoods we cover.
-const priceRows = submarkets
-	.map((sm) => {
-		const ppu = SALES_STATS[sm.slug]?.rso?.pricePerUnit;
-		return ppu && ppu.compCount >= MIN_PRICE_COMPS_PAGE ? { slug: sm.slug, name: sm.name.replace(/\s*\(.*\)/, ''), median: ppu.median, count: ppu.compCount } : null;
-	})
-	.filter((r): r is NonNullable<typeof r> => Boolean(r))
-	.sort((a, b) => b.median - a.median);
-const maxPrice = Math.max(...priceRows.map((r) => r.median));
 ---
 
 <section class="section weho">
@@ -315,21 +305,7 @@ const maxPrice = Math.max(...priceRows.map((r) => r.median));
 	</div>
 
 	<div class="container">
-		<figure class="weho-ppu" aria-labelledby="weho-ppu-cap">
-			<figcaption id="weho-ppu-cap" class="weho-figcap">Median price per unit, buildings built before 1978, {VALUATION_DATA_PERIOD}</figcaption>
-			{
-				priceRows.map((r) => (
-					<a href={`/submarkets/${r.slug}/`} class={`weho-ppu__row${r.slug === 'west-hollywood' ? ' weho-ppu__row--here' : ''}`}>
-						<span class="weho-ppu__name">{r.name}</span>
-						<span class="weho-ppu__track">
-							<span class="weho-ppu__bar" style={`width: ${(r.median / maxPrice) * 100}%`} />
-						</span>
-						<span class="weho-ppu__val">{money(r.median)}</span>
-					</a>
-				))
-			}
-			<p class="weho-source">Source: Highlight Multifamily Group analysis of CoStar sold multifamily comps. Neighborhoods with fewer than {MIN_PRICE_COMPS_PAGE} sales are left out.</p>
-		</figure>
+		<PricePerUnitChart highlight="west-hollywood" />
 	</div>
 
 	<div class="container weho__narrow">
@@ -781,58 +757,6 @@ const maxPrice = Math.max(...priceRows.map((r) => r.median));
 		color: var(--navy-dark);
 	}
 
-	/* Price per unit chart */
-	.weho-ppu {
-		margin: 2rem 0;
-		max-width: 900px;
-	}
-
-	.weho-ppu__row {
-		display: grid;
-		grid-template-columns: 150px 1fr 100px;
-		align-items: center;
-		gap: 1rem;
-		padding-block: 0.35rem;
-		color: var(--ink);
-	}
-
-	.weho-ppu__row:hover {
-		text-decoration: none;
-	}
-
-	.weho-ppu__name {
-		font-size: 0.92rem;
-	}
-
-	.weho-ppu__track {
-		height: 22px;
-		background: var(--paper-alt);
-	}
-
-	.weho-ppu__bar {
-		display: block;
-		height: 100%;
-		background: var(--navy-tint);
-		border: 1px solid var(--navy);
-	}
-
-	.weho-ppu__val {
-		text-align: right;
-		font-variant-numeric: tabular-nums;
-		font-size: 0.92rem;
-	}
-
-	.weho-ppu__row--here .weho-ppu__name,
-	.weho-ppu__row--here .weho-ppu__val {
-		font-weight: 700;
-		color: var(--navy-dark);
-	}
-
-	.weho-ppu__row--here .weho-ppu__bar {
-		background: var(--gold);
-		border-color: var(--gold-dark);
-	}
-
 	/* Checklist */
 	.weho-check {
 		list-style: none;
@@ -901,11 +825,6 @@ const maxPrice = Math.max(...priceRows.map((r) => r.median));
 		.weho-tax__track {
 			grid-column: 1 / -1;
 			grid-row: 2;
-		}
-
-		.weho-ppu__row {
-			grid-template-columns: 110px 1fr 80px;
-			gap: 0.6rem;
 		}
 
 		.weho-bars__chart {

@@ -1,0 +1,607 @@
+---
+// Owner's guide for neighborhoods inside the City of Los Angeles (enabled per submarket with
+// laOwnerGuide). Everything neighborhood-specific is computed from that submarket's SALES_STATS, so the
+// same component can serve every LA page. Sources, checked October 2026:
+// - Rent control: LA Housing Department. RSO covers buildings first occupied on or before Oct 1, 1978;
+//   the allowable increase is 3% for July 1, 2026 through June 30, 2027 (unchanged from the year before);
+//   LA's Just Cause Ordinance protects most other tenants; AB 1482 caps rent at 5% plus inflation, up to 10%.
+// - Measure ULA thresholds and LA's 0.45% city transfer tax: City of LA Office of Finance and the LA
+//   County Registrar-Recorder (same figures as UlaThresholdTable.astro).
+// - Soft-story: LA Ordinance 183893 (2015), mandatory retrofits for pre-1978 wood-frame soft-story buildings.
+import PricePerUnitChart from './PricePerUnitChart.astro';
+import { SALES_STATS, VALUATION_DATA_PERIOD } from '../data/valuationAssumptions';
+import type { Submarket } from '../data/submarkets';
+
+interface Props {
+	sm: Submarket;
+}
+
+const { sm } = Astro.props;
+const name = sm.name.replace(/\s*\(.*\)/, '');
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+const short = (n: number) => (n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(n >= 10_000_000 ? 1 : 2)}M` : money(n));
+
+const RSO_INCREASE = 3;
+const stats = SALES_STATS[sm.slug]?.rso;
+const ppu = stats?.pricePerUnit?.median ?? null;
+const midCap = stats?.capRate ? (stats.capRate.low + stats.capRate.high) / 2 : null;
+
+// ---- Measure ULA by building size, at this neighborhood's median price per unit.
+const ULA_LOWER = 5_400_000;
+const ULA_UPPER = 10_900_000;
+const ulaRate = (price: number) => (price > ULA_LOWER ? (price >= ULA_UPPER ? 0.055 : 0.04) : 0);
+const unitsToLower = ppu ? Math.ceil(ULA_LOWER / ppu) : null;
+const unitsToUpper = ppu ? Math.ceil(ULA_UPPER / ppu) : null;
+const sizeRows =
+	ppu && unitsToLower && unitsToUpper
+		? [...new Set([8, 16, unitsToLower - 1, unitsToLower, unitsToUpper])]
+				.sort((a, b) => a - b)
+				.map((units) => {
+					const price = units * ppu;
+					return { units, price, rate: ulaRate(price), tax: price * ulaRate(price) };
+				})
+		: [];
+const chartMax = Math.max(ULA_UPPER * 1.12, ...sizeRows.map((r) => r.price));
+
+// ---- "Take your increase before you list", at this neighborhood's cap rates.
+const EX_UNITS = 10;
+const EX_RENT = 2000;
+const extraYearly = EX_UNITS * EX_RENT * (RSO_INCREASE / 100) * 12;
+const extraValue = midCap ? Math.round(extraYearly / midCap / 1000) * 1000 : null;
+---
+
+<section class="section section-alt lag">
+	<div class="container lag__narrow">
+		<span class="eyebrow">LA Rent Control</span>
+		<h2>Rent Control in {name}, in Plain English</h2>
+		<p>
+			{name} is inside the City of Los Angeles, so most older apartment buildings here fall under LA&rsquo;s Rent Stabilization Ordinance (RSO).
+			Rent control is the biggest single factor in what a buyer will pay, because buyers price in how far below market the current rents are.
+			Here is how to tell which rules cover your building.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="lag-flow" aria-labelledby="lag-flow-cap">
+			<figcaption id="lag-flow-cap" class="lag-figcap">Is my {name} building rent-controlled?</figcaption>
+			<div class="lag-flow__q">Was the building first occupied <strong>on or before October 1, 1978</strong>?</div>
+			<div class="lag-flow__branches">
+				<div class="lag-flow__branch">
+					<span class="lag-flow__answer">Yes</span>
+					<div class="lag-flow__box lag-flow__box--yes">
+						<strong>LA rent control (RSO)</strong>
+						<ul>
+							<li>Rent can rise once a year by the city&rsquo;s set percentage: {RSO_INCREASE}% from July 1, 2026 to June 30, 2027</li>
+							<li>Tenants can only be evicted for reasons the ordinance allows</li>
+							<li>No-fault move-outs require relocation payments</li>
+							<li>The building must be registered with the LA Housing Department every year</li>
+						</ul>
+					</div>
+				</div>
+				<div class="lag-flow__branch">
+					<span class="lag-flow__answer lag-flow__answer--no">No</span>
+					<div class="lag-flow__box">
+						<strong>No city rent cap, but tenants are still protected</strong>
+						<ul>
+							<li>LA&rsquo;s Just Cause Ordinance limits evictions</li>
+							<li>Once a building is more than 15 years old, the statewide AB 1482 cap (5% plus inflation, up to 10%) may apply</li>
+							<li>Confirm the status of your units with the city or an attorney</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</figure>
+	</div>
+
+	<div class="container lag__narrow">
+		<h3>Three rent control rules every {name} seller should know</h3>
+		<ol class="lag-rules">
+			<li>
+				<strong>Market rent comes back only when a tenant leaves on their own.</strong> Under the state&rsquo;s Costa-Hawkins law, you can set a new
+				rent when a tenant moves out voluntarily. That reset is the upside buyers are paying for.
+			</li>
+			<li>
+				<strong>You can only raise rent if your registration is current.</strong> LA requires every RSO building to be registered and its fees paid
+				each year. Buyers check this, and gaps become credits in escrow.
+			</li>
+			<li>
+				<strong>Relocation payments rise every July.</strong> If a buyer plans to renovate or redevelop, the relocation cost for each tenant is part
+				of their math, and it shows up in their offer.
+			</li>
+		</ol>
+	</div>
+</section>
+
+{
+	ppu && unitsToLower && unitsToUpper && (
+		<section class="section lag">
+			<div class="container lag__narrow">
+				<span class="eyebrow">Measure ULA</span>
+				<h2>How Many Units Before Measure ULA Hits a {name} Building?</h2>
+				<p>
+					Measure ULA, the City of LA&rsquo;s &ldquo;mansion tax,&rdquo; takes 4% of the <em>entire</em> price once a sale goes over $5.4 million, and
+					5.5% at $10.9 million or more. At {name}&rsquo;s median of {money(ppu)} per unit for older buildings, that line arrives at about{' '}
+					<strong>{unitsToLower} units</strong>. Here is what that looks like.
+				</p>
+			</div>
+
+			<div class="container">
+				<figure class="lag-ula" aria-labelledby="lag-ula-cap">
+					<figcaption id="lag-ula-cap" class="lag-figcap">
+						Estimated price by building size at {money(ppu)} per unit, and the ULA tax it would owe
+					</figcaption>
+					<div class="lag-ula__chart">
+						<div class="lag-ula__row lag-ula__row--head" aria-hidden="true">
+							<span />
+							<span class="lag-ula__scale">
+								<span style={`left: ${(ULA_LOWER / chartMax) * 100}%`}>$5.4M</span>
+								<span style={`left: ${(ULA_UPPER / chartMax) * 100}%`}>$10.9M</span>
+							</span>
+							<span />
+						</div>
+						{sizeRows.map((r) => (
+							<div class="lag-ula__row">
+								<span class="lag-ula__units">{r.units} units</span>
+								<span class="lag-ula__track">
+									<span class={`lag-ula__bar${r.rate ? ' lag-ula__bar--taxed' : ''}`} style={`width: ${(r.price / chartMax) * 100}%`}>
+										<span class="lag-ula__price">{short(r.price)}</span>
+									</span>
+									<span class="lag-ula__mark" style={`left: ${(ULA_LOWER / chartMax) * 100}%`} />
+									<span class="lag-ula__mark" style={`left: ${(ULA_UPPER / chartMax) * 100}%`} />
+								</span>
+								<span class={`lag-ula__tax${r.rate ? ' lag-ula__tax--owed' : ''}`}>{r.rate ? `ULA ${money(r.tax)}` : 'No ULA'}</span>
+							</div>
+						))}
+					</div>
+					<p class="lag-source">
+						Illustration only, using the median price per unit for {name} buildings built before 1978 ({VALUATION_DATA_PERIOD}). Your building&rsquo;s
+						price depends on its own rents and condition. ULA thresholds for closings after June 30, 2026, from the City of Los Angeles Office of Finance.
+					</p>
+				</figure>
+			</div>
+
+			<div class="container lag__narrow">
+				<p>
+					Going from {unitsToLower - 1} to {unitsToLower} units adds about {money(ppu)} in value but can add roughly{' '}
+					{money(unitsToLower * ppu * 0.04)} in tax. If your building is anywhere near the line, price it with the tax in mind and compare offers on
+					what you keep, not the headline number. Our guide to <a href="/insights/measure-ula-2026-thresholds-selling-la-apartment-building/">Measure ULA thresholds</a>{' '}
+					walks through the &ldquo;dead zone&rdquo; above each line.
+				</p>
+			</div>
+		</section>
+	)
+}
+
+<section class="section section-alt lag">
+	<div class="container lag__narrow">
+		<span class="eyebrow">Fresh Advice for Owners</span>
+		<h2>Three Moves to Make Before You List a {name} Building</h2>
+	</div>
+
+	<div class="container lag-moves">
+		<div class="lag-move">
+			<span class="lag-move__num">1</span>
+			<h3>Take this year&rsquo;s rent increase first</h3>
+			<p>
+				Buyers pay for the rent roll they see. If you have skipped the {RSO_INCREASE}% RSO increase, serve the notices before you list (one increase
+				per 12 months, and only with current registration).
+			</p>
+			{
+				extraValue && midCap && (
+					<div class="lag-math" aria-label={`Example: ${EX_UNITS} units at ${money(EX_RENT)} a month`}>
+						<div class="lag-math__line">
+							<span>
+								{EX_UNITS} units &times; {money(EX_RENT)} rent &times; {RSO_INCREASE}%
+							</span>
+							<span>{money(extraYearly / 12)} / month</span>
+						</div>
+						<div class="lag-math__line">
+							<span>Over a year</span>
+							<span>{money(extraYearly)}</span>
+						</div>
+						<div class="lag-math__line lag-math__line--total">
+							<span>Added value at a {(midCap * 100).toFixed(1)}% cap rate</span>
+							<span>about {money(extraValue)}</span>
+						</div>
+					</div>
+				)
+			}
+		</div>
+		<div class="lag-move">
+			<span class="lag-move__num">2</span>
+			<h3>Have your soft-story certificate ready</h3>
+			<p>
+				LA requires older wood-frame buildings with weak ground floors (think tuck-under parking) to be retrofitted, and most deadlines have passed.
+				Buyers and lenders expect the city&rsquo;s certificate of compliance. Find yours, or the permits showing the work is underway, before a buyer asks.
+			</p>
+		</div>
+		<div class="lag-move">
+			<span class="lag-move__num">3</span>
+			<h3>Know your &ldquo;rent gap&rdquo;</h3>
+			<p>
+				List each unit&rsquo;s rent, move-in year, and what a vacant unit would rent for today. The gap between the two is the upside buyers are
+				paying for. Having it ready shows that upside and keeps the price conversation on your terms.
+			</p>
+		</div>
+	</div>
+</section>
+
+<section class="section lag">
+	<div class="container lag__narrow">
+		<span class="eyebrow">Prices Across LA</span>
+		<h2>What {name} Apartment Buildings Sell For</h2>
+		<p>
+			{
+				ppu && stats?.pricePerUnit
+					? `Older, rent-controlled buildings in ${name} sold for a median of ${money(ppu)} per unit in ${VALUATION_DATA_PERIOD}, across ${stats.pricePerUnit.compCount} sales${
+							stats.capRate ? `, with cap rates typically between ${(stats.capRate.low * 100).toFixed(2)}% and ${(stats.capRate.high * 100).toFixed(2)}%` : ''
+						}. Here is how that compares with the other neighborhoods we cover.`
+					: `Here is how prices compare across the neighborhoods we cover.`
+			}
+		</p>
+	</div>
+	<div class="container">
+		<PricePerUnitChart highlight={sm.slug} />
+	</div>
+</section>
+
+<section class="section section-alt lag">
+	<div class="container lag__narrow">
+		<span class="eyebrow">Seller Checklist</span>
+		<h2>What to Gather Before Selling a {name} Apartment Building</h2>
+		<ul class="lag-check">
+			<li>Current rent roll with each tenant&rsquo;s move-in date and current rent</li>
+			<li>This year&rsquo;s LA Housing Department registration and proof the fees are paid</li>
+			<li>Copies of the last rent increase notices served</li>
+			<li>Soft-story certificate of compliance, or permits for work underway</li>
+			<li>A zoning printout for your parcel from the city&rsquo;s ZIMAS site</li>
+			<li>Two years of operating expenses and utility bills</li>
+			<li>Any buyout agreements, relocation payments, or pending tenant matters</li>
+		</ul>
+		<p>
+			Not sure where to start? We will walk you through it as part of a free Broker Opinion of Value. <a href="/contact/?intent=bov">Request yours here</a>.
+		</p>
+	</div>
+</section>
+
+<style>
+	.lag__narrow {
+		max-width: 820px;
+	}
+
+	.lag__narrow h3 {
+		margin-top: 2rem;
+	}
+
+	.lag-figcap {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+		margin-bottom: 1rem;
+	}
+
+	.lag-source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin: 0.85rem 0 0;
+	}
+
+	/* Rent control flowchart */
+	.lag-flow {
+		margin: 2rem 0;
+		text-align: center;
+	}
+
+	.lag-flow__q {
+		display: inline-block;
+		max-width: 520px;
+		background: var(--navy-dark);
+		color: #fff;
+		padding: 1rem 1.5rem;
+		border-radius: 2px;
+	}
+
+	.lag-flow__q strong {
+		color: var(--gold-light);
+	}
+
+	.lag-flow__branches {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+		margin-top: 2.25rem;
+		position: relative;
+	}
+
+	.lag-flow__branches::before {
+		content: '';
+		position: absolute;
+		top: -2.25rem;
+		left: 25%;
+		right: 25%;
+		height: 1.25rem;
+		border: 2px solid var(--gold);
+		border-bottom: 0;
+	}
+
+	.lag-flow__answer {
+		display: inline-block;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-weight: 700;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		padding: 0.25rem 0.9rem;
+		border-radius: 999px;
+		margin-bottom: 0.75rem;
+	}
+
+	.lag-flow__answer--no {
+		background: var(--border);
+	}
+
+	.lag-flow__box {
+		text-align: left;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--border);
+		border-radius: 2px;
+		padding: 1.25rem 1.4rem;
+		height: calc(100% - 2.6rem);
+	}
+
+	.lag-flow__box--yes {
+		border-top-color: var(--gold);
+	}
+
+	.lag-flow__box strong {
+		display: block;
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+		margin-bottom: 0.6rem;
+	}
+
+	.lag-flow__box ul {
+		margin: 0;
+		padding-left: 1.1rem;
+		font-size: 0.93rem;
+	}
+
+	.lag-flow__box li {
+		margin-bottom: 0.35rem;
+	}
+
+	.lag-rules {
+		padding-left: 1.3rem;
+	}
+
+	.lag-rules li {
+		margin-bottom: 0.9rem;
+		line-height: 1.65;
+	}
+
+	.lag-rules strong {
+		color: var(--navy-dark);
+	}
+
+	/* ULA by building size */
+	.lag-ula {
+		margin: 2rem 0;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.75rem 2rem;
+	}
+
+	.lag-ula__row--head {
+		padding-block: 0;
+	}
+
+	.lag-ula__scale {
+		position: relative;
+		height: 1.1rem;
+	}
+
+	.lag-ula__scale span {
+		position: absolute;
+		transform: translateX(-50%);
+		font-size: 0.72rem;
+		font-weight: 700;
+		color: var(--gold-dark);
+		white-space: nowrap;
+	}
+
+	.lag-ula__mark {
+		position: absolute;
+		top: -0.4rem;
+		bottom: -0.4rem;
+		border-left: 2px dashed var(--gold-dark);
+		pointer-events: none;
+	}
+
+	.lag-ula__row {
+		display: grid;
+		grid-template-columns: 80px 1fr 130px;
+		align-items: center;
+		gap: 1rem;
+		padding-block: 0.4rem;
+	}
+
+	.lag-ula__units {
+		font-weight: 600;
+		color: var(--navy-dark);
+		font-size: 0.92rem;
+	}
+
+	.lag-ula__track {
+		position: relative;
+		height: 30px;
+		background: var(--paper-alt);
+	}
+
+	.lag-ula__bar {
+		display: flex;
+		align-items: center;
+		height: 100%;
+		background: var(--navy-tint);
+		border: 1px solid var(--navy);
+		min-width: 4.5rem;
+	}
+
+	.lag-ula__bar--taxed {
+		background: var(--navy-dark);
+		border-color: var(--navy-dark);
+	}
+
+	.lag-ula__price {
+		padding-left: 0.5rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--navy-dark);
+		white-space: nowrap;
+	}
+
+	.lag-ula__bar--taxed .lag-ula__price {
+		color: #fff;
+	}
+
+	.lag-ula__tax {
+		text-align: right;
+		font-size: 0.88rem;
+		color: var(--success);
+		font-weight: 600;
+	}
+
+	.lag-ula__tax--owed {
+		color: #9b2c2c;
+	}
+
+	/* Three moves */
+	.lag-moves {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.lag-move {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem 1.5rem;
+	}
+
+	.lag-move__num {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		border-radius: 50%;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-family: var(--font-serif);
+		font-size: 1.3rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.lag-move h3 {
+		font-size: 1.2rem;
+		margin-bottom: 0.6rem;
+	}
+
+	.lag-move p {
+		font-size: 0.95rem;
+		line-height: 1.65;
+	}
+
+	.lag-math {
+		background: var(--navy-tint);
+		border-radius: 2px;
+		padding: 0.9rem 1rem;
+		font-size: 0.88rem;
+	}
+
+	.lag-math__line {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 0.3rem;
+	}
+
+	.lag-math__line--total {
+		border-top: 1px solid var(--navy);
+		margin-top: 0.3rem;
+		padding-top: 0.55rem;
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	/* Checklist */
+	.lag-check {
+		list-style: none;
+		padding: 0;
+		margin: 1.25rem 0 1.5rem;
+	}
+
+	.lag-check li {
+		position: relative;
+		padding: 0.55rem 0 0.55rem 2rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.lag-check li::before {
+		content: '';
+		position: absolute;
+		left: 0.2rem;
+		top: 0.75rem;
+		width: 0.7rem;
+		height: 0.4rem;
+		border-left: 2px solid var(--success);
+		border-bottom: 2px solid var(--success);
+		transform: rotate(-45deg);
+	}
+
+	@media (max-width: 860px) {
+		.lag-moves {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.lag-flow__branches {
+			grid-template-columns: 1fr;
+		}
+
+		.lag-flow__branches::before {
+			display: none;
+		}
+
+		.lag-flow__box {
+			height: auto;
+		}
+
+		.lag-ula {
+			padding: 1.25rem;
+		}
+
+		.lag-ula__row {
+			grid-template-columns: 1fr auto;
+			gap: 0.3rem 0.6rem;
+		}
+
+		.lag-ula__track,
+		.lag-ula__scale {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+
+		.lag-ula__row--head > span:not(.lag-ula__scale) {
+			display: none;
+		}
+	}
+</style>

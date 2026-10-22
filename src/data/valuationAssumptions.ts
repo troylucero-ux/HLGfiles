@@ -145,6 +145,21 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: { low: 0.0583, high: 0.0597, compCount: 5 },
 		},
 	},
+	// The export has no "Mid-Wilshire" submarket; its "Miracle Mile" submarket (the Wilshire corridor blocks
+	// from Fairfax to La Brea, ZIPs 90036 and 90019) stands in for it. The 2007 Wilshire portfolio sale with
+	// no price is left out.
+	'mid-wilshire': {
+		rso: {
+			pricePerUnit: { median: 209375, compCount: 5 },
+			pricePerSf: { median: 277, compCount: 5 },
+			capRate: { low: 0.0563, high: 0.0641, compCount: 5 },
+		},
+		post1978: {
+			pricePerUnit: { median: 502500, compCount: 5 },
+			pricePerSf: { median: 375, compCount: 5 },
+			capRate: null,
+		},
+	},
 	// West Hollywood is its own city: comps are the export's sales with Property City = West Hollywood.
 	// Its rent control covers buildings from before July 1, 1979 rather than October 1978, but the export
 	// has no 1978 West Hollywood sales, so the usual 1978 split gives the same groups.
