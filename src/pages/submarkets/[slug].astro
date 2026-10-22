@@ -197,6 +197,15 @@ if (sm.laOwnerGuide) {
 		},
 	);
 }
+// A question owners ask Google, answered from the LA Housing Department’s RSO Property Search page.
+if (sm.laOwnerGuide) {
+	faqs.push({
+		q: `How do I find out if my ${shortName} apartment building is rent controlled?`,
+		a: 'Look up your address on the City of Los Angeles’ ZIMAS site. Under the Housing section, the Rent Stabilization Ordinance (RSO) field says Yes if at least one unit in the building is covered, so a building can be only partly covered. Buildings first occupied on or before October 1, 1978 are generally covered, and newer buildings typically fall under the statewide AB 1482 cap. The LA Housing Department answers questions at (866) 557-7368.',
+		links: [{ label: 'ZIMAS (City of LA zoning and RSO lookup)', href: 'https://zimas.lacity.org/' }],
+	});
+}
+
 if (sm.slug === 'mid-wilshire') {
 	faqs.push(
 		{
