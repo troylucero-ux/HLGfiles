@@ -1393,6 +1393,122 @@ const allPosts: Post[] = [
 			},
 		],
 	},
+	{
+		slug: 'sb-721-balcony-inspection-los-angeles-apartment-owners',
+		title: 'SB 721 Balcony Inspections in Los Angeles: What Apartment Owners Must Do Now',
+		seoTitle: 'SB 721 Balcony Inspection in Los Angeles: Owner Guide',
+		description:
+			'The SB 721 balcony and stair inspection deadline was January 1, 2026. What LA apartment owners must inspect, who can inspect, repairs, penalties, and selling.',
+		date: '2026-10-22',
+		image: {
+			src: '/images/insights/sb-721-balcony-inspection-la.png',
+			alt: 'Graphic: the SB 721 deadline has passed. Inspections were due January 1, 2026 and every six years after, for buildings with three or more units and elevated wood balconies, decks, and stairs. Civil penalties run $100 to $500 a day if repairs lag.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'The deadline has passed. California’s SB 721 requires apartment buildings with three or more units to have their elevated balconies, decks, and exterior stairs inspected by January 1, 2026, and every six years after that. If you have not had yours done, you are late.',
+					'It covers more buildings than owners expect. A triplex or fourplex counts, and so does any building with wood-supported balconies, walkways, or stairways more than six feet above the ground.',
+					'The inspection is only the first step. Problems have to be permitted and repaired on a set timeline, and an owner who lets repairs drag can face civil penalties of $100 to $500 a day and a lien on the building.',
+					'The report follows the building. The law requires you to keep it for two inspection cycles and deliver it to a buyer when you sell, so it matters at every sale.',
+				],
+			},
+			{
+				heading: 'What the Law Requires',
+				paragraphs: [
+					'SB 721 was passed in 2018 after a deadly balcony collapse in Berkeley. It is now Section 17973 of the California Health and Safety Code. Owners of buildings with three or more multifamily dwelling units have to hire a licensed professional to inspect the exterior elevated elements, including the load-bearing parts and the waterproofing that protects them.',
+					'The inspector checks that these elements are in generally safe condition and free from hazards caused by rot, deterioration, decay, or improper alteration. The inspection has to be completed by January 1, 2026, and by January 1 every six years after that, so the next one is due by January 1, 2032.',
+				],
+			},
+			{
+				heading: 'Which Buildings and Which Parts Are Covered',
+				paragraphs: [
+					'The law calls them “exterior elevated elements”: balconies, decks, porches, stairways, walkways, and entry structures, including their supports and railings. To be covered, an element has to extend beyond the exterior walls of the building, have a walking surface more than six feet above ground level, be designed for people to use, and rely in whole or in substantial part on wood or wood-based products for its structural support.',
+					'That can describe older multistory wood-frame buildings in Los Angeles with exterior stairs, walkways, or balconies. Steel or concrete structures are generally not covered, and neither are patios at ground level. Condominium buildings are handled by a different law, SB 326, which has its own rules.',
+				],
+			},
+			{
+				heading: 'Who Can Do the Inspection',
+				paragraphs: [
+					'The law says the inspector has to be one of the following: a licensed architect, a licensed civil or structural engineer, a building contractor with an “A,” “B,” or “C-5” license and at least five years of experience building multistory wood-frame buildings, or an individual certified as a building inspector or building official by a recognized association. The inspector cannot be employed by the local jurisdiction while doing the inspection, and the owner hires and pays the inspector.',
+					'In our view, it is worth hiring an inspector who will not also be bidding on the repairs. Separating the two keeps the findings independent and makes it easier to compare repair bids.',
+				],
+			},
+			{
+				heading: 'What the Inspection and Report Include',
+				paragraphs: [
+					'The inspector has to check a sample of at least 15% of each type of exterior elevated element, looking at the load-bearing parts and the waterproofing by direct visual examination or comparable means. The evaluation has to cover each element’s current condition, how long it should keep performing, and whether any further inspection is needed.',
+					'You are entitled to a written report, stamped or signed by the inspector, within 45 days of completing the inspection. It has to include photographs, any test results, and enough narrative to serve as a baseline for the next inspection, and it has to say whether any element is an immediate threat to the occupants.',
+				],
+			},
+			{
+				heading: 'If the Inspector Finds a Problem',
+				paragraphs: [
+					'The timeline depends on how serious the problem is. If the inspector says an element is an immediate threat, that is an emergency. You have to act right away, and keeping people off the balcony or stair until repairs are done counts as compliance. The inspector then has to confirm the emergency repairs and report to the local enforcement agency. A report that recommends immediate repairs also has to go to the local agency within 15 days of the report being completed.',
+					'For problems that are not an immediate threat, you have to apply for a repair permit within 120 days of receiving the report. Once the permit is approved, you have 120 days to finish the work unless the local agency grants more time. Repairs have to be done by a licensed contractor, follow the inspector’s recommendations and the manufacturer’s specifications, meet the California Building Standards Code, and satisfy local requirements.',
+				],
+			},
+			{
+				heading: 'Penalties for Falling Behind',
+				paragraphs: [
+					'If the repairs are not done within 180 days, the inspector has to notify both you and the local enforcement agency. If they are still not finished 30 days after that notice, the owner is assessed a civil penalty of not less than $100 and not more than $500 per day, under a fee schedule set by the local agency, until the work is complete.',
+					'The local agency can also record a building safety lien on the property, which has the force and priority of a judgment lien and can be foreclosed. Local agencies can recover their enforcement costs, and cities and counties are allowed to set requirements that are stricter than the state law.',
+				],
+			},
+			{
+				heading: 'How Los Angeles Handles It',
+				paragraphs: [
+					'For apartment buildings, the Los Angeles Housing Department (LAHD) runs the program, and it calls these the “E3” inspections. Its guidance repeats the state deadline: January 1, 2026, and every six years after. LAHD also takes E3 code enforcement complaints through its hotline at (866) 557-7368, so a building that has not complied can be reported.',
+					'The Los Angeles Department of Building and Safety (LADBS) handles condominiums and the building code side. Its bulletin on exterior elevated elements, revised in April 2026, says plans for balconies and other elevated walking surfaces have to show the details of the moisture barrier system, and that the barrier cannot be covered up until it has been inspected and approved. A repair that rebuilds or re-waterproofs a balcony may have to follow that process, so ask your contractor and LADBS before the work starts.',
+					'One warning from LAHD: some private businesses have been mailing notices about “E3” or “balcony” inspections that look like official government letters. LAHD says those notices do not come from the city. Real LAHD notices carry the City of Los Angeles or LAHD logo and an LAHD office address. If you are not sure, call LAHD at (866) 557-7368 before you respond or pay anyone.',
+				],
+			},
+			{
+				heading: 'Missed the Deadline? What to Do Now',
+				paragraphs: [
+					'Do not wait for a complaint. Hire a qualified inspector now and schedule the inspection as soon as you can. The sooner the report exists, the sooner the repair clock starts and the sooner you can show the building is on track.',
+					'If you already have a report, check that it was done by one of the inspectors the law lists and that it covers each type of element. An older report from before 2019 no longer helps: that exemption ran only until January 1, 2026.',
+					'If the inspector flags an immediate threat, keep people off that balcony or stair right away, and tell your tenants why. For other inspections, give tenants the usual written notice before anyone enters a unit, which for non-emergency visits is generally 24 hours.',
+					'Ask your attorney whether any part of the cost can be recovered under Los Angeles’ rent rules. Do not assume it can.',
+				],
+			},
+			{
+				heading: 'Selling a Building: The Report Goes to the Buyer',
+				paragraphs: [
+					'The statute says copies of all inspection reports have to be kept in the owner’s permanent records for at least two inspection cycles, and that they must be disclosed and delivered to the buyer at the time of any later sale. Expect a buyer to ask for the report early, and to ask about any open repairs.',
+					'In our experience, an unknown balcony problem is the kind of surprise that turns into a price reduction during escrow. At [1513 Arlington Ave](/case-studies/1513-arlington-ave-arlington-heights-apartments/), a 9-unit building, our seller did not want to pay for the electrical sub-panel replacement or the SB 721 inspection before closing, so we structured the sale for the buyer to take both on. The building sold for $1,400,000 and our seller completed his 1031 exchange.',
+					'If you can, get the inspection done before you list. A clean report is a selling point, and a known repair with a bid attached is easier for a buyer to price than an open question. Our guide to [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains how condition and deferred work come off the price, and our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows where it fits.',
+				],
+			},
+			{
+				heading: 'Tips for Owners',
+				paragraphs: [
+					'Get two or three bids for any repair, and compare them against the inspector’s written recommendations. Ask each contractor whether the quote includes permits and the waterproofing details LADBS requires.',
+					'Treat waterproofing as maintenance, not a one-time fix. Sealants and coatings wear out, and the inspector has to estimate how long each element should keep performing. Planning for that is cheaper than emergency repairs.',
+					'Keep a file for each building: the inspector’s qualifications, the report, photographs, permits, repair invoices, and any correspondence with the city. The law expects you to keep the reports for two inspection cycles.',
+					'Ask your inspector to schedule a final report once repairs are complete. The law lets you request one, and it is useful proof for a buyer, a lender, or the city.',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'If you are thinking about selling a building with balconies or exterior stairs, we can help you decide whether to inspect and repair first or sell as is, and how to price either way. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov).',
+					'This article is general information, not legal or engineering advice. The law and Los Angeles’ procedures can change, so please confirm the details with a licensed inspector and your attorney.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[California Health and Safety Code section 17973 (SB 721), as amended 2025](https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=HSC&sectionNum=17973)',
+					'[Los Angeles Housing Department: Exterior Elevated Elements (E3) Inspection Law, Apartment Buildings](https://housing.lacity.gov/e3-apartments)',
+					'[LADBS Information Bulletin P/BC 2026-144: Building Standards for Immediate Enforcement, Exterior Elevated Elements](https://dbs.lacity.gov/sites/default/files/efs/forms/pc17/ib-p-bc-2017-144-exterior-elevated-elements.pdf)',
+				],
+			},
+		],
+	},
 ];
 
 // Scheduled publishing: a post dated in the future is held back until that date (Pacific time). The
@@ -1428,6 +1544,7 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles': ['how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
 	'la-apartment-market-update-q3-2026': ['la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-value-an-apartment-building-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
 	'inherited-apartment-building-los-angeles-what-to-do': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles'],
+	'sb-721-balcony-inspection-los-angeles-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'selling-la-apartment-building-with-tenants-rent-control'],
 };
 
 // Questions and answers shown at the end of an article (and written into its FAQPage structured data),
@@ -1894,6 +2011,40 @@ export const postFaqs: Record<string, PostFaq[]> = {
 		{
 			q: 'Can I sell an inherited apartment building with tenants in it?',
 			a: 'Yes. Most Los Angeles apartment buildings sell with tenants in place. Leases and rent rules stay with the building, so the buyer steps into the owner’s position. See our guide to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
+		},
+	],
+	'sb-721-balcony-inspection-los-angeles-apartment-owners': [
+		{
+			q: 'What is SB 721, and does it apply to my apartment building in Los Angeles?',
+			a: 'SB 721, now Section 17973 of the California Health and Safety Code, requires owners of buildings with three or more multifamily units to have their exterior elevated elements (balconies, decks, porches, stairways, walkways, and entry structures) inspected by a licensed professional. It applies if those elements are more than six feet above ground, are designed for people to use, and rely mainly on wood for structural support. Condominiums fall under a different law, SB 326.',
+		},
+		{
+			q: 'What was the SB 721 balcony inspection deadline?',
+			a: 'The first inspection had to be completed by January 1, 2026, and then by January 1 every six years after that, so the next is due by January 1, 2032. The deadline was originally January 1, 2025 and was extended. Because it has passed, an owner who has not inspected is late.',
+		},
+		{
+			q: 'I missed the SB 721 inspection deadline. What happens now?',
+			a: 'Hire a qualified inspector and schedule the inspection as soon as you can. If repairs are needed and are not completed within 180 days, the inspector must notify the local agency, and after a further 30 days an owner can face civil penalties of $100 to $500 per day and a lien on the building. Ask your attorney how Los Angeles is enforcing it for your building.',
+		},
+		{
+			q: 'Who can do an SB 721 balcony inspection in California?',
+			a: 'A licensed architect, a licensed civil or structural engineer, a building contractor with an “A,” “B,” or “C-5” license and five years of experience building multistory wood-frame buildings, or a certified building inspector or official. The inspector cannot be employed by the local jurisdiction, and the owner hires the inspector.',
+		},
+		{
+			q: 'How much of my balconies and stairs does the inspector have to check?',
+			a: 'At least 15% of each type of exterior elevated element, including the load-bearing parts and the waterproofing. The inspector must give you a written report within 45 days that says whether any element is an immediate threat to the occupants.',
+		},
+		{
+			q: 'How long do I have to fix problems found in an SB 721 inspection?',
+			a: 'An immediate threat has to be addressed right away, and keeping people off the balcony or stair until repairs are done counts as compliance. For other problems, you must apply for a repair permit within 120 days of receiving the report and then have 120 days after the permit is approved to finish, unless the local agency gives more time.',
+		},
+		{
+			q: 'Do triplexes and fourplexes need balcony inspections?',
+			a: 'Yes, if they have covered elements. The law applies to buildings with three or more multifamily dwelling units that have elevated, wood-supported balconies, decks, stairways, walkways, or entry structures more than six feet above ground.',
+		},
+		{
+			q: 'Do I have to give the SB 721 inspection report to a buyer when I sell?',
+			a: 'Yes. The law says inspection reports must be kept in the owner’s records for at least two inspection cycles and must be disclosed and delivered to the buyer at the time of any later sale. See our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/).',
 		},
 	],
 };
