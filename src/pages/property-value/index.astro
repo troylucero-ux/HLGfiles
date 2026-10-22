@@ -5,6 +5,8 @@ import { submarkets } from '../../data/submarkets';
 import { SALES_STATS, AGE_BRACKETS, AGE_GROUP_LABELS, MIN_CAP_RATE_COMPS, VALUATION_DATA_AS_OF, VALUATION_DATA_PERIOD } from '../../data/valuationAssumptions';
 
 const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.name]));
+// Santa Monica and West Hollywood have their own rent control, so the LA RSO wording is dropped for them.
+const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 ---
 
 <BaseLayout
@@ -99,7 +101,7 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 	</section>
 </BaseLayout>
 
-<script define:vars={{ salesStats: SALES_STATS, submarketNames, ageGroupLabels: AGE_GROUP_LABELS, ageBrackets: AGE_BRACKETS, minComps: MIN_CAP_RATE_COMPS, dataPeriod: VALUATION_DATA_PERIOD }}>
+<script define:vars={{ salesStats: SALES_STATS, submarketNames, ownCitySlugs, ageGroupLabels: AGE_GROUP_LABELS, ageBrackets: AGE_BRACKETS, minComps: MIN_CAP_RATE_COMPS, dataPeriod: VALUATION_DATA_PERIOD }}>
 	function formatDollar(n) {
 		if (n >= 1000000) return `$${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 2)}M`;
 		return `$${Math.round(n).toLocaleString('en-US')}`;
@@ -167,7 +169,7 @@ const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.na
 			document.getElementById('result-methodology').textContent =
 				`We estimated a net operating income range using an expense ratio of ${Math.round(bracket.expenseRatioLow * 100)}%-${Math.round(
 					bracket.expenseRatioHigh * 100
-				)}% (typical for ${bracket.label}), then capitalized it using a ${(capRate.low * 100).toFixed(2)}%-${(capRate.high * 100).toFixed(
+				)}% (typical for ${ownCitySlugs.includes(submarketSlug) ? bracket.label.replace(/, under .*$/, '') : bracket.label}), then capitalized it using a ${(capRate.low * 100).toFixed(2)}%-${(capRate.high * 100).toFixed(
 					2
 				)}% cap rate range from ${capRate.compCount} ${areaName} sales of apartment buildings ${ageGroupLabels[ageGroup].short}, ${dataPeriod}.`;
 			detailsEl.hidden = false;

@@ -124,6 +124,17 @@ img {
 	text-decoration: none;
 }
 
+/* Long button labels (e.g. "Get a Free Broker Opinion of Value in West Hollywood") wrap on phones
+   instead of pushing the page wider than the screen. */
+@media (max-width: 560px) {
+	.btn {
+		white-space: normal;
+		text-align: center;
+		justify-content: center;
+		line-height: 1.35;
+	}
+}
+
 .btn-gold {
 	background: var(--navy-dark);
 	color: var(--gold-light);

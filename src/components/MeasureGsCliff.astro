@@ -1,0 +1,285 @@
+---
+// Santa Monica's Measure GS transfer tax, shown on the Santa Monica submarket page. Rates are the City
+// of Santa Monica documentary transfer tax as listed by the LA County Registrar-Recorder (checked
+// October 2026): $3.00 per $1,000 under $5M, $6.00 per $1,000 from $5M to $7,999,999.99, and $56.00 per
+// $1,000 at $8M or more (the Measure GS tier, in effect since March 1, 2023). Each rate applies to the
+// whole price, not just the part above the line. LA County's $1.10 per $1,000 is the same on both sides
+// of every line, so it is left out of the comparison. Everything below is computed from these rules.
+const LOWER = 5_000_000;
+const UPPER = 8_000_000;
+const rateFor = (price: number) => (price >= UPPER ? 0.056 : price >= LOWER ? 0.006 : 0.003);
+const taxFor = (price: number) => price * rateFor(price);
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+const justUnder = UPPER - 1;
+const underTax = taxFor(justUnder);
+const atTax = taxFor(UPPER);
+// The price at which a sale over $8M nets the same as one just under it.
+const breakEven = Math.ceil((justUnder - underTax) / (1 - 0.056));
+
+const tiers = [
+	{ range: 'Under $5,000,000', rate: '0.3%', perK: '$3 per $1,000', example: `${money(4_500_000)} sale: ${money(taxFor(4_500_000))}` },
+	{ range: '$5,000,000 to $7,999,999', rate: '0.6%', perK: '$6 per $1,000', example: `${money(6_500_000)} sale: ${money(taxFor(6_500_000))}` },
+	{ range: '$8,000,000 and up (Measure GS)', rate: '5.6%', perK: '$56 per $1,000', example: `${money(9_000_000)} sale: ${money(taxFor(9_000_000))}`, gs: true },
+];
+---
+
+<section class="section section-alt gs">
+	<div class="container gs__narrow">
+		<span class="eyebrow">Santa Monica Transfer Tax</span>
+		<h2>Measure GS: Santa Monica&rsquo;s Own &ldquo;Mansion Tax&rdquo;</h2>
+		<p>
+			Santa Monica is its own city, so the City of Los Angeles&rsquo; Measure ULA does not apply here. Santa Monica has its own version instead.
+			Voters passed <strong>Measure GS</strong> in November 2022, and since March 1, 2023 any sale of <strong>$8 million or more</strong> pays a city
+			transfer tax of <strong>5.6% of the entire price</strong>. Below $8 million, the city&rsquo;s rate is 0.3% or 0.6%.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="gs-cliff" aria-labelledby="gs-cliff-cap">
+			<figcaption id="gs-cliff-cap" class="gs-figcap">One dollar over $8 million costs about {money(atTax - underTax)}</figcaption>
+			<div class="gs-cliff__cards">
+				<div class="gs-cliff__card">
+					<span class="gs-cliff__label">Sold for</span>
+					<span class="gs-cliff__price">{money(justUnder)}</span>
+					<span class="gs-cliff__tax">City transfer tax: {money(underTax)}</span>
+				</div>
+				<span class="gs-cliff__arrow" aria-hidden="true"></span>
+				<div class="gs-cliff__card gs-cliff__card--over">
+					<span class="gs-cliff__label">Sold for</span>
+					<span class="gs-cliff__price">{money(UPPER)}</span>
+					<span class="gs-cliff__tax">City transfer tax: {money(atTax)}</span>
+				</div>
+			</div>
+			<p class="gs-cliff__note">
+				A seller needs a price of about <strong>{money(breakEven)}</strong> just to net the same as a sale at {money(justUnder)}. Anywhere between
+				$8,000,000 and that number, the seller takes home less.
+			</p>
+		</figure>
+
+		<figure class="gs-tiers" aria-labelledby="gs-tiers-cap">
+			<figcaption id="gs-tiers-cap" class="gs-figcap">Santa Monica city transfer tax by sale price</figcaption>
+			<div class="gs-tiers__wrap">
+				<table class="gs-tiers__table">
+					<thead>
+						<tr>
+							<th scope="col">Sale Price</th>
+							<th scope="col">City Rate (on the full price)</th>
+							<th scope="col">Example</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							tiers.map((t) => (
+								<tr class={t.gs ? 'gs-tiers__row--gs' : ''}>
+									<th scope="row">{t.range}</th>
+									<td>
+										{t.rate} <span class="gs-tiers__note">{t.perK}</span>
+									</td>
+									<td>{t.example}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+			<p class="gs-source">
+				Illustration only. LA County&rsquo;s documentary transfer tax of $1.10 per $1,000 is added at every price. Rates from the LA County
+				Registrar-Recorder. Who pays is set in the purchase contract, so talk to your tax advisor and escrow officer about your own sale.
+			</p>
+		</figure>
+	</div>
+
+	<div class="container gs__narrow">
+		<h3>What Measure GS means if you own a Santa Monica apartment building</h3>
+		<ul class="gs-tips">
+			<li>
+				<strong>If your building is worth around $8 million, price it with the tax in mind.</strong> An offer of $8.1M can leave you with less than
+				an offer of $7.95M. We run the net-to-seller math on every offer so you compare what you keep, not just the headline price.
+			</li>
+			<li>
+				<strong>Buyers price their own exit too.</strong> A buyer who expects to resell above $8 million knows the next sale carries the 5.6% tax, and
+				that shows up in what they will pay today.
+			</li>
+			<li>
+				<strong>Most Santa Monica apartment sales fall well under the line.</strong> For a building under $5 million, the city tax is
+				0.3%, about {money(taxFor(4_500_000))} on a $4.5M sale. Measure GS mostly matters for larger buildings and portfolios.
+			</li>
+		</ul>
+	</div>
+</section>
+
+<style>
+	.gs__narrow {
+		max-width: 820px;
+	}
+
+	.gs-figcap {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+		margin-bottom: 1rem;
+	}
+
+	.gs-source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin: 0.85rem 0 0;
+	}
+
+	.gs-cliff {
+		margin: 2rem 0;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.75rem 2rem;
+	}
+
+	.gs-cliff__cards {
+		display: grid;
+		grid-template-columns: 1fr 70px 1fr;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.gs-cliff__card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		gap: 0.35rem;
+		border: 2px solid var(--navy-dark);
+		border-radius: 10px;
+		padding: 1.4rem 1rem;
+	}
+
+	.gs-cliff__card--over {
+		background: var(--navy-dark);
+		color: #fff;
+	}
+
+	.gs-cliff__label {
+		font-size: 0.75rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	.gs-cliff__price {
+		font-family: var(--font-serif);
+		font-size: 2rem;
+		color: var(--navy-dark);
+	}
+
+	.gs-cliff__card--over .gs-cliff__price {
+		color: #fff;
+	}
+
+	.gs-cliff__tax {
+		font-size: 0.95rem;
+	}
+
+	.gs-cliff__card--over .gs-cliff__tax {
+		color: var(--gold-light);
+		font-weight: 600;
+	}
+
+	.gs-cliff__arrow {
+		justify-self: center;
+		width: 0;
+		height: 0;
+		border-top: 26px solid transparent;
+		border-bottom: 26px solid transparent;
+		border-left: 40px solid var(--gold);
+	}
+
+	.gs-cliff__note {
+		margin: 1.25rem 0 0;
+		font-size: 1rem;
+	}
+
+	.gs-tiers {
+		margin: 2rem 0;
+	}
+
+	.gs-tiers__wrap {
+		overflow-x: auto;
+	}
+
+	.gs-tiers__table {
+		width: 100%;
+		min-width: 560px;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+		background: var(--paper);
+	}
+
+	.gs-tiers__table thead th {
+		text-align: left;
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+		padding: 0.75rem 1rem;
+	}
+
+	.gs-tiers__table tbody th,
+	.gs-tiers__table tbody td {
+		padding: 0.7rem 1rem;
+		border-bottom: 1px solid var(--border);
+		text-align: left;
+		font-weight: 400;
+	}
+
+	.gs-tiers__note {
+		display: block;
+		font-size: 0.74rem;
+		color: var(--ink-light);
+	}
+
+	.gs-tiers__row--gs {
+		background: var(--navy-tint);
+	}
+
+	.gs-tiers__row--gs th {
+		font-weight: 600;
+		color: var(--gold-dark);
+	}
+
+	.gs-tips {
+		padding-left: 1.2rem;
+	}
+
+	.gs-tips li {
+		margin-bottom: 0.9rem;
+		line-height: 1.65;
+	}
+
+	.gs-tips strong {
+		color: var(--navy-dark);
+	}
+
+	@media (max-width: 640px) {
+		.gs-cliff {
+			padding: 1.25rem;
+		}
+
+		.gs-cliff__cards {
+			grid-template-columns: 1fr;
+		}
+
+		.gs-cliff__arrow {
+			border-left: 26px solid transparent;
+			border-right: 26px solid transparent;
+			border-top: 30px solid var(--gold);
+			border-bottom: 0;
+		}
+
+		.gs-cliff__price {
+			font-size: 1.6rem;
+		}
+	}
+</style>

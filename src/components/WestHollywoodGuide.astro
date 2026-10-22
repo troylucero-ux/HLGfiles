@@ -1,0 +1,924 @@
+---
+// Owner's guide shown only on the West Hollywood submarket page: how West Hollywood's own rules
+// (rent control, transfer taxes, soft-story retrofits) differ from the City of Los Angeles, with
+// plain-language visuals. Sources, checked October 2026:
+// - Rent control coverage, yearly increase formula (75% of LA-area CPI, 3% ceiling), registration and
+//   relocation rules: City of West Hollywood Rent Stabilization Division (weho.org/rent). The 2.75%
+//   figure for Sept 1, 2026 to Aug 31, 2027 was announced at the June 25, 2026 Rent Stabilization
+//   Commission meeting (reported by WeHo Online, July 8, 2026); 2.25% (2025) and 3% (2024) are city notices.
+// - Transfer taxes: LA County Registrar-Recorder documentary transfer tax page. West Hollywood is not on
+//   its list of cities with their own transfer tax; LA City's rate and Measure ULA thresholds match
+//   UlaThresholdTable.astro.
+// - Soft-story: City of West Hollywood Ordinance 17-1004 and Resolution 24-103.
+// Sales figures come from SALES_STATS, so they refresh with that file.
+import { submarkets } from '../data/submarkets';
+import { SALES_STATS, MIN_PRICE_COMPS_PAGE, VALUATION_DATA_PERIOD } from '../data/valuationAssumptions';
+
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+// ---- Transfer tax on the same $6M building, either side of the city line.
+const EXAMPLE_PRICE = 6_000_000;
+const countyTax = (EXAMPLE_PRICE / 1000) * 1.1;
+const laCityTax = (EXAMPLE_PRICE / 1000) * 4.5;
+const ulaTax = EXAMPLE_PRICE * 0.04;
+const laTotal = countyTax + laCityTax + ulaTax;
+const wehoTotal = countyTax;
+
+// ---- Yearly allowed increase (Annual General Adjustment), with the 3% ceiling.
+const AGA_CEILING = 3;
+const agaHistory = [
+	{ label: 'Sept 2024', pct: 3 },
+	{ label: 'Sept 2025', pct: 2.25 },
+	{ label: 'Sept 2026', pct: 2.75 },
+];
+const CURRENT_AGA = agaHistory[agaHistory.length - 1].pct;
+// The ceiling line sits at this share of the chart height, leaving room for the value labels above the bars.
+const BAR_SCALE = 78;
+
+// ---- "Take your increase before you list": what an unclaimed increase is worth at West Hollywood cap rates.
+const weho = SALES_STATS['west-hollywood'].rso;
+const midCap = weho.capRate ? (weho.capRate.low + weho.capRate.high) / 2 : 0.054;
+const EX_UNITS = 10;
+const EX_RENT = 2000;
+const extraYearly = EX_UNITS * EX_RENT * (CURRENT_AGA / 100) * 12;
+const extraValue = Math.round(extraYearly / midCap / 1000) * 1000;
+
+// ---- Price per unit for older (rent-controlled) buildings across the neighborhoods we cover.
+const priceRows = submarkets
+	.map((sm) => {
+		const ppu = SALES_STATS[sm.slug]?.rso?.pricePerUnit;
+		return ppu && ppu.compCount >= MIN_PRICE_COMPS_PAGE ? { slug: sm.slug, name: sm.name.replace(/\s*\(.*\)/, ''), median: ppu.median, count: ppu.compCount } : null;
+	})
+	.filter((r): r is NonNullable<typeof r> => Boolean(r))
+	.sort((a, b) => b.median - a.median);
+const maxPrice = Math.max(...priceRows.map((r) => r.median));
+---
+
+<section class="section weho">
+	<div class="container weho__narrow">
+		<span class="eyebrow">Its Own City, Its Own Rules</span>
+		<h2>Selling an Apartment Building in West Hollywood vs. the City of Los Angeles</h2>
+		<p>
+			West Hollywood looks like part of LA, but it has been its own city since 1984. That matters when you sell. The rent control law, the yearly
+			rent increase, the transfer taxes, and the earthquake retrofit rules are all West Hollywood&rsquo;s own. A building on the West Hollywood side of
+			Fairfax Ave or La Cienega Blvd can face very different costs than the same building a block away in the City of LA.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="weho-compare" aria-labelledby="weho-compare-cap">
+			<figcaption id="weho-compare-cap" class="weho-figcap">Same kind of building, two sets of rules</figcaption>
+			<div class="weho-compare__grid" role="table" aria-describedby="weho-compare-cap">
+				<div class="weho-compare__row weho-compare__row--head" role="row">
+					<span role="columnheader"></span>
+					<span role="columnheader">City of Los Angeles</span>
+					<span role="columnheader" class="weho-compare__weho">West Hollywood</span>
+				</div>
+				<div class="weho-compare__row" role="row">
+					<span role="rowheader">Rent control covers</span>
+					<span role="cell">Buildings first occupied before Oct 1, 1978</span>
+					<span role="cell" class="weho-compare__weho">Buildings first occupied before July 1, 1979</span>
+				</div>
+				<div class="weho-compare__row" role="row">
+					<span role="rowheader">Yearly rent increase</span>
+					<span role="cell">Set by the LA Housing Department each year</span>
+					<span role="cell" class="weho-compare__weho">{CURRENT_AGA}% from Sept 1, 2026 (never more than {AGA_CEILING}%)</span>
+				</div>
+				<div class="weho-compare__row" role="row">
+					<span role="rowheader">Measure ULA &ldquo;mansion tax&rdquo;</span>
+					<span role="cell">4% of the full price above $5.4M, 5.5% at $10.9M and up</span>
+					<span role="cell" class="weho-compare__weho"><strong>Does not apply</strong></span>
+				</div>
+				<div class="weho-compare__row" role="row">
+					<span role="rowheader">City transfer tax</span>
+					<span role="cell">$4.50 per $1,000 of price</span>
+					<span role="cell" class="weho-compare__weho"><strong>None</strong> (only LA County&rsquo;s $1.10 per $1,000)</span>
+				</div>
+				<div class="weho-compare__row" role="row">
+					<span role="rowheader">Soft-story retrofit</span>
+					<span role="cell">LA&rsquo;s mandatory retrofit program</span>
+					<span role="cell" class="weho-compare__weho">West Hollywood&rsquo;s own mandatory program (Ordinance 17-1004)</span>
+				</div>
+			</div>
+		</figure>
+	</div>
+</section>
+
+<section class="section section-alt weho">
+	<div class="container weho__narrow">
+		<span class="eyebrow">West Hollywood Rent Control</span>
+		<h2>West Hollywood Rent Control, in Plain English</h2>
+		<p>
+			West Hollywood&rsquo;s Rent Stabilization Ordinance is separate from LA&rsquo;s. Its cutoff date is later, its yearly increase is lower, and its
+			tenant protections reach further. Here is how to tell where your building stands.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="weho-flow" aria-labelledby="weho-flow-cap">
+			<figcaption id="weho-flow-cap" class="weho-figcap">Is my West Hollywood building rent-controlled?</figcaption>
+			<div class="weho-flow__q">Was the building&rsquo;s certificate of occupancy issued <strong>before July 1, 1979</strong>?</div>
+			<div class="weho-flow__branches">
+				<div class="weho-flow__branch">
+					<span class="weho-flow__answer">Yes</span>
+					<div class="weho-flow__box weho-flow__box--yes">
+						<strong>Fully rent-controlled</strong>
+						<ul>
+							<li>Rent can rise once a year, by the city&rsquo;s set percentage ({CURRENT_AGA}% from Sept 1, 2026)</li>
+							<li>Tenants can only be evicted for reasons the ordinance allows</li>
+							<li>No-fault move-outs require relocation payments</li>
+							<li>The building must be registered with the city every year</li>
+						</ul>
+					</div>
+				</div>
+				<div class="weho-flow__branch">
+					<span class="weho-flow__answer weho-flow__answer--no">No</span>
+					<div class="weho-flow__box">
+						<strong>No city rent cap, but tenants are still protected</strong>
+						<ul>
+							<li>West Hollywood&rsquo;s eviction rules still apply</li>
+							<li>Once a building is more than 15 years old, the statewide AB 1482 cap may apply</li>
+							<li>Confirm the status of your units with the city or an attorney</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</figure>
+	</div>
+
+	<div class="container weho__narrow">
+		<h3>How much can rent go up each year?</h3>
+		<p>
+			Each September, rent-controlled rents in West Hollywood can rise by the Annual General Adjustment. The formula is 75% of the past year&rsquo;s
+			inflation in the LA area, rounded to the nearest quarter point, and the City Council made {AGA_CEILING}% a permanent ceiling in 2022. That is far
+			tighter than the statewide AB 1482 cap (5% plus inflation, up to 10%), which is why West Hollywood buyers pay close attention to how far below
+			market the current rents are.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="weho-bars" aria-labelledby="weho-bars-cap">
+			<figcaption id="weho-bars-cap" class="weho-figcap">Allowed yearly rent increase in West Hollywood</figcaption>
+			<div class="weho-bars__chart">
+				<div class="weho-bars__ceiling" style={`bottom: ${BAR_SCALE}%`}>
+					<span>{AGA_CEILING}% ceiling</span>
+				</div>
+				{
+					agaHistory.map((y, i) => (
+						<div class="weho-bars__col">
+							<span class={`weho-bars__bar${i === agaHistory.length - 1 ? ' weho-bars__bar--now' : ''}`} style={`height: ${(y.pct / AGA_CEILING) * BAR_SCALE}%`}>
+								<span class="weho-bars__val">{y.pct}%</span>
+							</span>
+							<span class="weho-bars__label">{y.label}</span>
+						</div>
+					))
+				}
+			</div>
+			<p class="weho-source">Each figure applies from September 1 through the following August 31. Source: City of West Hollywood Rent Stabilization Division.</p>
+		</figure>
+	</div>
+
+	<div class="container weho__narrow">
+		<h3>Four rent control rules every West Hollywood seller should know</h3>
+		<ol class="weho-rules">
+			<li>
+				<strong>Market rent comes back only when a tenant leaves on their own.</strong> Under the state&rsquo;s Costa-Hawkins law, you can set a new
+				rent when a tenant moves out voluntarily. After a no-fault eviction, the city does not reset the rent.
+			</li>
+			<li>
+				<strong>Relocation payments are large and rise every July.</strong> The city&rsquo;s 2024 schedule set a one-bedroom at $12,833, with higher
+				amounts for tenants who are 62 or older, disabled, terminally ill, moderate-income, or living with a minor child.
+			</li>
+			<li>
+				<strong>You can only raise rent if your registration is current.</strong> West Hollywood charges a yearly per-unit registration fee. Owners who
+				are behind cannot take the yearly increase, and buyers check this.
+			</li>
+			<li>
+				<strong>Newer buildings are not exempt from everything.</strong> Buildings first occupied on or after July 1, 1979 have no city rent cap, but
+				West Hollywood&rsquo;s eviction protections still apply.
+			</li>
+		</ol>
+	</div>
+</section>
+
+<section class="section weho">
+	<div class="container weho__narrow">
+		<span class="eyebrow">Transfer Taxes</span>
+		<h2>West Hollywood Is Not Subject to Measure ULA</h2>
+		<p>
+			Measure ULA, often called the &ldquo;mansion tax,&rdquo; applies only to property in the City of Los Angeles. West Hollywood is a separate
+			city, so <strong>ULA does not apply to West Hollywood apartment buildings</strong> at any price. West Hollywood also has no city transfer tax of
+			its own. A seller there pays only LA County&rsquo;s documentary transfer tax of $1.10 per $1,000. Here is what that means on a {money(EXAMPLE_PRICE)} sale.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="weho-tax" aria-labelledby="weho-tax-cap">
+			<figcaption id="weho-tax-cap" class="weho-figcap">Transfer taxes on the same {money(EXAMPLE_PRICE)} apartment building</figcaption>
+			<div class="weho-tax__row">
+				<span class="weho-tax__name">City of Los Angeles</span>
+				<span class="weho-tax__track">
+					<span class="weho-tax__seg weho-tax__seg--ula" style={`width: ${(ulaTax / laTotal) * 100}%`} title="Measure ULA" />
+					<span class="weho-tax__seg weho-tax__seg--city" style={`width: ${(laCityTax / laTotal) * 100}%`} title="LA city transfer tax" />
+					<span class="weho-tax__seg weho-tax__seg--county" style={`width: ${(countyTax / laTotal) * 100}%`} title="LA County transfer tax" />
+				</span>
+				<span class="weho-tax__amt">{money(laTotal)}</span>
+			</div>
+			<div class="weho-tax__row">
+				<span class="weho-tax__name">West Hollywood</span>
+				<span class="weho-tax__track">
+					<span class="weho-tax__seg weho-tax__seg--county" style={`width: ${Math.max((wehoTotal / laTotal) * 100, 1.5)}%`} title="LA County transfer tax" />
+				</span>
+				<span class="weho-tax__amt weho-tax__amt--good">{money(wehoTotal)}</span>
+			</div>
+			<ul class="weho-tax__legend">
+				<li><span class="weho-tax__key weho-tax__seg--ula" />Measure ULA (4%): {money(ulaTax)}</li>
+				<li><span class="weho-tax__key weho-tax__seg--city" />LA city transfer tax: {money(laCityTax)}</li>
+				<li><span class="weho-tax__key weho-tax__seg--county" />LA County transfer tax: {money(countyTax)}</li>
+			</ul>
+			<p class="weho-tax__callout">
+				Difference: <strong>{money(laTotal - wehoTotal)}</strong> more in your pocket on the West Hollywood side.
+			</p>
+			<p class="weho-source">
+				Illustration only, before commissions and other closing costs. Rates from the LA County Registrar-Recorder and the City of Los Angeles
+				Office of Finance (ULA thresholds for closings after June 30, 2026). Talk to your tax advisor about your own sale.
+			</p>
+		</figure>
+	</div>
+
+	<div class="container weho__narrow">
+		<p>
+			This cuts both ways in a good way for West Hollywood owners. You keep more of your price, and buyers know they can sell later without ULA
+			too. That cheaper exit is part of why buyers accept lower cap rates here. It also means you do not have to price around the $5.4M line the way
+			City of LA sellers do. A West Hollywood building should be priced at what it is worth, full stop.
+		</p>
+	</div>
+</section>
+
+<section class="section section-alt weho">
+	<div class="container weho__narrow">
+		<span class="eyebrow">Fresh Advice for Owners</span>
+		<h2>Three Moves to Make Before You List a West Hollywood Building</h2>
+	</div>
+
+	<div class="container weho-moves">
+		<div class="weho-move">
+			<span class="weho-move__num">1</span>
+			<h3>Take this year&rsquo;s rent increase first</h3>
+			<p>
+				Buyers pay for the rent roll they see, not the one you could have had. If you have skipped the {CURRENT_AGA}% increase, serve the 30-day
+				notices before you list (one increase per 12 months, and only with current registration).
+			</p>
+			<div class="weho-math" aria-label={`Example: ${EX_UNITS} units at ${money(EX_RENT)} a month`}>
+				<div class="weho-math__line"><span>{EX_UNITS} units &times; {money(EX_RENT)} rent &times; {CURRENT_AGA}%</span><span>{money(extraYearly / 12)} / month</span></div>
+				<div class="weho-math__line"><span>Over a year</span><span>{money(extraYearly)}</span></div>
+				<div class="weho-math__line weho-math__line--total">
+					<span>Added value at a {(midCap * 100).toFixed(1)}% cap rate</span><span>about {money(extraValue)}</span>
+				</div>
+			</div>
+		</div>
+		<div class="weho-move">
+			<span class="weho-move__num">2</span>
+			<h3>Put your soft-story file in one folder</h3>
+			<p>
+				West Hollywood requires wood-frame buildings with weak or open ground floors (think tuck-under parking) permitted before 1978 to be screened
+				and retrofitted. Buyers will ask where you are. Gather the screening report, engineer&rsquo;s plans, permits, and final sign-off. A missing
+				document becomes a price cut in escrow. A complete one keeps your price intact.
+			</p>
+			<p class="weho-move__proof">
+				Our sale of <a href="/case-studies/925-n-san-vicente-blvd-west-hollywood-apartments/">925 N San Vicente Blvd</a> had a mandatory retrofit
+				outstanding and still went under contract in less than a week.
+			</p>
+		</div>
+		<div class="weho-move">
+			<span class="weho-move__num">3</span>
+			<h3>Know your &ldquo;rent gap&rdquo;</h3>
+			<p>
+				In West Hollywood, much of a building&rsquo;s value is the gap between current rents and market rents. Make a simple list of each unit&rsquo;s
+				rent, move-in year, and what a vacant unit would rent for today. Buyers will build this list anyway. Having yours ready shows the upside
+				and keeps the price conversation on your terms.
+			</p>
+		</div>
+	</div>
+</section>
+
+<section class="section weho">
+	<div class="container weho__narrow">
+		<span class="eyebrow">Prices Across LA</span>
+		<h2>What West Hollywood Apartment Buildings Sell For</h2>
+		<p>
+			West Hollywood&rsquo;s older, rent-controlled buildings sold for a median of
+			{money(weho.pricePerUnit!.median)} per unit in {VALUATION_DATA_PERIOD}, across {weho.pricePerUnit!.compCount} sales{
+				weho.capRate ? `, with cap rates typically between ${(weho.capRate.low * 100).toFixed(2)}% and ${(weho.capRate.high * 100).toFixed(2)}%` : ''
+			}. Here is how that compares with the other neighborhoods we cover.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="weho-ppu" aria-labelledby="weho-ppu-cap">
+			<figcaption id="weho-ppu-cap" class="weho-figcap">Median price per unit, buildings built before 1978, {VALUATION_DATA_PERIOD}</figcaption>
+			{
+				priceRows.map((r) => (
+					<a href={`/submarkets/${r.slug}/`} class={`weho-ppu__row${r.slug === 'west-hollywood' ? ' weho-ppu__row--here' : ''}`}>
+						<span class="weho-ppu__name">{r.name}</span>
+						<span class="weho-ppu__track">
+							<span class="weho-ppu__bar" style={`width: ${(r.median / maxPrice) * 100}%`} />
+						</span>
+						<span class="weho-ppu__val">{money(r.median)}</span>
+					</a>
+				))
+			}
+			<p class="weho-source">Source: Highlight Multifamily Group analysis of CoStar sold multifamily comps. Neighborhoods with fewer than {MIN_PRICE_COMPS_PAGE} sales are left out.</p>
+		</figure>
+	</div>
+
+	<div class="container weho__narrow">
+		<h3>Where West Hollywood&rsquo;s apartment buildings are</h3>
+		<p>
+			Most of the city&rsquo;s older apartment buildings sit on the flat streets between Sunset Blvd and Melrose Ave.
+			The <strong>Norma Triangle</strong> and <strong>West Hollywood West</strong> (around San Vicente, Larrabee, Palm, and Hilldale) draw buyers who pay up for walkability to the Sunset
+			Strip and Santa Monica Blvd. The <strong>Eastside</strong> (Fairfax, Ogden, Genesee, Sierra Bonita, Poinsettia) has more of the city&rsquo;s
+			10 to 30 unit buildings and tends to trade at lower prices per unit. Hillside streets north of Sunset are mostly smaller buildings with view
+			premiums.
+		</p>
+	</div>
+</section>
+
+<section class="section section-alt weho">
+	<div class="container weho__narrow">
+		<span class="eyebrow">Seller Checklist</span>
+		<h2>What to Gather Before Selling a West Hollywood Apartment Building</h2>
+		<ul class="weho-check">
+			<li>Current rent roll with each tenant&rsquo;s move-in date and current rent</li>
+			<li>Proof the building&rsquo;s city rent registration is paid and current</li>
+			<li>Copies of the last rent increase notices served</li>
+			<li>Soft-story screening report, retrofit plans, permits, and sign-off (if your building is on the city&rsquo;s list)</li>
+			<li>Two years of operating expenses and utility bills</li>
+			<li>Any buyout agreements, relocation payments, or pending tenant matters</li>
+			<li>Leases, including any pet, parking, or storage agreements</li>
+		</ul>
+		<p>
+			Not sure where to start? We will walk you through it as part of a free Broker Opinion of Value. <a href="/contact/?intent=bov">Request yours here</a>.
+		</p>
+	</div>
+</section>
+
+<style>
+	.weho__narrow {
+		max-width: 820px;
+	}
+
+	.weho__narrow h3 {
+		margin-top: 2rem;
+	}
+
+	.weho-figcap {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+		margin-bottom: 1rem;
+	}
+
+	.weho-source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin: 0.85rem 0 0;
+	}
+
+	/* Comparison table */
+	.weho-compare {
+		margin: 2rem 0 0;
+	}
+
+	.weho-compare__grid {
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		background: var(--paper);
+		overflow: hidden;
+	}
+
+	.weho-compare__row {
+		display: grid;
+		grid-template-columns: 1fr 1.4fr 1.4fr;
+		border-top: 1px solid var(--border);
+	}
+
+	.weho-compare__row > span {
+		padding: 0.9rem 1.1rem;
+		font-size: 0.93rem;
+	}
+
+	.weho-compare__row > span:first-child {
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.weho-compare__row--head {
+		border-top: 0;
+		background: var(--navy-dark);
+	}
+
+	.weho-compare__row--head > span {
+		color: #fff;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+	}
+
+	.weho-compare__weho {
+		background: var(--navy-tint);
+	}
+
+	.weho-compare__row--head .weho-compare__weho {
+		background: var(--gold);
+		color: var(--navy-dark);
+	}
+
+	/* Rent control flowchart */
+	.weho-flow {
+		margin: 2rem 0;
+		text-align: center;
+	}
+
+	.weho-flow__q {
+		display: inline-block;
+		max-width: 520px;
+		background: var(--navy-dark);
+		color: #fff;
+		padding: 1rem 1.5rem;
+		border-radius: 2px;
+		font-size: 1rem;
+		position: relative;
+	}
+
+	.weho-flow__q strong {
+		color: var(--gold-light);
+	}
+
+	.weho-flow__branches {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+		margin-top: 2.25rem;
+		position: relative;
+	}
+
+	.weho-flow__branches::before {
+		content: '';
+		position: absolute;
+		top: -2.25rem;
+		left: 25%;
+		right: 25%;
+		height: 1.25rem;
+		border: 2px solid var(--gold);
+		border-bottom: 0;
+	}
+
+	.weho-flow__answer {
+		display: inline-block;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-weight: 700;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		padding: 0.25rem 0.9rem;
+		border-radius: 999px;
+		margin-bottom: 0.75rem;
+	}
+
+	.weho-flow__answer--no {
+		background: var(--border);
+	}
+
+	.weho-flow__box {
+		text-align: left;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--border);
+		border-radius: 2px;
+		padding: 1.25rem 1.4rem;
+		height: calc(100% - 2.6rem);
+	}
+
+	.weho-flow__box--yes {
+		border-top-color: var(--gold);
+	}
+
+	.weho-flow__box strong {
+		display: block;
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+		margin-bottom: 0.6rem;
+	}
+
+	.weho-flow__box ul {
+		margin: 0;
+		padding-left: 1.1rem;
+		font-size: 0.93rem;
+	}
+
+	.weho-flow__box li {
+		margin-bottom: 0.35rem;
+	}
+
+	/* Yearly increase bars */
+	.weho-bars {
+		margin: 1.5rem 0 2rem;
+		max-width: 620px;
+	}
+
+	.weho-bars__chart {
+		position: relative;
+		display: flex;
+		align-items: flex-end;
+		gap: 2rem;
+		height: 220px;
+		padding: 0 6.5rem 0 1rem;
+		border-bottom: 2px solid var(--navy-dark);
+		margin-top: 1.5rem;
+	}
+
+	.weho-bars__ceiling {
+		position: absolute;
+		left: 0;
+		right: 0;
+		border-top: 2px dashed var(--gold-dark);
+		z-index: 1;
+	}
+
+	.weho-bars__ceiling span {
+		position: absolute;
+		right: 0;
+		top: -0.65rem;
+		background: var(--paper-alt);
+		padding-left: 0.4rem;
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: var(--gold-dark);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.weho-bars__col {
+		flex: 1;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: center;
+		position: relative;
+	}
+
+	.weho-bars__val {
+		font-family: var(--font-serif);
+		font-size: 1.35rem;
+		color: var(--navy-dark);
+		padding-top: 0.6rem;
+	}
+
+	.weho-bars__bar {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		max-width: 110px;
+		background: var(--navy-tint);
+		border: 1px solid var(--navy);
+		border-bottom: 0;
+	}
+
+	.weho-bars__bar--now {
+		background: var(--navy);
+	}
+
+	.weho-bars__bar--now .weho-bars__val {
+		color: #fff;
+	}
+
+	.weho-bars__label {
+		position: absolute;
+		bottom: -1.7rem;
+		white-space: nowrap;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--ink-light);
+	}
+
+	.weho-bars .weho-source {
+		margin-top: 2.4rem;
+	}
+
+	/* Numbered rules */
+	.weho-rules {
+		padding-left: 1.3rem;
+	}
+
+	.weho-rules li {
+		margin-bottom: 0.9rem;
+		line-height: 1.65;
+	}
+
+	.weho-rules strong {
+		color: var(--navy-dark);
+	}
+
+	/* Transfer tax bars */
+	.weho-tax {
+		margin: 2rem 0;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.75rem 2rem;
+	}
+
+	.weho-tax__row {
+		display: grid;
+		grid-template-columns: 170px 1fr 110px;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.weho-tax__name {
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.weho-tax__track {
+		display: flex;
+		height: 34px;
+		background: var(--paper-alt);
+		border-radius: 1px;
+		overflow: hidden;
+	}
+
+	.weho-tax__seg {
+		display: block;
+		height: 100%;
+	}
+
+	.weho-tax__seg--ula {
+		background: var(--navy-dark);
+	}
+
+	.weho-tax__seg--city {
+		background: var(--navy);
+		opacity: 0.6;
+	}
+
+	.weho-tax__seg--county {
+		background: var(--gold);
+	}
+
+	.weho-tax__amt {
+		font-family: var(--font-serif);
+		font-size: 1.3rem;
+		color: var(--navy-dark);
+		text-align: right;
+	}
+
+	.weho-tax__amt--good {
+		color: var(--success);
+	}
+
+	.weho-tax__legend {
+		list-style: none;
+		padding: 0;
+		margin: 0.5rem 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.5rem;
+		font-size: 0.85rem;
+	}
+
+	.weho-tax__key {
+		display: inline-block;
+		width: 0.85rem;
+		height: 0.85rem;
+		margin-right: 0.4rem;
+		vertical-align: -0.1rem;
+	}
+
+	.weho-tax__callout {
+		margin: 1.25rem 0 0;
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+	}
+
+	.weho-tax__callout strong {
+		color: var(--success);
+		font-size: 1.3rem;
+	}
+
+	/* Three moves */
+	.weho-moves {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.weho-move {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem 1.5rem;
+	}
+
+	.weho-move__num {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		border-radius: 50%;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-family: var(--font-serif);
+		font-size: 1.3rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.weho-move h3 {
+		font-size: 1.2rem;
+		margin-bottom: 0.6rem;
+	}
+
+	.weho-move p {
+		font-size: 0.95rem;
+		line-height: 1.65;
+	}
+
+	.weho-move__proof {
+		border-left: 3px solid var(--gold);
+		padding-left: 0.85rem;
+		font-style: italic;
+	}
+
+	.weho-math {
+		background: var(--navy-tint);
+		border-radius: 2px;
+		padding: 0.9rem 1rem;
+		font-size: 0.88rem;
+	}
+
+	.weho-math__line {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 0.3rem;
+	}
+
+	.weho-math__line--total {
+		border-top: 1px solid var(--navy);
+		margin-top: 0.3rem;
+		padding-top: 0.55rem;
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	/* Price per unit chart */
+	.weho-ppu {
+		margin: 2rem 0;
+		max-width: 900px;
+	}
+
+	.weho-ppu__row {
+		display: grid;
+		grid-template-columns: 150px 1fr 100px;
+		align-items: center;
+		gap: 1rem;
+		padding-block: 0.35rem;
+		color: var(--ink);
+	}
+
+	.weho-ppu__row:hover {
+		text-decoration: none;
+	}
+
+	.weho-ppu__name {
+		font-size: 0.92rem;
+	}
+
+	.weho-ppu__track {
+		height: 22px;
+		background: var(--paper-alt);
+	}
+
+	.weho-ppu__bar {
+		display: block;
+		height: 100%;
+		background: var(--navy-tint);
+		border: 1px solid var(--navy);
+	}
+
+	.weho-ppu__val {
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+		font-size: 0.92rem;
+	}
+
+	.weho-ppu__row--here .weho-ppu__name,
+	.weho-ppu__row--here .weho-ppu__val {
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	.weho-ppu__row--here .weho-ppu__bar {
+		background: var(--gold);
+		border-color: var(--gold-dark);
+	}
+
+	/* Checklist */
+	.weho-check {
+		list-style: none;
+		padding: 0;
+		margin: 1.25rem 0 1.5rem;
+	}
+
+	.weho-check li {
+		position: relative;
+		padding: 0.55rem 0 0.55rem 2rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.weho-check li::before {
+		content: '';
+		position: absolute;
+		left: 0.2rem;
+		top: 0.75rem;
+		width: 0.7rem;
+		height: 0.4rem;
+		border-left: 2px solid var(--success);
+		border-bottom: 2px solid var(--success);
+		transform: rotate(-45deg);
+	}
+
+	@media (max-width: 860px) {
+		.weho-moves {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.weho-compare__row {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.weho-compare__row > span:first-child {
+			grid-column: 1 / -1;
+			padding-bottom: 0;
+		}
+
+		.weho-compare__row--head > span:first-child {
+			display: none;
+		}
+
+		.weho-flow__branches {
+			grid-template-columns: 1fr;
+		}
+
+		.weho-flow__branches::before {
+			display: none;
+		}
+
+		.weho-flow__box {
+			height: auto;
+		}
+
+		.weho-tax {
+			padding: 1.25rem;
+		}
+
+		.weho-tax__row {
+			grid-template-columns: 1fr auto;
+		}
+
+		.weho-tax__track {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+
+		.weho-ppu__row {
+			grid-template-columns: 110px 1fr 80px;
+			gap: 0.6rem;
+		}
+
+		.weho-bars__chart {
+			gap: 1rem;
+			padding-right: 5.5rem;
+		}
+
+		.weho-bars__val {
+			font-size: 1.1rem;
+		}
+
+		.weho-bars__label {
+			font-size: 0.72rem;
+		}
+	}
+</style>

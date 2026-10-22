@@ -51,7 +51,7 @@ export const caseStudies: CaseStudy[] = [
 		slug: '925-n-san-vicente-blvd-west-hollywood-apartments',
 		title: '925 N San Vicente Blvd',
 		location: 'West Hollywood, CA',
-		submarket: null,
+		submarket: 'west-hollywood',
 		summary: 'A rent-controlled 9-unit West Hollywood building facing seismic retrofit requirements went under contract in under a week.',
 		dealType: ['value-add'],
 		opportunity:

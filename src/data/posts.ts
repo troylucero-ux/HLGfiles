@@ -504,6 +504,12 @@ const allPosts: Post[] = [
 				],
 			},
 			{
+				heading: 'Own a Building in West Hollywood or Santa Monica?',
+				paragraphs: [
+					'Measure ULA stops at the City of Los Angeles line. West Hollywood is a separate city, so ULA does not apply there, and West Hollywood has no city transfer tax of its own. See our [West Hollywood multifamily page](/submarkets/west-hollywood/) for a side-by-side example. Santa Monica is also exempt from ULA but has its own version, Measure GS, which takes 5.6% of the full price at $8 million and up. Our [Santa Monica page](/submarkets/santa-monica/) shows how that line works.',
+				],
+			},
+			{
 				heading: 'Where Things Stand Today',
 				paragraphs: [
 					'There has been a lot of talk about changing Measure ULA, but as of this writing in October 2026, the rates and thresholds above are the current rules. In July, the Los Angeles City Council shelved a proposal to put an exemption for new multifamily construction on the November ballot, so that measure will not go before voters this fall. Rules like this can change, so we confirm the current thresholds and exemptions with the City\u2019s Office of Finance before we price any building near a line.',

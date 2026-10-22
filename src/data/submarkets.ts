@@ -10,12 +10,16 @@ export type Submarket = {
 	blurb: string;
 	walkScore: number;
 	transitScore: number;
-	bikeScore: number;
+	bikeScore?: number;
 	walkScoreLabel: string;
 	transit: string[];
 	retail: string[];
 	employers: string[];
 	overview: string;
+	// Separate cities with their own rent control and transfer taxes. Omitted means the City of Los
+	// Angeles, where the LA Rent Stabilization Ordinance and Measure ULA apply.
+	city?: 'santa-monica' | 'west-hollywood';
+	metaDescription?: string;
 };
 
 export const submarkets: Submarket[] = [
@@ -130,6 +134,36 @@ export const submarkets: Submarket[] = [
 		employers: ['Silicon Beach tech employers (Snap Inc., and other media/tech firms)', 'Santa Monica College', 'Saint John’s Health Center'],
 		overview:
 			'Santa Monica is a rent-controlled coastal submarket that consistently commands some of the highest per-unit multifamily pricing in the Los Angeles Metro Area. Highlight has closed multiple transactions here, including properties near the Third Street Promenade and Montana Ave corridors, drawing on strong long-term demand from the Silicon Beach employment base.',
+		city: 'santa-monica',
+		metaDescription:
+			'Santa Monica multifamily broker: 2026 apartment sale prices and cap rates, the Measure GS transfer tax explained, and a free valuation for owners.',
+	},
+	// Walk and Transit Scores are walkscore.com's city-wide averages (checked 2026-10-22); its Bike Score
+	// page was unavailable, so none is shown.
+	{
+		slug: 'west-hollywood',
+		name: 'West Hollywood',
+		region: 'Westside LA',
+		blurb: 'Its own city, with its own rent control law and no Measure ULA, and some of the highest per-unit apartment pricing in LA County.',
+		walkScore: 91,
+		transitScore: 61,
+		walkScoreLabel: "Walker's Paradise (city-wide average)",
+		transit: [
+			'Metro bus lines along Santa Monica Blvd, Sunset Blvd, Fairfax Ave, and La Cienega Blvd',
+			'The city-run Cityline shuttle',
+			'Short drive to the Metro D Line (Purple) on Wilshire Blvd',
+		],
+		retail: [
+			'The Sunset Strip',
+			'Santa Monica Blvd and Melrose Ave corridors',
+			'The West Hollywood Design District and Robertson Blvd',
+		],
+		employers: ['Cedars-Sinai Medical Center (next door)', 'Pacific Design Center and the Design District', 'Sunset Strip hospitality, music, and entertainment employers'],
+		overview:
+			'West Hollywood is its own city, with its own rent control law and no Measure ULA transfer tax, which makes it one of the most distinctive apartment markets in Los Angeles County. Older rent-controlled buildings in the Norma Triangle, West Hollywood West, and the Eastside near Fairfax trade at some of the highest prices per unit in the region. Highlight sold 925 N San Vicente Blvd, a 9-unit rent-controlled building facing a mandatory seismic retrofit, and had it under contract in less than a week.',
+		city: 'west-hollywood',
+		metaDescription:
+			'West Hollywood multifamily broker: 2026 apartment prices and cap rates, WeHo rent control explained, why Measure ULA does not apply, and a free valuation.',
 	},
 	{
 		slug: 'north-hollywood',

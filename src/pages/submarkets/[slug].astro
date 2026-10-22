@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import WestHollywoodGuide from '../../components/WestHollywoodGuide.astro';
+import MeasureGsCliff from '../../components/MeasureGsCliff.astro';
 import { submarkets } from '../../data/submarkets';
 import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
@@ -21,7 +23,10 @@ const { sm } = Astro.props;
 const relatedClosings = closings.filter((c) => c.submarket === sm.slug);
 const relatedCaseStudies = caseStudies.filter((cs) => cs.submarket === sm.slug);
 const relatedListings = listings.filter((l) => l.submarket === sm.slug && l.status !== 'off-market');
-const isSantaMonica = sm.slug === 'santa-monica';
+const isSantaMonica = sm.city === 'santa-monica';
+const isWestHollywood = sm.city === 'west-hollywood';
+// Separate cities: the LA Rent Stabilization Ordinance and Measure ULA don't apply there.
+const isOwnCity = Boolean(sm.city);
 
 // Use the submarket's highest-value closed apartment sale as the hero background — a real deal
 // from that neighborhood, same approach as the homepage hero, rather than a generic stock photo.
@@ -43,7 +48,11 @@ const salesGroups = (['rso', 'post1978'] as AgeGroup[]).map((group) => {
 	const cap = stats?.capRate && stats.capRate.compCount >= MIN_CAP_RATE_COMPS ? stats.capRate : null;
 	const noPriceNote = `Fewer than ${MIN_PRICE_COMPS_PAGE} ${sm.name} sales in this category`;
 	return {
-		title: isSantaMonica ? AGE_GROUP_LABELS[group].title.replace(' (RSO)', '').replace(' (AB 1482)', '') : AGE_GROUP_LABELS[group].title,
+		title: isWestHollywood
+			? { rso: 'Built Before 1979 (WeHo Rent Control)', post1978: 'Built 1979 or Later' }[group]
+			: isSantaMonica
+				? AGE_GROUP_LABELS[group].title.replace(' (RSO)', '').replace(' (AB 1482)', '')
+				: AGE_GROUP_LABELS[group].title,
 		rows: [
 			{
 				label: 'Median Price Per Unit',
@@ -98,16 +107,47 @@ faqs.push({
 
 faqs.push({
 	q: `Does rent control apply to apartment buildings in ${shortName}?`,
-	a: isSantaMonica
-		? 'Santa Monica is a separate city with its own rent control law, administered by the Santa Monica Rent Control Board, so the City of Los Angeles rules do not apply there. Which rules cover a building depends on its age and registration, so confirm with the city or an attorney before you price or sell.'
-		: `${shortName} is in the City of Los Angeles. Buildings with a certificate of occupancy issued before October 1, 1978 are generally covered by the Rent Stabilization Ordinance, and newer buildings typically fall under the statewide AB 1482 cap. Rent control affects value because buyers price in below-market rents, as we explain in our guides.`,
-	links: isSantaMonica
+	a: isWestHollywood
+		? 'Yes, under West Hollywood’s own Rent Stabilization Ordinance, not the City of Los Angeles rules. Buildings with a certificate of occupancy issued before July 1, 1979 are generally rent-controlled: rent can rise once a year by the city’s Annual General Adjustment, and tenants can only be evicted for reasons the ordinance allows. Newer buildings have no city rent cap but are still covered by West Hollywood’s eviction protections. Confirm your building’s status with the city or an attorney before you price or sell.'
+		: isSantaMonica
+			? 'Santa Monica is a separate city with its own rent control law, administered by the Santa Monica Rent Control Board, so the City of Los Angeles rules do not apply there. Which rules cover a building depends on its age and registration, so confirm with the city or an attorney before you price or sell.'
+			: `${shortName} is in the City of Los Angeles. Buildings with a certificate of occupancy issued before October 1, 1978 are generally covered by the Rent Stabilization Ordinance, and newer buildings typically fall under the statewide AB 1482 cap. Rent control affects value because buyers price in below-market rents, as we explain in our guides.`,
+	links: isOwnCity
 		? [{ label: 'Selling with rent-controlled tenants', href: '/insights/selling-la-apartment-building-with-tenants-rent-control/' }]
 		: [
 				{ label: '2026 AB 1482 rent cap', href: '/insights/ab-1482-rent-cap-2026/' },
 				{ label: 'Selling with rent-controlled tenants', href: '/insights/selling-la-apartment-building-with-tenants-rent-control/' },
 			],
 });
+
+// City-specific questions, matching the guide sections further down the page.
+if (isWestHollywood) {
+	faqs.push(
+		{
+			q: 'How much can landlords raise rent in West Hollywood in 2026?',
+			a: 'For rent-controlled units, the Annual General Adjustment is 2.75% from September 1, 2026 through August 31, 2027. It is set each year at 75% of the change in LA-area inflation and can never exceed 3%. Rent can go up once every 12 months, with a 30-day notice, and only if the building’s city registration is current.',
+		},
+		{
+			q: 'Does Measure ULA apply to West Hollywood apartment buildings?',
+			a: 'No. Measure ULA applies only to property in the City of Los Angeles, and West Hollywood is a separate city. West Hollywood also has no city transfer tax of its own, so a seller pays only LA County’s documentary transfer tax of $1.10 per $1,000. On a $6 million sale, that is $6,600, compared with $273,600 in combined transfer taxes for the same price in the City of LA.',
+		},
+		{
+			q: 'Can I raise the rent to market when a West Hollywood tenant moves out?',
+			a: 'Usually, yes, if the tenant leaves voluntarily. State law (Costa-Hawkins) lets you set a new rent for the next tenant. After a no-fault eviction, West Hollywood does not reset the rent, and a no-fault move-out also requires a relocation payment, which the city adjusts every July.',
+		},
+		{
+			q: 'Do West Hollywood apartment buildings need a soft-story retrofit?',
+			a: 'Many do. West Hollywood’s Ordinance 17-1004 requires wood-frame buildings with soft, weak, or open-front ground floors, such as tuck-under parking, permitted before 1978 to be screened and retrofitted on a city schedule. Buyers will ask for your screening report, plans, permits, and sign-off, so gather them before you list.',
+			links: [{ label: '925 N San Vicente Blvd case study', href: '/case-studies/925-n-san-vicente-blvd-west-hollywood-apartments/' }],
+		},
+	);
+}
+if (isSantaMonica) {
+	faqs.push({
+		q: 'What is Measure GS in Santa Monica?',
+		a: 'Measure GS is Santa Monica’s transfer tax on sales of $8 million or more, in effect since March 1, 2023. At $8 million and up, the city tax is 5.6% of the entire sale price, compared with 0.6% from $5 million to just under $8 million and 0.3% below $5 million. LA County’s $1.10 per $1,000 is added on top. Measure ULA does not apply in Santa Monica because it is a separate city.',
+	});
+}
 
 if (closedHere.length > 0) {
 	const top = closedHere.slice(0, 3);
@@ -154,19 +194,20 @@ const nearbyMap: Record<string, string[]> = {
 	westlake: ['pico-union', 'koreatown', 'silver-lake'],
 	'east-hollywood': ['silver-lake', 'koreatown'],
 	'silver-lake': ['east-hollywood', 'westlake'],
-	brentwood: ['santa-monica'],
-	'santa-monica': ['brentwood'],
+	brentwood: ['santa-monica', 'west-hollywood'],
+	'santa-monica': ['brentwood', 'west-hollywood'],
+	'west-hollywood': ['santa-monica', 'brentwood', 'east-hollywood'],
 	'north-hollywood': ['van-nuys'],
 	'van-nuys': ['north-hollywood'],
 };
 // Seller guides linked from every neighborhood page. Measure ULA and the LA rent control rules apply
-// to the City of Los Angeles only, so Santa Monica (its own city and rent board) gets the general ones.
+// to the City of Los Angeles only, so Santa Monica and West Hollywood (separate cities) get the general ones.
 const ownerGuideSlugs = [
 	'how-to-sell-an-apartment-building-in-los-angeles-step-by-step',
 	'how-to-value-an-apartment-building-in-los-angeles',
 	'la-apartment-cap-rates-and-prices-by-neighborhood-2026',
 	'should-i-sell-my-la-apartment-building',
-	...(sm.slug === 'santa-monica' ? [] : ['selling-la-apartment-building-with-tenants-rent-control', 'measure-ula-2026-thresholds-selling-la-apartment-building']),
+	...(isOwnCity ? [] : ['selling-la-apartment-building-with-tenants-rent-control', 'measure-ula-2026-thresholds-selling-la-apartment-building']),
 	'capital-gains-depreciation-recapture-selling-la-apartment-building',
 	'how-to-choose-a-multifamily-broker-in-los-angeles',
 ];
@@ -177,7 +218,7 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 
 <BaseLayout
 	title={`${shortName} Multifamily Broker | Apartment Building Sales`}
-	description={`${shortName} multifamily broker: real 2026 sales data, Highlight's closed sales and listings, and a free valuation for apartment owners.`}
+	description={sm.metaDescription ?? `${shortName} multifamily broker: real 2026 sales data, Highlight's closed sales and listings, and a free valuation for apartment owners.`}
 	image={heroSale?.images?.[0]}
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
@@ -202,10 +243,14 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 				<span class="score-card__num">{sm.transitScore}</span>
 				<span class="score-card__label">Transit Score</span>
 			</div>
-			<div class="score-card">
-				<span class="score-card__num">{sm.bikeScore}</span>
-				<span class="score-card__label">Bike Score</span>
-			</div>
+			{
+				sm.bikeScore !== undefined && (
+					<div class="score-card">
+						<span class="score-card__num">{sm.bikeScore}</span>
+						<span class="score-card__label">Bike Score</span>
+					</div>
+				)
+			}
 		</div>
 
 		<div class="container detail-grid">
@@ -235,9 +280,11 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 			<span class="eyebrow">2026 Sales Data</span>
 			<h2>{sm.name} Multifamily Sales So Far This Year</h2>
 			<p class="sales-data__intro">
-				{isSantaMonica
-					? "Buildings built before 1978 are generally under rent control and trade differently than newer buildings, so we break them out separately."
-					: "Buildings built before 1978 fall under the LA Rent Stabilization Ordinance (RSO) and trade differently than newer buildings under AB 1482, so we break them out separately."} Confirmed {sm.name} sales through {VALUATION_DATA_AS_OF}. Figures are shown only when there are enough sales to be meaningful.
+				{isWestHollywood
+					? "Buildings first occupied before July 1, 1979 fall under West Hollywood's own rent control law and trade differently than newer buildings, so we break them out separately."
+					: isSantaMonica
+						? "Buildings built before 1978 are generally under rent control and trade differently than newer buildings, so we break them out separately."
+						: "Buildings built before 1978 fall under the LA Rent Stabilization Ordinance (RSO) and trade differently than newer buildings under AB 1482, so we break them out separately."} Confirmed {sm.name} sales through {VALUATION_DATA_AS_OF}. Figures are shown only when there are enough sales to be meaningful.
 			</p>
 			<div class="sales-data__groups">
 				{
@@ -262,6 +309,9 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 			</p>
 		</div>
 	</section>
+
+	{isWestHollywood && <WestHollywoodGuide />}
+	{isSantaMonica && <MeasureGsCliff />}
 
 	{
 		relatedListings.length > 0 && (

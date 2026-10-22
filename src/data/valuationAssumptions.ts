@@ -145,6 +145,21 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: { low: 0.0583, high: 0.0597, compCount: 5 },
 		},
 	},
+	// West Hollywood is its own city: comps are the export's sales with Property City = West Hollywood.
+	// Its rent control covers buildings from before July 1, 1979 rather than October 1978, but the export
+	// has no 1978 West Hollywood sales, so the usual 1978 split gives the same groups.
+	'west-hollywood': {
+		rso: {
+			pricePerUnit: { median: 279500, compCount: 13 },
+			pricePerSf: { median: 298, compCount: 13 },
+			capRate: { low: 0.0498, high: 0.0585, compCount: 10 },
+		},
+		post1978: {
+			pricePerUnit: { median: 489759, compCount: 3 },
+			pricePerSf: { median: 391, compCount: 3 },
+			capRate: null,
+		},
+	},
 };
 
 export interface AgeBracket {
