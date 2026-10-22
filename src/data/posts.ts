@@ -414,8 +414,8 @@ const allPosts: Post[] = [
 			{
 				heading: 'Depreciation Recapture',
 				paragraphs: [
-					'Residential rental property is generally depreciated over 27.5 years, which gives owners a deduction every year they hold it. When you sell, the part of your gain that comes from that depreciation is not taxed at the regular capital gains rates. The IRS treats it as unrecaptured section 1250 gain, taxed at a maximum federal rate of 25%.',
-					'As a simple illustration, if you have claimed $600,000 of depreciation over the years, up to $600,000 of your gain can be taxed at that higher rate, with the rest of the gain taxed at the regular capital gains rates. The IRS generally measures this by the depreciation you were allowed to take, whether or not you claimed it, so it is not something an owner can avoid by skipping the deductions.',
+					'Residential rental property is generally depreciated over 27.5 years, which gives owners a deduction every year they hold it. When you sell, the part of your gain that comes from that depreciation is not taxed at the regular capital gains rates. The IRS treats it as unrecaptured section 1250 gain, taxed at a maximum federal rate of 25%. The IRS generally measures this by the depreciation you were allowed to take, whether or not you claimed it, so it is not something an owner can avoid by skipping the deductions.',
+					'In plain terms: the depreciation deductions lowered your taxes while you owned the building, and when you sell, the IRS takes some of that benefit back. The amount of depreciation you took becomes the first slice of your gain and is taxed at up to 25%; any growth in price beyond that is taxed at the regular capital gains rates. The example below walks through the numbers.',
 				],
 			},
 			{

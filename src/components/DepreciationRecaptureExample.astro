@@ -1,0 +1,211 @@
+---
+// Worked example for the "Depreciation Recapture" section of the capital gains Insights post:
+// how depreciation lowers basis, and how the sale price splits into basis returned, recaptured
+// depreciation (up to 25% federal) and price growth (0/15/20% federal). Round numbers on purpose.
+---
+
+<figure class="recapture">
+	<figcaption class="recapture__title">Example: A Building Bought for $1,000,000 and Sold for $2,000,000</figcaption>
+
+	<ol class="recapture__steps">
+		<li>
+			<span class="recapture__step-label">1. You bought the building</span>
+			<span class="recapture__step-value">$1,000,000</span>
+		</li>
+		<li>
+			<span class="recapture__step-label">2. Over the years, you deducted depreciation</span>
+			<span class="recapture__step-value recapture__step-value--gold">&minus;$400,000</span>
+		</li>
+		<li>
+			<span class="recapture__step-label">3. So your "tax cost" (adjusted basis) is now</span>
+			<span class="recapture__step-value">$600,000</span>
+		</li>
+	</ol>
+
+	<p class="recapture__bar-label">You sell for $2,000,000 (after selling costs). Here is how the IRS splits that up:</p>
+
+	<div
+		class="recapture__bar"
+		role="img"
+		aria-label="Of the $2,000,000 sale price, $600,000 is your adjusted basis returned and not taxed, $400,000 is depreciation recapture taxed at up to 25% federally, and $1,000,000 is price growth taxed at 0%, 15%, or 20% federally."
+	>
+		<span class="recapture__seg recapture__seg--basis" style="flex-basis: 30%">$600K</span>
+		<span class="recapture__seg recapture__seg--recapture" style="flex-basis: 20%">$400K</span>
+		<span class="recapture__seg recapture__seg--growth" style="flex-basis: 50%">$1,000,000</span>
+	</div>
+
+	<ul class="recapture__legend">
+		<li>
+			<span class="recapture__swatch recapture__swatch--basis"></span>
+			<div>
+				<strong>$600,000: your basis back.</strong>{' '}
+				<span>Not taxed. This is the part of your investment you have not already deducted.</span>
+			</div>
+		</li>
+		<li>
+			<span class="recapture__swatch recapture__swatch--recapture"></span>
+			<div>
+				<strong>$400,000: depreciation recapture.</strong>{' '}
+				<span>The deductions you took come back as gain, taxed at up to 25% federally (at most $100,000).</span>
+			</div>
+		</li>
+		<li>
+			<span class="recapture__swatch recapture__swatch--growth"></span>
+			<div>
+				<strong>$1,000,000: price growth.</strong>{' '}
+				<span>Regular long-term capital gain, taxed at 0%, 15%, or 20% federally (at most $200,000).</span>
+			</div>
+		</li>
+	</ul>
+
+	<p class="recapture__note">
+		Total taxable gain: $1,400,000. Federal figures only; the 3.8% net investment income tax may also apply, and California taxes the entire
+		gain as ordinary income. A simplified illustration, not tax advice.
+	</p>
+</figure>
+
+<style>
+	.recapture {
+		margin: 2rem 0;
+		padding: 1.75rem;
+		background: var(--paper-alt);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.recapture__title {
+		font-family: var(--font-serif);
+		font-size: 1.2rem;
+		color: var(--navy-dark);
+		margin-bottom: 1.25rem;
+	}
+
+	.recapture__steps {
+		list-style: none;
+		margin: 0 0 1.5rem;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 0.75rem;
+	}
+
+	.recapture__steps li {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		gap: 0.5rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 0.9rem 1rem;
+	}
+
+	.recapture__step-label {
+		color: var(--ink-light);
+		font-size: 0.85rem;
+	}
+
+	.recapture__step-value {
+		font-family: var(--font-serif);
+		font-size: 1.35rem;
+		color: var(--navy-dark);
+	}
+
+	.recapture__step-value--gold {
+		color: var(--gold-dark);
+	}
+
+	.recapture__bar-label {
+		margin: 0 0 0.6rem;
+		font-weight: 600;
+	}
+
+	.recapture__bar {
+		display: flex;
+		height: 46px;
+		border-radius: 2px;
+		overflow: hidden;
+		font-weight: 600;
+		font-size: 0.85rem;
+	}
+
+	.recapture__seg {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		white-space: nowrap;
+	}
+
+	.recapture__seg--basis {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		color: var(--ink-light);
+	}
+
+	.recapture__seg--recapture {
+		background: var(--gold);
+		color: var(--navy-dark);
+	}
+
+	.recapture__seg--growth {
+		background: var(--navy);
+		color: #fff;
+	}
+
+	.recapture__legend {
+		list-style: none;
+		margin: 1.25rem 0 0;
+		padding: 0;
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.recapture__legend li {
+		display: flex;
+		gap: 0.75rem;
+		align-items: flex-start;
+	}
+
+	.recapture__legend span:not(.recapture__swatch) {
+		color: var(--ink-soft);
+	}
+
+	.recapture__swatch {
+		flex: none;
+		width: 14px;
+		height: 14px;
+		margin-top: 0.3rem;
+		border-radius: 3px;
+	}
+
+	.recapture__swatch--basis {
+		background: var(--paper);
+		border: 1px solid var(--ink-light);
+	}
+
+	.recapture__swatch--recapture {
+		background: var(--gold);
+	}
+
+	.recapture__swatch--growth {
+		background: var(--navy);
+	}
+
+	.recapture__note {
+		margin: 1.25rem 0 0;
+		font-size: 0.8rem;
+		color: var(--ink-light);
+	}
+
+	@media (max-width: 640px) {
+		.recapture {
+			padding: 1.25rem;
+		}
+
+		.recapture__steps {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
