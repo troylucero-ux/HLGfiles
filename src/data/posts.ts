@@ -1186,7 +1186,10 @@ const allPosts: Post[] = [
 // (.github/workflows/publish-scheduled.yml) triggers that build on any morning with something due.
 const todayPacific = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles' }).format(new Date());
 
-export const posts: Post[] = allPosts.filter((post) => post.date <= todayPacific);
+// Newest first. The sort is stable, so posts sharing a date keep their order in allPosts.
+export const posts: Post[] = allPosts
+	.filter((post) => post.date <= todayPacific)
+	.sort((a, b) => b.date.localeCompare(a.date));
 export const scheduledPosts: Post[] = allPosts.filter((post) => post.date > todayPacific);
 
 // "Related reading" shown at the end of each article: three hand-picked posts per slug, chosen by
