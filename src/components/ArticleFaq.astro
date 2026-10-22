@@ -1,0 +1,83 @@
+---
+// Question-and-answer block shown at the end of an Insights article. The same questions are written
+// into the page's FAQPage structured data by src/pages/insights/[slug].astro. Answers can use
+// [link text](/path/) links.
+import { toParts } from '../lib/inlineLinks';
+
+interface Props {
+	faqs: { q: string; a: string }[];
+}
+
+const { faqs } = Astro.props;
+---
+
+<section class="article-faq" aria-labelledby="article-faq-heading">
+	<h2 id="article-faq-heading">Frequently Asked Questions</h2>
+	<div class="faq-list">
+		{
+			faqs.map((f) => (
+				<details class="faq-item">
+					<summary>{f.q}</summary>
+					<p>
+						{toParts(f.a).map((part) =>
+							part.href ? (
+								part.href.startsWith('http') ? (
+									<a href={part.href} target="_blank" rel="noopener noreferrer">
+										{part.text}
+									</a>
+								) : (
+									<a href={part.href}>{part.text}</a>
+								)
+							) : (
+								part.text
+							),
+						)}
+					</p>
+				</details>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.article-faq {
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.article-faq h2 {
+		font-size: 1.5rem;
+		margin: 0 0 1rem;
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 0 1.25rem;
+	}
+
+	.faq-item summary {
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--navy-dark);
+		padding: 1rem 0;
+		line-height: 1.4;
+	}
+
+	.faq-item[open] summary {
+		padding-bottom: 0.5rem;
+	}
+
+	.faq-item p {
+		margin: 0 0 1.1rem;
+		font-size: 1rem;
+		line-height: 1.7;
+	}
+</style>

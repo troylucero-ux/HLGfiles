@@ -7,8 +7,10 @@ import CpiRentCapTable from '../../components/CpiRentCapTable.astro';
 import UlaThresholdTable from '../../components/UlaThresholdTable.astro';
 import SubmarketStatsTable from '../../components/SubmarketStatsTable.astro';
 import DepreciationRecaptureExample from '../../components/DepreciationRecaptureExample.astro';
-import { posts, relatedPostSlugs } from '../../data/posts';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+import { posts, relatedPostSlugs, postFaqs } from '../../data/posts';
 import { site } from '../../data/site';
+import { toParts, stripLinks } from '../../lib/inlineLinks';
 
 export function getStaticPaths() {
 	return posts.map((post) => ({
@@ -22,19 +24,20 @@ const { post } = Astro.props;
 // Hand-picked onward reading for this article. Posts that are not live yet are skipped.
 const related = (relatedPostSlugs[post.slug] ?? []).map((slug) => posts.find((p) => p.slug === slug)).filter((p): p is NonNullable<typeof p> => Boolean(p));
 
-// Paragraphs are plain text, with [link text](/internal-path/) or [link text](https://...) links supported.
-const linkPattern = /\[([^\]]+)\]\((\/[^)\s]*|https?:\/\/[^)\s]+)\)/g;
-function toParts(paragraph: string) {
-	const parts: { text: string; href?: string }[] = [];
-	let last = 0;
-	for (const m of paragraph.matchAll(linkPattern)) {
-		if (m.index! > last) parts.push({ text: paragraph.slice(last, m.index) });
-		parts.push({ text: m[1], href: m[2] });
-		last = m.index! + m[0].length;
-	}
-	if (last < paragraph.length) parts.push({ text: paragraph.slice(last) });
-	return parts;
-}
+// Questions and answers shown at the end of the article and mirrored into FAQPage structured data.
+const faqs = postFaqs[post.slug] ?? [];
+const faqSchema = faqs.length
+	? {
+			'@context': 'https://schema.org',
+			'@type': 'FAQPage',
+			mainEntity: faqs.map((f) => ({
+				'@type': 'Question',
+				name: f.q,
+				acceptedAnswer: { '@type': 'Answer', text: stripLinks(f.a) },
+			})),
+		}
+	: null;
+
 // Appending a time avoids the date being parsed as UTC midnight, which can display as the
 // previous day in timezones behind UTC.
 const dateFormatted = new Date(`${post.date}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
@@ -59,6 +62,7 @@ const articleSchema = {
 
 <BaseLayout title={post.seoTitle ?? post.title} description={post.description} image={post.image?.src}>
 	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+	{faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}
 
 	<article class="section">
 		<div class="container post-detail">
@@ -86,6 +90,8 @@ const articleSchema = {
 					))
 				}
 			</div>
+
+				{faqs.length > 0 && <ArticleFaq faqs={faqs} />}
 
 			{
 				related.length > 0 && (
