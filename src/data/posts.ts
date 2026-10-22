@@ -1509,6 +1509,119 @@ const allPosts: Post[] = [
 			},
 		],
 	},
+	{
+		slug: 'air-conditioning-law-los-angeles-apartment-owners-electrical-panel',
+		title: 'Air Conditioning in Los Angeles Apartments: The 82-Degree Rule, Electrical Panels, and What Owners Should Do',
+		seoTitle: 'LA Apartment Air Conditioning Law: 82°F Rule and Electrical Panels',
+		description:
+			'Is air conditioning required in every LA apartment? What the 82-degree rule and SB 655 actually say, what it means for your electrical sub panel, and tips for owners.',
+		date: '2026-10-22',
+		image: {
+			src: '/images/insights/la-apartment-air-conditioning-electrical.png',
+			alt: 'Graphic: no law requires air conditioning in every Los Angeles apartment, but cooling rules are coming. LA County sets an 82 degree limit starting January 1, 2027 in unincorporated areas, and the City of Los Angeles has voted to move toward the same rule. Check your electrical panel now.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'No law requires an owner to install air conditioning in every apartment. What exists is narrower: Los Angeles County has an 82°F indoor temperature limit for rentals in unincorporated areas, and the City of Los Angeles has voted to move toward the same standard. Neither one says “install AC.” They say the unit has to stay cool enough, and how you get there is up to you.',
+					'Where the rule applies, the county does not require electrical upgrades, but it strongly recommends that units can safely support cooling devices. In an older building, the electrical system is usually the real constraint, not the air conditioner.',
+					'Tenants in county areas already have the right to plug in a portable air conditioner without penalty. Even where that is not the law, expect more of them to do it, which puts more load on old wiring and sub panels.',
+					'The practical move for an owner is to find out now what your panels and wiring can handle, try the inexpensive passive fixes first, and plan any electrical work for a time you choose rather than a time a complaint chooses.',
+				],
+			},
+			{
+				heading: 'Is There a Law Requiring Air Conditioning in Every Unit?',
+				paragraphs: [
+					'No. We looked for it, because owners keep hearing that there is one. There are three separate things that get mixed together, and none of them is an air conditioner mandate.',
+					'First, California’s SB 655, signed in 2025, added Section 17914 to the Health and Safety Code. It declares it the policy of the state that all dwelling units should be able to attain and maintain a safe maximum indoor temperature, and it tells state agencies to consider that policy, including when they write regulations beginning January 1, 2027. It does not put a duty on a landlord, and the statute says it does not expand any obligation of the state. Think of it as a signal about where state regulation is headed. The bill’s own findings note that California building standards already set a minimum indoor temperature of 68°F but have no maximum.',
+					'Second, Los Angeles County adopted an ordinance setting a maximum indoor temperature of 82°F in rental units in unincorporated areas of the county. It is the one most owners are really asking about.',
+					'Third, the City of Los Angeles has not adopted its own rule as far as we can find. On February 17, 2026 the City Council unanimously passed a motion directing the City to adopt an 82°F standard that conforms to the county’s ordinance. The council’s own press release notes that providing heat is currently required for owners but a cooling method is not, and the motion also asks LADWP to report on incentive programs for apartment owners. A motion starts the process; it is not itself the ordinance, and we have not found an adopted city ordinance. Confirm the current status with the Los Angeles Housing Department before you make decisions, because this could move quickly.',
+				],
+			},
+			{
+				heading: 'What the LA County 82-Degree Rule Says',
+				paragraphs: [
+					'The county ordinance applies to rental units in unincorporated Los Angeles County. It does not apply inside incorporated cities, which includes the City of Los Angeles, Santa Monica, Beverly Hills, and West Hollywood, unless those cities adopt something similar. Owner-occupied units, mobile homes, vacant units, and properties already inspected for habitability by another government agency are outside it.',
+					'Where it applies, the landlord is responsible for making sure habitable rooms can stay at or below 82°F. Enforcement starts January 1, 2027, or when the county approves the related fee if that is later, and it is complaint-based. The county has described an education-first approach that starts with passive cooling practices.',
+					'The ordinance gives “small property” landlords more time. Under the county’s guidance, they need to meet the standard in at least one habitable room per unit by January 1, 2027 and in all habitable rooms by January 1, 2032. The county defines a small landlord narrowly: for example, someone who controls one rental property of no more than 10 units, or up to three properties of 10 or fewer units combined, and not a corporation or an LLC with a corporate member. Check the county’s definition against how your ownership is structured.',
+					'Owners who need retrofits to comply can ask for an extension. The county’s presentation describes a potential two-year extension, so do not wait until the last minute to ask.',
+				],
+			},
+			{
+				heading: 'What Tenants Are Allowed to Do',
+				paragraphs: [
+					'In the county’s rule, tenants may add portable or non-mechanical cooling, such as a plug-in air conditioner, a fan, or blackout curtains. They have to give the landlord written notice at least five days before installing, follow the manufacturer’s safety guidelines, and not alter the unit.',
+					'Tenants cannot be evicted, penalized, or charged extra for installing portable cooling, and a landlord cannot raise rent or add fees because of it. The cost of a portable unit cannot be passed through to the tenant. The county’s landlord page does not say who pays for the electricity those units use, so check that with your attorney.',
+					'Other costs a landlord incurs to comply may be recoverable through the county’s Rent Stabilization and Tenant Protection Ordinance process, which requires an application and review and is subject to the rent increase cap. The City of Los Angeles has its own rent rules, so do not assume the same path would apply to a building in the city.',
+				],
+			},
+			{
+				heading: 'Why the Electrical Sub Panel Matters',
+				paragraphs: [
+					'Older Los Angeles apartment buildings were not wired for air conditioning. A building from the 1950s or 1960s may have a main service sized for lights, a refrigerator, and a range, with a small panel in each unit or a shared panel serving several units. Add a window air conditioner or a mini-split in every unit on a hot afternoon, and a panel that was fine for decades can be pushed to its limit.',
+					'There are really four questions: how much capacity is in the main service, how much room is left in the panel feeding each unit, what condition the panel and wiring are in, and whether there are open breaker spaces for a dedicated circuit. A panel can have enough electrical capacity but no physical space for another breaker, and the reverse can also be true.',
+					'Many window units can plug into a standard circuit. Larger units, and most permanently installed ductless mini-splits, need their own dedicated circuit. Tenants who plug a big unit into an overloaded kitchen or bedroom circuit are the case to worry about: tripped breakers at best, overheated wiring at worst.',
+					'In our experience, the electrical panel is also where deals get tested. At [1513 Arlington Ave](/case-studies/1513-arlington-ave-arlington-heights-apartments/), a 9-unit building, the sub-panel replacement was one of the items our seller did not want to pay for before closing. We structured the sale so the buyer took it on, and the building sold for $1,400,000. Buyers and their inspectors look hard at old panels, and the new cooling rules give them one more reason to.',
+				],
+			},
+			{
+				heading: 'Panels That Deserve Extra Attention',
+				paragraphs: [
+					'Some older panel brands have a bad reputation. Federal Pacific Electric (Stab-Lok) and Zinsco panels are flagged by home and multifamily inspectors, and the concern is that the breakers may not trip when they should. We are not engineers, and we have not been able to verify a federal recall, so treat this as a reason to have a licensed electrician look rather than a conclusion.',
+					'Insurance is the practical side. Some insurers ask about or surcharge certain panel types, so it is worth asking your insurance agent before an electrician tells you what you have.',
+					'Some buildings from the 1960s and early 1970s also have aluminum branch wiring, which needs different connectors and care. If your building is from that era, mention it to the electrician when you ask for the assessment.',
+				],
+			},
+			{
+				heading: 'Permits and Who to Hire',
+				paragraphs: [
+					'Replacing a panel or adding circuits in the City of Los Angeles generally takes an electrical permit from the Los Angeles Department of Building and Safety (LADBS), and installing a mini-split may need a mechanical permit as well. LADBS publishes an electrical permit application that covers apartment and condominium work. Confirm the permits for your specific project with LADBS or your contractor before work starts.',
+					'Hire a licensed electrician to do a written assessment, including a load calculation, rather than guessing. Ask for the panel brand and age, the size of the main service and the unit panels, the number of open breaker spaces, the condition of the wiring, and a priced list of what it would take to put one dedicated cooling circuit in each unit.',
+					'If the building’s main service has to be made larger, the utility will be involved, and that can add lead time. Ask early.',
+				],
+			},
+			{
+				heading: 'Tips for Owners',
+				paragraphs: [
+					'Start with passive cooling. Cool roof coatings, window shades or film, awnings, ceiling fans, and shade trees all reduce indoor heat and are the first steps the county’s guidance points to. They are also the cheapest way to see how far you can get without touching the electrical system.',
+					'Get an electrical assessment before you need one. Even if your building is in the City of Los Angeles and no rule applies yet, knowing what your panels can handle lets you budget. The county’s own guidance recommends confirming that your wiring is up to code and that there are outlets where tenants will use cooling devices.',
+					'Combine the work. If a unit is vacant, that is the best time to replace its panel or run a dedicated circuit, because you will not disturb a tenant or need to schedule entry. If you plan to paint, re-roof, or do SB 721 balcony repairs, ask whether the electrical work can be done at the same time. Our [SB 721 guide](/insights/sb-721-balcony-inspection-los-angeles-apartment-owners/) covers the balcony side.',
+					'Decide how the electricity will be paid for. If each unit has its own meter, a tenant who runs an air conditioner pays the bill. If the building is on a house meter, owner-installed cooling shifts that cost to you. Know which situation you have before you choose between providing cooling and allowing tenants to bring their own.',
+					'Plan for tenant-installed units. Tell tenants in writing what size unit your wiring can safely support, and where they can plug it in. That protects them and you.',
+					'Look at incentives. The county’s financing page lists programs including Clean Power Alliance’s air conditioning and panel upgrade programs, SoCalGas’s multifamily rebates, and federal and state programs for heat pumps and panels. Eligibility depends on the program and on which utility serves your building, so confirm before you count on any of them.',
+					'Keep records. Photos, the electrician’s assessment, permits, and invoices will matter if there is a complaint, an insurance question, or a sale.',
+				],
+			},
+			{
+				heading: 'How This Affects Value and Selling',
+				paragraphs: [
+					'A buyer does not pay for an air conditioner you might someday need, but a buyer does subtract for a panel that has to be replaced. Expect buyers to ask about panel brand and age, any cooling rules that apply to the building, and what the owner has already done. A building with a recent electrical assessment and a documented plan is easier to price than one with unknowns.',
+					'Our guide to [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains how deferred work comes off the price, and our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows where to get ahead of it.',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'If you are thinking about selling a building with older electrical, we can help you decide whether to upgrade first or sell as is, and how to price either way. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov).',
+					'This article is general information, not legal or engineering advice. These rules are changing, so confirm the details with an attorney, a licensed electrician, and the agency that governs your property.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[California SB 655 (2025), Health and Safety Code section 17914: indoor temperature](https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB655)',
+					'[LA County Cool and Healthy Homes: How can property owners comply?](https://coolhealthyhomes.org/owner/comply)',
+					'[LA County Cool and Healthy Homes: financing and incentive programs](https://coolhealthyhomes.org/financing)',
+					'[LA County Board of Supervisors presentation: Maximum Indoor Residential Temperature Threshold Ordinance, August 5, 2025](https://file.lacounty.gov/SDSInter/bos/supdocs/205876.pdf)',
+					'[Councilmembers Hernandez and Blumenfield motion to establish a maximum indoor temperature, City of Los Angeles](https://cd1.lacity.gov/press-releases/councilmembers-hernandez-and-blumenfields-motion-establish-maximum-indoor)',
+					'[LADBS application for electrical permit](https://dbs.lacity.gov/sites/default/files/efs/forms/pc17/application-for-electrical-permit-pc-elec-app-02.pdf)',
+				],
+			},
+		],
+	},
 ];
 
 // Scheduled publishing: a post dated in the future is held back until that date (Pacific time). The
@@ -1545,6 +1658,7 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'la-apartment-market-update-q3-2026': ['la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-value-an-apartment-building-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
 	'inherited-apartment-building-los-angeles-what-to-do': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles'],
 	'sb-721-balcony-inspection-los-angeles-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'selling-la-apartment-building-with-tenants-rent-control'],
+	'air-conditioning-law-los-angeles-apartment-owners-electrical-panel': ['sb-721-balcony-inspection-los-angeles-apartment-owners', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control'],
 };
 
 // Questions and answers shown at the end of an article (and written into its FAQPage structured data),
@@ -2045,6 +2159,48 @@ export const postFaqs: Record<string, PostFaq[]> = {
 		{
 			q: 'Do I have to give the SB 721 inspection report to a buyer when I sell?',
 			a: 'Yes. The law says inspection reports must be kept in the owner’s records for at least two inspection cycles and must be disclosed and delivered to the buyer at the time of any later sale. See our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/).',
+		},
+	],
+	'air-conditioning-law-los-angeles-apartment-owners-electrical-panel': [
+		{
+			q: 'Do I have to install air conditioning in every apartment in Los Angeles?',
+			a: 'No. We found no law in California or in the City of Los Angeles that requires an owner to install air conditioning in every unit. Los Angeles County has an 82°F maximum indoor temperature rule for rentals in unincorporated areas, and it lets the landlord choose how to meet it. The City of Los Angeles passed a motion in February 2026 to adopt a similar standard, but we have not found an adopted city ordinance.',
+		},
+		{
+			q: 'Is a landlord required to provide air conditioning in California?',
+			a: 'Not under current state law. California’s SB 655 (2025) made it state policy that dwelling units should be able to maintain a safe maximum indoor temperature and told state agencies to consider it, including when writing regulations starting January 1, 2027, but it does not itself put a duty on a landlord. State building standards already set a minimum indoor temperature of 68°F for heat but no maximum.',
+		},
+		{
+			q: 'What is the 82-degree rule for rentals in Los Angeles?',
+			a: 'It is a Los Angeles County ordinance that makes landlords responsible for keeping habitable rooms in rental units at or below 82°F. It applies in unincorporated county areas, not in incorporated cities such as the City of Los Angeles. Enforcement starts January 1, 2027, or when the related fee is approved if later, and it is complaint-based. Small landlords have more time, until January 1, 2032 for all habitable rooms.',
+		},
+		{
+			q: 'Does the 82-degree rule apply to my building in the City of Los Angeles?',
+			a: 'Not yet, as far as we can find. The County ordinance covers unincorporated areas only. The City Council unanimously passed a motion on February 17, 2026 directing the City to adopt a conforming 82°F standard, but a motion is not an ordinance. Ask the Los Angeles Housing Department for the current status.',
+		},
+		{
+			q: 'Can my tenants install their own air conditioner?',
+			a: 'Under the LA County rule, yes. Tenants may add a portable or window air conditioner or other non-mechanical cooling if they give the landlord written notice at least five days beforehand, follow the manufacturer’s safety guidelines, and do not alter the unit. They cannot be evicted, penalized, or charged extra for it, and a landlord cannot raise the rent because of it. Outside the county’s rule, check your lease and ask your attorney.',
+		},
+		{
+			q: 'Will adding air conditioning mean I need a new electrical sub panel?',
+			a: 'Not always, but in older buildings it often comes up. A mini-split and many larger units need a dedicated circuit, so the question is whether the main service has capacity, whether the panel feeding the unit has room and open breaker spaces, and what condition the panel and wiring are in. A licensed electrician can answer with a load calculation. The county’s rule does not require electrical upgrades, but it strongly recommends that units can safely support cooling devices.',
+		},
+		{
+			q: 'Do I need a permit to add a mini-split or replace a sub panel in an apartment?',
+			a: 'Generally yes in the City of Los Angeles: replacing a panel or adding circuits typically takes an electrical permit from the Los Angeles Department of Building and Safety (LADBS), and a mini-split may need a mechanical permit as well. Confirm the permits for your project with LADBS or your licensed contractor before work starts.',
+		},
+		{
+			q: 'Who pays the electric bill if the apartment has air conditioning?',
+			a: 'It depends on the meter. If each unit has its own meter, the tenant who runs the air conditioner pays. If the building is on a house meter, cooling you provide adds to your cost. The county’s landlord guidance does not say who pays for electricity used by tenant-installed units, so ask your attorney about your lease and your situation.',
+		},
+		{
+			q: 'Can I raise rent to pay for air conditioning or panel upgrades?',
+			a: 'Under the LA County rule, you cannot raise rent or charge fees because a tenant installs portable cooling. Other compliance costs may be recoverable through the county’s rent stabilization process, which requires an application and is subject to the rent increase cap. The City of Los Angeles has its own rent rules, so talk to an attorney before assuming you can pass anything through.',
+		},
+		{
+			q: 'What is a Federal Pacific or Zinsco electrical panel, and should I worry?',
+			a: 'These are older panel brands that inspectors often flag because their breakers may not trip when they should. They are common in older apartment buildings. We are not engineers, so have a licensed electrician inspect the panel, and ask your insurance agent whether the panel type affects your coverage. Buyers and their inspectors also look closely at them.',
 		},
 	],
 };
