@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import WestHollywoodGuide from '../../components/WestHollywoodGuide.astro';
+import SantaMonicaGuide from '../../components/SantaMonicaGuide.astro';
 import MeasureGsCliff from '../../components/MeasureGsCliff.astro';
 import LaCityOwnerGuide from '../../components/LaCityOwnerGuide.astro';
 import MidWilshireLocal from '../../components/MidWilshireLocal.astro';
@@ -151,6 +152,32 @@ if (isSantaMonica) {
 		q: 'What is Measure GS in Santa Monica?',
 		a: 'Measure GS is Santa Monica’s transfer tax on sales of $8 million or more, in effect since March 1, 2023. At $8 million and up, the city tax is 5.6% of the entire sale price, compared with 0.6% from $5 million to just under $8 million and 0.3% below $5 million. LA County’s $1.10 per $1,000 is added on top. Measure ULA does not apply in Santa Monica because it is a separate city.',
 	});
+}
+
+// Santa Monica's own rules, matching the guide further down the page (see SantaMonicaGuide.astro for sources).
+if (isSantaMonica) {
+	faqs.push(
+		{
+			q: 'How much can landlords raise rent in Santa Monica in 2026?',
+			a: 'For rent-controlled units, the Santa Monica Rent Control Board set the 2026 General Adjustment at 2.6%, with a $70 limit on the dollar increase, effective September 1, 2026. It was 2.3% (with a $60 limit) in 2025 and 3% (with a $76 limit) in 2024. Santa Monica’s rules are separate from the City of Los Angeles.',
+		},
+		{
+			q: 'Can I reset the rent when a tenant moves out of a Santa Monica rent-controlled unit?',
+			a: 'Usually, yes, if the tenant leaves voluntarily. State law (Costa-Hawkins) lets an owner set a new rent for the next tenant, and Santa Monica has followed it since 1999. Once the new tenant moves in, the unit is controlled again at the new rent. Confirm the details with the Santa Monica Rent Control Board or an attorney.',
+		},
+		{
+			q: 'Is it cheaper to sell an apartment building in Santa Monica or in the City of Los Angeles?',
+			a: 'Below $8 million, usually yes. On a $6 million sale, transfer taxes are about $42,600 in Santa Monica and $273,600 in the City of LA, where Measure ULA applies. At $8 million and up, Santa Monica’s Measure GS rate of 5.6% makes it costlier: on a $9 million sale, about $513,900 in Santa Monica versus $410,400 in the City of LA. These figures are before commissions and other closing costs.',
+		},
+		{
+			q: 'Do Santa Monica apartment buildings need a seismic retrofit?',
+			a: 'Some do. Santa Monica’s Seismic Retrofit Ordinance, adopted in March 2017, identified over 2,000 commercial and multifamily buildings as potentially vulnerable, most of them soft-story buildings with tuck-under parking. Owners on the city’s list receive an order to have the building analyzed by a licensed professional, and a building found non-compliant must be retrofitted on the city’s timeline. Being on the list is not a finding that a building is unsafe.',
+		},
+		{
+			q: 'Does SB 79 apply to Santa Monica apartment buildings?',
+			a: 'SB 79 took effect July 1, 2026 and sets minimum building standards within a half mile of transit stops, including four Metro E Line stops in Santa Monica. The city adopted an ordinance, effective August 27, 2026, that excludes six of its seven transit zones from SB 79 until 2030, and sites with designated historic resources are excluded too. The city’s map is approximate, so confirm your parcel with the city.',
+		},
+	);
 }
 
 if (sm.laOwnerGuide) {
@@ -354,7 +381,13 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 	</section>
 
 	{isWestHollywood && <WestHollywoodGuide />}
-	{isSantaMonica && <MeasureGsCliff />}
+	{
+		isSantaMonica && (
+			<SantaMonicaGuide>
+				<MeasureGsCliff slot="gs" />
+			</SantaMonicaGuide>
+		)
+	}
 	{sm.slug === 'mid-wilshire' && <MidWilshireLocal />}
 	{local && <NeighborhoodLocal section={local} />}
 	{sm.laOwnerGuide && <LaCityOwnerGuide sm={sm} />}

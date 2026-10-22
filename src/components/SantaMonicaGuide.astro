@@ -1,0 +1,855 @@
+---
+// Owner's guide shown only on the Santa Monica submarket page: how Santa Monica's own rules (rent
+// control, the yearly adjustment, transfer taxes, earthquake retrofits, SB 79) differ from the City of
+// Los Angeles. The Measure GS section (MeasureGsCliff) is passed in through the "gs" slot so it sits
+// between the rent control and transfer tax parts. Sources, checked October 22, 2026:
+// - Rent control: City of Santa Monica rent control page (santamonica.gov/rent-control-charter-amendment-regulations).
+//   Charter Amendment adopted by voters in April 1979. General Adjustment by Rent Control Board resolution:
+//   2.6% with a $70 limit from Sept 1, 2026 (Res. 26-001), 2.3% with $60 from Sept 1, 2025 (Res. 25-001), 3%
+//   with $76 from Sept 1, 2024 (Res. 24-002). Chapter 12 exempts owner-occupied properties of three units or
+//   fewer, hotels and motels; Chapters 11 and 13 cover annual registration fees and landlord registration.
+//   "Buildings built before 1979" and Costa-Hawkins vacancy resets since 1999 are from Santa Monica Daily
+//   Press and Santa Monica Next coverage, so the page tells owners to confirm their building with the city.
+// - Transfer taxes: LA County Registrar-Recorder list of city rates, the same figures used by MeasureGsCliff
+//   ($3, $6, and $56 per $1,000 at under $5M, $5M to $7.99M, and $8M and up, each on the whole price) and by
+//   the West Hollywood guide for the City of LA (ULA 4% above $5.4M and 5.5% at $10.9M, $4.50 per $1,000 city
+//   tax, $1.10 per $1,000 county tax).
+// - Seismic: City of Santa Monica Seismic Retrofit Program page. Ordinance adopted March 2017, over 2,000
+//   buildings identified, mostly soft-story with tuck-under parking, "Order to Structurally Analyze" notices.
+//   The page does not state deadlines, so none are given here.
+// - SB 79: City of Santa Monica SB 79 page. Four Metro E Line stops (Downtown Santa Monica, 17th Street/Santa
+//   Monica College, Bergamot Station, Expo/Bundy); effective July 1, 2026; Exclusion Ordinance adopted July 28,
+//   2026, effective August 27, 2026, excluding six of seven transit zones until 2030; Expo/Bundy was being
+//   handled through separate zoning changes, so its status is left for owners to confirm.
+// Sales figures come from SALES_STATS, so they refresh with that file.
+import PricePerUnitChart from './PricePerUnitChart.astro';
+import { SALES_STATS, VALUATION_DATA_PERIOD } from '../data/valuationAssumptions';
+import { closings } from '../data/closings';
+
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+// ---- Transfer tax on the same building in the City of LA and in Santa Monica.
+const laTax = (price: number) => {
+	const county = (price / 1000) * 1.1;
+	const city = (price / 1000) * 4.5;
+	const ula = price > 5_400_000 ? price * (price >= 10_900_000 ? 0.055 : 0.04) : 0;
+	return { county, city, ula, total: county + city + ula };
+};
+const smTax = (price: number) => {
+	const county = (price / 1000) * 1.1;
+	const city = price * (price >= 8_000_000 ? 0.056 : price >= 5_000_000 ? 0.006 : 0.003);
+	return { county, city, ula: 0, total: county + city };
+};
+const scenarios = [6_000_000, 9_000_000].map((price) => {
+	const la = laTax(price);
+	const sm = smTax(price);
+	return { price, la, sm, max: Math.max(la.total, sm.total), diff: sm.total - la.total };
+});
+
+// ---- Yearly allowed increase (General Adjustment), with its dollar limit.
+const gaHistory = [
+	{ label: 'Sept 2024', pct: 3, limit: 76 },
+	{ label: 'Sept 2025', pct: 2.3, limit: 60 },
+	{ label: 'Sept 2026', pct: 2.6, limit: 70 },
+];
+const CURRENT = gaHistory[gaHistory.length - 1];
+const BAR_MAX = 3.5; // the tallest bar fills this share of the chart
+const BAR_SCALE = 78; // percent of the chart height
+
+// ---- "Take your increase before you list": what an unclaimed increase is worth at Santa Monica cap rates.
+const smStats = SALES_STATS['santa-monica'].rso;
+const midCap = smStats.capRate ? (smStats.capRate.low + smStats.capRate.high) / 2 : 0.054;
+const EX_UNITS = 10;
+const EX_RENT = 2000;
+const extraYearly = EX_UNITS * EX_RENT * (CURRENT.pct / 100) * 12;
+const extraValue = Math.round(extraYearly / midCap / 1000) * 1000;
+
+const soldHere = closings.filter((c) => c.submarket === 'santa-monica');
+---
+
+<section class="section smg">
+	<div class="container smg__narrow">
+		<span class="eyebrow">Its Own City, Its Own Rules</span>
+		<h2>Selling an Apartment Building in Santa Monica vs. the City of Los Angeles</h2>
+		<p>
+			Santa Monica is not part of the City of Los Angeles, and that matters when you sell. Its rent control law, its yearly rent increase, its
+			transfer tax, its earthquake retrofit program, and its answer to the new state transit-housing law are all Santa Monica&rsquo;s own. The
+			same building can face very different costs and rules a few blocks across the city line.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="smg-compare" aria-labelledby="smg-compare-cap">
+			<figcaption id="smg-compare-cap" class="smg-figcap">Same kind of building, two sets of rules</figcaption>
+			<div class="smg-compare__grid" role="table" aria-describedby="smg-compare-cap">
+				<div class="smg-compare__row smg-compare__row--head" role="row">
+					<span role="columnheader"></span>
+					<span role="columnheader">City of Los Angeles</span>
+					<span role="columnheader" class="smg-compare__sm">Santa Monica</span>
+				</div>
+				<div class="smg-compare__row" role="row">
+					<span role="rowheader">Rent control covers</span>
+					<span role="cell">Buildings first occupied on or before Oct 1, 1978</span>
+					<span role="cell" class="smg-compare__sm">Buildings built before 1979 (Charter Amendment adopted April 1979)</span>
+				</div>
+				<div class="smg-compare__row" role="row">
+					<span role="rowheader">Yearly rent increase</span>
+					<span role="cell">3% from July 1, 2026, set by the LA Housing Department</span>
+					<span role="cell" class="smg-compare__sm">{CURRENT.pct}% from Sept 1, 2026, with a ${CURRENT.limit} limit, set by the Rent Control Board</span>
+				</div>
+				<div class="smg-compare__row" role="row">
+					<span role="rowheader">Transfer tax on large sales</span>
+					<span role="cell">Measure ULA: 4% of the full price above $5.4M, 5.5% at $10.9M and up</span>
+					<span role="cell" class="smg-compare__sm">Measure GS: 5.6% of the full price at $8M and up</span>
+				</div>
+				<div class="smg-compare__row" role="row">
+					<span role="rowheader">Earthquake retrofit</span>
+					<span role="cell">LA&rsquo;s mandatory soft-story program</span>
+					<span role="cell" class="smg-compare__sm">Seismic Retrofit Ordinance (March 2017)</span>
+				</div>
+				<div class="smg-compare__row" role="row">
+					<span role="rowheader">SB 79 transit housing law</span>
+					<span role="cell">Phased in, with full implementation delayed to 2030 in historic districts and some other areas</span>
+					<span role="cell" class="smg-compare__sm">Six of seven transit zones excluded until 2030</span>
+				</div>
+			</div>
+		</figure>
+	</div>
+</section>
+
+<section class="section section-alt smg">
+	<div class="container smg__narrow">
+		<span class="eyebrow">Santa Monica Rent Control</span>
+		<h2>Santa Monica Rent Control, in Plain English</h2>
+		<p>
+			Santa Monica voters passed rent control in April 1979, and the city runs it through an elected Rent Control Board. It is separate from LA&rsquo;s
+			ordinance, and it has its own yearly increase, its own registration, and its own exemptions. Here is how to tell where your building stands.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="smg-flow" aria-labelledby="smg-flow-cap">
+			<figcaption id="smg-flow-cap" class="smg-figcap">Is my Santa Monica building rent-controlled?</figcaption>
+			<div class="smg-flow__q">Was the building <strong>built before 1979</strong>?</div>
+			<div class="smg-flow__branches">
+				<div class="smg-flow__branch">
+					<span class="smg-flow__answer">Yes</span>
+					<div class="smg-flow__box smg-flow__box--yes">
+						<strong>Covered by Santa Monica rent control</strong>
+						<ul>
+							<li>Rent can rise by the General Adjustment the Rent Control Board sets each year ({CURRENT.pct}% from Sept 1, 2026)</li>
+							<li>Each controlled unit has to be registered with the Rent Control Board</li>
+							<li>Registration fees are due every year</li>
+							<li>Owner-occupied properties of three units or fewer are exempt</li>
+						</ul>
+					</div>
+				</div>
+				<div class="smg-flow__branch">
+					<span class="smg-flow__answer smg-flow__answer--no">No</span>
+					<div class="smg-flow__box">
+						<strong>No city rent cap, but state rules may apply</strong>
+						<ul>
+							<li>Once a building is more than 15 years old, the statewide AB 1482 cap may apply</li>
+							<li>Confirm the status of your building with the Rent Control Board or an attorney before you price or sell</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</figure>
+	</div>
+
+	<div class="container smg__narrow">
+		<h3>How much can rent go up each year?</h3>
+		<p>
+			Each September, the Rent Control Board sets the General Adjustment by resolution, and it comes with a dollar limit. For 2026 the adjustment is
+			<strong>{CURRENT.pct}%, with a ${CURRENT.limit} limit</strong> on the dollar increase. That is much tighter than the statewide AB 1482 cap (5% plus
+			inflation, up to 10%), which is why Santa Monica buyers pay close attention to how far below market the current rents are.
+		</p>
+	</div>
+
+	<div class="container">
+		<figure class="smg-bars" aria-labelledby="smg-bars-cap">
+			<figcaption id="smg-bars-cap" class="smg-figcap">Allowed yearly rent increase in Santa Monica</figcaption>
+			<div class="smg-bars__chart">
+				{
+					gaHistory.map((y, i) => (
+						<div class="smg-bars__col">
+							<span class={`smg-bars__bar${i === gaHistory.length - 1 ? ' smg-bars__bar--now' : ''}`} style={`height: ${(y.pct / BAR_MAX) * BAR_SCALE}%`}>
+								<span class="smg-bars__val">{y.pct}%</span>
+							</span>
+							<span class="smg-bars__label">
+								{y.label}
+								<br />
+								${y.limit} limit
+							</span>
+						</div>
+					))
+				}
+			</div>
+			<p class="smg-source">Each figure applies from September 1 through the following August 31. Source: City of Santa Monica Rent Control Board resolutions 24-002, 25-001, and 26-001.</p>
+		</figure>
+	</div>
+
+	<div class="container smg__narrow">
+		<h3>Four rent control rules every Santa Monica seller should know</h3>
+		<ol class="smg-rules">
+			<li>
+				<strong>Market rent comes back only when a tenant leaves on their own.</strong> Under the state&rsquo;s Costa-Hawkins law, an owner can set a new rent when
+				a tenant moves out voluntarily, and Santa Monica has allowed this since 1999. Once a new tenant moves in, that rent is controlled again.
+			</li>
+			<li>
+				<strong>Every controlled unit has to be registered.</strong> The city&rsquo;s regulations cover landlord registration and re-registration of rent
+				levels, plus annual registration fees. Buyers and their attorneys will ask for yours.
+			</li>
+			<li>
+				<strong>The yearly increase is set by the Board, and it changes.</strong> It was 3% in 2024, 2.3% in 2025, and 2.6% in 2026, each with its own
+				dollar limit. Use the current figure when you price, not the one from last year.
+			</li>
+			<li>
+				<strong>Small owner-occupied buildings and newer buildings are treated differently.</strong> The city exempts owner-occupied properties of three
+				units or fewer. Buildings built in 1979 or later are outside the rent caps, though the statewide AB 1482 cap may apply.
+			</li>
+		</ol>
+		<p class="smg-source">Confirm how these rules apply to your building with the Santa Monica Rent Control Board or a landlord-tenant attorney.</p>
+	</div>
+</section>
+
+<slot name="gs" />
+
+<section class="section smg">
+	<div class="container smg__narrow">
+		<span class="eyebrow">Transfer Taxes</span>
+		<h2>Santa Monica vs. the City of Los Angeles: Which Costs More to Sell?</h2>
+		<p>
+			It depends on the price. Below $8 million, Santa Monica&rsquo;s transfer tax is far lower than the City of LA&rsquo;s, because LA&rsquo;s Measure ULA
+			starts at $5.4 million. At $8 million and up, Santa Monica&rsquo;s Measure GS rate of 5.6% is higher than LA&rsquo;s ULA rate of 4%. Here is the same
+			price, either side of the line.
+		</p>
+	</div>
+
+	<div class="container">
+		{
+			scenarios.map((sc, idx) => (
+				<figure class="smg-tax" aria-labelledby={`smg-tax-cap-${idx}`}>
+					<figcaption id={`smg-tax-cap-${idx}`} class="smg-figcap">
+						Transfer taxes on a {money(sc.price)} apartment building
+					</figcaption>
+					<div class="smg-tax__row">
+						<span class="smg-tax__name">City of Los Angeles</span>
+						<span class="smg-tax__track">
+							{sc.la.ula > 0 && <span class="smg-tax__seg smg-tax__seg--ula" style={`width: ${(sc.la.ula / sc.max) * 100}%`} title="Measure ULA" />}
+							<span class="smg-tax__seg smg-tax__seg--city" style={`width: ${(sc.la.city / sc.max) * 100}%`} title="LA city transfer tax" />
+							<span class="smg-tax__seg smg-tax__seg--county" style={`width: ${(sc.la.county / sc.max) * 100}%`} title="LA County transfer tax" />
+						</span>
+						<span class={`smg-tax__amt${sc.la.total < sc.sm.total ? ' smg-tax__amt--good' : ''}`}>{money(sc.la.total)}</span>
+					</div>
+					<div class="smg-tax__row">
+						<span class="smg-tax__name">Santa Monica</span>
+						<span class="smg-tax__track">
+							<span class="smg-tax__seg smg-tax__seg--city" style={`width: ${(sc.sm.city / sc.max) * 100}%`} title="Santa Monica city transfer tax" />
+							<span class="smg-tax__seg smg-tax__seg--county" style={`width: ${(sc.sm.county / sc.max) * 100}%`} title="LA County transfer tax" />
+						</span>
+						<span class={`smg-tax__amt${sc.sm.total < sc.la.total ? ' smg-tax__amt--good' : ''}`}>{money(sc.sm.total)}</span>
+					</div>
+					<p class={`smg-tax__callout${sc.diff > 0 ? ' smg-tax__callout--cost' : ''}`}>
+						{sc.diff < 0 ? (
+							<>
+								Difference: <strong>{money(-sc.diff)}</strong> less in transfer taxes on the Santa Monica side.
+							</>
+						) : (
+							<>
+								Difference: <strong>{money(sc.diff)}</strong> more in transfer taxes on the Santa Monica side.
+							</>
+						)}
+					</p>
+				</figure>
+			))
+		}
+		<ul class="smg-tax__legend">
+			<li><span class="smg-tax__key smg-tax__seg--ula" />Measure ULA (City of LA only)</li>
+			<li><span class="smg-tax__key smg-tax__seg--city" />City transfer tax (LA or Santa Monica, including Measure GS)</li>
+			<li><span class="smg-tax__key smg-tax__seg--county" />LA County transfer tax ($1.10 per $1,000)</li>
+		</ul>
+		<p class="smg-source">
+			Illustration only, before commissions and other closing costs. Rates from the LA County Registrar-Recorder and the City of Los Angeles Office of
+			Finance (ULA thresholds for closings after June 30, 2026). Talk to your tax advisor about your own sale.
+		</p>
+	</div>
+</section>
+
+<section class="section section-alt smg">
+	<div class="container smg__narrow">
+		<span class="eyebrow">Fresh Advice for Owners</span>
+		<h2>Three Moves to Make Before You List a Santa Monica Building</h2>
+	</div>
+
+	<div class="container smg-moves">
+		<div class="smg-move">
+			<span class="smg-move__num">1</span>
+			<h3>Take this year&rsquo;s rent increase first</h3>
+			<p>
+				Buyers pay for the rent roll they see, not the one you could have had. If you have not taken the {CURRENT.pct}% General Adjustment, check the Rent
+				Control Board&rsquo;s notice rules and serve it before you list.
+			</p>
+			<div class="smg-math" aria-label={`Example: ${EX_UNITS} units at ${money(EX_RENT)} a month`}>
+				<div class="smg-math__line"><span>{EX_UNITS} units &times; {money(EX_RENT)} rent &times; {CURRENT.pct}%</span><span>{money(extraYearly / 12)} / month</span></div>
+				<div class="smg-math__line"><span>Over a year</span><span>{money(extraYearly)}</span></div>
+				<div class="smg-math__line smg-math__line--total">
+					<span>Added value at a {(midCap * 100).toFixed(1)}% cap rate</span><span>about {money(extraValue)}</span>
+				</div>
+			</div>
+		</div>
+		<div class="smg-move">
+			<span class="smg-move__num">2</span>
+			<h3>Look up your building in the seismic program</h3>
+			<p>
+				Santa Monica&rsquo;s Seismic Retrofit Ordinance, adopted in March 2017, identified over 2,000 commercial and multifamily buildings as potentially
+				vulnerable, most of them soft-story buildings with tuck-under parking. Owners on the list get an order to have the building analyzed by a licensed
+				professional, and a building found non-compliant must be retrofitted on the city&rsquo;s timeline. Being on the list is not a finding that a
+				building is unsafe. Check the city&rsquo;s searchable map or compliance schedule, and gather the engineer&rsquo;s report, plans, and permits so a
+				buyer does not have to ask.
+			</p>
+		</div>
+		<div class="smg-move">
+			<span class="smg-move__num">3</span>
+			<h3>Check whether SB 79 applies to your lot</h3>
+			<p>
+				SB 79, the state transit-housing law, took effect July 1, 2026 and sets minimum building standards within a half mile of transit stops. Four
+				Metro E Line stops count in Santa Monica: Downtown Santa Monica, 17th Street/Santa Monica College, Bergamot Station, and Expo/Bundy. The city adopted
+				an ordinance, effective August 27, 2026, that excludes six of its seven transit zones until 2030, and sites with designated historic resources are
+				excluded too. The city&rsquo;s own map is approximate, so confirm your parcel with the city and ask us to price it both ways.
+			</p>
+			<p class="smg-move__proof">
+				Santa Monica is a repeat market for us: we have closed {soldHere.length} sales here, including
+				<a href="/closed-sales/829-euclid-st-santa-monica-ca-90403/">829 Euclid St</a>.
+			</p>
+		</div>
+	</div>
+</section>
+
+<section class="section smg">
+	<div class="container smg__narrow">
+		<span class="eyebrow">Prices Across LA</span>
+		<h2>What Santa Monica Apartment Buildings Sell For</h2>
+		<p>
+			Santa Monica&rsquo;s older, rent-controlled buildings sold for a median of {money(smStats.pricePerUnit!.median)} per unit in {VALUATION_DATA_PERIOD}, across
+			{smStats.pricePerUnit!.compCount} sales{
+				smStats.capRate ? `, with cap rates typically between ${(smStats.capRate.low * 100).toFixed(2)}% and ${(smStats.capRate.high * 100).toFixed(2)}%` : ''
+			}. Here is how that compares with the other neighborhoods we cover.
+		</p>
+	</div>
+
+	<div class="container">
+		<PricePerUnitChart highlight="santa-monica" />
+	</div>
+</section>
+
+<section class="section section-alt smg">
+	<div class="container smg__narrow">
+		<span class="eyebrow">Seller Checklist</span>
+		<h2>What to Gather Before Selling a Santa Monica Apartment Building</h2>
+		<ul class="smg-check">
+			<li>Current rent roll with each tenant&rsquo;s move-in date and current rent</li>
+			<li>Proof the building&rsquo;s Rent Control Board registration and annual fees are current</li>
+			<li>Copies of the last General Adjustment notices served</li>
+			<li>Seismic program paperwork: the city&rsquo;s order, the engineer&rsquo;s analysis, plans, permits, and sign-off (if your building is on the city&rsquo;s list)</li>
+			<li>Your parcel&rsquo;s transit-zone status for SB 79 from the city</li>
+			<li>Two years of operating expenses and utility bills</li>
+			<li>Any buyout agreements, relocation payments, or pending tenant matters</li>
+			<li>Leases, including any pet, parking, or storage agreements</li>
+		</ul>
+		<p>
+			Not sure where to start? We will walk you through it as part of a free Broker Opinion of Value. <a href="/contact/?intent=bov">Request yours here</a>.
+		</p>
+	</div>
+</section>
+
+<style>
+	.smg__narrow {
+		max-width: 820px;
+	}
+
+	.smg__narrow h3 {
+		margin-top: 2rem;
+	}
+
+	.smg-figcap {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+		margin-bottom: 1rem;
+	}
+
+	.smg-source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin: 0.85rem 0 0;
+	}
+
+	/* Comparison table */
+	.smg-compare {
+		margin: 2rem 0 0;
+	}
+
+	.smg-compare__grid {
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		background: var(--paper);
+		overflow: hidden;
+	}
+
+	.smg-compare__row {
+		display: grid;
+		grid-template-columns: 1fr 1.4fr 1.4fr;
+		border-top: 1px solid var(--border);
+	}
+
+	.smg-compare__row > span {
+		padding: 0.9rem 1.1rem;
+		font-size: 0.93rem;
+	}
+
+	.smg-compare__row > span:first-child {
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.smg-compare__row--head {
+		border-top: 0;
+		background: var(--navy-dark);
+	}
+
+	.smg-compare__row--head > span {
+		color: #fff;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+	}
+
+	.smg-compare__sm {
+		background: var(--navy-tint);
+	}
+
+	.smg-compare__row--head .smg-compare__sm {
+		background: var(--gold);
+		color: var(--navy-dark);
+	}
+
+	/* Rent control flowchart */
+	.smg-flow {
+		margin: 2rem 0;
+		text-align: center;
+	}
+
+	.smg-flow__q {
+		display: inline-block;
+		max-width: 520px;
+		background: var(--navy-dark);
+		color: #fff;
+		padding: 1rem 1.5rem;
+		border-radius: 2px;
+		font-size: 1rem;
+		position: relative;
+	}
+
+	.smg-flow__q strong {
+		color: var(--gold-light);
+	}
+
+	.smg-flow__branches {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+		margin-top: 2.25rem;
+		position: relative;
+	}
+
+	.smg-flow__branches::before {
+		content: '';
+		position: absolute;
+		top: -2.25rem;
+		left: 25%;
+		right: 25%;
+		height: 1.25rem;
+		border: 2px solid var(--gold);
+		border-bottom: 0;
+	}
+
+	.smg-flow__answer {
+		display: inline-block;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-weight: 700;
+		font-size: 0.8rem;
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+		padding: 0.25rem 0.9rem;
+		border-radius: 999px;
+		margin-bottom: 0.75rem;
+	}
+
+	.smg-flow__answer--no {
+		background: var(--border);
+	}
+
+	.smg-flow__box {
+		text-align: left;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--border);
+		border-radius: 2px;
+		padding: 1.25rem 1.4rem;
+		height: calc(100% - 2.6rem);
+	}
+
+	.smg-flow__box--yes {
+		border-top-color: var(--gold);
+	}
+
+	.smg-flow__box strong {
+		display: block;
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+		margin-bottom: 0.6rem;
+	}
+
+	.smg-flow__box ul {
+		margin: 0;
+		padding-left: 1.1rem;
+		font-size: 0.93rem;
+	}
+
+	.smg-flow__box li {
+		margin-bottom: 0.35rem;
+	}
+
+	/* Yearly increase bars */
+	.smg-bars {
+		margin: 1.5rem 0 2rem;
+		max-width: 620px;
+	}
+
+	.smg-bars__chart {
+		position: relative;
+		display: flex;
+		align-items: flex-end;
+		gap: 2rem;
+		height: 220px;
+		padding: 0 6.5rem 0 1rem;
+		border-bottom: 2px solid var(--navy-dark);
+		margin-top: 1.5rem;
+	}
+
+	.smg-bars__col {
+		flex: 1;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		align-items: center;
+		position: relative;
+	}
+
+	.smg-bars__val {
+		font-family: var(--font-serif);
+		font-size: 1.35rem;
+		color: var(--navy-dark);
+		padding-top: 0.6rem;
+	}
+
+	.smg-bars__bar {
+		display: flex;
+		justify-content: center;
+		width: 100%;
+		max-width: 110px;
+		background: var(--navy-tint);
+		border: 1px solid var(--navy);
+		border-bottom: 0;
+	}
+
+	.smg-bars__bar--now {
+		background: var(--navy);
+	}
+
+	.smg-bars__bar--now .smg-bars__val {
+		color: #fff;
+	}
+
+	.smg-bars__label {
+		position: absolute;
+		bottom: -2.9rem; /* two lines: the year, then its dollar limit */
+		text-align: center;
+		line-height: 1.35;
+		white-space: nowrap;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--ink-light);
+	}
+
+	.smg-bars .smg-source {
+		margin-top: 3.6rem;
+	}
+
+	/* Numbered rules */
+	.smg-rules {
+		padding-left: 1.3rem;
+	}
+
+	.smg-rules li {
+		margin-bottom: 0.9rem;
+		line-height: 1.65;
+	}
+
+	.smg-rules strong {
+		color: var(--navy-dark);
+	}
+
+	/* Transfer tax bars */
+	.smg-tax {
+		margin: 2rem 0;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.75rem 2rem;
+	}
+
+	.smg-tax__row {
+		display: grid;
+		grid-template-columns: 170px 1fr 110px;
+		align-items: center;
+		gap: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.smg-tax__name {
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.smg-tax__track {
+		display: flex;
+		height: 34px;
+		background: var(--paper-alt);
+		border-radius: 1px;
+		overflow: hidden;
+	}
+
+	.smg-tax__seg {
+		display: block;
+		height: 100%;
+	}
+
+	.smg-tax__seg--ula {
+		background: var(--navy-dark);
+	}
+
+	.smg-tax__seg--city {
+		background: var(--navy);
+		opacity: 0.6;
+	}
+
+	.smg-tax__seg--county {
+		background: var(--gold);
+	}
+
+	.smg-tax__amt {
+		font-family: var(--font-serif);
+		font-size: 1.3rem;
+		color: var(--navy-dark);
+		text-align: right;
+	}
+
+	.smg-tax__amt--good {
+		color: var(--success);
+	}
+
+	.smg-tax__legend {
+		list-style: none;
+		padding: 0;
+		margin: 0.5rem 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.5rem;
+		font-size: 0.85rem;
+	}
+
+	.smg-tax__key {
+		display: inline-block;
+		width: 0.85rem;
+		height: 0.85rem;
+		margin-right: 0.4rem;
+		vertical-align: -0.1rem;
+	}
+
+	.smg-tax__callout {
+		margin: 1.25rem 0 0;
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+	}
+
+	.smg-tax__callout strong {
+		color: var(--success);
+		font-size: 1.3rem;
+	}
+
+	/* A higher tax is a cost, so it is not shown in the "good" green. */
+	.smg-tax__callout--cost strong {
+		color: var(--navy-dark);
+	}
+
+	/* Three moves */
+	.smg-moves {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.smg-move {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem 1.5rem;
+	}
+
+	.smg-move__num {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		border-radius: 50%;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-family: var(--font-serif);
+		font-size: 1.3rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.smg-move h3 {
+		font-size: 1.2rem;
+		margin-bottom: 0.6rem;
+	}
+
+	.smg-move p {
+		font-size: 0.95rem;
+		line-height: 1.65;
+	}
+
+	.smg-move__proof {
+		border-left: 3px solid var(--gold);
+		padding-left: 0.85rem;
+		font-style: italic;
+	}
+
+	.smg-math {
+		background: var(--navy-tint);
+		border-radius: 2px;
+		padding: 0.9rem 1rem;
+		font-size: 0.88rem;
+	}
+
+	.smg-math__line {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-block: 0.3rem;
+	}
+
+	.smg-math__line--total {
+		border-top: 1px solid var(--navy);
+		margin-top: 0.3rem;
+		padding-top: 0.55rem;
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	/* Checklist */
+	.smg-check {
+		list-style: none;
+		padding: 0;
+		margin: 1.25rem 0 1.5rem;
+	}
+
+	.smg-check li {
+		position: relative;
+		padding: 0.55rem 0 0.55rem 2rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.smg-check li::before {
+		content: '';
+		position: absolute;
+		left: 0.2rem;
+		top: 0.75rem;
+		width: 0.7rem;
+		height: 0.4rem;
+		border-left: 2px solid var(--success);
+		border-bottom: 2px solid var(--success);
+		transform: rotate(-45deg);
+	}
+
+	@media (max-width: 860px) {
+		.smg-moves {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.smg-compare__row {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.smg-compare__row > span:first-child {
+			grid-column: 1 / -1;
+			padding-bottom: 0;
+		}
+
+		.smg-compare__row--head > span:first-child {
+			display: none;
+		}
+
+		.smg-flow__branches {
+			grid-template-columns: 1fr;
+		}
+
+		.smg-flow__branches::before {
+			display: none;
+		}
+
+		.smg-flow__box {
+			height: auto;
+		}
+
+		.smg-tax {
+			padding: 1.25rem;
+		}
+
+		.smg-tax__row {
+			grid-template-columns: 1fr auto;
+		}
+
+		.smg-tax__track {
+			grid-column: 1 / -1;
+			grid-row: 2;
+		}
+
+		.smg-bars__chart {
+			gap: 1rem;
+			padding-right: 5.5rem;
+		}
+
+		.smg-bars__val {
+			font-size: 1.1rem;
+		}
+
+		.smg-bars__label {
+			font-size: 0.72rem;
+		}
+	}
+
+</style>
