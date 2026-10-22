@@ -2,6 +2,14 @@
 // renders each one automatically. Good remaining topics per the project brief: RSO updates,
 // Measure ULA, long-tail submarket + process keywords.
 
+// Numbers in the quarterly market update article come from src/data/marketUpdate.ts, which
+// scripts/market-update.mjs generates from the CoStar export, so the text, tables, and FAQs stay in step.
+import { MARKET_UPDATE as MU } from './marketUpdate';
+const muMoney = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+const muPct = (n: number) => `${n.toFixed(2)}%`;
+const muBillion = (millions: number) => `$${(Math.round(millions / 10) / 100).toFixed(2)} billion`;
+const muDate = (iso: string) => new Date(`${iso}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
 export type Post = {
 	slug: string;
 	title: string;
@@ -1185,6 +1193,98 @@ const allPosts: Post[] = [
 			},
 		],
 	},
+	{
+		slug: 'la-apartment-market-update-q3-2026',
+		title: 'LA Apartment Market Update, Q3 2026: Prices, Cap Rates, and How Far Below Asking Buildings Sold',
+		seoTitle: 'LA Apartment Market Update Q3 2026: Prices and Cap Rates',
+		description:
+			'LA County apartment sales through September 2026: median price per unit, cap rates, quarter-by-quarter trends, and how far below asking buildings sold.',
+		date: '2026-10-22',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					`Prices were steady. From January 1 to September 22, 2026, older LA County apartment buildings (built before 1978) sold for a median of ${muMoney(MU.headline.older.pricePerUnit)} per unit. Each quarter stayed close to that: ${muMoney(MU.quarters[0].olderPricePerUnit)}, ${muMoney(MU.quarters[1].olderPricePerUnit)}, and ${muMoney(MU.quarters[2].olderPricePerUnit)}.`,
+					`Cap rates barely moved. The median cap rate on older buildings was ${muPct(MU.quarters[0].olderCapRateMedian)}, ${muPct(MU.quarters[1].olderCapRateMedian)}, and ${muPct(MU.quarters[2].olderCapRateMedian)} across the three quarters.`,
+					`Smaller buildings sold for more per unit. Older buildings of 5 to 9 units sold for a median of ${muMoney(MU.sizes[0].olderPricePerUnit)} per unit, compared with ${muMoney(MU.sizes[2].olderPricePerUnit)} for 20 to 49 units.`,
+					`Sellers rarely got their asking price. Of the sales with a recorded asking price, about ${Math.round(100 - MU.asking.atOrAbovePct)}% closed below it, and the median sale was ${MU.asking.medianPct}% of asking.`,
+				],
+			},
+			{
+				heading: 'What We Measured',
+				paragraphs: [
+					`This update covers ${MU.headline.all.sales.toLocaleString('en-US')} sales of apartment buildings with 5 to 99 units in Los Angeles County, from January 1 to September 22, 2026, taken from CoStar sales data and analyzed by Highlight Multifamily Group. We left out sales whose price CoStar marks as approximate or allocated, portfolio sales of 100 or more units, and repeated records. Older buildings are those built before 1978, which in the City of Los Angeles are generally rent-controlled.`,
+					'We only have 2026 so far, so this update cannot say how this year compares with last year. The third quarter runs through September 22, so it is not a full quarter. Cap rates come from the sales that reported one, and we use medians throughout so that a few very large or very small sales do not distort the picture.',
+				],
+			},
+			{
+				heading: 'The Headline Numbers',
+				paragraphs: [
+					`Older buildings made up ${Math.round((MU.headline.older.sales / MU.headline.all.sales) * 100)}% of sales but ${Math.round((MU.headline.older.volumeMillions / MU.headline.all.volumeMillions) * 100)}% of the dollars. Newer buildings, built in 1978 or later, were ${Math.round((MU.headline.newer.sales / MU.headline.all.sales) * 100)}% of sales and ${Math.round((MU.headline.newer.volumeMillions / MU.headline.all.volumeMillions) * 100)}% of the dollars. They sold for a median of ${muMoney(MU.headline.newer.pricePerUnit)} per unit, about ${Math.round((MU.headline.newer.pricePerUnit / MU.headline.older.pricePerUnit - 1) * 100)}% more than the ${muMoney(MU.headline.older.pricePerUnit)} for older buildings.`,
+					'In the City of Los Angeles, older buildings are generally rent-stabilized and newer ones are not, which is one reason the two can trade differently. Our guide to [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains the math behind price per unit and cap rate.',
+				],
+			},
+			{
+				heading: 'Quarter by Quarter',
+				paragraphs: [
+					`Sales volume peaked in the second quarter, with ${MU.quarters[1].sales} sales worth ${muBillion(MU.quarters[1].volumeMillions)}. The third quarter had ${MU.quarters[2].sales} sales through September 22, which is not a full quarter.`,
+					`Prices did not move much. Older buildings sold for a median of ${muMoney(MU.quarters[0].olderPricePerUnit)} per unit in the first quarter, ${muMoney(MU.quarters[1].olderPricePerUnit)} in the second, and ${muMoney(MU.quarters[2].olderPricePerUnit)} in the third so far, a spread of about ${Math.round(((Math.max(...MU.quarters.map((q) => q.olderPricePerUnit)) - Math.min(...MU.quarters.map((q) => q.olderPricePerUnit))) / Math.min(...MU.quarters.map((q) => q.olderPricePerUnit))) * 100)}% from lowest to highest.`,
+					`The median cap rate on older buildings stayed between ${muPct(Math.min(...MU.quarters.map((q) => q.olderCapRateMedian)))} and ${muPct(Math.max(...MU.quarters.map((q) => q.olderCapRateMedian)))}. Nothing in these numbers shows prices rising or falling sharply this year, and the share of the asking price that buyers paid was steady too.`,
+				],
+			},
+			{
+				heading: 'Bigger Buildings Sell for Less Per Unit',
+				paragraphs: [
+					`Buyers pay less per unit as buildings get bigger, and they accept a higher cap rate. Older buildings of 5 to 9 units sold for a median of ${muMoney(MU.sizes[0].olderPricePerUnit)} per unit, about ${Math.round((MU.sizes[0].olderPricePerUnit / MU.sizes[2].olderPricePerUnit - 1) * 100)}% more than the ${muMoney(MU.sizes[2].olderPricePerUnit)} paid for 20 to 49 units. Median cap rates rose from ${muPct(MU.sizes[0].olderCapRateMedian)} for 5 to 9 units to ${muPct(MU.sizes[2].olderCapRateMedian)} for 20 to 49 units.`,
+					`Buildings of 50 to 99 units had only ${MU.sizes[3].olderSales} older-building sales, so treat that group as a rough guide. Our data starts at 5 units, so it does not cover duplexes, triplexes, or fourplexes; our article on [selling a small building](/insights/selling-a-fourplex-or-small-apartment-building-in-los-angeles/) explains how those are priced.`,
+					'If you own a smaller building, the per-unit price you see for your neighborhood as a whole may understate what a building of your size can fetch, and the reverse can be true for a larger one. That is why we price from your own building and the sales closest to it in size and age.',
+				],
+			},
+			{
+				heading: 'How Far Below Asking Did Buildings Sell?',
+				paragraphs: [
+					`CoStar recorded an asking price for ${MU.asking.sales} of the ${MU.headline.all.sales.toLocaleString('en-US')} sales. In those, the median sale price was ${MU.asking.medianPct}% of the asking price, about ${muMoney(MU.asking.medianDollarsBelow)} below it. Only ${Math.round(MU.asking.atOrAbovePct)}% sold at or above asking, and ${Math.round(MU.asking.over10Pct)}% sold for more than 10% less.`,
+					`The gap was wider for bigger buildings. The median sale price was ${MU.sizes[0].askingMedianPct}% of asking for 5 to 9 units, ${MU.sizes[1].askingMedianPct}% for 10 to 19 units, ${MU.sizes[2].askingMedianPct}% for 20 to 49 units, and ${MU.sizes[3].askingMedianPct}% for 50 to 99 units (${MU.sizes[3].askingSales} sales, a small group). The gap was steady from quarter to quarter.`,
+					'In our view, this is the clearest reason to price a building from its income and comparable sales, not from what you hope to get. A price that starts too high costs weeks, and buyers tend to find the gap anyway. Our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows where pricing fits in the process.',
+				],
+			},
+			{
+				heading: 'Who Bought and Sold',
+				paragraphs: [
+					`Private owners drove the market. About ${MU.parties.privateBuyersPct}% of the sales had a private buyer and ${MU.parties.privateSellersPct}% had a private seller, and institutions were about ${MU.parties.institutionalBuyersPct}% of buyers. About ${MU.parties.localBuyersPct}% of buyers were based locally and ${MU.parties.nationalBuyersPct}% were based elsewhere in the United States.`,
+				],
+			},
+			{
+				heading: 'Sales by Price Range',
+				paragraphs: [
+					`About ${Math.round(MU.bands[0].sharePct + MU.bands[1].sharePct)}% of sales closed below $5.4 million. The other ${MU.bands[2].sales + MU.bands[3].sales + MU.bands[4].sales} sales (${Math.round(MU.bands[2].sharePct + MU.bands[3].sharePct + MU.bands[4].sharePct)}%) were above it, and ${MU.bands[3].sales + MU.bands[4].sales} were $8 million or more.`,
+					'Those lines matter. In the City of Los Angeles, the Measure ULA transfer tax starts above $5.4 million, and in Santa Monica, Measure GS starts at $8 million. Whether either applied to a given sale depended on where the building was. Our guide to [Measure ULA thresholds](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/) explains why a price just over the line can cost a seller money.',
+				],
+			},
+			{
+				heading: 'Neighborhood Detail',
+				paragraphs: [
+					'For prices and cap rates by neighborhood, see our article on [LA apartment cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/), or find your area on our [submarkets](/submarkets/) page.',
+				],
+			},
+			{
+				heading: 'What This Means If You Own an Apartment Building',
+				paragraphs: [
+					`Price from income and comparable sales. With the typical sale closing about ${Math.round(100 - MU.asking.medianPct)}% below asking, an asking price that is not backed by your rents and recent sales tends to come down.`,
+					'Know your size bracket. Buyers pay different prices per unit for a 7-unit building and a 30-unit building, so the comparable sales that matter most are the ones near yours in size and age.',
+					'Have your paperwork ready. Buyers ask for the rent roll, leases, registration, and expense records on day one, and a complete set keeps your price intact in escrow.',
+					'Use the current rules. In the City of Los Angeles, the allowable rent increase for rent-controlled units is 3% through June 2027, and the AB 1482 cap has been 8.7% since August 1, 2026. Measure ULA thresholds adjust every July 1. See our guides to the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/) and [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'To see how these numbers apply to your building, start with our [free property value calculator](/property-value/), then request a free [Broker Opinion of Value](/contact/?intent=bov) and we will build it from your rents, expenses, and condition. We refresh this analysis every quarter.',
+					`This article is general information, not an appraisal, investment advice, or a forecast. Figures are medians from CoStar sales data through ${muDate(MU.lastSale)} and will change as more sales close and records are updated.`,
+				],
+			},
+		],
+	},
 ];
 
 // Scheduled publishing: a post dated in the future is held back until that date (Pacific time). The
@@ -1218,6 +1318,7 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'broker-opinion-of-value-vs-appraisal-apartment-building': ['how-to-value-an-apartment-building-in-los-angeles', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-choose-a-multifamily-broker-in-los-angeles'],
 	'selling-a-fourplex-or-small-apartment-building-in-los-angeles': ['how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step'],
 	'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles': ['how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
+	'la-apartment-market-update-q3-2026': ['la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-value-an-apartment-building-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
 };
 
 // Questions and answers shown at the end of an article (and written into its FAQPage structured data),
@@ -1624,6 +1725,32 @@ export const postFaqs: Record<string, PostFaq[]> = {
 		{
 			q: 'Is an NNN exchange right for my apartment building?',
 			a: 'Not every owner should exchange into a triple-net property, and not every apartment building is the right one to sell right now. The first conversation is about your goals: stopping management altogether, reducing your workload without fully exiting real estate, or moving capital out of California. See our [triple-net and DST page](/triple-net-dst/), or [request a free Broker Opinion of Value](/contact/?intent=bov) to start.',
+		},
+	],
+	'la-apartment-market-update-q3-2026': [
+		{
+			q: 'Are apartment prices in Los Angeles going up or down in 2026?',
+			a: `Based on our CoStar data through ${muDate(MU.lastSale)}, prices were steady. Older apartment buildings in LA County sold for a median of ${muMoney(MU.quarters[0].olderPricePerUnit)} per unit in the first quarter, ${muMoney(MU.quarters[1].olderPricePerUnit)} in the second, and ${muMoney(MU.quarters[2].olderPricePerUnit)} in the third so far. We only have 2026, so we cannot compare it with last year.`,
+		},
+		{
+			q: 'How many apartment buildings sold in Los Angeles County in 2026?',
+			a: `From January 1 to ${muDate(MU.lastSale)}, ${MU.headline.all.sales.toLocaleString('en-US')} apartment buildings of 5 to 99 units sold in LA County for about ${muBillion(MU.headline.all.volumeMillions)} in total, after we left out approximate prices, portfolio sales of 100 or more units, and repeated records.`,
+		},
+		{
+			q: 'What is a typical cap rate for an apartment building in LA County in 2026?',
+			a: `Older buildings (built before 1978) had a median cap rate of ${muPct(MU.headline.older.capRateMedian)}, with the middle half of sales between ${muPct(MU.headline.older.capRateLow!)} and ${muPct(MU.headline.older.capRateHigh!)}. Newer buildings had a median of ${muPct(MU.headline.newer.capRateMedian)}, with the middle half between ${muPct(MU.headline.newer.capRateLow!)} and ${muPct(MU.headline.newer.capRateHigh!)}. These come from the ${MU.headline.older.capRateCount} and ${MU.headline.newer.capRateCount} sales that reported a cap rate.`,
+		},
+		{
+			q: 'Do bigger apartment buildings sell for less per unit?',
+			a: `Yes. Older buildings of 5 to 9 units sold for a median of ${muMoney(MU.sizes[0].olderPricePerUnit)} per unit in 2026, compared with ${muMoney(MU.sizes[1].olderPricePerUnit)} for 10 to 19 units, ${muMoney(MU.sizes[2].olderPricePerUnit)} for 20 to 49 units, and ${muMoney(MU.sizes[3].olderPricePerUnit)} for 50 to 99 units, a small group of ${MU.sizes[3].olderSales} sales.`,
+		},
+		{
+			q: 'How far below the asking price do apartment buildings sell for in Los Angeles?',
+			a: `Of the ${MU.asking.sales} sales with a recorded asking price, the median sale price was ${MU.asking.medianPct}% of asking, about ${muMoney(MU.asking.medianDollarsBelow)} below it. About ${Math.round(100 - MU.asking.atOrAbovePct)}% sold below asking, and ${Math.round(MU.asking.over10Pct)}% sold for more than 10% less. Larger buildings sold further below asking than smaller ones.`,
+		},
+		{
+			q: 'Who is buying apartment buildings in Los Angeles?',
+			a: `Mostly private owners. About ${MU.parties.privateBuyersPct}% of 2026 sales had a private buyer, about ${MU.parties.localBuyersPct}% of buyers were based locally and ${MU.parties.nationalBuyersPct}% elsewhere in the United States, and institutions were about ${MU.parties.institutionalBuyersPct}% of buyers.`,
 		},
 	],
 };

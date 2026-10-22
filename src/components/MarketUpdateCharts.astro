@@ -1,0 +1,342 @@
+---
+// Tables and bar charts for the quarterly "LA Apartment Market Update" article. Every number comes from
+// src/data/marketUpdate.ts, which scripts/market-update.mjs generates from the CoStar sales export, so a new
+// quarter only needs that script rerun. One series per chart, labeled directly, no legend needed.
+import { MARKET_UPDATE as MU } from '../data/marketUpdate';
+
+interface Props {
+	kind: 'headline' | 'quarters' | 'sizes' | 'asking' | 'bands';
+}
+
+const { kind } = Astro.props;
+
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+const billions = (millions: number) => (millions >= 1000 ? `$${(Math.round(millions / 10) / 100).toFixed(2)} billion` : `$${millions.toLocaleString('en-US')} million`);
+const pct = (n: number) => `${n.toFixed(2)}%`;
+const monthDay = (iso: string) => new Date(`${iso}T00:00:00`).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).replace('Sep ', 'Sept ');
+
+// A quarter is partial when the last sale in the data falls before its final day.
+const last = new Date(`${MU.lastSale}T00:00:00`);
+const quarterLabel = (q: number) => {
+	const end = new Date(Date.UTC(last.getUTCFullYear(), q * 3, 0));
+	const partial = last.getUTCFullYear() === end.getUTCFullYear() && q === Math.floor(last.getUTCMonth() / 3) + 1 && last < end;
+	return partial ? `Q${q} (through ${monthDay(MU.lastSale)})` : `Q${q}`;
+};
+
+const h = MU.headline;
+const maxSize = Math.max(...MU.sizes.map((s) => s.olderPricePerUnit));
+const askingRows = [
+	{ label: 'At or above asking price', value: MU.asking.atOrAbovePct },
+	{ label: 'Up to 5% below asking', value: MU.asking.within5Pct },
+	{ label: '5% to 10% below asking', value: MU.asking.five10Pct },
+	{ label: 'More than 10% below asking', value: MU.asking.over10Pct },
+];
+const maxAsking = Math.max(...askingRows.map((r) => r.value));
+const maxBand = Math.max(...MU.bands.map((b) => b.sharePct));
+---
+
+{
+	kind === 'headline' && (
+		<div class="mu-wrap">
+			<table class="mu-table">
+				<caption>LA County apartment sales, January to {monthDay(MU.lastSale)}, 2026</caption>
+				<thead>
+					<tr>
+						<th scope="col" />
+						<th scope="col">All sales</th>
+						<th scope="col">Built before 1978</th>
+						<th scope="col">Built 1978 or later</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th scope="row">Sales</th>
+						<td>{h.all.sales.toLocaleString('en-US')}</td>
+						<td>{h.older.sales.toLocaleString('en-US')}</td>
+						<td>{h.newer.sales.toLocaleString('en-US')}</td>
+					</tr>
+					<tr>
+						<th scope="row">Dollar volume</th>
+						<td>{billions(h.all.volumeMillions)}</td>
+						<td>{billions(h.older.volumeMillions)}</td>
+						<td>{billions(h.newer.volumeMillions)}</td>
+					</tr>
+					<tr>
+						<th scope="row">Median price per unit</th>
+						<td>{money(h.all.pricePerUnit)}</td>
+						<td>{money(h.older.pricePerUnit)}</td>
+						<td>{money(h.newer.pricePerUnit)}</td>
+					</tr>
+					<tr>
+						<th scope="row">Median price per square foot</th>
+						<td>{money(h.all.pricePerSf)}</td>
+						<td>{money(h.older.pricePerSf)}</td>
+						<td>{money(h.newer.pricePerSf)}</td>
+					</tr>
+					<tr>
+						<th scope="row">Typical cap rate range</th>
+						<td>
+							{pct(h.all.capRateLow!)} to {pct(h.all.capRateHigh!)}
+						</td>
+						<td>
+							{pct(h.older.capRateLow!)} to {pct(h.older.capRateHigh!)}
+						</td>
+						<td>
+							{pct(h.newer.capRateLow!)} to {pct(h.newer.capRateHigh!)}
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">Sales that reported a cap rate</th>
+						<td>{h.all.capRateCount.toLocaleString('en-US')}</td>
+						<td>{h.older.capRateCount.toLocaleString('en-US')}</td>
+						<td>{h.newer.capRateCount.toLocaleString('en-US')}</td>
+					</tr>
+				</tbody>
+			</table>
+			<p class="mu-source">Source: Highlight Multifamily Group analysis of CoStar sold multifamily comps, buildings of 5 to 99 units. The cap rate range is the middle half of sales that reported one.</p>
+		</div>
+	)
+}
+
+{
+	kind === 'quarters' && (
+		<div class="mu-wrap">
+			<table class="mu-table">
+				<caption>Quarter by quarter, 2026</caption>
+				<thead>
+					<tr>
+						<th scope="col">Quarter</th>
+						<th scope="col">All sales</th>
+						<th scope="col">Dollar volume</th>
+						<th scope="col">Older buildings: median price per unit</th>
+						<th scope="col">Older buildings: median cap rate</th>
+						<th scope="col">Median sale price as % of asking</th>
+					</tr>
+				</thead>
+				<tbody>
+					{MU.quarters.map((q) => (
+						<tr>
+							<th scope="row">{quarterLabel(q.quarter)}</th>
+							<td>{q.sales.toLocaleString('en-US')}</td>
+							<td>{billions(q.volumeMillions)}</td>
+							<td>{money(q.olderPricePerUnit)}</td>
+							<td>{pct(q.olderCapRateMedian)}</td>
+							<td>{q.askingMedianPct.toFixed(1)}%</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+			<p class="mu-source">Source: Highlight Multifamily Group analysis of CoStar sold multifamily comps. Older buildings were built before 1978. The latest quarter is not a full quarter.</p>
+		</div>
+	)
+}
+
+{
+	kind === 'sizes' && (
+		<figure class="mu-bars" aria-labelledby="mu-sizes-cap">
+			<figcaption id="mu-sizes-cap" class="mu-cap">Median price per unit by building size, buildings built before 1978</figcaption>
+			{MU.sizes.map((s) => (
+				<div class="mu-row">
+					<span class="mu-row__name">{s.label}</span>
+					<span class="mu-row__track">
+						<span class="mu-row__bar" style={`width: ${(s.olderPricePerUnit / maxSize) * 100}%`} />
+					</span>
+					<span class="mu-row__val">{money(s.olderPricePerUnit)}</span>
+					<span class="mu-row__meta">
+						{s.olderSales} sales, median cap rate {pct(s.olderCapRateMedian)} ({s.olderCapRateCount} reported)
+					</span>
+				</div>
+			))}
+			<p class="mu-source">Source: Highlight Multifamily Group analysis of CoStar sold multifamily comps. The 50 to 99 unit group has few sales, so treat it as a rough guide.</p>
+		</figure>
+	)
+}
+
+{
+	kind === 'asking' && (
+		<figure class="mu-bars" aria-labelledby="mu-asking-cap">
+			<figcaption id="mu-asking-cap" class="mu-cap">Share of sales by how the sale price compared with the asking price ({MU.asking.sales} sales with a recorded asking price)</figcaption>
+			{askingRows.map((r) => (
+				<div class="mu-row mu-row--simple">
+					<span class="mu-row__name">{r.label}</span>
+					<span class="mu-row__track">
+						<span class="mu-row__bar" style={`width: ${(r.value / maxAsking) * 100}%`} />
+					</span>
+					<span class="mu-row__val">{Math.round(r.value)}%</span>
+				</div>
+			))}
+			<p class="mu-source">Source: Highlight Multifamily Group analysis of CoStar sold multifamily comps. Asking price is the one CoStar recorded for the sale.</p>
+		</figure>
+	)
+}
+
+{
+	kind === 'bands' && (
+		<figure class="mu-bars" aria-labelledby="mu-bands-cap">
+			<figcaption id="mu-bands-cap" class="mu-cap">Share of sales by sale price</figcaption>
+			{MU.bands.map((b, i) => (
+				<div class={`mu-row mu-row--simple${i >= 2 ? ' mu-row--line' : ''}`}>
+					<span class="mu-row__name">{b.label}</span>
+					<span class="mu-row__track">
+						<span class="mu-row__bar" style={`width: ${(b.sharePct / maxBand) * 100}%`} />
+					</span>
+					<span class="mu-row__val">
+						{Math.round(b.sharePct)}% ({b.sales})
+					</span>
+				</div>
+			))}
+			<p class="mu-source">
+				Source: Highlight Multifamily Group analysis of CoStar sold multifamily comps. Gold bars are sales above $5.4 million, where the City of LA&rsquo;s Measure ULA
+				begins. Whether it applied depends on where the building is.
+			</p>
+		</figure>
+	)
+}
+
+<style>
+	.mu-wrap {
+		margin: 2rem 0;
+		overflow-x: auto;
+	}
+
+	.mu-table {
+		width: 100%;
+		min-width: 560px;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+	}
+
+	.mu-table caption {
+		text-align: left;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+		margin-bottom: 0.85rem;
+	}
+
+	.mu-table thead th {
+		text-align: left;
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+		padding: 0.75rem 1rem;
+	}
+
+	.mu-table thead th:not(:first-child),
+	.mu-table tbody td {
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+	}
+
+	.mu-table tbody th,
+	.mu-table tbody td {
+		padding: 0.7rem 1rem;
+		border-bottom: 1px solid var(--border);
+		font-weight: 400;
+	}
+
+	.mu-table tbody th {
+		text-align: left;
+		font-weight: 500;
+	}
+
+	.mu-table tbody tr:last-child th,
+	.mu-table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.mu-source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin: 0.75rem 0 0;
+	}
+
+	/* Bar charts: one series, same look as the neighborhood price chart. */
+	.mu-bars {
+		margin: 2rem 0;
+		max-width: 900px;
+	}
+
+	.mu-cap {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+		margin-bottom: 1rem;
+	}
+
+	.mu-row {
+		display: grid;
+		grid-template-columns: 150px 1fr 110px;
+		grid-template-areas:
+			'name track val'
+			'. meta meta';
+		align-items: center;
+		gap: 0.15rem 1rem;
+		padding-block: 0.4rem;
+	}
+
+	.mu-row--simple {
+		grid-template-columns: 210px 1fr 90px;
+		grid-template-areas: 'name track val';
+	}
+
+	.mu-row__name {
+		grid-area: name;
+		font-size: 0.92rem;
+	}
+
+	.mu-row__track {
+		grid-area: track;
+		height: 22px;
+		background: var(--paper-alt);
+	}
+
+	.mu-row__bar {
+		display: block;
+		height: 100%;
+		background: var(--navy-tint);
+		border: 1px solid var(--navy);
+	}
+
+	.mu-row--line .mu-row__bar {
+		background: var(--gold);
+		border-color: var(--gold-dark);
+	}
+
+	.mu-row__val {
+		grid-area: val;
+		text-align: right;
+		font-variant-numeric: tabular-nums;
+		font-size: 0.92rem;
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.mu-row__meta {
+		grid-area: meta;
+		font-size: 0.78rem;
+		color: var(--ink-light);
+	}
+
+	@media (max-width: 640px) {
+		.mu-row {
+			grid-template-columns: 105px 1fr 80px;
+			gap: 0.15rem 0.6rem;
+		}
+
+		.mu-row--simple {
+			grid-template-columns: 112px 1fr 98px;
+		}
+
+		.mu-row__val {
+			white-space: nowrap;
+		}
+
+		.mu-row__name {
+			font-size: 0.82rem;
+		}
+	}
+</style>

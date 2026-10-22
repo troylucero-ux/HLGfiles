@@ -7,6 +7,7 @@ import CpiRentCapTable from '../../components/CpiRentCapTable.astro';
 import UlaThresholdTable from '../../components/UlaThresholdTable.astro';
 import SubmarketStatsTable from '../../components/SubmarketStatsTable.astro';
 import DepreciationRecaptureExample from '../../components/DepreciationRecaptureExample.astro';
+import MarketUpdateCharts from '../../components/MarketUpdateCharts.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import { posts, relatedPostSlugs, postFaqs } from '../../data/posts';
 import { site } from '../../data/site';
@@ -86,6 +87,11 @@ const articleSchema = {
 							{s.heading === 'Pre-1978 (RSO) Buildings by Neighborhood' && <SubmarketStatsTable group="rso" />}
 							{s.heading === 'Newer Buildings (1978 and Later)' && <SubmarketStatsTable group="post1978" />}
 							{s.heading === 'Depreciation Recapture' && <DepreciationRecaptureExample />}
+								{s.heading === 'The Headline Numbers' && <MarketUpdateCharts kind="headline" />}
+								{s.heading === 'Quarter by Quarter' && <MarketUpdateCharts kind="quarters" />}
+								{s.heading === 'Bigger Buildings Sell for Less Per Unit' && <MarketUpdateCharts kind="sizes" />}
+								{s.heading === 'How Far Below Asking Did Buildings Sell?' && <MarketUpdateCharts kind="asking" />}
+								{s.heading === 'Sales by Price Range' && <MarketUpdateCharts kind="bands" />}
 						</>
 					))
 				}
