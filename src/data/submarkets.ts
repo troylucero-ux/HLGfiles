@@ -39,6 +39,9 @@ export const submarkets: Submarket[] = [
 		employers: ['Kaiser Permanente Los Angeles Medical Center', 'Wilshire Blvd office corridor', 'Wiltern Theatre and surrounding entertainment/retail employers'],
 		overview:
 			'Koreatown is one of LA’s most densely populated submarkets and a perennial target for multifamily investment sales, driven by strong rental demand, deep transit access via two Metro Rail lines, and a 24-hour commercial corridor along Wilshire and Olympic. Highlight has closed value-add and development-site transactions throughout Koreatown, including buildings positioned for both existing-use and redevelopment buyers.',
+		metaDescription:
+			'Koreatown multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, SB 79 near the subway, and a free valuation.',
+		laOwnerGuide: true,
 	},
 	{
 		slug: 'pico-union',
@@ -54,6 +57,9 @@ export const submarkets: Submarket[] = [
 		employers: ['Downtown LA financial and civic core (short commute)', 'USC (short commute)', 'LA Convention Center / event and hospitality employment'],
 		overview:
 			'Pico-Union sits immediately west of Downtown LA, offering some of the highest Walk and Transit Scores of any submarket in this portfolio. Its dense, predominantly rent-controlled housing stock makes it a consistent source of value-add multifamily opportunities, with strong long-term rental demand driven by proximity to Downtown and USC employment.',
+		metaDescription:
+			'Pico-Union multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, and a free valuation for owners.',
+		laOwnerGuide: true,
 	},
 	{
 		slug: 'westlake',
@@ -69,6 +75,9 @@ export const submarkets: Submarket[] = [
 		employers: ['Downtown LA financial and civic core (adjacent)', 'Kaiser Permanente and other Wilshire corridor medical/office employers'],
 		overview:
 			'Westlake, anchored by MacArthur Park, is where Highlight closed the Burlington Portfolio, a 192-unit, three-building 1031 exchange transaction, along with the 65-unit 236 S Bonnie Brae St and other value-add sales. The submarket combines LA’s highest transit access with consistently strong multifamily fundamentals.',
+		metaDescription:
+			'Westlake multifamily broker: 2026 apartment prices and cap rates, MacArthur Park projects, LA rent control and Measure ULA, and a free valuation.',
+		laOwnerGuide: true,
 	},
 	{
 		slug: 'east-hollywood',
@@ -91,6 +100,9 @@ export const submarkets: Submarket[] = [
 		employers: ['Kaiser Permanente Los Angeles Medical Center', 'Children’s Hospital Los Angeles', 'Los Angeles City College'],
 		overview:
 			'East Hollywood, bordered by Los Feliz to the north, Silver Lake to the east, and Hollywood to the west, is one of LA’s most walkable and culturally diverse submarkets, anchored by major medical and educational institutions. Highlight closed the 7-unit value-add sale at 941 N Normandie Ave here, and is currently marketing 4412-4414 Lockwood Ave in the submarket’s Virgil Village pocket.',
+		metaDescription:
+			'East Hollywood multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, and a free valuation for owners.',
+		laOwnerGuide: true,
 	},
 	{
 		slug: 'silver-lake',
@@ -106,6 +118,9 @@ export const submarkets: Submarket[] = [
 		employers: ['Creative and media companies clustered along Sunset Blvd', 'Proximity to Downtown LA and Hollywood employment centers'],
 		overview:
 			'Silver Lake is one of LA’s most in-demand Eastside submarkets, known for its hillside streets, walkable retail corridors, and consistently strong renter demand from creative-industry professionals. Highlight has closed value-add multifamily sales in Silver Lake, including properties near Sunset Blvd.',
+		metaDescription:
+			'Silver Lake multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, and a free valuation for owners.',
+		laOwnerGuide: true,
 	},
 	{
 		slug: 'brentwood',
@@ -121,6 +136,9 @@ export const submarkets: Submarket[] = [
 		employers: ['VA West Los Angeles Medical Center', 'UCLA (adjacent submarket)', 'West LA/Sunset Blvd professional office corridor'],
 		overview:
 			'Brentwood is one of West LA’s most prestigious multifamily ownership markets, with consistently below-market rents on older rent-controlled stock creating repeat value-add opportunities. Highlight has closed three separate transactions in Brentwood: 11667 Goshen Ave, 11642 Kiowa Ave, and 11747 Mayfield Ave, building deep buyer relationships in the immediate area.',
+		metaDescription:
+			'Brentwood multifamily broker: 2026 apartment prices, LA rent control and Measure ULA explained, and a free valuation for Westside apartment owners.',
+		laOwnerGuide: true,
 	},
 	{
 		slug: 'santa-monica',
@@ -204,6 +222,9 @@ export const submarkets: Submarket[] = [
 		employers: ['Warner Bros. and Universal Studios (Burbank, adjacent)', 'NoHo Arts District entertainment and hospitality employers'],
 		overview:
 			'North Hollywood is one of the San Fernando Valley’s fastest-changing submarkets, anchored by the NoHo Arts District and one of LA Metro’s busiest transit hubs at North Hollywood Station. Highlight has closed value-add sales here, including the soft-story retrofit property at 6938 Coldwater Canyon Ave.',
+		metaDescription:
+			'North Hollywood multifamily broker: 2026 apartment prices and cap rates, District NoHo, LA rent control and Measure ULA, and a free valuation.',
+		laOwnerGuide: true,
 	},
 	{
 		slug: 'van-nuys',
@@ -219,5 +240,8 @@ export const submarkets: Submarket[] = [
 		employers: ['Van Nuys Airport and surrounding aviation/industrial employers', 'Los Angeles Police Academy', 'Valley industrial and office employment base'],
 		overview:
 			'Van Nuys is a high-volume San Fernando Valley multifamily submarket driven by deep workforce housing demand and strong transit access via the Metro Orange Line and Metrolink. Highlight closed 14654 Gault St in Van Nuys as part of its Valley track record.',
+		metaDescription:
+			'Van Nuys multifamily broker: 2026 apartment prices and cap rates, the new light rail line, LA rent control and Measure ULA, and a free valuation.',
+		laOwnerGuide: true,
 	},
 ];

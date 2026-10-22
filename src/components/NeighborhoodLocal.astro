@@ -1,0 +1,140 @@
+---
+// A neighborhood-specific section for a submarket page: what is happening locally, three practical
+// takeaways for owners, and proof from our own sales. Content lives in src/data/neighborhoodLocal.ts.
+import { toParts } from '../lib/inlineLinks';
+import type { LocalSection } from '../data/neighborhoodLocal';
+
+interface Props {
+	section: LocalSection;
+}
+
+const { section } = Astro.props;
+---
+
+<section class="section nl">
+	<div class="container nl__narrow">
+		<span class="eyebrow">{section.eyebrow}</span>
+		<h2>{section.heading}</h2>
+		{section.intro.map((p) => <p>{p}</p>)}
+	</div>
+
+	<div class="container">
+		<ul class="nl-facts">
+			{
+				section.facts.map((f) => (
+					<li class="nl-fact">
+						<span class="nl-fact__value">{f.value}</span>
+						<span class="nl-fact__label">{f.label}</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	<div class="container nl-cards">
+		{
+			section.cards.map((c) => (
+				<div class="nl-card">
+					<h3>{c.title}</h3>
+					<p>
+						{toParts(c.body).map((part) => (part.href ? (part.href.startsWith('http') ? <a href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a> : <a href={part.href}>{part.text}</a>) : part.text))}
+					</p>
+				</div>
+			))
+		}
+	</div>
+
+	<div class="container nl__narrow">
+		{
+			section.proof && (
+				<p class="nl-proof">
+					{toParts(section.proof).map((part) => (part.href ? <a href={part.href}>{part.text}</a> : part.text))}
+				</p>
+			)
+		}
+		<p class="nl-source">{section.source}</p>
+	</div>
+</section>
+
+<style>
+	.nl__narrow {
+		max-width: 820px;
+	}
+
+	.nl-facts {
+		list-style: none;
+		margin: 2rem 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.25rem;
+	}
+
+	.nl-fact {
+		display: flex;
+		flex-direction: column;
+		gap: 0.4rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.25rem 1.5rem;
+	}
+
+	.nl-fact__value {
+		font-family: var(--font-serif);
+		font-size: 1.9rem;
+		line-height: 1.1;
+		color: var(--navy-dark);
+	}
+
+	.nl-fact__label {
+		font-size: 0.9rem;
+		line-height: 1.5;
+		color: var(--ink-light);
+	}
+
+	.nl-cards {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5rem;
+	}
+
+	.nl-card {
+		background: var(--paper-alt);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.5rem;
+	}
+
+	.nl-card h3 {
+		font-size: 1.15rem;
+		margin-bottom: 0.6rem;
+	}
+
+	.nl-card p {
+		font-size: 0.95rem;
+		line-height: 1.65;
+		margin: 0;
+	}
+
+	.nl-proof {
+		margin-top: 2rem;
+		border-left: 3px solid var(--gold);
+		padding-left: 1rem;
+		font-style: italic;
+	}
+
+	.nl-source {
+		font-size: 0.78rem;
+		color: var(--ink-light);
+		margin: 1rem 0 0;
+	}
+
+	@media (max-width: 860px) {
+		.nl-facts,
+		.nl-cards {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

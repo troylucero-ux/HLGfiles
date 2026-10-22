@@ -6,6 +6,8 @@ import WestHollywoodGuide from '../../components/WestHollywoodGuide.astro';
 import MeasureGsCliff from '../../components/MeasureGsCliff.astro';
 import LaCityOwnerGuide from '../../components/LaCityOwnerGuide.astro';
 import MidWilshireLocal from '../../components/MidWilshireLocal.astro';
+import NeighborhoodLocal from '../../components/NeighborhoodLocal.astro';
+import { neighborhoodLocal } from '../../data/neighborhoodLocal';
 import { submarkets } from '../../data/submarkets';
 import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
@@ -181,6 +183,10 @@ if (sm.slug === 'mid-wilshire') {
 	);
 }
 
+// Neighborhood-specific questions (from src/data/neighborhoodLocal.ts), for neighborhoods that have a local section.
+const local = neighborhoodLocal[sm.slug];
+if (local?.faqs) faqs.push(...local.faqs);
+
 if (closedHere.length > 0) {
 	const top = closedHere.slice(0, 3);
 	faqs.push({
@@ -350,6 +356,7 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 	{isWestHollywood && <WestHollywoodGuide />}
 	{isSantaMonica && <MeasureGsCliff />}
 	{sm.slug === 'mid-wilshire' && <MidWilshireLocal />}
+	{local && <NeighborhoodLocal section={local} />}
 	{sm.laOwnerGuide && <LaCityOwnerGuide sm={sm} />}
 
 	{
