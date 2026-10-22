@@ -1512,7 +1512,7 @@ const allPosts: Post[] = [
 	{
 		slug: 'air-conditioning-law-los-angeles-apartment-owners-electrical-panel',
 		title: 'Air Conditioning in Los Angeles Apartments: The 82-Degree Rule, Electrical Panels, and What Owners Should Do',
-		seoTitle: 'LA Apartment Air Conditioning Law: 82°F Rule and Electrical Panels',
+		seoTitle: 'LA Apartment AC Law: 82°F Rule and Electrical Panels',
 		description:
 			'Is air conditioning required in every LA apartment? What the 82-degree rule and SB 655 actually say, what it means for your electrical sub panel, and tips for owners.',
 		date: '2026-10-22',
