@@ -840,7 +840,7 @@ const allPosts: Post[] = [
 			{
 				heading: 'Where This Data Comes From',
 				paragraphs: [
-					'The figures below come from sold multifamily properties in Los Angeles County in 2026, taken from CoStar sales data and analyzed by Highlight Multifamily Group. We split the sales by building age, because older buildings generally fall under rent stabilization while buildings built in 1978 or later fall under the statewide AB 1482 cap, and the two groups trade differently. Santa Monica has its own rent control rules, separate from the City of Los Angeles.',
+					'The figures below come from sold multifamily properties in Los Angeles County in 2026, taken from CoStar sales data and analyzed by Highlight Multifamily Group. We split the sales by building age, because older buildings generally fall under rent stabilization while buildings built in 1978 or later fall under the statewide AB 1482 cap, and the two groups trade differently. Santa Monica, West Hollywood, and Beverly Hills have their own rent control rules, separate from the City of Los Angeles.',
 					'We only show a number when enough sales stand behind it. If a neighborhood did not have enough sales or reported cap rates, the table says so, rather than guessing.',
 				],
 			},

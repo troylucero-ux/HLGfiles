@@ -5,7 +5,7 @@ import { submarkets } from '../../data/submarkets';
 import { SALES_STATS, AGE_BRACKETS, AGE_GROUP_LABELS, MIN_CAP_RATE_COMPS, VALUATION_DATA_AS_OF, VALUATION_DATA_PERIOD } from '../../data/valuationAssumptions';
 
 const submarketNames = Object.fromEntries(submarkets.map((sm) => [sm.slug, sm.name]));
-// Santa Monica and West Hollywood have their own rent control, so the LA RSO wording is dropped for them.
+// Santa Monica, West Hollywood, and Beverly Hills have their own rent control, so the LA RSO wording is dropped for them.
 const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 ---
 

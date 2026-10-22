@@ -28,7 +28,7 @@
 //   sales data. Policy (set by the user, Oct 22, 2026): never cite, quote, or use deals, numbers, or
 //   statements from competing brokerages on the site. Opinions are fine when they are general market logic.
 // - East Hollywood, Pico-Union, and Brentwood figures from SALES_STATS (CoStar export, Jan to Sept 22, 2026).
-import { SALES_STATS, MIN_CAP_RATE_COMPS } from './valuationAssumptions';
+import { SALES_STATS, MIN_CAP_RATE_COMPS, WEST_LA_AREAS } from './valuationAssumptions';
 
 const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
 const millions = (n: number) => `$${(n / 1_000_000).toFixed(1)} million`;
@@ -55,6 +55,13 @@ const highestCapNote =
 	Object.keys(SALES_STATS)
 		.filter((slug) => capMid(slug) !== null)
 		.sort((a, b) => capMid(b)! - capMid(a)!)[0] === 'pico-union';
+
+// West LA: price by area, from the same sales as the page's headline figures.
+const westAreas = WEST_LA_AREAS.filter((a) => a.pricePerUnit.compCount >= 3);
+const westHigh = westAreas.reduce((a, b) => (b.pricePerUnit.median > a.pricePerUnit.median ? b : a));
+const westLow = westAreas.reduce((a, b) => (b.pricePerUnit.median < a.pricePerUnit.median ? b : a));
+const westGap = Math.round((westHigh.pricePerUnit.median - westLow.pricePerUnit.median) / 10_000) * 10_000;
+const westList = westAreas.map((a) => `${money(a.pricePerUnit.median)} in ${a.name} (${a.pricePerUnit.compCount} sales)`).join(', ');
 
 export const neighborhoodLocal: Record<string, LocalSection> = {
 	koreatown: {
@@ -370,6 +377,47 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 			{
 				q: 'Why do Brentwood apartment buildings sell for more per unit than Central LA?',
 				a: `Two things show up in the data. Brentwood has very few apartment sales, only ${rso('brentwood').pricePerUnit!.compCount + newer('brentwood').pricePerUnit!.compCount} in our 2026 data, and its newer buildings sell for much more per unit than its older ones. Older Brentwood buildings had a median of ${money(rso('brentwood').pricePerUnit!.median)} per unit in 2026, compared with ${money(rso('koreatown').pricePerUnit!.median)} in Koreatown, though a median from ${rso('brentwood').pricePerUnit!.compCount} sales is fragile.`,
+			},
+		],
+	},
+
+	'west-la': {
+		eyebrow: 'What’s Local in West LA',
+		heading: 'West LA Apartment Owners: Four Neighborhoods, Four Price Levels, and Two Subway Lines',
+		intro: [
+			'West LA is not one market. This page covers four Westside neighborhoods of the City of Los Angeles: West Los Angeles, Westwood, Palms, and Mar Vista. All of it is inside the City of LA, so LA’s rent control and Measure ULA apply. But the neighborhoods price very differently, and the transit is changing.',
+			`In our 2026 data, older buildings across the area sold for a median of ${money(rso('west-la').pricePerUnit!.median)} per unit across ${rso('west-la').pricePerUnit!.compCount} sales. That one number hides a wide spread by neighborhood.`,
+		],
+		facts: [
+			{ value: money(rso('west-la').pricePerUnit!.median), label: `median price per unit, older West LA-area buildings (${rso('west-la').pricePerUnit!.compCount} sales in 2026)` },
+			{ value: `${money(westLow.pricePerUnit.median)} to ${money(westHigh.pricePerUnit.median)}`, label: `range of older-building medians, from ${westLow.name} to ${westHigh.name}` },
+			{ value: '3', label: 'E Line stations in the area: Palms, Westwood/Rancho Park, and Expo/Sepulveda' },
+		],
+		cards: [
+			{
+				title: 'Know which West LA you are in',
+				body: `Older buildings sold for a median of ${westList}. The gap between the highest and lowest is about ${money(westGap)} per unit, so the neighborhood your building sits in changes the price a great deal. A figure for all of West LA is a starting point, not a price.`,
+			},
+			{
+				title: 'A second subway line is on the way',
+				body: 'The E Line already stops at Palms, Westwood/Rancho Park, and Expo/Sepulveda. Metro projects the D Line subway extension’s Westwood/UCLA and Westwood/VA Hospital stations for fall 2027, which is an estimate and not a set date. If your building is a short walk from a station, put the minutes in the offering.',
+			},
+			{
+				title: 'Check your zoning near the stations',
+				body: 'SB 79 took effect July 1, 2026 and allows more housing near major transit stops. Los Angeles adopted a phased approach in March 2026 that delays full implementation in historic districts, lower-resource areas, and high fire severity zones until 2030. If your lot is near a station, a developer may value the land more than an investor values the building. Print your parcel’s zoning from [ZIMAS](https://zimas.lacity.org/) and ask us to price it both ways.',
+			},
+		],
+		proof:
+			'We have sold two buildings in the area: [3667 Mentone Ave](/closed-sales/3667-mentone-ave-los-angeles-ca-90034/), 10 units in Palms, and [12770 Caswell Avenue](/closed-sales/12770-caswell-avenue-los-angeles-ca-90066/), 11 units in Mar Vista.',
+		source: 'Sources: Highlight analysis of CoStar sold multifamily comps, January to September 2026 (ZIP codes 90024, 90025, 90064, 90034, and 90066); LA Metro; walkscore.com. Each median rests on the sale count shown. Checked October 2026.',
+		faqs: [
+			{
+				q: 'Which Metro lines serve West LA?',
+				a: 'The E Line (Expo) stops at Palms, Westwood/Rancho Park, and Expo/Sepulveda in the area. Metro projects the D Line (Purple) subway extension’s Westwood/UCLA and Westwood/VA Hospital stations for fall 2027, which is an estimate and not a set opening date.',
+			},
+			{
+				q: 'How much do apartment buildings cost per unit in Westwood, Palms, and Mar Vista?',
+				a: `In our 2026 data, older buildings sold for a median of ${westList}. Newer buildings sell for more per unit, and a median from only a few sales can move a lot with one deal, so use our [free calculator](/property-value/) or request a [Broker Opinion of Value](/contact/?intent=bov) for a number built on your own building.`,
 			},
 		],
 	},

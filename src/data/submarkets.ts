@@ -18,7 +18,7 @@ export type Submarket = {
 	overview: string;
 	// Separate cities with their own rent control and transfer taxes. Omitted means the City of Los
 	// Angeles, where the LA Rent Stabilization Ordinance and Measure ULA apply.
-	city?: 'santa-monica' | 'west-hollywood';
+	city?: 'santa-monica' | 'west-hollywood' | 'beverly-hills';
 	metaDescription?: string;
 	// Shows the City of LA owner's guide (rent control, Measure ULA by building size, pre-listing moves).
 	laOwnerGuide?: boolean;
@@ -140,6 +140,31 @@ export const submarkets: Submarket[] = [
 			'Brentwood multifamily broker: 2026 apartment prices, LA rent control and Measure ULA explained, and a free valuation for Westside apartment owners.',
 		laOwnerGuide: true,
 	},
+	// Walk Score is walkscore.com's neighborhood score for West Los Angeles (90, checked 2026-10-22); no Transit or
+	// Bike Score is shown because the group spans several neighborhoods. Transit facts are from LA Metro: the E Line
+	// stops in the area, and the D Line's Westwood/UCLA and Westwood/VA Hospital stations, which Metro projects for
+	// fall 2027 (an estimate, not a set date). The sales group is ZIP codes 90024, 90025, 90064, 90034, and 90066
+	// (see valuationAssumptions.ts).
+	{
+		slug: 'west-la',
+		name: 'West LA',
+		region: 'Westside LA',
+		blurb: 'West Los Angeles, Westwood, Palms, and Mar Vista: the Westside neighborhoods of the City of LA, served by the E Line today and the D Line soon.',
+		walkScore: 90,
+		walkScoreLabel: "Walker's Paradise (West Los Angeles neighborhood)",
+		transit: [
+			'Metro E Line (Expo): Palms, Westwood/Rancho Park, and Expo/Sepulveda stations',
+			'Metro D Line (Purple) subway extension: Westwood/UCLA and Westwood/VA Hospital stations, projected for fall 2027',
+			'Metro bus lines along Wilshire Blvd',
+		],
+		retail: ['Westwood Village', 'Sawtelle Blvd restaurants and shops (Sawtelle Japantown)', 'The Santa Monica Blvd and Pico Blvd corridors'],
+		employers: ['UCLA (Westwood)', 'VA West Los Angeles Medical Center', 'Silicon Beach tech and media employers nearby'],
+		overview:
+			'West LA covers four Westside neighborhoods of the City of Los Angeles: West Los Angeles, Westwood, Palms, and Mar Vista. All of it is inside the City of LA, so LA rent control and Measure ULA apply. Highlight sold 3667 Mentone Ave in Palms and 12770 Caswell Ave in Mar Vista.',
+		metaDescription:
+			'West LA multifamily broker: 2026 apartment prices and cap rates in West LA, Westwood, Palms, and Mar Vista, LA rent control, Measure ULA, and a free valuation.',
+		laOwnerGuide: true,
+	},
 	{
 		slug: 'santa-monica',
 		name: 'Santa Monica',
@@ -207,6 +232,32 @@ export const submarkets: Submarket[] = [
 		city: 'west-hollywood',
 		metaDescription:
 			'West Hollywood multifamily broker: 2026 apartment prices and cap rates, WeHo rent control explained, why Measure ULA does not apply, and a free valuation.',
+	},
+	// Walk, Transit, and Bike Scores are walkscore.com's city-wide figures for Beverly Hills (75, 55, 52; checked
+	// 2026-10-22). Transit facts are from LA Metro: the D Line extension's Wilshire/La Cienega station opened
+	// May 8, 2026; Metro's stations in Beverly Hills and Century City are projected for spring 2027 (an estimate,
+	// not a set date).
+	{
+		slug: 'beverly-hills',
+		name: 'Beverly Hills',
+		region: 'Westside LA',
+		blurb: 'Its own city, with its own rent control law and no city transfer tax or Measure ULA, and some of the highest per-unit prices in LA County.',
+		walkScore: 75,
+		transitScore: 55,
+		bikeScore: 52,
+		walkScoreLabel: 'Very Walkable (city-wide average)',
+		transit: [
+			'Metro D Line (Purple): Wilshire/La Cienega station, opened May 8, 2026, with a second Beverly Hills station projected for spring 2027',
+			'Metro bus lines along Wilshire Blvd',
+			'A direct subway ride east to Koreatown and Downtown LA',
+		],
+		retail: ['Rodeo Drive and the Golden Triangle shopping district', 'The Wilshire Blvd corridor', 'Restaurants and hotels in the city center'],
+		employers: ['Cedars-Sinai Medical Center (adjacent, in Los Angeles)', 'Entertainment, hospitality, and retail employers in the city center', 'Century City office employers (adjacent)'],
+		overview:
+			'Beverly Hills is its own city, with its own rent stabilization ordinance, its own soft-story program, and no city transfer tax or Measure ULA. Its older apartment buildings sell for some of the highest prices per unit in Los Angeles County, and the D Line subway now reaches the city’s edge at Wilshire/La Cienega.',
+		city: 'beverly-hills',
+		metaDescription:
+			'Beverly Hills multifamily broker: 2026 apartment prices and cap rates, Beverly Hills rent stabilization explained, no city transfer tax, and a free valuation.',
 	},
 	{
 		slug: 'north-hollywood',

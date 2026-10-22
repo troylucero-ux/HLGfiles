@@ -4,6 +4,7 @@ import BOVForm from '../../components/BOVForm.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import WestHollywoodGuide from '../../components/WestHollywoodGuide.astro';
 import SantaMonicaGuide from '../../components/SantaMonicaGuide.astro';
+import BeverlyHillsGuide from '../../components/BeverlyHillsGuide.astro';
 import MeasureGsCliff from '../../components/MeasureGsCliff.astro';
 import LaCityOwnerGuide from '../../components/LaCityOwnerGuide.astro';
 import MidWilshireLocal from '../../components/MidWilshireLocal.astro';
@@ -30,6 +31,7 @@ const relatedCaseStudies = caseStudies.filter((cs) => cs.submarket === sm.slug);
 const relatedListings = listings.filter((l) => l.submarket === sm.slug && l.status !== 'off-market');
 const isSantaMonica = sm.city === 'santa-monica';
 const isWestHollywood = sm.city === 'west-hollywood';
+const isBeverlyHills = sm.city === 'beverly-hills';
 // Separate cities: the LA Rent Stabilization Ordinance and Measure ULA don't apply there.
 const isOwnCity = Boolean(sm.city);
 
@@ -55,6 +57,8 @@ const salesGroups = (['rso', 'post1978'] as AgeGroup[]).map((group) => {
 	return {
 		title: isWestHollywood
 			? { rso: 'Built Before 1979 (WeHo Rent Control)', post1978: 'Built 1979 or Later' }[group]
+				: isBeverlyHills
+					? { rso: 'Built Before 1978', post1978: 'Built 1978 or Later' }[group]
 			: isSantaMonica
 				? AGE_GROUP_LABELS[group].title.replace(' (RSO)', '').replace(' (AB 1482)', '')
 				: AGE_GROUP_LABELS[group].title,
@@ -114,6 +118,8 @@ faqs.push({
 	q: `Does rent control apply to apartment buildings in ${shortName}?`,
 	a: isWestHollywood
 		? 'Yes, under West Hollywood’s own Rent Stabilization Ordinance, not the City of Los Angeles rules. Buildings with a certificate of occupancy issued before July 1, 1979 are generally rent-controlled: rent can rise once a year by the city’s Annual General Adjustment, and tenants can only be evicted for reasons the ordinance allows. Newer buildings have no city rent cap but are still covered by West Hollywood’s eviction protections. Confirm your building’s status with the city or an attorney before you price or sell.'
+			: isBeverlyHills
+				? 'Yes, under Beverly Hills’ own Rent Stabilization Ordinance, not the City of Los Angeles rules. It is split into two chapters: Chapter 5 for older units where the tenant’s initial rent was $600 or less, and Chapter 6 for all other covered units. Each has its own yearly increase, set by the city. Units the ordinance does not cover may still fall under the statewide AB 1482 cap. Confirm your building’s status with the City of Beverly Hills before you price or sell.'
 		: isSantaMonica
 			? 'Santa Monica is a separate city with its own rent control law, administered by the Santa Monica Rent Control Board, so the City of Los Angeles rules do not apply there. Which rules cover a building depends on its age and registration, so confirm with the city or an attorney before you price or sell.'
 			: `${shortName} is in the City of Los Angeles. Buildings with a certificate of occupancy issued before October 1, 1978 are generally covered by the Rent Stabilization Ordinance, and newer buildings typically fall under the statewide AB 1482 cap. Rent control affects value because buyers price in below-market rents, as we explain in our guides.`,
@@ -152,6 +158,28 @@ if (isSantaMonica) {
 		q: 'What is Measure GS in Santa Monica?',
 		a: 'Measure GS is Santa Monica’s transfer tax on sales of $8 million or more, in effect since March 1, 2023. At $8 million and up, the city tax is 5.6% of the entire sale price, compared with 0.6% from $5 million to just under $8 million and 0.3% below $5 million. LA County’s $1.10 per $1,000 is added on top. Measure ULA does not apply in Santa Monica because it is a separate city.',
 	});
+}
+
+// Beverly Hills' own rules, matching the guide further down the page (see BeverlyHillsGuide.astro for sources).
+if (isBeverlyHills) {
+	faqs.push(
+		{
+			q: 'How much can landlords raise rent in Beverly Hills in 2026?',
+			a: 'Under Beverly Hills’ Rent Stabilization Ordinance, the allowed increase for most units (Chapter 6) is 3.6%, effective in June 2026 and updated yearly. For older low-rent units (Chapter 5, where the tenant’s initial rent was $600 or less in a building built before September 20, 1978), it was 3.33% from June 12, 2026 and is updated every month. Confirm the current figure with the City of Beverly Hills.',
+		},
+		{
+			q: 'Does Measure ULA apply to Beverly Hills apartment buildings?',
+			a: 'No. Measure ULA applies only to property in the City of Los Angeles, and Beverly Hills is a separate city. Only five cities in LA County charge their own transfer tax, and Beverly Hills is not one of them, so a seller pays only LA County’s $1.10 per $1,000. On a $6 million sale that is $6,600, compared with $273,600 in combined transfer taxes for the same price in the City of LA.',
+		},
+		{
+			q: 'Do Beverly Hills apartment buildings need a soft-story retrofit?',
+			a: 'Some do. Beverly Hills has its own mandatory soft-story program, Ordinance 18-O-2767, adopted in December 2018 and in force since January 2019. It covers wood-frame buildings with weak or open ground floors, such as tuck-under parking, permitted before 1978, and the city sorts buildings into tiers by height and unit count. Buyers will ask for your notice, plans, permits, and sign-off, so gather them before you list.',
+		},
+		{
+			q: 'Does SB 79 apply to Beverly Hills apartment buildings?',
+			a: 'SB 79, the state transit-housing law, took effect July 1, 2026. Beverly Hills adopted its own alternative plan by urgency ordinance (26-O-2935), and California’s housing department has been reviewing it. What applies to a specific parcel is a question for the city, so confirm yours before you price a sale.',
+		},
+	);
 }
 
 // Santa Monica's own rules, matching the guide further down the page (see SantaMonicaGuide.astro for sources).
@@ -269,9 +297,11 @@ const nearbyMap: Record<string, string[]> = {
 	westlake: ['pico-union', 'koreatown', 'silver-lake'],
 	'east-hollywood': ['silver-lake', 'koreatown'],
 	'silver-lake': ['east-hollywood', 'westlake'],
-	brentwood: ['santa-monica', 'west-hollywood'],
-	'santa-monica': ['brentwood', 'west-hollywood'],
-	'west-hollywood': ['mid-wilshire', 'santa-monica', 'brentwood', 'east-hollywood'],
+	brentwood: ['santa-monica', 'west-hollywood', 'west-la'],
+	'santa-monica': ['brentwood', 'west-hollywood', 'west-la'],
+	'west-hollywood': ['mid-wilshire', 'santa-monica', 'brentwood', 'east-hollywood', 'beverly-hills'],
+	'beverly-hills': ['west-hollywood', 'mid-wilshire', 'west-la'],
+	'west-la': ['brentwood', 'santa-monica', 'beverly-hills'],
 	'north-hollywood': ['van-nuys'],
 	'van-nuys': ['north-hollywood'],
 };
@@ -390,6 +420,7 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 	</section>
 
 	{isWestHollywood && <WestHollywoodGuide />}
+	{isBeverlyHills && <BeverlyHillsGuide />}
 	{
 		isSantaMonica && (
 			<SantaMonicaGuide>

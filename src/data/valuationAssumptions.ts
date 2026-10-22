@@ -175,7 +175,48 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: null,
 		},
 	},
+	// Added October 22, 2026 from the same CoStar export, with these rules: Sale Status = Sold and Property Type =
+	// Multifamily, sales whose price is marked Approximate or Allocated left out, portfolio sales of 100 or more
+	// units left out, and repeated rows (same address, price, and date) counted once. The older/newer split is
+	// the same 1978 line as everywhere else, though Beverly Hills' rent control follows its own rules.
+	// Beverly Hills is the export's Property City = Beverly Hills (13 sales after the rules above).
+	'beverly-hills': {
+		rso: {
+			pricePerUnit: { median: 442679, compCount: 12 },
+			pricePerSf: { median: 444, compCount: 12 },
+			capRate: { low: 0.045, high: 0.0561, compCount: 9 },
+		},
+		post1978: {
+			pricePerUnit: { median: 1320000, compCount: 1 },
+			pricePerSf: { median: 592, compCount: 1 },
+			capRate: null,
+		},
+	},
+	// West LA combines the City of LA ZIP codes 90024 (Westwood), 90025 and 90064 (West Los Angeles), 90034
+	// (Palms), and 90066 (Mar Vista), 73 sales after the rules above. Brentwood (90049) is its own page and
+	// Culver City is a separate city, so both are left out. WEST_LA_AREAS below splits the same sales by area.
+	'west-la': {
+		rso: {
+			pricePerUnit: { median: 266984, compCount: 56 },
+			pricePerSf: { median: 316, compCount: 56 },
+			capRate: { low: 0.0476, high: 0.0602, compCount: 44 },
+		},
+		post1978: {
+			pricePerUnit: { median: 407143, compCount: 17 },
+			pricePerSf: { median: 405, compCount: 17 },
+			capRate: { low: 0.0499, high: 0.0532, compCount: 10 },
+		},
+	},
 };
+
+// Median price per unit for older (built before 1978) buildings inside the West LA group, by area, from the same
+// sales. Shown on the West LA page, which only prints an area when it has at least MIN_PRICE_COMPS_PAGE sales.
+export const WEST_LA_AREAS: { name: string; zips: string; pricePerUnit: { median: number; compCount: number } }[] = [
+	{ name: 'Westwood', zips: '90024', pricePerUnit: { median: 451786, compCount: 6 } },
+	{ name: 'West Los Angeles', zips: '90025 and 90064', pricePerUnit: { median: 303333, compCount: 19 } },
+	{ name: 'Palms', zips: '90034', pricePerUnit: { median: 237500, compCount: 21 } },
+	{ name: 'Mar Vista', zips: '90066', pricePerUnit: { median: 247542, compCount: 10 } },
+];
 
 export interface AgeBracket {
 	id: string;
