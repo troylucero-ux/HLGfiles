@@ -227,7 +227,7 @@ export const caseStudies: CaseStudy[] = [
 		title: '1513 Arlington Ave',
 		location: 'Arlington Heights, Los Angeles, CA',
 		submarket: null,
-		summary: 'Dual representation on a 9-unit Arlington Heights building drew 12 offers, shifting deferred electrical and balcony work to the buyer for our seller’s 1031 exchange.',
+		summary: 'Dual representation on a 9-unit Arlington Heights building drew 12 offers and moved deferred electrical and balcony work to the buyer for our seller’s 1031.',
 		dealType: ['1031', 'value-add'],
 		opportunity:
 			'1513 Arlington Ave is a 9-unit apartment building in Arlington Heights. We generally advise our sellers against spending money on their property before a sale, since sellers historically see little return on that investment from buyers. Investors targeting RSO buildings, especially ones with below-market tenants and deferred maintenance, typically bring their own value-add plan and the experience to bring a property up to market more cost effectively than a seller can. Following that approach, our selling client did not want to fund two costly items before close: replacing the property’s Federal Pacific electrical sub-panels, which insurers are increasingly requiring owners to replace, and completing the SB 721 inspection of its two exterior balconies, a state-mandated safety inspection of balconies, decks, stairways, and walkways on multifamily buildings with three or more units.',

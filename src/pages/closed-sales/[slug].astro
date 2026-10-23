@@ -72,7 +72,7 @@ const soldLabel = isLand
 const fullTitle = `${sale.name}, ${sale.city} | ${soldLabel}`;
 // Drop the city when a long property name would push the title past what Google displays.
 const noCityTitle = `${sale.name} | ${soldLabel}`;
-const seoTitle = fullTitle.length <= 65 ? fullTitle : noCityTitle.length <= 65 ? noCityTitle : `${sale.name} | Sold for ${formatPrice(sale.price)}`;
+const seoTitle = fullTitle.length <= 60 ? fullTitle : noCityTitle.length <= 60 ? noCityTitle : `${sale.name} | Sold for ${formatPrice(sale.price)}`;
 const seoDescription = `${sale.name} in ${sale.city}, ${sale.state}: ${kind} sold for ${formatPriceFull(sale.price)}. See the price per ${isLand ? 'square foot' : 'unit'} and Highlight's track record.`;
 
 const videoSchema = sale.youtubeId
@@ -94,7 +94,7 @@ const videoSchema = sale.youtubeId
 		<div class="container sale-detail">
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Closed Sales', href: '/closed-sales/' }, { label: sale.name }]} />
 			<span class="eyebrow">Closed Sale</span>
-			<h1>{sale.name}</h1>
+			<h1>{sale.name}{/-20\d\d$/.test(sale.slug) ? ` (${sale.slug.slice(-4)})` : ''}</h1>
 			<p class="sale-detail__location">
 				{place}
 				{

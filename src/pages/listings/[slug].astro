@@ -23,7 +23,11 @@ const statusLabels: Record<string, string> = {
 	'off-market': 'Off-Market',
 };
 
-const seoTitle = `${listing.name}, ${listing.city} | ${listing.units ?? ''}-Unit Apartment For Sale`;
+
+const fullListingTitle = `${listing.name}, ${listing.city} | ${listing.units ?? ''}-Unit Apartment For Sale`;
+// Drop the city when it would push the title past what Google displays.
+const seoTitle = fullListingTitle.length <= 60 ? fullListingTitle : `${listing.name} | ${listing.units ?? ''}-Unit Apartment For Sale`;
+
 const seoDescription = `${listing.units ?? ''}-unit apartment building for sale in ${listing.city}, ${listing.state} at ${
 	listing.askingPrice ? formatPriceFull(listing.askingPrice) : 'a price available upon request'
 }${listing.capRate ? `, ${listing.capRate}% cap rate` : ''}. ${listing.description}`.slice(0, 158);

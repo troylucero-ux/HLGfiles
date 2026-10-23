@@ -54,7 +54,7 @@ const articleSchema = {
 		<div class="container cs-detail">
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Case Studies', href: '/case-studies/' }, { label: cs.title }]} />
 			<span class="eyebrow">Case Study</span>
-			<h1>{cs.title}</h1>
+			<h1>{cs.title} Case Study</h1>
 			<p class="cs-detail__location">{cs.location}</p>
 			<span class="cs-detail__tags">
 				{cs.dealType.map((t) => <span class="tag">{dealTypeLabels[t]}</span>)}

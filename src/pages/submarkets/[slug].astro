@@ -322,7 +322,7 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 ---
 
 <BaseLayout
-	title={`${shortName} Multifamily Broker | Apartment Building Sales`}
+	title={`${shortName} Multifamily Broker | Apartment Building Sales`.length <= 60 ? `${shortName} Multifamily Broker | Apartment Building Sales` : `${shortName} Apartment Building Sales`}
 	description={sm.metaDescription ?? `${shortName} multifamily broker: real 2026 sales data, Highlight's closed sales and listings, and a free valuation for apartment owners.`}
 	image={heroSale?.images?.[0]}
 >

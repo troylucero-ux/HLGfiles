@@ -305,7 +305,7 @@ const allPosts: Post[] = [
 		title: 'Selling an LA Apartment Building With Tenants Under Rent Control',
 		seoTitle: 'Selling a Rent-Controlled Apartment Building in Los Angeles',
 		description:
-			'Selling a rent-controlled apartment building in Los Angeles? How rent control and long-term tenants affect price, the broker and buyer you need, and your timeline.',
+			'Selling a rent-controlled apartment building in Los Angeles? How rent control and long-term tenants affect your price, your buyers, and your timeline.',
 		date: '2026-10-15',
 		image: {
 			src: '/images/insights/selling-with-rent-controlled-tenants.webp',
@@ -982,7 +982,7 @@ const allPosts: Post[] = [
 	{
 		slug: 'broker-opinion-of-value-vs-appraisal-apartment-building',
 		title: 'Broker Opinion of Value vs. Appraisal: Which Do You Need to Sell?',
-		seoTitle: 'Broker Opinion of Value vs. Appraisal for Apartment Buildings',
+		seoTitle: 'Broker Opinion of Value vs. Appraisal: Apartment Buildings',
 		description:
 			'A Broker Opinion of Value and an appraisal answer different questions. What each is, what it costs, and which one an LA apartment seller needs first.',
 		date: '2026-10-21',
