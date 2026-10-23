@@ -101,6 +101,14 @@ const builtAt = new Date().toISOString();
 			window.gtag = gtag;
 			gtag('js', new Date());
 			gtag('config', 'G-P4GNC7QLNX');
+
+			// Phone and email clicks are recorded as events. The page stays open when a tel: or mailto: link is used, so the event is not lost.
+			document.addEventListener('click', (event) => {
+				const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="tel:"], a[href^="mailto:"]');
+				if (!link) return;
+				const isPhone = link.href.startsWith('tel:');
+				gtag('event', isPhone ? 'click_to_call' : 'click_email', { page_path: window.location.pathname });
+			});
 		</script>
 	</head>
 	<body>

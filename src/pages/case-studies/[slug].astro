@@ -3,7 +3,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { caseStudies } from '../../data/caseStudies';
 import { closings } from '../../data/closings';
+import { submarkets } from '../../data/submarkets';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+import { toParts } from '../../lib/inlineLinks';
 import { site, testimonials } from '../../data/site';
+import { formatPrice } from '../../lib/format';
 
 export function getStaticPaths() {
 	return caseStudies.map((cs) => ({
@@ -29,6 +33,64 @@ const related = cs.submarket
 	: [];
 const testimonial = testimonials.find((t) => t.caseStudySlug === cs.slug);
 
+const money = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const pricePerUnit = closing?.units ? Math.round(closing.price / closing.units) : null;
+const pricePerSf = closing?.sqft ? Math.round(closing.price / closing.sqft) : null;
+
+// Closed sales in the same submarket, linked as further proof and so each page connects to the others.
+const nearbySales = cs.submarket
+	? closings.filter((c) => c.submarket === cs.submarket && c.slug !== cs.closingSlug && c.state === 'CA').slice(0, 3)
+	: [];
+
+// Next steps for owners in a similar situation, by the kind of deal. Links only point at guides we already publish.
+const guidance: Record<string, { heading: string; text: string }> = {
+	'value-add': {
+		heading: 'Selling a value-add or rent-controlled building',
+		text: 'Buildings with below-market rents and deferred work sell differently from fully renovated ones, and the rent rules shape what buyers will pay. Start with our guides to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/), the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/), and [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/).',
+	},
+	'1031': {
+		heading: 'Planning a 1031 exchange',
+		text: 'An exchange only works if the replacement search starts early. See our page on [1031 exchanges](/1031-exchanges/) and our guide to [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/) to see what is at stake.',
+	},
+	'trust-probate': {
+		heading: 'Selling for a trust or estate',
+		text: 'Who can sell depends on how title was held. Our page on [trust and estate sales](/trust-and-estate-sales/) and our guide for [heirs who inherited an apartment building](/insights/inherited-apartment-building-los-angeles-what-to-do/) explain the process.',
+	},
+	'family-legacy': {
+		heading: 'Selling a long-held family building',
+		text: 'Families who have owned a building for decades often want privacy and a plan that respects the tenants. Read about [selling off-market vs. listing openly](/insights/selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles/) and our page on [trust and estate sales](/trust-and-estate-sales/).',
+	},
+	'buyer-rep': {
+		heading: 'Buying an apartment building',
+		text: 'Buyers do best with a broker who knows the submarket and the rules that apply to each building. See our [market update](/insights/la-apartment-market-update-q3-2026/) for current prices and cap rates, and our guide to [how to choose a multifamily broker](/insights/how-to-choose-a-multifamily-broker-in-los-angeles/).',
+	},
+};
+const nextSteps = cs.dealType.map((t) => guidance[t]).filter((g) => g !== undefined);
+
+// Questions people ask about this sale, answered only from the facts we hold. Mirrored into FAQPage structured data.
+const faqs: { q: string; a: string }[] = [];
+if (closing) {
+	const unitPart = closing.units ? ` The building has ${closing.units} units${pricePerUnit ? `, or about ${money(pricePerUnit)} per unit` : ''}${closing.sqft && pricePerSf ? `, and about ${money(pricePerSf)} per square foot of building area` : ''}.` : '';
+	faqs.push({
+		q: `How much did ${cs.title} sell for?`,
+		a: `${cs.title} (${cs.location}) sold for ${money(closing.price)}.${unitPart}`,
+	});
+}
+faqs.push({
+	q: `What happened in the sale of ${cs.title}?`,
+	a: cs.summary,
+});
+faqs.push({
+	q: 'Can Highlight help me sell a similar building?',
+	a: 'Yes. We advise apartment owners across the Los Angeles area on sales, 1031 exchanges, and trust and probate sales. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov), or see our other [case studies](/case-studies/) and [closed sales](/closed-sales/).',
+});
+const stripLinks = (text: string) => toParts(text).map((part) => part.text).join('');
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: stripLinks(f.a) } })),
+};
+
 // No reliable per-case-study date exists in the data yet, so datePublished/dateModified are
 // intentionally omitted rather than guessed — Article schema is still valid without them.
 const articleSchema = {
@@ -50,6 +112,7 @@ const articleSchema = {
 
 <BaseLayout title={`${cs.title} Case Study`} description={cs.summary} image={socialImage}>
 	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 	<article class="section">
 		<div class="container cs-detail">
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Case Studies', href: '/case-studies/' }, { label: cs.title }]} />
@@ -89,6 +152,18 @@ const articleSchema = {
 								<dd>{closing.sqft.toLocaleString()} SF</dd>
 							</div>
 						)}
+						{pricePerUnit && (
+							<div>
+								<dt>Price per Unit</dt>
+								<dd>{money(pricePerUnit)}</dd>
+							</div>
+						)}
+						{pricePerSf && (
+							<div>
+								<dt>Price per SF</dt>
+								<dd>{money(pricePerSf)}</dd>
+							</div>
+						)}
 					</div>
 				)
 			}
@@ -100,7 +175,32 @@ const articleSchema = {
 				<p>{cs.solution}</p>
 				<h2>The Results</h2>
 				<p>{cs.results}</p>
+				{
+					closing && (
+						<p>
+							See the full <a href={`/closed-sales/${closing.slug}/`}>closed sale record for {closing.name}</a>.
+						</p>
+					)
+				}
 			</div>
+
+			{
+				nextSteps.length > 0 && (
+					<div class="cs-detail__next">
+						<h2>If You Are in a Similar Situation</h2>
+						{nextSteps.map((g) => (
+							<>
+								<h3>{g.heading}</h3>
+								<p>
+									{toParts(g.text).map((part) =>
+										part.href ? <a href={part.href}>{part.text}</a> : part.text,
+									)}
+								</p>
+							</>
+						))}
+					</div>
+				)
+			}
 
 			{
 				testimonial && (
@@ -115,12 +215,32 @@ const articleSchema = {
 				{
 					cs.submarket && (
 						<a href={`/submarkets/${cs.submarket}/`} class="btn btn-outline">
-							Explore the {cs.submarket.replace(/-/g, ' ')} Submarket
+							Explore the {submarkets.find((m) => m.slug === cs.submarket)?.name ?? cs.submarket.replace(/-/g, ' ')} Submarket
 						</a>
 					)
 				}
 				<a href="/contact/?intent=bov" class="btn btn-gold">Get a Free Broker Opinion of Value</a>
 			</div>
+
+			<ArticleFaq faqs={faqs} />
+
+			{
+				nearbySales.length > 0 && (
+					<div class="cs-detail__related">
+						<h2>More Closed Sales Nearby</h2>
+						<ul>
+							{nearbySales.map((c) => (
+								<li>
+									<a href={`/closed-sales/${c.slug}/`}>
+										{c.name}, {c.city}
+									</a>{' '}
+									({formatPrice(c.price)})
+								</li>
+							))}
+						</ul>
+					</div>
+				)
+			}
 
 			{
 				related.length > 0 && (
@@ -254,6 +374,17 @@ const articleSchema = {
 		gap: 1rem;
 		flex-wrap: wrap;
 		margin: 2.5rem 0;
+	}
+
+	.cs-detail__next {
+		margin: 2.5rem 0;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.cs-detail__next h3 {
+		font-size: 1.1rem;
+		margin: 1.25rem 0 0.4rem;
 	}
 
 	.cs-detail__related {

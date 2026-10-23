@@ -60,6 +60,12 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 					status.hidden = false;
 					if (res.ok) {
 						status.textContent = "Thanks! We'll be in touch shortly.";
+						// Counts as a lead in Google Analytics. Only the page and the form's purpose are sent, never the visitor's details.
+						(window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'generate_lead', {
+							form_name: 'broker_opinion_of_value',
+							page_path: window.location.pathname,
+							intent: new URLSearchParams(window.location.search).get('intent') ?? 'none',
+						});
 						status.style.color = 'var(--success)';
 						form.reset();
 					} else {
