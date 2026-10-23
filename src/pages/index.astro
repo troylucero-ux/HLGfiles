@@ -6,8 +6,29 @@ import { closings } from '../data/closings';
 import { submarkets } from '../data/submarkets';
 import { testimonials, press } from '../data/site';
 import { formatPrice } from '../lib/format';
+import { MARKET_UPDATE as MU } from '../data/marketUpdate';
+import { posts } from '../data/posts';
 
 const notableSales = closings.filter((c) => c.city === 'Los Angeles').slice(0, 6);
+
+// Selected closings for the scrolling strip: California apartment sales, highest first.
+const stripSales = closings.filter((c) => c.state === 'CA' && c.type === 'apartment' && c.units).slice(0, 14);
+
+// Homepage market snapshot, drawn from the same generated data as the quarterly market update article.
+const snapshot = [
+	{ num: MU.headline.all.sales.toLocaleString('en-US'), label: 'LA County apartment sales' },
+	{ num: `$${MU.headline.older.pricePerUnit.toLocaleString('en-US')}`, label: 'Median price per unit, older buildings' },
+	{ num: `${MU.headline.older.capRateMedian.toFixed(2)}%`, label: 'Median cap rate, older buildings' },
+	{ num: `${MU.asking.medianPct}%`, label: 'Median sale price as a share of asking' },
+];
+
+const insightSlugs = [
+	'la-apartment-market-update-q3-2026',
+	'sb-721-balcony-inspection-los-angeles-apartment-owners',
+	'air-conditioning-law-los-angeles-apartment-owners-electrical-panel',
+	'inherited-apartment-building-los-angeles-what-to-do',
+];
+const latestInsights = insightSlugs.map((slug) => posts.find((p) => p.slug === slug)).filter((p) => p !== undefined);
 
 const services = [
 	{
@@ -49,9 +70,17 @@ const services = [
 		<div class="container hero__inner">
 			<span class="eyebrow">Los Angeles Metro Area</span>
 			<h1>Apartment Building<br />Sales Experts</h1>
-			<p class="hero__sub">We do things differently. More than your agents, we're your trusted advisors for LA multifamily investment sales.</p>
+			<p class="hero__sub">
+				Los Angeles apartment owners hire us to price, market, and sell their buildings. Start with a free Broker Opinion of Value built from real closed
+				comps, not guesswork.
+			</p>
+			<form class="hero__form js-hero-form" action="/contact/" method="get">
+				<input type="hidden" name="intent" value="bov" />
+				<label for="hero-address" class="visually-hidden">Your building's address</label>
+				<input id="hero-address" class="hero__input" type="text" placeholder="Your building's address" autocomplete="street-address" />
+				<button type="submit" class="btn btn-gold">Get a Free Opinion of Value</button>
+			</form>
 			<div class="hero__actions">
-				<a href="/contact/?intent=bov" class="btn btn-gold">Get a Free Broker Opinion of Value</a>
 				<a href="/closed-sales/" class="hero__link">See Our Closed Sales &rarr;</a>
 			</div>
 		</div>
@@ -70,7 +99,7 @@ const services = [
 					<rect x="11" y="22" width="3" height="3" />
 					<rect x="18" y="22" width="3" height="3" />
 				</svg>
-				<span class="stat-bar__num">{site.stats.unitsSold}</span>
+				<span class="stat-bar__num" data-count>{site.stats.unitsSold}</span>
 				<span class="stat-bar__label">Units Sold</span>
 			</div>
 			<div class="stat-bar__item">
@@ -78,7 +107,7 @@ const services = [
 					<path d="M5 22 L13 14 L18 19 L27 8" stroke-linecap="round" stroke-linejoin="round" />
 					<path d="M20 8 H27 V15" stroke-linecap="round" stroke-linejoin="round" />
 				</svg>
-				<span class="stat-bar__num">{site.stats.closedSalesVolume}</span>
+				<span class="stat-bar__num" data-count>{site.stats.closedSalesVolume}</span>
 				<span class="stat-bar__label">In Closed Sales</span>
 			</div>
 			<div class="stat-bar__item">
@@ -87,7 +116,7 @@ const services = [
 					<circle cx="16" cy="16" r="6" />
 					<circle cx="16" cy="16" r="1.5" fill="currentColor" stroke="none" />
 				</svg>
-				<span class="stat-bar__num">{site.stats.listToSaleRatio}</span>
+				<span class="stat-bar__num" data-count>{site.stats.listToSaleRatio}</span>
 				<span class="stat-bar__label">List-to-Sale Price Ratio</span>
 			</div>
 			<div class="stat-bar__item">
@@ -95,9 +124,30 @@ const services = [
 					<path d="M8 12 H24 M20 8 L24 12 L20 16" stroke-linecap="round" stroke-linejoin="round" />
 					<path d="M24 20 H8 M12 16 L8 20 L12 24" stroke-linecap="round" stroke-linejoin="round" />
 				</svg>
-				<span class="stat-bar__num">{site.stats.exchangeSuccessRate}</span>
+				<span class="stat-bar__num" data-count>{site.stats.exchangeSuccessRate}</span>
 				<span class="stat-bar__label">Success Rate on 1031 Exchanges</span>
 			</div>
+		</div>
+	</section>
+
+	<section class="closing-strip" aria-label="Selected closings">
+		<div class="closing-strip__track">
+			{
+				[0, 1].map((copy) => (
+					<ul class="closing-strip__list" aria-hidden={copy === 1 ? 'true' : undefined}>
+						{stripSales.map((sale) => (
+							<li>
+								<a href={`/closed-sales/#${sale.slug}`} tabindex={copy === 1 ? -1 : undefined}>
+									<span class="closing-strip__name">{sale.name}</span>
+									<span class="closing-strip__meta">
+										{sale.city} &middot; {sale.units} units &middot; {formatPrice(sale.price)}
+									</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				))
+			}
 		</div>
 	</section>
 
@@ -177,6 +227,29 @@ const services = [
 		</div>
 	</section>
 
+	<section class="section snapshot">
+		<div class="container">
+			<span class="eyebrow">LA Apartment Market</span>
+			<h2>What Los Angeles Apartment Buildings Are Selling For in 2026</h2>
+			<div class="snapshot__grid">
+				{
+					snapshot.map((s) => (
+						<div class="snapshot__item">
+							<span class="snapshot__num" data-count>
+								{s.num}
+							</span>
+							<span class="snapshot__label">{s.label}</span>
+						</div>
+					))
+				}
+			</div>
+			<p class="snapshot__note">
+				Los Angeles County apartment sales from January 2 to September 22, 2026. Older buildings are those built before 1978. Our analysis of CoStar sales data.
+			</p>
+			<a href="/insights/la-apartment-market-update-q3-2026/" class="btn btn-gold">Read the Q3 Market Update</a>
+		</div>
+	</section>
+
 	<section class="section section-alt">
 		<div class="container">
 			<span class="eyebrow">Submarkets</span>
@@ -193,6 +266,30 @@ const services = [
 			<a href="/submarkets/" class="btn btn-outline" style="margin-top: 1.5rem;">Explore All Submarkets</a>
 		</div>
 	</section>
+
+	{
+		latestInsights.length > 0 && (
+			<section class="section">
+				<div class="container">
+					<span class="eyebrow">Latest Insights</span>
+					<h2>What LA Apartment Owners Need to Know Right Now</h2>
+					<div class="insight-grid">
+						{latestInsights.map((post) => (
+							<a class="insight-card" href={`/insights/${post.slug}/`}>
+								{post.image && <img src={post.image.src} alt="" width={post.image.width} height={post.image.height} loading="lazy" />}
+								<span class="insight-card__title">{post.title}</span>
+								<span class="insight-card__desc">{post.description}</span>
+								<span class="insight-card__more">Read the guide &rarr;</span>
+							</a>
+						))}
+					</div>
+					<a href="/insights/" class="btn btn-outline insight-grid__more">
+						All Insights
+					</a>
+				</div>
+			</section>
+		)
+	}
 
 	{
 		testimonials.length > 0 && (
@@ -269,21 +366,91 @@ const services = [
 		background-image: linear-gradient(180deg, rgba(12, 46, 80, 0.86), rgba(12, 46, 80, 0.78)), url('/images/hero/453-s-gramercy-pl-hero.webp');
 		background-size: cover;
 		background-position: center;
-		background-attachment: fixed;
+		/* A slow drift replaces the old fixed-background effect: it is cheap (transform only) and works on phones. */
+		transform-origin: 60% 50%;
+		animation: hero-drift 30s ease-in-out infinite alternate;
+		will-change: transform;
+	}
+
+	@keyframes hero-drift {
+		from {
+			transform: scale(1);
+		}
+		to {
+			transform: scale(1.08);
+		}
+	}
+
+	@keyframes hero-rise {
+		from {
+			transform: translateY(18px);
+		}
+		to {
+			transform: none;
+		}
+	}
+
+	/* Transform only, no fade, so the headline is never invisible while the page loads. */
+	.hero__inner > * {
+		animation: hero-rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+	}
+
+	.hero__inner > :nth-child(2) {
+		animation-delay: 0.08s;
+	}
+
+	.hero__inner > :nth-child(3) {
+		animation-delay: 0.16s;
+	}
+
+	.hero__inner > :nth-child(4) {
+		animation-delay: 0.24s;
+	}
+
+	.hero__inner > :nth-child(5) {
+		animation-delay: 0.32s;
 	}
 
 	@media (max-width: 700px) {
 		.hero__bg {
 			background-image: linear-gradient(180deg, rgba(12, 46, 80, 0.86), rgba(12, 46, 80, 0.78)), url('/images/hero/453-s-gramercy-pl-hero-mobile.webp');
-			/* Fixed attachment is unreliable on mobile browsers and can cause jank; scroll normally instead. */
-			background-attachment: scroll;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.hero__bg {
-			background-attachment: scroll;
+		.hero__bg,
+		.hero__inner > * {
+			animation: none;
 		}
+	}
+
+	.hero__form {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 2.25rem;
+		max-width: 620px;
+	}
+
+	.hero__input {
+		flex: 1 1 260px;
+		min-width: 0;
+		padding: 0.95rem 1.1rem;
+		font: inherit;
+		font-size: 1rem;
+		color: var(--ink);
+		background: #fff;
+		border: 1px solid transparent;
+		border-radius: 2px;
+	}
+
+	.hero__input:focus-visible {
+		outline: 2px solid var(--gold-light);
+		outline-offset: 2px;
+	}
+
+	.hero__form .btn {
+		flex: 0 0 auto;
 	}
 
 	.hero::after {
@@ -353,7 +520,7 @@ const services = [
 		align-items: center;
 		gap: 2rem;
 		flex-wrap: wrap;
-		margin-top: 2.25rem;
+		margin-top: 1.5rem;
 	}
 
 	.hero__link {
@@ -662,7 +829,251 @@ const services = [
 		align-items: start;
 	}
 
+	/* Scrolling strip of selected closings */
+	.closing-strip {
+		background: var(--navy-dark);
+		color: #fff;
+		overflow: hidden;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.closing-strip__track {
+		display: flex;
+		width: max-content;
+		animation: strip-scroll 70s linear infinite;
+	}
+
+	.closing-strip:hover .closing-strip__track,
+	.closing-strip:focus-within .closing-strip__track {
+		animation-play-state: paused;
+	}
+
+	.closing-strip__list {
+		display: flex;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.closing-strip__list li {
+		flex: 0 0 auto;
+	}
+
+	.closing-strip__list a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		padding: 0.9rem 2.25rem;
+		border-right: 1px solid rgba(255, 255, 255, 0.12);
+		color: #fff;
+	}
+
+	.closing-strip__list a:hover {
+		background: rgba(255, 255, 255, 0.06);
+		text-decoration: none;
+	}
+
+	.closing-strip__name {
+		font-family: var(--font-serif);
+		font-size: 1.02rem;
+		white-space: nowrap;
+	}
+
+	.closing-strip__meta {
+		font-size: 0.74rem;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: var(--gold-light);
+		white-space: nowrap;
+	}
+
+	@keyframes strip-scroll {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.closing-strip {
+			overflow-x: auto;
+		}
+
+		.closing-strip__track {
+			animation: none;
+		}
+
+		.closing-strip__list[aria-hidden='true'] {
+			display: none;
+		}
+	}
+
+	/* Market snapshot */
+	.snapshot {
+		background: var(--navy-dark);
+		color: #fff;
+	}
+
+	.snapshot h2 {
+		color: #fff;
+		max-width: 760px;
+	}
+
+	.snapshot .eyebrow {
+		color: var(--gold-light);
+	}
+
+	.snapshot__grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		margin-top: 3rem;
+	}
+
+	.snapshot__item {
+		padding: 0.25rem 1.75rem;
+		border-left: 1px solid rgba(255, 255, 255, 0.18);
+	}
+
+	.snapshot__item:first-child {
+		border-left: none;
+		padding-left: 0;
+	}
+
+	.snapshot__num {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: clamp(2rem, 4.2vw, 3.1rem);
+		font-weight: 400;
+		color: var(--gold-light);
+		line-height: 1.1;
+	}
+
+	.snapshot__label {
+		display: block;
+		margin-top: 0.6rem;
+		font-size: 0.78rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: #c3d1e0;
+	}
+
+	.snapshot__note {
+		max-width: 720px;
+		margin: 2.5rem 0 1.75rem;
+		font-size: 0.85rem;
+		color: #c3d1e0;
+	}
+
+	.snapshot .btn-gold {
+		background: var(--gold);
+		color: var(--navy-dark);
+		border-color: var(--gold);
+	}
+
+	.snapshot .btn-gold:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+	}
+
+	/* Latest insights */
+	.insight-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1.75rem;
+		margin-top: 3rem;
+	}
+
+	.insight-card {
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+		color: var(--ink);
+		border-top: 1px solid var(--border);
+		padding-top: 1.25rem;
+		transition: transform 0.25s ease;
+	}
+
+	.insight-card img {
+		width: 100%;
+		height: auto;
+		display: block;
+		border: 1px solid var(--border);
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		transition: box-shadow 0.25s ease;
+	}
+
+	.insight-card:hover {
+		text-decoration: none;
+		transform: translateY(-4px);
+	}
+
+	.insight-card:hover img {
+		box-shadow: 0 18px 36px -22px rgba(12, 46, 80, 0.45);
+	}
+
+	.insight-card__title {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		font-weight: 500;
+		line-height: 1.3;
+		color: var(--navy-dark);
+	}
+
+	.insight-card__desc {
+		font-size: 0.9rem;
+		line-height: 1.55;
+		color: var(--ink-soft);
+	}
+
+	.insight-card__more {
+		margin-top: auto;
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--gold-dark);
+	}
+
+	.insight-grid__more {
+		display: inline-block;
+		margin-top: 2.5rem;
+	}
+
+	.service-card {
+		transition: transform 0.25s ease, border-color 0.25s ease;
+	}
+
+	.service-card:hover {
+		transform: translateY(-3px);
+		border-color: var(--gold);
+	}
+
+	/* Scroll reveal: the script adds .reveal only to blocks that start below the fold, so nothing is hidden if it fails. */
+	.reveal {
+		opacity: 0;
+		transform: translateY(22px);
+		transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.reveal.is-in {
+		opacity: 1;
+		transform: none;
+	}
+
 	@media (max-width: 860px) {
+		.snapshot__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			row-gap: 2rem;
+		}
+
+		.snapshot__item:nth-child(odd) {
+			border-left: none;
+			padding-left: 0;
+		}
+
 		.stat-bar__grid {
 			grid-template-columns: repeat(2, 1fr);
 		}
@@ -684,3 +1095,101 @@ const services = [
 		}
 	}
 </style>
+
+<script>
+	// Remember the address typed in the hero box so the BOV form on the contact page can fill itself in. The address is kept in
+	// this tab's session storage only, never in the URL.
+	const heroForm = document.querySelector<HTMLFormElement>('.js-hero-form');
+	heroForm?.addEventListener('submit', () => {
+		const address = (heroForm.querySelector('.hero__input') as HTMLInputElement | null)?.value.trim();
+		try {
+			if (address) sessionStorage.setItem('hlg_bov_address', address);
+		} catch {
+			// Storage can be blocked; the form still works, the visitor just types the address again.
+		}
+	});
+
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	// Count-up for the headline numbers. The final text stays in the page, so it is correct with scripts off and for crawlers.
+	function countUp(el: HTMLElement) {
+		const original = el.textContent?.trim() ?? '';
+		const match = original.match(/^(\D*)([\d,]*\.?\d+)(.*)$/s);
+		if (!match) return;
+		const [, prefix, numText, suffix] = match;
+		const target = parseFloat(numText.replace(/,/g, ''));
+		if (!isFinite(target)) return;
+		const decimals = (numText.split('.')[1] ?? '').length;
+		const grouped = numText.includes(',');
+		const format = (n: number) =>
+			prefix + n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals, useGrouping: grouped }) + suffix;
+		const duration = 1400;
+		const start = performance.now();
+		const tick = (now: number) => {
+			const t = Math.min(1, (now - start) / duration);
+			const eased = 1 - Math.pow(1 - t, 3);
+			el.textContent = t < 1 ? format(target * eased) : original;
+			if (t < 1) requestAnimationFrame(tick);
+		};
+		requestAnimationFrame(tick);
+	}
+
+	if (!reduceMotion && 'IntersectionObserver' in window) {
+		const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+		const countObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						countUp(entry.target as HTMLElement);
+						countObserver.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.6 },
+		);
+		counters.forEach((el) => countObserver.observe(el));
+
+		// Fade-and-rise for blocks that start below the fold. Groups are staggered.
+		const groups = [
+			'.stat-bar__grid > *',
+			'.who-we-are > *',
+			'.services-grid > *',
+			'.sales-grid > *',
+			'.snapshot .container > *',
+			'.snapshot__grid > *',
+			'.submarket-strip',
+			'.insight-grid > *',
+			'.testimonial-grid > *',
+			'.press-strip',
+			'.strategy-grid > *',
+			'main .section > .container > .eyebrow',
+			'main .section > .container > h2',
+		];
+		const seen = new Set<Element>();
+		const revealObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) return;
+					const el = entry.target as HTMLElement;
+					el.classList.add('is-in');
+					revealObserver.unobserve(el);
+					// Once it has settled, drop the helper classes so hover effects on the same element work normally.
+					window.setTimeout(() => {
+						el.classList.remove('reveal', 'is-in');
+						el.style.transitionDelay = '';
+					}, 1700);
+				});
+			},
+			{ threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+		);
+		groups.forEach((selector) => {
+			document.querySelectorAll<HTMLElement>(selector).forEach((el, i) => {
+				if (seen.has(el) || el.getBoundingClientRect().top < window.innerHeight) return;
+				seen.add(el);
+				el.style.transitionDelay = `${Math.min(i, 5) * 90}ms`;
+				el.classList.add('reveal');
+				revealObserver.observe(el);
+			});
+		});
+	}
+</script>

@@ -78,6 +78,19 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 			}
 		});
 	});
+
+	// Fill in the address typed into the homepage hero box, if the visitor came from there.
+	try {
+		const savedAddress = sessionStorage.getItem('hlg_bov_address');
+		if (savedAddress) {
+			document.querySelectorAll<HTMLInputElement>('.js-bov-form input[name="address"]').forEach((input) => {
+				if (!input.value) input.value = savedAddress;
+			});
+			sessionStorage.removeItem('hlg_bov_address');
+		}
+	} catch {
+		// Session storage can be unavailable; the field simply stays empty.
+	}
 </script>
 
 <script define:vars={{ googleMapsApiKey: site.googleMapsApiKey }}>
