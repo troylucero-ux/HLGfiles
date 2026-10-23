@@ -5,11 +5,16 @@ import { site } from '../data/site';
 import { closings } from '../data/closings';
 import { submarkets } from '../data/submarkets';
 import { testimonials, press } from '../data/site';
+import fs from 'node:fs';
 import { formatPrice } from '../lib/format';
 import { MARKET_UPDATE as MU } from '../data/marketUpdate';
 import { posts } from '../data/posts';
 
 const notableSales = closings.filter((c) => c.city === 'Los Angeles').slice(0, 6);
+
+// Small thumbnails for the homepage cards (the full-size photos are several times heavier). Falls back to the original if no thumbnail exists.
+const cardImage = (sale: (typeof closings)[number]) =>
+	fs.existsSync(`public/images/home-cards/${sale.slug}.webp`) ? `/images/home-cards/${sale.slug}.webp` : sale.images?.[0];
 
 // Selected closings for the scrolling strip: California apartment sales, highest first.
 const stripSales = closings.filter((c) => c.state === 'CA' && c.type === 'apartment' && c.units).slice(0, 14);
@@ -207,7 +212,7 @@ const services = [
 						<a
 							class="sale-card"
 							href={`/closed-sales/#${sale.slug}`}
-							style={sale.images?.[0] ? `--sale-card-img: url(${sale.images[0]})` : undefined}
+							style={cardImage(sale) ? `--sale-card-img: url(${cardImage(sale)})` : undefined}
 						>
 							<span class="sale-card__location">
 								{sale.city}, {sale.state} {sale.zip}
