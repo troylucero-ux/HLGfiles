@@ -1279,7 +1279,8 @@ const allPosts: Post[] = [
 					`Price from income and comparable sales. With the typical sale closing about ${Math.round(100 - MU.asking.medianPct)}% below asking, an asking price that is not backed by your rents and recent sales tends to come down.`,
 					'Know your size bracket. Buyers pay different prices per unit for a 7-unit building and a 30-unit building, so the comparable sales that matter most are the ones near yours in size and age.',
 					'Have your paperwork ready. Buyers ask for the rent roll, leases, registration, and expense records on day one, and a complete set keeps your price intact in escrow.',
-					'Use the current rules. In the City of Los Angeles, the allowable rent increase for rent-controlled units is 3% through June 2027, and the AB 1482 cap has been 8.7% since August 1, 2026. Measure ULA thresholds adjust every July 1. See our guides to the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/) and [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
+					'Look at what you keep, not just the price. Capital gains tax and depreciation recapture can take a large share of the proceeds, so run the numbers early with your CPA. Our guide to [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/) explains the pieces.',
+					'Use the current rules. In the City of Los Angeles, the allowable rent increase for rent-controlled units is 3% through June 2027, and the AB 1482 cap has been 8.7% since August 1, 2026. [Measure ULA thresholds](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/) adjust every July 1. See our guides to the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/) and [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
 				],
 			},
 			{
@@ -1480,7 +1481,7 @@ const allPosts: Post[] = [
 				paragraphs: [
 					'The statute says copies of all inspection reports have to be kept in the owner’s permanent records for at least two inspection cycles, and that they must be disclosed and delivered to the buyer at the time of any later sale. Expect a buyer to ask for the report early, and to ask about any open repairs.',
 					'In our experience, an unknown balcony problem is the kind of surprise that turns into a price reduction during escrow. At [1513 Arlington Ave](/case-studies/1513-arlington-ave-arlington-heights-apartments/), a 9-unit building, our seller did not want to pay for the electrical sub-panel replacement or the SB 721 inspection before closing, so we structured the sale for the buyer to take both on. The building sold for $1,400,000 and our seller completed his 1031 exchange.',
-					'If you can, get the inspection done before you list. A clean report is a selling point, and a known repair with a bid attached is easier for a buyer to price than an open question. Our guide to [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains how condition and deferred work come off the price, and our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows where it fits.',
+					'If you can, get the inspection done before you list. A clean report is a selling point, and a known repair with a bid attached is easier for a buyer to price than an open question. Our guide to [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains how condition and deferred work come off the price, and our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows where it fits. What you keep also depends on taxes, so see our guide to [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/) and, for larger City of Los Angeles sales, [Measure ULA](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/).',
 				],
 			},
 			{
@@ -1495,7 +1496,7 @@ const allPosts: Post[] = [
 			{
 				heading: 'Talk With Us',
 				paragraphs: [
-					'If you are thinking about selling a building with balconies or exterior stairs, we can help you decide whether to inspect and repair first or sell as is, and how to price either way. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov).',
+					'If you are thinking about selling a building with balconies or exterior stairs, we can help you decide whether to inspect and repair first or sell as is, and how to price either way. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov). Not sure who to hire? Our guide to [how to choose a multifamily broker](/insights/how-to-choose-a-multifamily-broker-in-los-angeles/) explains what to look for.',
 					'This article is general information, not legal or engineering advice. The law and Los Angeles’ procedures can change, so please confirm the details with a licensed inspector and your attorney.',
 				],
 			},
@@ -1599,13 +1600,13 @@ const allPosts: Post[] = [
 				heading: 'How This Affects Value and Selling',
 				paragraphs: [
 					'A buyer does not pay for an air conditioner you might someday need, but a buyer does subtract for a panel that has to be replaced. Expect buyers to ask about panel brand and age, any cooling rules that apply to the building, and what the owner has already done. A building with a recent electrical assessment and a documented plan is easier to price than one with unknowns.',
-					'Our guide to [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains how deferred work comes off the price, and our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows where to get ahead of it.',
+					'Our guide to [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/) explains how deferred work comes off the price, and our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) shows where to get ahead of it. What you keep after the sale also depends on taxes, so see our guides to [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/) and, for larger City of Los Angeles sales, [Measure ULA](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/).',
 				],
 			},
 			{
 				heading: 'Talk With Us',
 				paragraphs: [
-					'If you are thinking about selling a building with older electrical, we can help you decide whether to upgrade first or sell as is, and how to price either way. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov).',
+					'If you are thinking about selling a building with older electrical, we can help you decide whether to upgrade first or sell as is, and how to price either way. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov). Not sure who to hire? Our guide to [how to choose a multifamily broker](/insights/how-to-choose-a-multifamily-broker-in-los-angeles/) explains what to look for.',
 					'This article is general information, not legal or engineering advice. These rules are changing, so confirm the details with an attorney, a licensed electrician, and the agency that governs your property.',
 				],
 			},
