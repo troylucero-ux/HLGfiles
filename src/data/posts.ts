@@ -2126,6 +2126,78 @@ export const postFaqs: Record<string, PostFaq[]> = {
 			q: 'Can I sell an inherited apartment building with tenants in it?',
 			a: 'Yes. Most Los Angeles apartment buildings sell with tenants in place. Leases and rent rules stay with the building, so the buyer steps into the owner’s position. See our guide to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
 		},
+		{
+			q: 'My parent died and left me an apartment building. What should I do?',
+			a: 'Take a breath, then handle the urgent items: make sure the insurance is active, keep collecting rent into an account for the estate or trust, tell the tenants who to pay and who to call, and find the trust or will. Call a probate or trust attorney and a CPA before you sign anything or list the building. You do not have to decide whether to keep or sell in the first month.',
+		},
+		{
+			q: 'Who collects the rent and pays the bills after the owner of an apartment building dies?',
+			a: 'If the building was in a trust, the successor trustee generally takes over. If it was not, the court appoints an executor or administrator in probate, and that person manages the building until it is sold or distributed. Until then, rent should go into an account for the estate or trust, and the mortgage, insurance, property taxes, and repairs still have to be paid. Your attorney can tell you who has the authority to act.',
+		},
+		{
+			q: 'What happens to the mortgage on an inherited apartment building?',
+			a: 'The loan does not go away when the owner dies. Payments, taxes, and insurance have to stay current while the estate or trust decides what to do. Contact the lender, and ask your attorney whether the lender can require the loan to be paid off. If you sell, the loan is paid from the sale proceeds at closing.',
+		},
+		{
+			q: 'Can I sell an inherited duplex, triplex, or fourplex?',
+			a: 'Yes. Heirs, trustees, and executors sell small apartment buildings all the time. The same rules apply as for a larger building: who can sell depends on whether the property was in a trust or goes through probate, and the sale follows that legal timeline. See our guide to [selling a fourplex or small apartment building](/insights/selling-a-fourplex-or-small-apartment-building-in-los-angeles/).',
+		},
+		{
+			q: 'Can I sell an inherited rental property before probate is finished?',
+			a: 'Sometimes. In probate, the executor or administrator can sell once the court has given them the authority to do so, and with limited authority the sale usually goes to the court for confirmation. A trust sale usually does not need a court. Your probate attorney will tell you when the property can be listed and when it can close.',
+		},
+		{
+			q: 'What is the stepped-up basis on an inherited apartment building?',
+			a: 'It is the IRS rule that an heir’s tax basis in inherited property is generally its fair market value on the date of the owner’s death, not what the owner originally paid. It resets the starting point for figuring gain, which is why a sale soon after inheriting often produces little or no taxable gain. The previous owner’s depreciation history generally does not carry over. Ask your CPA how it applies, and keep documentation of the date-of-death value.',
+		},
+		{
+			q: 'Do I owe capital gains tax or depreciation recapture on an inherited rental property?',
+			a: 'Usually little or none if you sell soon after the date of death, because the basis steps up to market value at that date and the previous owner’s depreciation generally does not carry over. Gain can appear later if the building rises in value after the date of death, or if you depreciate it yourself while you keep it. See [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/), and confirm with your CPA.',
+		},
+		{
+			q: 'Does Proposition 19 or Proposition 58 let me keep my parent’s low property tax on an inherited apartment building?',
+			a: 'Generally no. Proposition 19 limits the parent-child exclusion to a family home that is the principal residence of both the parent and the child, and to family farms, and the Board of Equalization says a rental property transferred between parents and children does not qualify. The older Proposition 58 exclusion for other real property, up to $1 million of value, was eliminated for transfers on or after February 16, 2021. Expect the building to be reassessed to market value.',
+		},
+		{
+			q: 'Do I have to tell the county when the owner of a property dies?',
+			a: 'Yes. A change in ownership statement for the death of a property owner (form BOE-502-D) is due to the county within 150 days of the date of death, and late filing can bring penalties. The executor or trustee normally files it, with the attorney’s help.',
+		},
+		{
+			q: 'Can I raise the rent on tenants after I inherit an apartment building?',
+			a: 'The owner’s death does not cancel the tenants’ leases or the city’s rent rules. In the City of Los Angeles, rent increases on a building covered by the Rent Stabilization Ordinance stay limited, and many other California buildings are covered by the statewide cap described in our [AB 1482 guide](/insights/ab-1482-rent-cap-2026/). Check the specifics with your attorney before sending any notice.',
+		},
+		{
+			q: 'What if my brothers and sisters disagree about keeping or selling the inherited building?',
+			a: 'It happens often. If the building is in a trust, the trustee follows the trust’s terms. If it goes through probate, the executor handles the sale under the court’s supervision. If heirs end up co-owners and cannot agree, a real estate or probate attorney can explain the options, which can include a buyout or a court-ordered sale. A neutral number from a free [Broker Opinion of Value](/contact/?intent=bov) gives everyone the same starting point.',
+		},
+		{
+			q: 'How do I find out what my inherited apartment building is worth?',
+			a: 'Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov), which shows what buyers would likely pay based on the rent roll, expenses, and recent comparable sales. For tax purposes you may also need a formal appraisal as of the date of death, so ask your CPA. See [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/).',
+		},
+		{
+			q: 'Should I sell or keep an inherited apartment building?',
+			a: 'There is no single right answer. Ask who will manage the building and whether they know what it takes, whether the heirs agree, what the property tax will be after reassessment, what repairs are coming, and what the sale proceeds would do for the family compared with the building’s income. Our guide to [whether to sell an apartment building](/insights/should-i-sell-my-la-apartment-building/) walks through the questions.',
+		},
+		{
+			q: 'Can I do a 1031 exchange on an inherited property?',
+			a: 'Often there is little reason to, because the stepped-up basis already reduces the gain on a sale soon after the date of death. If the building has gained value since then, or you want to stay invested in real estate, ask your CPA whether an exchange fits your situation. See our page on [1031 exchanges](/1031-exchanges/).',
+		},
+		{
+			q: 'How long does probate take in California when the estate includes an apartment building?',
+			a: 'It varies and often takes many months, sometimes a year or more, depending on the court, creditor claim deadlines, and whether anyone contests. Your attorney can give a realistic timeline for your case. A building held in a living trust generally avoids probate.',
+		},
+		{
+			q: 'Is rental income from an inherited building taxable?',
+			a: 'Generally yes. Rent collected is income, first to the estate or trust and then to the heirs once it is distributed, with the building’s expenses deducted. Your CPA will set up the reporting and tell you which return applies.',
+		},
+		{
+			q: 'Do I need a lawyer to sell an inherited apartment building?',
+			a: 'In practice, yes. A probate or trust attorney confirms who has the authority to sell and handles any court steps, and a CPA covers the tax side. We work alongside them on pricing, marketing, buyers, and the closing timeline. See our page on [trust and estate sales](/trust-and-estate-sales/).',
+		},
+		{
+			q: 'How do I sell an inherited apartment building quickly?',
+			a: 'The legal side sets the pace more than the market. A trust sale can move once the trustee is ready, and a probate sale needs the court’s authority first. After that, a typical Los Angeles apartment sale takes 60 to 90 days from listing to closing. We can prepare the pricing and buyer list while the paperwork finishes. A quiet sale to a limited group of buyers is also an option, and our article on [selling off-market vs. listing openly](/insights/selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles/) explains the tradeoffs.',
+		},
 	],
 	'sb-721-balcony-inspection-los-angeles-apartment-owners': [
 		{
