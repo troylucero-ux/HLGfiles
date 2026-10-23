@@ -1187,14 +1187,26 @@ const services = [
 			},
 			{ threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
 		);
-		groups.forEach((selector) => {
-			document.querySelectorAll<HTMLElement>(selector).forEach((el, i) => {
-				if (seen.has(el) || el.getBoundingClientRect().top < window.innerHeight) return;
-				seen.add(el);
+		// Read every position first, then write, so the browser lays the page out once instead of once per element.
+		const setUpReveal = () => {
+			const candidates: { el: HTMLElement; i: number }[] = [];
+			groups.forEach((selector) => {
+				document.querySelectorAll<HTMLElement>(selector).forEach((el, i) => {
+					if (!seen.has(el)) {
+						seen.add(el);
+						candidates.push({ el, i });
+					}
+				});
+			});
+			const belowFold = candidates.filter(({ el }) => el.getBoundingClientRect().top >= window.innerHeight);
+			belowFold.forEach(({ el, i }) => {
 				el.style.transitionDelay = `${Math.min(i, 5) * 90}ms`;
 				el.classList.add('reveal');
 				revealObserver.observe(el);
 			});
-		});
+		};
+		// Wait until the browser is idle so this never competes with the first paint.
+		if ('requestIdleCallback' in window) window.requestIdleCallback(setUpReveal, { timeout: 1500 });
+		else window.setTimeout(setUpReveal, 300);
 	}
 </script>

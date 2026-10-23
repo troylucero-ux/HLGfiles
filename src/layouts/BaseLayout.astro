@@ -65,14 +65,30 @@ const builtAt = new Date().toISOString();
 		<slot name="head" />
 
 		<!-- Google Analytics (GA4) -->
-		<!-- The gtag.js library loads after the page has finished loading so it does not compete with first paint; the commands below are queued until it arrives. -->
+		<!-- The gtag.js library (about 180 KB) loads on the visitor's first scroll, click, key press, or touch, or after 4 seconds, whichever comes first,
+		     so it never competes with the first paint. The commands below are queued until it arrives. A visitor who leaves within 4 seconds without moving, scrolling, or clicking is not counted. -->
 		<script is:inline>
-			window.addEventListener('load', function () {
-				var s = document.createElement('script');
-				s.async = true;
-				s.src = 'https://www.googletagmanager.com/gtag/js?id=G-P4GNC7QLNX';
-				document.head.appendChild(s);
-			});
+			(function () {
+				var loaded = false;
+				var events = ['scroll', 'click', 'keydown', 'touchstart', 'mousemove'];
+				function loadAnalytics() {
+					if (loaded) return;
+					loaded = true;
+					events.forEach(function (name) {
+						window.removeEventListener(name, loadAnalytics);
+					});
+					var s = document.createElement('script');
+					s.async = true;
+					s.src = 'https://www.googletagmanager.com/gtag/js?id=G-P4GNC7QLNX';
+					document.head.appendChild(s);
+				}
+				events.forEach(function (name) {
+					window.addEventListener(name, loadAnalytics, { passive: true, once: true });
+				});
+				window.addEventListener('load', function () {
+					window.setTimeout(loadAnalytics, 4000);
+				});
+			})();
 		</script>
 		<script>
 			window.dataLayer = window.dataLayer || [];
