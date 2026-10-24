@@ -1512,10 +1512,10 @@ const allPosts: Post[] = [
 	},
 	{
 		slug: 'air-conditioning-law-los-angeles-apartment-owners-electrical-panel',
-		title: 'Air Conditioning in Los Angeles Apartments: The 82-Degree Rule, Electrical Panels, and What Owners Should Do',
-		seoTitle: 'LA Apartment AC Law: 82°F Rule and Electrical Panels',
+		title: 'LA Apartment Air Conditioning: What LA County’s 82-Degree Rule Means for Owners, and Where the City of LA Stands',
+		seoTitle: 'LA Apartment AC: County 82°F Rule vs. City of LA Status',
 		description:
-			'Is air conditioning required in every LA apartment? What the 82-degree rule and SB 655 say, what it means for your electrical sub panel, and tips for owners.',
+			'No law requires AC in every LA apartment. LA County’s 82°F rule covers unincorporated areas; the City of LA has not adopted one yet. Electrical panel tips.',
 		date: '2026-10-22',
 		image: {
 			src: '/images/insights/la-apartment-air-conditioning-electrical.png',
@@ -1527,6 +1527,7 @@ const allPosts: Post[] = [
 			{
 				heading: 'Key Takeaways',
 				paragraphs: [
+					'Where things stand today (October 2026): the City of Los Angeles has not adopted an air conditioning or maximum-temperature rule for apartments. Its council has voted to pursue one, and LA County’s rule applies only in unincorporated areas.',
 					'No law requires an owner to install air conditioning in every apartment. What exists is narrower: Los Angeles County has an 82°F indoor temperature limit for rentals in unincorporated areas, and the City of Los Angeles has voted to move toward the same standard. Neither one says “install AC.” They say the unit has to stay cool enough, and how you get there is up to you.',
 					'Where the rule applies, the county does not require electrical upgrades, but it strongly recommends that units can safely support cooling devices. In an older building, the electrical system is usually the real constraint, not the air conditioner.',
 					'Tenants in county areas already have the right to plug in a portable air conditioner without penalty. Even where that is not the law, expect more of them to do it, which puts more load on old wiring and sub panels.',
