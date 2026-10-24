@@ -20,6 +20,10 @@ Custom-coded, SEO-first rebuild of the Highlight Multifamily Group website. Stat
 | `npx wrangler dev` | Serve the built site **with working `/api/*` routes**, close to the real Cloudflare runtime (run `npm run build` first) |
 | `npx wrangler deploy` | Manual deploy (normally handled automatically by Workers Builds on push to `main`) |
 
+## Telling Bing about new pages (IndexNow)
+
+After publishing new or changed pages and waiting for the deploy, run `node scripts/indexnow.mjs` (every page) or `node scripts/indexnow.mjs /insights/new-post/` (only that page). It notifies Bing and other IndexNow search engines. Google does not use IndexNow; for Google, request indexing in Search Console. The key file in `public/` is not a secret and must stay in place.
+
 ## Before Launch — Required Setup
 
 1. **Chat widget API key.** In the Cloudflare dashboard for this Worker (`hlgfiles`) → Settings → Variables and Secrets, add an encrypted variable `ANTHROPIC_API_KEY` with a real Anthropic API key. Without it, `/api/chat` returns a friendly "not configured" error instead of crashing. For local testing, copy `.dev.vars.example` to `.dev.vars` and fill in a key, then run `npx wrangler dev`.
