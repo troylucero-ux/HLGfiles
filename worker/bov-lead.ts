@@ -4,6 +4,7 @@
 
 import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
 import { corsHeaders, type Env } from './env';
+import { checkAddress, describeAddressCheck } from './address';
 
 export async function handleBovLead(request: Request, env: Env): Promise<Response> {
 	if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders() });
@@ -35,6 +36,8 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 		});
 	}
 
+	const addressCheck = await checkAddress(address);
+
 	if (pipedriveConfigured(env)) {
 		try {
 			const person = await createPerson(env, { name, email, phone });
@@ -42,13 +45,14 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 				const noteLines = [
 					'Broker Opinion of Value request submitted via highlightreg.com.',
 					`Property Address: ${address}`,
+					describeAddressCheck(addressCheck),
 					`Email: ${email}`,
 					`Phone: ${phone}`,
 				];
 				if (monthlyGrossRents) noteLines.push(`Monthly Gross Rents: ${monthlyGrossRents}`);
 
 				await createLead(env, {
-					title: `BOV Request — ${name} — ${address}`,
+					title: `${addressCheck.status === 'not_found' ? '[CHECK ADDRESS] ' : ''}BOV Request — ${name} — ${address}`,
 					personId: person.id,
 					note: noteLines.join('\n'),
 				});
@@ -59,7 +63,7 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 			console.error('Pipedrive BOV lead sync error:', err);
 		}
 	} else {
-		console.log('BOV lead received (Pipedrive not configured):', { name, email, phone, address, monthlyGrossRents });
+		console.log('BOV lead received (Pipedrive not configured):', { name, email, phone, address, monthlyGrossRents, addressCheck });
 	}
 
 	return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders() });

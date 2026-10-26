@@ -48,6 +48,35 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 			const data = Object.fromEntries(new FormData(form).entries());
 			data.privacyConsent = (form.querySelector('input[name="privacyConsent"]') as HTMLInputElement)?.checked as unknown as string;
 
+			// Check the property address before sending. If it cannot be found, ask the visitor to look again once. A second
+			// click on Submit with the same address sends it as typed, so a real but unlisted building is never blocked.
+			const typedAddress = String(data.address ?? '').trim();
+			if (form.dataset.warnedAddress !== typedAddress) {
+				if (button) button.disabled = true;
+				if (status) {
+					status.hidden = false;
+					status.style.color = 'var(--ink-light)';
+					status.textContent = 'Checking the address...';
+				}
+				let addressStatus = 'unchecked';
+				try {
+					const check = await fetch('/api/verify-address?address=' + encodeURIComponent(typedAddress), { signal: AbortSignal.timeout(5000) });
+					addressStatus = ((await check.json()) as { status?: string }).status ?? 'unchecked';
+				} catch {
+					// The check could not run; carry on and send the form.
+				}
+				if (addressStatus === 'not_found') {
+					form.dataset.warnedAddress = typedAddress;
+					if (status) {
+						status.style.color = '#8a5a00';
+						status.textContent =
+							"We couldn't find that address. Please check the street number, street name, and city (for example, 123 Main St, Los Angeles, CA 90001). If it is correct, click Submit again to send it as typed.";
+					}
+					if (button) button.disabled = false;
+					return;
+				}
+			}
+
 			if (button) button.disabled = true;
 			try {
 				const res = await fetch(endpoint, {

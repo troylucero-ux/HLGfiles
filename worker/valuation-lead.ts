@@ -7,6 +7,7 @@
 
 import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
 import { corsHeaders, type Env } from './env';
+import { checkAddress, describeAddressCheck } from './address';
 
 interface ValuationLeadBody {
 	address?: string;
@@ -40,6 +41,8 @@ export async function handleValuationLead(request: Request, env: Env): Promise<R
 		});
 	}
 
+	const addressCheck = await checkAddress(address);
+
 	if (pipedriveConfigured(env)) {
 		try {
 			const person = await createPerson(env, { name: `${address} (Valuation Calculator)` });
@@ -47,6 +50,7 @@ export async function handleValuationLead(request: Request, env: Env): Promise<R
 				const noteLines = [
 					'Property Value Calculator submission on highlightreg.com. No contact info was collected.',
 					`Property Address: ${address}`,
+					describeAddressCheck(addressCheck),
 					submarket ? `Submarket Selected: ${submarket}` : null,
 					`Monthly Gross Rent Entered: ${monthlyGrossRents}`,
 					yearBuilt ? `Year Built: ${yearBuilt}` : null,
@@ -56,7 +60,7 @@ export async function handleValuationLead(request: Request, env: Env): Promise<R
 				].filter((line): line is string => Boolean(line));
 
 				await createLead(env, {
-					title: `Valuation Calculator — ${address}`,
+					title: `${addressCheck.status === 'not_found' ? '[CHECK ADDRESS] ' : ''}Valuation Calculator — ${address}`,
 					personId: person.id,
 					note: noteLines.join('\n'),
 				});

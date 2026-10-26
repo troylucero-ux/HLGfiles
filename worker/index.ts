@@ -3,6 +3,7 @@ import { handleBovLead } from './bov-lead';
 import { handleOmLead } from './om-lead';
 import { handleValuationLead } from './valuation-lead';
 import { handleNewsletter } from './newsletter';
+import { handleVerifyAddress } from './verify-address';
 import { redirects } from './redirects';
 import type { Env } from './env';
 
@@ -15,6 +16,7 @@ export default {
 		if (url.pathname === '/api/om-lead') return handleOmLead(request, env);
 		if (url.pathname === '/api/valuation-lead') return handleValuationLead(request, env);
 		if (url.pathname === '/api/newsletter') return handleNewsletter(request, env);
+		if (url.pathname === '/api/verify-address') return handleVerifyAddress(request);
 
 		// Old highlightreg.com (WordPress) URLs — redirect before falling through to ASSETS so
 		// existing Google rankings and shared links survive the migration.
