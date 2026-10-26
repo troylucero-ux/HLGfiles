@@ -7,10 +7,11 @@
 
 import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
 import { corsHeaders, type Env } from './env';
-import { checkAddress, describeAddressCheck } from './address';
+import { checkAddress, describeAddressCheck, type AddressCheck } from './address';
 
 interface ValuationLeadBody {
 	address?: string;
+	addressSource?: string;
 	submarket?: string;
 	monthlyGrossRents?: string;
 	yearBuilt?: string;
@@ -41,7 +42,9 @@ export async function handleValuationLead(request: Request, env: Env): Promise<R
 		});
 	}
 
-	const addressCheck = await checkAddress(address);
+	// An address the visitor picked from Google's suggestions has already been confirmed by Google.
+	const addressCheck: AddressCheck =
+		body.addressSource === 'google' ? { status: 'verified', matched: address, source: 'google' } : await checkAddress(address);
 
 	if (pipedriveConfigured(env)) {
 		try {

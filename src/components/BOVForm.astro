@@ -136,7 +136,7 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 	// Google's billing session with a free "IDs only" lookup, so each completed search costs nothing at our volume.
 	if (placesKey) {
 		const API = 'https://places.googleapis.com/v1/';
-		document.querySelectorAll('.js-bov-form input[name="address"]').forEach((input) => {
+		document.querySelectorAll('.js-bov-form input[name="address"], #val-address').forEach((input, index) => {
 			const form = input.closest('form');
 			const wrap = document.createElement('div');
 			wrap.className = 'bov-address';
@@ -144,7 +144,7 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 			wrap.appendChild(input);
 			const list = document.createElement('ul');
 			list.className = 'bov-address__list';
-			list.id = 'bov-address-list';
+			list.id = 'address-suggestions-' + index;
 			list.setAttribute('role', 'listbox');
 			list.hidden = true;
 			wrap.appendChild(list);
@@ -265,11 +265,11 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 </script>
 
 <style>
-	.bov-form :global(.bov-address) {
+	:global(.bov-address) {
 		position: relative;
 	}
 
-	.bov-form :global(.bov-address__list) {
+	:global(.bov-address__list) {
 		position: absolute;
 		z-index: 20;
 		top: calc(100% + 2px);
@@ -284,20 +284,20 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 		box-shadow: 0 14px 30px -16px rgba(12, 46, 80, 0.4);
 	}
 
-	.bov-form :global(.bov-address__list [role='option']) {
+	:global(.bov-address__list [role='option']) {
 		padding: 0.6rem 0.9rem;
 		font-size: 0.92rem;
 		color: var(--ink);
 		cursor: pointer;
 	}
 
-	.bov-form :global(.bov-address__list [role='option']:hover),
-	.bov-form :global(.bov-address__list [role='option'].is-active) {
+	:global(.bov-address__list [role='option']:hover),
+	:global(.bov-address__list [role='option'].is-active) {
 		background: var(--navy-tint);
 		color: var(--navy-dark);
 	}
 
-	.bov-form :global(.bov-address__credit) {
+	:global(.bov-address__credit) {
 		padding: 0.3rem 0.9rem 0.2rem;
 		font-size: 0.68rem;
 		letter-spacing: 0.04em;

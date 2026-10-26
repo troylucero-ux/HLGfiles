@@ -191,7 +191,16 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 		// Prefill the BOV form below so a visitor who wants a precise number doesn't have to retype it.
 		const bovAddress = document.querySelector('.js-bov-form input[name="address"]');
 		const bovRent = document.querySelector('.js-bov-form input[name="monthlyGrossRents"]');
-		if (bovAddress) bovAddress.value = address;
+		const fromGoogle = form.dataset.googleAddress === address && address !== '';
+		if (bovAddress) {
+			bovAddress.value = address;
+			// An address already chosen from Google's suggestions needs no second check in the form below.
+			const bovForm = bovAddress.closest('form');
+			if (bovForm) {
+				if (fromGoogle) bovForm.dataset.googleAddress = address;
+				else delete bovForm.dataset.googleAddress;
+			}
+		}
 		if (bovRent) bovRent.value = data.monthlyGrossRents;
 
 		// Log every submission to Pipedrive, even if the visitor never requests a full BOV, so it
@@ -201,6 +210,7 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				address,
+				addressSource: fromGoogle ? 'google' : undefined,
 				submarket: areaName ?? 'Other / Not Listed',
 				monthlyGrossRents: data.monthlyGrossRents,
 				yearBuilt: String(yearBuilt),
