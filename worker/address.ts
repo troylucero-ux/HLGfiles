@@ -9,7 +9,7 @@
 // "not found" is a warning for a person to review, never a reason to block a lead.
 
 export type AddressCheck =
-	| { status: 'verified'; matched: string; source: 'la-county' | 'census' }
+	| { status: 'verified'; matched: string; source: 'la-county' | 'census' | 'google' }
 	| { status: 'not_found' }
 	| { status: 'unchecked' };
 
@@ -127,6 +127,7 @@ export async function checkAddress(raw: string, timeoutMs = 3500): Promise<Addre
 // One line for the Pipedrive note, so the team can see at a glance whether the address looked real.
 export function describeAddressCheck(check: AddressCheck): string {
 	if (check.status === 'verified') {
+		if (check.source === 'google') return `Address check: chosen from Google's address suggestions (${check.matched}).`;
 		const where = check.source === 'la-county' ? "Los Angeles County's address database" : 'the US Census address database';
 		return `Address check: found in ${where} as ${check.matched}.`;
 	}

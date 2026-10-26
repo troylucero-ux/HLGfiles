@@ -4,13 +4,13 @@
 
 import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
 import { corsHeaders, type Env } from './env';
-import { checkAddress, describeAddressCheck } from './address';
+import { checkAddress, describeAddressCheck, type AddressCheck } from './address';
 
 export async function handleBovLead(request: Request, env: Env): Promise<Response> {
 	if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders() });
 	if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: corsHeaders() });
 
-	let body: { name?: string; email?: string; phone?: string; address?: string; monthlyGrossRents?: string; privacyConsent?: boolean };
+	let body: { name?: string; email?: string; phone?: string; address?: string; monthlyGrossRents?: string; privacyConsent?: boolean; addressSource?: string };
 	try {
 		body = await request.json();
 	} catch {
@@ -36,7 +36,9 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 		});
 	}
 
-	const addressCheck = await checkAddress(address);
+	// An address the visitor picked from Google's suggestions has already been confirmed by Google.
+	const addressCheck: AddressCheck =
+		body.addressSource === 'google' ? { status: 'verified', matched: address, source: 'google' } : await checkAddress(address);
 
 	if (pipedriveConfigured(env)) {
 		try {

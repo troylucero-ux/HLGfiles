@@ -5,12 +5,12 @@ export const site = {
 	officeAddress: '16820 Ventura Boulevard, Encino, CA 91436',
 	officeDRE: '01811831',
 	phone: '310.405.1890',
-	// Google Maps Platform API key (Places API enabled), used client-side for address autocomplete
+	// Google Maps Platform API key (Places API (New) enabled), used client-side for address suggestions
 	// on the BOV form. This is NOT a secret — Google Maps browser keys are visible in page source by
 	// design; you secure it in the Google Cloud Console by restricting it to this site's domain(s)
 	// under "API restrictions" / "Application restrictions", not by hiding it. Leave blank to disable
 	// autocomplete (the address field still works as a plain text input).
-	googleMapsApiKey: '',
+	googleMapsApiKey: 'AIzaSyCkvLUOVAfSFT_WMocNQwhpLaWIp_FDhvY',
 	// Homepage stat-bar figures, as displayed live on highlightreg.com (rounded marketing figures).
 	stats: {
 		unitsSold: '1,400+',
