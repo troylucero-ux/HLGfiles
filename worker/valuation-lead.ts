@@ -7,7 +7,7 @@
 
 import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
 import { corsHeaders, type Env } from './env';
-import { checkAddress, describeAddressCheck, type AddressCheck } from './address';
+import { californiaStatus, checkAddress, describeAddressCheck, type AddressCheck } from './address';
 
 interface ValuationLeadBody {
 	address?: string;
@@ -40,6 +40,10 @@ export async function handleValuationLead(request: Request, env: Env): Promise<R
 			status: 400,
 			headers: corsHeaders(),
 		});
+	}
+
+	if (californiaStatus(address) === 'outside') {
+		return new Response(JSON.stringify({ error: 'This calculator only covers properties in California.' }), { status: 400, headers: corsHeaders() });
 	}
 
 	// An address the visitor picked from Google's suggestions has already been confirmed by Google.

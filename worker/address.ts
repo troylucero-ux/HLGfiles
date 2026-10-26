@@ -136,3 +136,13 @@ export function describeAddressCheck(check: AddressCheck): string {
 	}
 	return 'Address check: could not be run (service unavailable).';
 }
+
+// Does a typed address say it is in California? 'ca' = yes, 'outside' = it names another state or a non-California ZIP code,
+// 'unknown' = no state or ZIP given. California ZIP codes run from 90001 to 96162. "LA" is not treated as Louisiana.
+export function californiaStatus(address: string): 'ca' | 'outside' | 'unknown' {
+	const zip = address.match(/(?:,|\s)(\d{5})(?:-\d{4})?\s*(?:,\s*(?:USA|US))?\s*$/)?.[1];
+	if (zip) return zip >= '90001' && zip <= '96162' ? 'ca' : 'outside';
+	if (/\bCA\b/.test(address) || /\bCalifornia\b/i.test(address)) return 'ca';
+	if (new RegExp(',\\s*(AL|AK|AZ|AR|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\\b').test(address) || new RegExp(',\\s*(Texas|Nevada|Arizona|Oregon|Washington|Florida|New York|Colorado|Utah|Idaho|Georgia|Illinois|Louisiana|Oklahoma|Tennessee|Hawaii|New Mexico|Montana)\\b', 'i').test(address)) return 'outside';
+	return 'unknown';
+}

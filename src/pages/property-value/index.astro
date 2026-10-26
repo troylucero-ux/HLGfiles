@@ -30,7 +30,8 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 				<form id="valuation-form">
 					<div class="calc-field">
 						<label for="val-address">Property Address</label>
-						<input id="val-address" name="address" type="text" placeholder="123 Main St, Los Angeles, CA" required />
+						<input id="val-address" name="address" type="text" placeholder="123 Main St, Los Angeles, CA" data-california-only="true" required />
+						<p id="val-address-error" class="calc-error" role="alert" hidden></p>
 					</div>
 
 					<div class="calc-row">
@@ -122,6 +123,18 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 
 	const form = document.getElementById('valuation-form');
 	const result = document.getElementById('valuation-result');
+	document.getElementById('val-address')?.addEventListener('input', () => {
+		document.getElementById('val-address-error').hidden = true;
+	});
+
+	// Does a typed address say it is in California? California ZIP codes run from 90001 to 96162.
+	function californiaStatus(address) {
+		const zip = address.match(/(?:,|\s)(\d{5})(?:-\d{4})?\s*(?:,\s*(?:USA|US))?\s*$/)?.[1];
+		if (zip) return zip >= '90001' && zip <= '96162' ? 'ca' : 'outside';
+		if (/\bCA\b/.test(address) || /\bCalifornia\b/i.test(address)) return 'ca';
+		if (new RegExp(',\\s*(AL|AK|AZ|AR|CO|CT|DE|FL|GA|HI|ID|IL|IN|IA|KS|KY|ME|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VT|VA|WA|WV|WI|WY|DC)\\b').test(address) || new RegExp(',\\s*(Texas|Nevada|Arizona|Oregon|Washington|Florida|New York|Colorado|Utah|Idaho|Georgia|Illinois|Louisiana|Oklahoma|Tennessee|Hawaii|New Mexico|Montana)\\b', 'i').test(address)) return 'outside';
+		return 'unknown';
+	}
 
 	form?.addEventListener('submit', (e) => {
 		e.preventDefault();
@@ -133,6 +146,21 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 		const units = data.units ? Number(data.units) : null;
 
 		if (!address || !yearBuilt || !monthlyRent) return;
+
+		// The calculator only has California sales data. Ask for a California address before doing anything else.
+		const caStatus = californiaStatus(address);
+		const addressError = document.getElementById('val-address-error');
+		if (caStatus !== 'ca') {
+			addressError.textContent =
+				caStatus === 'outside'
+					? 'This calculator only covers properties in California. For a property in another state, request a free Broker Opinion of Value below and we will help.'
+					: 'Please include the city and state in the address, for example: 123 Main St, Los Angeles, CA.';
+			addressError.hidden = false;
+			result.hidden = true;
+			document.getElementById('val-address')?.focus();
+			return;
+		}
+		addressError.hidden = true;
 
 		const bracket = bracketForYear(yearBuilt);
 		const ageGroup = yearBuilt < 1978 ? 'rso' : 'post1978';
@@ -268,6 +296,13 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 		font-weight: 400;
 		color: var(--ink-light);
 		text-transform: none;
+	}
+
+	.calc-error {
+		margin: 0.5rem 0 0;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: #b3261e;
 	}
 
 	.calc-field__hint {
