@@ -1949,6 +1949,316 @@ const allPosts: Post[] = [
 			},
 		],
 	},
+	{
+		slug: 'la-apartment-building-due-diligence-checklist-for-buyers',
+		title: 'LA Apartment Building Due Diligence Checklist for Buyers',
+		seoTitle: 'LA Apartment Due Diligence Checklist for Buyers',
+		description:
+			'A due diligence checklist for buying an LA apartment building: rent roll and estoppels, rent control, SB 721, permits, property tax, and red flags.',
+		date: '2026-10-27',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Due diligence is the period after your offer is accepted when you check everything the seller told you. In Los Angeles, the biggest surprises tend to come from the rent roll, the rent control status, deferred maintenance, and missing permits.',
+					'Verify income three ways: the rent roll, the leases and tenant estoppels, and the seller’s bank deposits.',
+					'Order the building’s legal and compliance records early, because some of them take time to arrive.',
+					'Anything you find is leverage. A good due diligence process ends in a lower price, a credit, or a decision to walk away before your deposit is at risk.',
+				],
+			},
+			{
+				heading: 'How the Due Diligence Period Works',
+				paragraphs: [
+					'Once the buyer and seller sign a purchase agreement and open escrow, the buyer has a set period to inspect the building and review its records before the deposit becomes non-refundable. The length of that period, the size of the deposit, and the buyer’s right to cancel are all negotiated, which is one reason the highest offer is not always the best one, as we explain in our guide to [selling an apartment building step by step](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/).',
+					'Start the work the day escrow opens. Requests for records, inspections, and loan appraisals each take days, and you will not have time to do them one after another.',
+				],
+			},
+			{
+				heading: '1. Income: Check the Rent Roll Three Ways',
+				paragraphs: [
+					'The rent roll is the seller’s list of units, tenants, and rents. Treat it as a claim, not a fact. Compare it against the leases, against the tenant estoppels, which are short statements in which each tenant confirms their rent, deposit, and lease dates, and against the seller’s bank deposits for the last several months.',
+					'Look for rents that differ between documents, units listed as occupied that have no lease, tenants on month-to-month terms, free rent or concessions, and income from laundry or parking that is not in the rent roll. Ask for the last two to three years of income and expenses, and a trailing twelve-month statement.',
+					'On expenses, do not rely on the seller’s summary. Ask for the actual utility bills, insurance, property tax, repairs, and management costs, and add up what the building really costs to run. A water bill that crept up for a year can cost a buyer real value, as we show in our guide to [utility bill diligence](/insights/utility-bill-diligence-la-apartment-owners/): at a 7% cap rate, $8,000 of extra yearly expense lowers a building’s value by about $114,000.',
+				],
+			},
+			{
+				heading: '2. Rent Control and Tenant Law',
+				paragraphs: [
+					'Confirm which rules apply. In the City of Los Angeles, buildings with a certificate of occupancy issued before October 1, 1978 are generally covered by the Rent Stabilization Ordinance (RSO), and newer buildings typically fall under the statewide AB 1482 cap. You can look up an address on the City’s ZIMAS site, and the Housing Department answers questions at (866) 557-7368. Other cities, including Santa Monica, West Hollywood, and Beverly Hills, have their own rent control.',
+					'Ask for proof that the RSO registration and fees are current, a record of rent increases and the notices behind them, and a history of any no-fault evictions and relocation payments. Check the increases against what the law allowed at the time; our guides to the [City’s 2026 RSO changes](/insights/la-rso-rent-increase-rules-2026-apartment-owners/) and the [AB 1482 cap](/insights/ab-1482-rent-cap-2026/) show the current limits. If the seller raised rents after a declared emergency, ask how they complied, since the rules are changing under [SB 1365](/insights/sb-1365-emergency-rent-cap-la-apartment-owners/).',
+					'Also ask about any open or threatened tenant disputes, pending evictions, and the results of City code enforcement inspections, which are part of the Systematic Code Enforcement Program.',
+				],
+			},
+			{
+				heading: '3. The Physical Building',
+				paragraphs: [
+					'Hire a licensed inspector, and add specialists where the building calls for them. In older Los Angeles buildings, the items that most often drive cost are:',
+					'Roof and drainage. Flat roofs, aging flashing, and clogged drains show up fast in a wet winter, as we describe in our [El Niño checklist](/insights/el-nino-2026-la-apartment-owners-checklist/).',
+					'Plumbing. Older buildings may still have galvanized or cast-iron pipes. Ask for repair history and have a plumber scope the lines.',
+					'Electrical. Ask what panels the building has and whether any are brands inspectors flag. Our guide to [air conditioning rules and electrical panels](/insights/air-conditioning-law-los-angeles-apartment-owners-electrical-panel/) explains why it matters when tenants or landlords add cooling.',
+					'Seismic. Los Angeles requires retrofits of pre-1978 wood-frame soft-story buildings under a 2015 ordinance, so ask whether the building is covered and for proof that the work was done and permitted.',
+					'Balconies and stairs. If the building has three or more units with elevated wood-supported balconies, decks, or stairways, ask for the SB 721 inspection report and proof of any repairs. See our [SB 721 guide](/insights/sb-721-balcony-inspection-los-angeles-apartment-owners/).',
+					'Appliances. For leases entered into, amended, or extended on or after January 1, 2026, each unit needs a working stove and refrigerator under [AB 628](/insights/ab-628-stove-refrigerator-law-la-apartment-owners/). Count the units that do not have them.',
+					'Lead paint. Federal law requires sellers of housing built before 1978 to disclose known lead-based paint hazards.',
+				],
+			},
+			{
+				heading: '4. Permits and the Unit Count',
+				paragraphs: [
+					'Compare the number of units the City has on record with the number being rented. A unit that was added without permits can bring orders to correct or remove it, and it is a classic way for a building’s income to be overstated. Pull the permit history on ZIMAS and with the Los Angeles Department of Building and Safety, look for open permits and unpermitted work, and ask the seller to explain any difference.',
+				],
+			},
+			{
+				heading: '5. Taxes, Insurance, and Transfer Costs',
+				paragraphs: [
+					'Property tax. A purchase triggers a reassessment. Proposition 13 sets the base rate at 1% of the purchase price, and voter-approved assessments and direct charges are added to it, so the seller’s current tax bill tells you very little about yours. Model your own.',
+					'Insurance. Get quotes before you remove contingencies. Ask for the seller’s claims history, since a building’s loss record affects the price and availability of coverage.',
+					'Transfer taxes. Check who pays under the contract. In the City of Los Angeles, the Measure ULA tax is figured on the gross price, including any loan the buyer assumes, so an assumed loan does not reduce it. See our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/) and [calculator](/measure-ula-calculator/). It matters to you twice: it can affect the seller’s pricing now, and it will affect your own exit later.',
+				],
+			},
+			{
+				heading: '6. Title, Environmental, and Financing',
+				paragraphs: [
+					'Read the preliminary title report for liens, easements, and anything recorded against the property. If your lender or the building’s history calls for it, order an environmental report. Coordinate your loan appraisal early, because a lender’s appraisal that comes in below the price can force you to renegotiate or bring more cash. Our guide to [financing an apartment building](/insights/financing-an-apartment-building-in-los-angeles/) explains how lenders look at the building.',
+				],
+			},
+			{
+				heading: 'Red Flags',
+				paragraphs: [
+					'Rents on the rent roll that tenants or leases contradict.',
+					'Expenses that look too low, or a seller who will not provide actual bills.',
+					'No record of RSO registration, or increases that exceed what the law allowed.',
+					'Units that are rented but not on the City’s records.',
+					'Deferred maintenance that the seller describes as minor and the inspector does not.',
+					'A seller who resists estoppels or access to units.',
+				],
+			},
+			{
+				heading: 'Build the Right Team',
+				paragraphs: [
+					'Most buyers need a real estate attorney, a licensed inspector, a CPA, a lender, and a broker who knows the neighborhood. We represent buyers as well as sellers, and our [closed sales](/closed-sales/) page shows which side we were on in each deal. If you are weighing a building, you can [contact us](/contact/) and we will walk through the numbers.',
+					'This article is general information, not legal, tax, or investment advice.',
+				],
+			},
+		],
+	},
+	{
+		slug: 'financing-an-apartment-building-in-los-angeles',
+		title: 'How to Finance an Apartment Building in Los Angeles',
+		seoTitle: 'Financing an LA Apartment Building: Loan Options Explained',
+		description:
+			'How buyers finance LA apartment buildings: agency, bank, and bridge loans, what lenders test, and why a higher interest rate can cut your cash return.',
+		date: '2026-10-27',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Buildings with up to four units can generally be financed with residential mortgages. Buildings with five or more units need commercial loans, which look hard at the building’s income.',
+					'Lenders size a loan on the lowest of a few tests: how much of the value they will lend, and how well the building’s net operating income covers the payment.',
+					'When your loan’s interest rate is higher than the building’s cap rate, borrowing can lower your cash-on-cash return instead of raising it.',
+					'Programs, loan limits, and rates change often. Treat any number in an older guide as out of date and ask a lender for a current quote. We are brokers, not lenders.',
+				],
+			},
+			{
+				heading: 'Residential Loans or Commercial Loans',
+				paragraphs: [
+					'The size of the building decides the kind of loan. Buildings with up to four units can generally be financed with residential mortgages, which lean heavily on the buyer’s income and credit. Buildings with five or more units need commercial loans, which look at the building’s net operating income and cap rate, as we explain in our guide to [selling a fourplex or small apartment building](/insights/selling-a-fourplex-or-small-apartment-building-in-los-angeles/).',
+					'That difference changes who your lender is and how long the process takes, so decide which kind of building you are shopping for before you make offers.',
+				],
+			},
+			{
+				heading: 'Where Apartment Loans Come From',
+				paragraphs: [
+					'Agency lenders. Fannie Mae and Freddie Mac both run programs for smaller apartment buildings, delivered through approved lenders. These programs have been revised recently, so terms in older guides may no longer apply, and the details of loan size, leverage, and coverage should come from a current quote.',
+					'Banks and credit unions. Local and regional lenders often hold loans on their own books. They can be flexible and fast, but they may offer shorter fixed periods and may ask for a personal guarantee.',
+					'Life insurance companies and other institutions. These lenders usually focus on larger, stable buildings and lend at lower leverage.',
+					'Bridge lenders. Short-term loans fit a building that is not stable yet, such as one that needs renovation or lease-up, with the plan of refinancing into a longer loan later. They tend to cost more.',
+					'Seller financing and assumable loans. Occasionally a seller carries part of the price, or the buyer takes over the seller’s existing loan. If a buyer assumes a loan, remember that in the City of Los Angeles the Measure ULA tax is calculated on the gross value, including the loan, so assuming debt does not reduce it.',
+				],
+			},
+			{
+				heading: 'What Lenders Test',
+				paragraphs: [
+					'Debt service coverage. The debt service coverage ratio (DSCR) is the building’s net operating income divided by the year’s loan payments. A ratio of 1.0 means the building just covers the payment. Lenders set a minimum, often somewhere around 1.2 to 1.35 times, and it varies by lender and loan.',
+					'Loan-to-value. The loan is also capped at a percentage of the property’s value, so a lender’s appraisal matters. If the appraisal comes in below your price, you may have to bring more cash. See [Broker Opinion of Value vs. appraisal](/insights/broker-opinion-of-value-vs-appraisal-apartment-building/).',
+					'Debt yield. Some lenders also look at net operating income divided by the loan amount.',
+					'The borrower. Lenders look at experience, liquidity, and net worth, and they will ask whether the loan is recourse, meaning you are personally liable, or non-recourse.',
+					'Terms. Compare the interest rate, whether it is fixed or floating, any interest-only period, the length of the term against the amortization, and the prepayment penalty if you sell or refinance early.',
+				],
+			},
+			{
+				heading: 'How Lenders Treat Rent Control',
+				paragraphs: [
+					'Lenders underwrite the rents actually in place, and they apply their own assumptions for vacancy, expenses, and reserves. They give no credit for the rents a building could reach if units turned over. For a rent-controlled building that sits below market, that is conservative but realistic, because the owner cannot raise rents to market while tenants remain. Our guide to [how apartment buildings are valued](/insights/how-to-value-an-apartment-building-in-los-angeles/) shows how buyers and lenders see the same income.',
+				],
+			},
+			{
+				heading: 'Why a Higher Rate Can Cut Your Return',
+				paragraphs: [
+					'Take a 10-unit building bought for $2,400,000, with net operating income of $144,000. That is a 6.0% cap rate. These are illustrative assumptions, not a quote or a forecast.',
+					'Buy it all cash and your return on the investment is the cap rate, 6.0%.',
+					'Now borrow 65%, or $1,560,000, on a 30-year loan at 6.5%. The payments come to about $118,300 a year, which leaves $25,700 of cash flow on $840,000 of equity, a cash-on-cash return of about 3.1%, and a debt service coverage ratio of 1.22.',
+					'The loan lowered the return, because it costs more than the building earns on the borrowed money. At a 5.0% rate, the same loan costs about $100,500 a year, and the cash-on-cash return rises to about 5.2%, with coverage of 1.43. Borrowing helps only when the rate is below the cap rate, or when you can raise the income. We go through the math in our guide to [cap rate, cash-on-cash return, and GRM](/insights/how-to-analyze-an-la-apartment-building-cap-rate-cash-on-cash-grm/).',
+				],
+			},
+			{
+				heading: 'Financing and Your 1031 Exchange',
+				paragraphs: [
+					'If you are buying with the proceeds of a sale, your loan has to close inside the exchange timeline: 45 days to identify a replacement property and 180 days to close. Talk to a lender before you identify a property, not after, and read our [1031 exchange guide](/1031-exchanges/).',
+				],
+			},
+			{
+				heading: 'A Practical Order of Operations',
+				paragraphs: [
+					'Talk to two or three lenders before you start making offers, so you know the loan you can realistically get. Ask each for a quote on the kind of building you want, and compare rate, leverage, coverage, prepayment, and recourse. Once your offer is accepted, order the appraisal early, and line up the loan’s timeline with your due diligence period. Our [due diligence checklist](/insights/la-apartment-building-due-diligence-checklist-for-buyers/) covers what to review while the loan is being underwritten.',
+					'This article is general information, not financial advice or a loan offer. Please confirm current programs, terms, and rates with a lender.',
+				],
+			},
+		],
+	},
+	{
+		slug: 'how-to-analyze-an-la-apartment-building-cap-rate-cash-on-cash-grm',
+		title: 'How to Analyze an LA Apartment Building: Cap Rate, Cash-on-Cash, and GRM',
+		seoTitle: 'Analyze an LA Apartment Building: Cap Rate and Cash-on-Cash',
+		description:
+			'Learn cap rate, GRM, DSCR, and cash-on-cash return with one worked LA example, and see how rent control and interest rates change the numbers for buyers.',
+		date: '2026-10-27',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Net operating income (NOI) is the building’s income after operating expenses and before loan payments. Almost every other measure starts from it.',
+					'The cap rate is NOI divided by price. It tells you the return if you bought the building with all cash.',
+					'Cash-on-cash return and debt service coverage show how a loan changes the picture, for better or worse.',
+					'In Los Angeles, rent control limits how fast income can grow, so a building’s price should be judged on the rents in place, not on what the rents could be.',
+				],
+			},
+			{
+				heading: 'Step 1: Net Operating Income',
+				paragraphs: [
+					'Start with the rent the building actually collects over a year. Subtract operating expenses: property tax, insurance, utilities, repairs and maintenance, management, and a vacancy allowance. Do not subtract loan payments or income taxes. What is left is the NOI.',
+					'Expenses are the number buyers most often get wrong. As a rough guide, the expense ratios our own free [property value calculator](/property-value/) uses are 37% to 47% of rent for buildings built before 1935, 37% to 42% for other rent-controlled buildings, and 32% to 36% for buildings built in 1978 or later. Your building’s actual bills matter far more than any rule of thumb.',
+				],
+			},
+			{
+				heading: 'Step 2: Cap Rate',
+				paragraphs: [
+					'The capitalization rate is NOI divided by the price. If you know the NOI and the cap rate buyers are paying, flip it around: value is NOI divided by the cap rate. A lower cap rate means buyers are paying more for each dollar of income. Cap rates differ a lot between neighborhoods and between older and newer buildings, which is why we publish the 2026 ranges in our guide to [cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/).',
+				],
+			},
+			{
+				heading: 'Step 3: GRM and Price Per Unit',
+				paragraphs: [
+					'The gross rent multiplier (GRM) is the price divided by the year’s gross rent. It is quick, and it ignores expenses, so it can mislead when two buildings have different costs. Price per unit and price per square foot are also quick checks, not valuations. Use them to see whether a price is in the range of recent sales, and use NOI to decide whether it is worth paying.',
+				],
+			},
+			{
+				heading: 'A Worked Example',
+				paragraphs: [
+					'These numbers are illustrative assumptions, not a quote or a forecast. A 10-unit building collects $240,000 of rent a year. Operating expenses, including a vacancy allowance, are 40% of that, or $96,000, so the NOI is $144,000.',
+					'At a 6.0% cap rate, the value is $144,000 divided by 0.06, or $2,400,000. That is $240,000 per unit and a GRM of 10.0 ($2,400,000 divided by $240,000 of rent).',
+					'Now add a loan: 65% of the price, or $1,560,000, on a 30-year schedule at 6.5%. The year’s payments are about $118,300, so the DSCR is $144,000 divided by $118,300, or 1.22. The cash flow after the loan is about $25,700. The buyer put in $840,000 of equity, so the cash-on-cash return is about 3.1%, before closing costs.',
+					'The building earned 6.0% on the price, and the loan lowered the buyer’s return, because borrowing at 6.5% costs more than the building yields. That is why the rate matters as much as the price. At 5.0%, the payments would be about $100,500, the DSCR 1.43, and the cash-on-cash return about 5.2%.',
+				],
+			},
+			{
+				heading: 'What Rent Control Does to the Numbers',
+				paragraphs: [
+					'In a rent-stabilized building, the City’s published annual increase is 3%, and in newer buildings the statewide AB 1482 cap is 8.7% for increases effective on or after August 1, 2026. On our example, a 3% increase adds $7,200 a year, and at a 6.0% cap rate that income is worth about $120,000. See our guides to the [City’s RSO changes](/insights/la-rso-rent-increase-rules-2026-apartment-owners/) and the [AB 1482 cap](/insights/ab-1482-rent-cap-2026/).',
+					'Under-market rents on a rent-controlled building look like upside, but the owner cannot capture it until units turn over. Price the building on the rents in place, and treat any upside as a bonus.',
+				],
+			},
+			{
+				heading: 'Reality Checks Before You Offer',
+				paragraphs: [
+					'Use the actual rent roll and bills, not a pro forma. Rebuild the NOI yourself and see whether it matches the seller’s.',
+					'Compare the cap rate with recent sales in the same neighborhood and age group, not a citywide average.',
+					'Run your loan at today’s quote, and check the DSCR and the cash-on-cash return. See our guide to [financing an apartment building](/insights/financing-an-apartment-building-in-los-angeles/).',
+					'Look ahead to your exit. If a future sale could land above $5.4 million inside the City of Los Angeles, the Measure ULA tax applies to the whole price; see our [Measure ULA calculator](/measure-ula-calculator/).',
+					'Do the due diligence. Our [checklist](/insights/la-apartment-building-due-diligence-checklist-for-buyers/) covers what can change the numbers.',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'If you want a second set of eyes on a building you are considering, [contact us](/contact/). We represent buyers as well as sellers and can run the numbers with you. This article is general information, not investment advice.',
+				],
+			},
+		],
+	},
+	{
+		slug: 'mistakes-buying-an-apartment-building-in-los-angeles',
+		title: 'Nine Mistakes Buyers Make When Buying an LA Apartment Building',
+		seoTitle: '9 Mistakes When Buying an LA Apartment Building',
+		description:
+			'The mistakes buyers make on LA apartment buildings: trusting pro forma rents, skipping estoppels, ignoring rent control and reassessment, and over-borrowing.',
+		date: '2026-10-27',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Most buying mistakes come from believing a number you have not checked.',
+					'The expensive ones in Los Angeles involve rent control, deferred maintenance and compliance, property tax reassessment, and borrowing at a rate higher than the building’s cap rate.',
+					'Each one is avoidable with a few weeks of disciplined due diligence.',
+				],
+			},
+			{
+				heading: '1. Underwriting Rents the Building Cannot Charge',
+				paragraphs: [
+					'A pro forma that assumes below-market rents will move to market is a fantasy in a rent-controlled building. Under the Rent Stabilization Ordinance the owner generally cannot raise a sitting tenant’s rent beyond the allowable increase, which the City currently publishes at 3%, and units reach market rent only when tenants leave. Underwrite the rents in place, and treat the rest as upside. See our guide to the [City’s 2026 RSO changes](/insights/la-rso-rent-increase-rules-2026-apartment-owners/).',
+				],
+			},
+			{
+				heading: '2. Trusting the Rent Roll',
+				paragraphs: [
+					'A rent roll is the seller’s claim. Compare it with the leases, the tenant estoppels, and the seller’s bank deposits. A building whose income does not hold up in due diligence is a common reason a deal reprices or falls apart.',
+				],
+			},
+			{
+				heading: '3. Underestimating Deferred Maintenance and Compliance',
+				paragraphs: [
+					'Older buildings carry costs that do not show on the income statement: roofs, plumbing, electrical panels, and seismic retrofits, plus newer rules such as [SB 721 balcony inspections](/insights/sb-721-balcony-inspection-los-angeles-apartment-owners/), the [stove and refrigerator requirement](/insights/ab-628-stove-refrigerator-law-la-apartment-owners/), and the [air conditioning rules](/insights/air-conditioning-law-los-angeles-apartment-owners-electrical-panel/). Get quotes before you remove contingencies and price the work into your offer.',
+				],
+			},
+			{
+				heading: '4. Forgetting the Property Tax Reassessment',
+				paragraphs: [
+					'The seller’s tax bill is based on an older assessment. When you buy, the building is reassessed at the purchase price, with Proposition 13’s base rate of 1% plus voter-approved assessments and direct charges. Model your own bill, not theirs.',
+				],
+			},
+			{
+				heading: '5. Taking the Seller’s Expenses at Face Value',
+				paragraphs: [
+					'A seller’s summary can leave out or understate costs, and a slow leak can run for months. Pull the actual utility, insurance, and repair records. Each dollar of overstated income or understated expense is worth many dollars of price at a 6% cap rate. See [utility bill diligence](/insights/utility-bill-diligence-la-apartment-owners/).',
+				],
+			},
+			{
+				heading: '6. Borrowing at a Rate Above the Cap Rate',
+				paragraphs: [
+					'When the loan’s interest rate is higher than the cap rate, leverage lowers your cash return. In our worked example, a 6.0% cap rate building financed at 6.5% returned about 3.1% on the buyer’s cash. Run the numbers at today’s quote, and leave a cushion in the debt service coverage. See [financing an apartment building](/insights/financing-an-apartment-building-in-los-angeles/) and [cap rate, cash-on-cash, and GRM](/insights/how-to-analyze-an-la-apartment-building-cap-rate-cash-on-cash-grm/).',
+				],
+			},
+			{
+				heading: '7. Using the Wrong Comparable Sales',
+				paragraphs: [
+					'A cap rate in Santa Monica is not a cap rate in Koreatown, and a newer building does not price like a 1950s rent-controlled one. Compare with recent sales in the same neighborhood and age group. We publish 2026 ranges in our [cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/) guide and on each [neighborhood page](/submarkets/).',
+				],
+			},
+			{
+				heading: '8. Not Planning the Exit',
+				paragraphs: [
+					'The day you buy is the day to think about selling. If your building could be priced above $5.4 million inside the City of Los Angeles, the Measure ULA tax applies to the whole price at sale, and the thresholds adjust every year. See [hold or sell under Measure ULA](/insights/measure-ula-hold-or-sell-la-apartment-building/) and the [calculator](/measure-ula-calculator/).',
+				],
+			},
+			{
+				heading: '9. Going In Without a Team',
+				paragraphs: [
+					'A real estate attorney, a licensed inspector, a CPA, a lender, and a broker who knows the neighborhood each catch different problems. Skipping one to save money is how a manageable issue becomes an expensive one. Our [due diligence checklist](/insights/la-apartment-building-due-diligence-checklist-for-buyers/) shows what each one should review.',
+					'We represent buyers as well as sellers. If you are looking at a building, [contact us](/contact/). This article is general information, not legal, tax, or investment advice.',
+				],
+			},
+		],
+	},
 ];
 
 // Scheduled publishing: a post dated in the future is held back until that date (Pacific time). The
@@ -1990,6 +2300,10 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'sb-1365-emergency-rent-cap-la-apartment-owners': ['ab-1482-rent-cap-2026', 'el-nino-2026-la-apartment-owners-checklist', 'selling-la-apartment-building-with-tenants-rent-control'],
 	'ab-628-stove-refrigerator-law-la-apartment-owners': ['sb-721-balcony-inspection-los-angeles-apartment-owners', 'air-conditioning-law-los-angeles-apartment-owners-electrical-panel', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step'],
 	'la-rso-rent-increase-rules-2026-apartment-owners': ['ab-1482-rent-cap-2026', 'selling-la-apartment-building-with-tenants-rent-control', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026'],
+	'la-apartment-building-due-diligence-checklist-for-buyers': ['financing-an-apartment-building-in-los-angeles', 'how-to-analyze-an-la-apartment-building-cap-rate-cash-on-cash-grm', 'mistakes-buying-an-apartment-building-in-los-angeles'],
+	'financing-an-apartment-building-in-los-angeles': ['how-to-analyze-an-la-apartment-building-cap-rate-cash-on-cash-grm', 'la-apartment-building-due-diligence-checklist-for-buyers', 'broker-opinion-of-value-vs-appraisal-apartment-building'],
+	'how-to-analyze-an-la-apartment-building-cap-rate-cash-on-cash-grm': ['la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'financing-an-apartment-building-in-los-angeles', 'la-apartment-building-due-diligence-checklist-for-buyers'],
+	'mistakes-buying-an-apartment-building-in-los-angeles': ['la-apartment-building-due-diligence-checklist-for-buyers', 'financing-an-apartment-building-in-los-angeles', 'how-to-analyze-an-la-apartment-building-cap-rate-cash-on-cash-grm'],
 };
 
 // Questions and answers shown at the end of an article (and written into its FAQPage structured data),
@@ -2708,6 +3022,102 @@ export const postFaqs: Record<string, PostFaq[]> = {
 		{
 			q: 'How does the lower RSO cap affect what my building is worth?',
 			a: 'It limits how fast rents can grow, and buyers give only partial credit for upside they cannot capture until units turn over. A free [Broker Opinion of Value](/contact/?intent=bov) shows how buyers would price your building today.',
+		},
+	],
+	'la-apartment-building-due-diligence-checklist-for-buyers': [
+		{
+			q: 'What is due diligence when buying an apartment building?',
+			a: 'It is the period after your offer is accepted when you inspect the building and verify the seller’s records before your deposit becomes non-refundable. The length of the period, the deposit, and your right to cancel are negotiated in the purchase agreement.',
+		},
+		{
+			q: 'How do I verify the rent roll on an apartment building?',
+			a: 'Compare it three ways: against the leases, against tenant estoppels in which each tenant confirms their rent, deposit, and lease dates, and against the seller’s bank deposits for the last several months. Also ask for two to three years of income and expenses.',
+		},
+		{
+			q: 'How do I find out if an LA apartment building is rent controlled?',
+			a: 'Buildings in the City of Los Angeles with a certificate of occupancy issued before October 1, 1978 are generally covered by the Rent Stabilization Ordinance. Look up the address on the City’s ZIMAS site, or call the Housing Department at (866) 557-7368. Other cities, such as Santa Monica, have their own rules.',
+		},
+		{
+			q: 'What inspections should I order on an older LA apartment building?',
+			a: 'A licensed general inspector, plus specialists as needed: a plumber to scope the lines, an electrician for the panels, a roofer, and a structural engineer where the building has soft-story or balcony concerns. Ask for the SB 721 balcony report and proof of any seismic retrofit.',
+		},
+		{
+			q: 'Will my property taxes change when I buy an apartment building in California?',
+			a: 'Yes. A purchase triggers a reassessment at the purchase price. Proposition 13 sets the base rate at 1%, and voter-approved assessments and direct charges are added, so the seller’s current bill tells you very little about yours.',
+		},
+		{
+			q: 'What are the biggest red flags during due diligence?',
+			a: 'Rents the leases or tenants contradict, expenses that look too low, no record of RSO registration, rented units missing from the City’s records, deferred maintenance the inspector rates worse than the seller does, and a seller who resists estoppels or unit access.',
+		},
+	],
+	'financing-an-apartment-building-in-los-angeles': [
+		{
+			q: 'How do I get a loan to buy an apartment building in Los Angeles?',
+			a: 'Talk to two or three lenders before you make offers. Buildings with up to four units can generally be financed with residential mortgages, and buildings with five or more units need commercial loans. Agency programs, banks, credit unions, and bridge lenders are the main sources, and each lender’s quote should be compared on rate, leverage, coverage, prepayment, and recourse.',
+		},
+		{
+			q: 'What is a DSCR, and what do lenders require?',
+			a: 'The debt service coverage ratio is the building’s net operating income divided by the year’s loan payments. Lenders set a minimum, often somewhere around 1.2 to 1.35 times, and it varies by lender and loan. Ask your lender for the current figure.',
+		},
+		{
+			q: 'How much can I borrow on an apartment building?',
+			a: 'It depends on the lowest of the lender’s tests: a percentage of the building’s appraised value, and the loan that the net operating income can support at the minimum debt service coverage. The lender’s appraisal and your borrower profile also matter.',
+		},
+		{
+			q: 'Can borrowing make my return on an apartment building worse?',
+			a: 'Yes, when the loan’s rate is higher than the building’s cap rate. In our illustration, a 6.0% cap rate building financed at 6.5% returned about 3.1% on the buyer’s cash, compared with 6.0% all cash. The same loan at 5.0% returned about 5.2%.',
+		},
+		{
+			q: 'Do lenders give credit for below-market rents in a rent-controlled building?',
+			a: 'No. Lenders underwrite the rents in place, and they use their own assumptions for vacancy, expenses, and reserves. Under rent control the owner generally cannot raise rents to market while tenants remain.',
+		},
+		{
+			q: 'What if I am buying with a 1031 exchange?',
+			a: 'Your loan has to close inside the exchange timeline: 45 days to identify a replacement property and 180 days to close. Speak to a lender before you identify a property. See our [1031 exchange guide](/1031-exchanges/).',
+		},
+	],
+	'how-to-analyze-an-la-apartment-building-cap-rate-cash-on-cash-grm': [
+		{
+			q: 'How do I calculate the cap rate on an apartment building?',
+			a: 'Divide the net operating income by the price. If the building earns $144,000 of NOI and sells for $2,400,000, the cap rate is 6.0%. Flip it around to value a building: NOI divided by the cap rate.',
+		},
+		{
+			q: 'What is net operating income (NOI)?',
+			a: 'The rent the building collects in a year, minus operating expenses such as property tax, insurance, utilities, repairs, management, and a vacancy allowance. It does not subtract loan payments or income taxes.',
+		},
+		{
+			q: 'What is the gross rent multiplier (GRM)?',
+			a: 'The price divided by the year’s gross rent. A $2,400,000 building with $240,000 of rent has a GRM of 10.0. It is a quick check that ignores expenses, so it can mislead when two buildings cost different amounts to run.',
+		},
+		{
+			q: 'What is cash-on-cash return?',
+			a: 'The year’s cash flow after loan payments, divided by the cash you invested. In our example, about $25,700 of cash flow on $840,000 of equity is a return of about 3.1%.',
+		},
+		{
+			q: 'How does rent control change how I should analyze a building?',
+			a: 'Price the building on the rents in place. In a rent-stabilized building the City’s published annual increase is 3%, and units reach market rent only when tenants leave, so below-market rents are upside you cannot count on. See our guide to the [City’s RSO changes](/insights/la-rso-rent-increase-rules-2026-apartment-owners/).',
+		},
+		{
+			q: 'What expense ratio should I assume for an LA apartment building?',
+			a: 'Our free property value calculator assumes 37% to 47% of rent for buildings built before 1935, 37% to 42% for other rent-controlled buildings, and 32% to 36% for buildings built in 1978 or later. Use the building’s actual bills whenever you have them.',
+		},
+	],
+	'mistakes-buying-an-apartment-building-in-los-angeles': [
+		{
+			q: 'What are the most common mistakes when buying an apartment building?',
+			a: 'Underwriting rents a rent-controlled building cannot charge, trusting the seller’s rent roll and expenses, underestimating deferred maintenance and compliance, forgetting the property tax reassessment, and borrowing at a rate above the cap rate.',
+		},
+		{
+			q: 'Can I raise rents to market after I buy a rent-controlled building?',
+			a: 'Generally not while tenants remain. Under the Rent Stabilization Ordinance the allowable annual increase is limited, and units reach market rent only when they turn over. Underwrite the rents in place.',
+		},
+		{
+			q: 'Why do buyers need to think about the exit when they buy?',
+			a: 'Because the cost of selling is part of the return. If a future sale could land above $5.4 million inside the City of Los Angeles, the Measure ULA tax applies to the whole price. See our [Measure ULA calculator](/measure-ula-calculator/).',
+		},
+		{
+			q: 'What team do I need to buy an apartment building?',
+			a: 'A real estate attorney, a licensed inspector, a CPA, a lender, and a broker who knows the neighborhood. We represent buyers as well as sellers, so [contact us](/contact/) if you are looking at a building.',
 		},
 	],
 };

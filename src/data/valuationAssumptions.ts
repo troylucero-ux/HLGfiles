@@ -207,6 +207,37 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: { low: 0.0499, high: 0.0532, compCount: 10 },
 		},
 	},
+	// Added October 27, 2026 from the same CoStar export and the same rules as Beverly Hills above (Sale Status = Sold,
+	// Property Type = Multifamily, Approximate or Allocated prices and portfolios of 100 or more units left out, repeated
+	// rows counted once, price per unit = sale price divided by units, cap rates the 25th to 75th percentile).
+	// Hollywood is the export's Hollywood submarket in the City of Los Angeles (29 sales; ZIPs 90028, 90038, 90046).
+	hollywood: {
+		rso: {
+			pricePerUnit: { median: 210400, compCount: 23 },
+			pricePerSf: { median: 267, compCount: 23 },
+			capRate: { low: 0.0583, high: 0.0706, compCount: 18 },
+		},
+		post1978: {
+			pricePerUnit: { median: 708929, compCount: 6 },
+			pricePerSf: { median: 395, compCount: 6 },
+			capRate: { low: 0.0534, high: 0.0663, compCount: 5 },
+		},
+	},
+	// South LA combines the export's South Central LA and Crenshaw submarkets in the City of Los Angeles (46 sales;
+	// ZIPs 90003, 90007, 90008, 90018, 90037, 90044, 90047, 90062). Only 2 were built in 1978 or later, so that group
+	// shows "not enough data".
+	'south-la': {
+		rso: {
+			pricePerUnit: { median: 143498, compCount: 44 },
+			pricePerSf: { median: 193, compCount: 44 },
+			capRate: { low: 0.0633, high: 0.0799, compCount: 26 },
+		},
+		post1978: {
+			pricePerUnit: { median: 230477, compCount: 2 },
+			pricePerSf: { median: 353, compCount: 2 },
+			capRate: null,
+		},
+	},
 };
 
 // Median price per unit for older (built before 1978) buildings inside the West LA group, by area, from the same

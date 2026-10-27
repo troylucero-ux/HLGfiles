@@ -92,7 +92,7 @@ const rsoStats = SALES_STATS[sm.slug]?.rso;
 const rsoPpu = rsoStats?.pricePerUnit && rsoStats.pricePerUnit.compCount >= MIN_PRICE_COMPS_PAGE ? rsoStats.pricePerUnit : null;
 const rsoPsf = rsoStats?.pricePerSf && rsoStats.pricePerSf.compCount >= MIN_PRICE_COMPS_PAGE ? rsoStats.pricePerSf : null;
 const rsoCap = rsoStats?.capRate && rsoStats.capRate.compCount >= MIN_CAP_RATE_COMPS ? rsoStats.capRate : null;
-const walkLabel = sm.walkScoreLabel.replace(/\s*\(/, '; ').replace(/\)$/, '');
+const walkLabel = (sm.walkScoreLabel ?? '').replace(/\s*\(/, '; ').replace(/\)$/, '');
 const joinList = (items: string[]) => (items.length <= 1 ? items.join('') : `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`);
 
 type Faq = { q: string; a: string; links?: { label: string; href: string }[] };
@@ -262,7 +262,7 @@ if (closedHere.length > 0) {
 
 faqs.push({
 	q: `Why do investors buy apartment buildings in ${shortName}?`,
-	a: `${shortName} is in ${sm.region}, with a Walk Score of ${sm.walkScore} (${walkLabel})${sm.transitScore !== undefined ? ` and a Transit Score of ${sm.transitScore}` : ''}. Transit includes ${sm.transit[0]}. Nearby employers and anchors include ${joinList(sm.employers)}.${sm.walkScore >= 70 ? ' Walkable, transit-connected neighborhoods with local jobs tend to keep renter demand steady.' : ''}`,
+	a: `${[sm.region === shortName ? '' : `${shortName} is in ${sm.region}${sm.walkScore !== undefined ? ',' : '.'}`, sm.walkScore !== undefined ? `${sm.region === shortName ? `${shortName} has` : 'with'} a Walk Score of ${sm.walkScore} (${walkLabel})${sm.transitScore !== undefined ? ` and a Transit Score of ${sm.transitScore}` : ''}.` : ''].filter(Boolean).join(' ')} Transit includes ${sm.transit[0]}. Nearby employers and anchors include ${joinList(sm.employers)}.${sm.walkScore !== undefined && sm.walkScore >= 70 ? ' Walkable, transit-connected neighborhoods with local jobs tend to keep renter demand steady.' : ''}`.trim(),
 });
 
 faqs.push({
@@ -339,11 +339,15 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 
 	<section class="section">
 		<div class="container score-grid">
-			<div class="score-card">
-				<span class="score-card__num">{sm.walkScore}</span>
-				<span class="score-card__label">Walk Score</span>
-				<span class="score-card__note">{sm.walkScoreLabel}</span>
-			</div>
+			{
+				sm.walkScore !== undefined && (
+					<div class="score-card">
+						<span class="score-card__num">{sm.walkScore}</span>
+						<span class="score-card__label">Walk Score</span>
+						<span class="score-card__note">{sm.walkScoreLabel}</span>
+					</div>
+				)
+			}
 			{
 				sm.transitScore !== undefined && (
 					<div class="score-card">

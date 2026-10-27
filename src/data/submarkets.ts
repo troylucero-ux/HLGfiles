@@ -8,10 +8,10 @@ export type Submarket = {
 	name: string;
 	region: string;
 	blurb: string;
-	walkScore: number;
+	walkScore?: number; // omitted where Walk Score publishes no figure for the area
 	transitScore?: number;
 	bikeScore?: number;
-	walkScoreLabel: string;
+	walkScoreLabel?: string;
 	transit: string[];
 	retail: string[];
 	employers: string[];
@@ -105,6 +105,24 @@ export const submarkets: Submarket[] = [
 		laOwnerGuide: true,
 	},
 	{
+		slug: 'hollywood',
+		name: 'Hollywood',
+		region: 'Central LA',
+		blurb: 'The most walkable neighborhood in LA, where older, rent-controlled buildings make up most apartment sales.',
+		walkScore: 95,
+		transitScore: 67,
+		bikeScore: 73,
+		walkScoreLabel: "Walker's Paradise (Central Hollywood is the most walkable neighborhood in LA)",
+		transit: ['Metro B Line (Red): Hollywood/Western, Hollywood/Vine, and Hollywood/Highland stations', 'Metro and DASH bus service along Sunset, Hollywood, and Santa Monica Blvds', 'Quick access to the US-101 freeway'],
+		retail: ['Hollywood Blvd and Hollywood & Highland, home to the Dolby Theatre', 'Sunset Blvd restaurant, nightlife, and entertainment corridor', 'Hollywood & Vine and the surrounding dining district'],
+		employers: ['Paramount Pictures and other studio lots along Melrose, Sunset, and Gower', 'Entertainment, media, and production companies clustered around Sunset and Hollywood Blvds', 'Tourism and hospitality employers, including hotels, venues, and the nearby Hollywood Bowl'],
+		overview:
+			'Hollywood sits at the center of the city, between West Hollywood to the west, the Hollywood Hills to the north, and East Hollywood to the east. It pairs one of the highest Walk Scores in Los Angeles with Metro B Line stations and a steady flow of entertainment-industry renters, which keeps demand for apartments broad. Most of the apartment buildings that sold here in 2026 were older buildings, so rent control and building condition shape pricing as much as location does, and newer buildings trade on a different footing. This page uses real 2026 sales to show what buyers have paid.',
+		metaDescription:
+			'Hollywood multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, and a free valuation for owners.',
+		laOwnerGuide: true,
+	},
+	{
 		slug: 'silver-lake',
 		name: 'Silver Lake',
 		region: 'Eastside LA',
@@ -120,6 +138,20 @@ export const submarkets: Submarket[] = [
 			'Silver Lake is one of LA’s most in-demand Eastside submarkets, known for its hillside streets, walkable retail corridors, and consistently strong renter demand from creative-industry professionals. Highlight has closed value-add multifamily sales in Silver Lake, including properties near Sunset Blvd.',
 		metaDescription:
 			'Silver Lake multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, and a free valuation for owners.',
+		laOwnerGuide: true,
+	},
+	{
+		slug: 'south-la',
+		name: 'South LA',
+		region: 'South LA',
+		blurb: 'A large, mostly rent-controlled submarket with some of the lowest prices per unit in the City of LA.',
+		transit: ['Metro E Line (Expo) and K Line (Crenshaw/LAX) light rail', 'Metro bus service along Crenshaw Blvd, Vermont Ave, and Western Ave', 'Close to the 10 and 110 freeways'],
+		retail: ['Baldwin Hills Crenshaw Plaza and the Crenshaw Blvd corridor', 'Leimert Park Village arts and dining district', 'Vermont Ave, Western Ave, and Figueroa St commercial corridors'],
+		employers: ['University of Southern California', 'Exposition Park, including the Los Angeles Memorial Coliseum, the California Science Center, and the Natural History Museum', 'Downtown LA and the Westside, both a short commute away'],
+		overview:
+			'South LA covers the City of Los Angeles neighborhoods south and southwest of Downtown that CoStar groups as South Central LA and Crenshaw, around ZIP codes 90003, 90007, 90008, 90018, 90037, 90044, 90047, and 90062. It is a large area with a mostly older housing stock: nearly all of the apartment buildings that sold here in 2026 were built before 1978, so rent stabilization applies to most of them. Light rail along Exposition and Crenshaw Blvds, the University of Southern California, and the short drive to Downtown LA support renter demand. This page uses real 2026 sales to show what buyers have paid.',
+		metaDescription:
+			'South LA multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, and a free valuation for owners.',
 		laOwnerGuide: true,
 	},
 	{

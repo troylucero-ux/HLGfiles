@@ -27,7 +27,7 @@ import { closings } from '../../data/closings';
 							<h2>{sm.name}</h2>
 							<p>{sm.blurb}</p>
 							<div class="submarket-card__meta">
-								<span>Walk Score {sm.walkScore}</span>
+								{sm.walkScore !== undefined && <span>Walk Score {sm.walkScore}</span>}
 								{count > 0 && <span>{count} Closed Sale{count === 1 ? '' : 's'}</span>}
 							</div>
 						</a>
