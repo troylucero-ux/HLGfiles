@@ -1,0 +1,577 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { closings, closingStats } from '../../../data/closings';
+import { closingCoordinates } from '../../../data/closingCoordinates';
+import { submarkets } from '../../../data/submarkets';
+import { formatPrice, formatPriceFull } from '../../../lib/format';
+
+const submarketNames = Object.fromEntries(submarkets.map((s) => [s.slug, s.name]));
+
+const priceBands = [
+	{ id: 'under-2m', label: 'Under $2M', test: (p: number) => p < 2000000 },
+	{ id: '2m-5m', label: '$2M – $5M', test: (p: number) => p >= 2000000 && p < 5000000 },
+	{ id: '5m-15m', label: '$5M – $15M', test: (p: number) => p >= 5000000 && p < 15000000 },
+	{ id: 'over-15m', label: '$15M+', test: (p: number) => p >= 15000000 },
+];
+
+// Where a sale sits for the neighborhood filter: its submarket if it has one, otherwise "other-la" (the rest of the LA
+// area, such as Culver City, South Pasadena, and Inglewood) or "outside" (Texas and the Coachella Valley).
+const areaOf = (sale: (typeof closings)[number]) => {
+	if (sale.submarket) return sale.submarket;
+	return sale.state !== 'CA' || sale.city === 'Indio' ? 'outside' : 'other-la';
+};
+
+// Only sales with checked coordinates go on the map (see src/data/closingCoordinates.ts).
+const sales = closings
+	.filter((c) => closingCoordinates[c.slug])
+	.map((c) => {
+		const geo = closingCoordinates[c.slug];
+		return {
+			slug: c.slug,
+			name: c.name,
+			city: c.city,
+			state: c.state,
+			zip: c.zip,
+			units: c.units,
+			price: c.price,
+			priceLabel: formatPrice(c.price),
+			perUnit: c.units ? formatPriceFull(Math.round(c.price / c.units)) : null,
+			type: c.type,
+			area: areaOf(c),
+			band: priceBands.find((b) => b.test(c.price))?.id ?? '',
+			img: c.images?.[0] ?? null,
+			lat: geo.lat,
+			lng: geo.lng,
+			approx: Boolean(geo.approx),
+		};
+	});
+
+const areaLabels: Record<string, string> = {
+	...submarketNames,
+	'other-la': 'Other LA-Area Neighborhoods',
+	outside: 'Outside Los Angeles (Texas, Indio)',
+};
+const presentAreas = new Set(sales.map((s) => s.area));
+const areaOptions = [...submarkets.map((s) => s.slug), 'other-la', 'outside'].filter((a) => presentAreas.has(a)).map((a) => ({ value: a, label: areaLabels[a] }));
+---
+
+<BaseLayout
+	title="Map of Our LA Apartment Sales | Highlight Multifamily Group"
+	description={`See where Highlight Multifamily Group closed ${sales.length} apartment building and development site sales across Los Angeles, and filter them by neighborhood, price, and type.`}
+>
+	<link rel="stylesheet" href="/vendor/leaflet/leaflet.css" slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Track Record</span>
+			<h1>Map of Our Closed Sales</h1>
+			<p>
+				See where we have sold apartment buildings and development sites across Los Angeles. Filter by neighborhood, price, or type, and click a pin for the
+				sale price, unit count, and details. Prefer a list? Browse the <a href="/closed-sales/">closed sales page</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section sales-map-section">
+		<div class="container">
+			<div class="filters" role="group" aria-label="Filter the map">
+				<div class="filters__group">
+					<label for="map-filter-area">Neighborhood</label>
+					<select id="map-filter-area">
+						<option value="">All Neighborhoods</option>
+						{areaOptions.map((o) => <option value={o.value}>{o.label}</option>)}
+					</select>
+				</div>
+				<div class="filters__group">
+					<label for="map-filter-price">Price Range</label>
+					<select id="map-filter-price">
+						<option value="">All Prices</option>
+						{priceBands.map((b) => <option value={b.id}>{b.label}</option>)}
+					</select>
+				</div>
+				<div class="filters__group">
+					<label for="map-filter-type">Type</label>
+					<select id="map-filter-type">
+						<option value="">All Types</option>
+						<option value="apartment">Apartment Building</option>
+						<option value="development-site">Development Site</option>
+					</select>
+				</div>
+				<p class="filters__count" id="map-count" aria-live="polite">{sales.length} sales</p>
+			</div>
+
+			<div class="sales-map-layout">
+				<div class="sales-map-wrap">
+					<div id="sales-map" role="region" aria-label="Map of Highlight Multifamily Group closed sales. The list beside it has the same sales."></div>
+					<ul class="sales-map-legend" aria-label="Map key">
+						<li><span class="dot dot--apartment"></span>Apartment building</li>
+						<li><span class="dot dot--land"></span>Development site</li>
+					</ul>
+				</div>
+
+				<div class="sales-list-wrap">
+					<ul class="sales-list" id="sales-list">
+						{
+							sales.map((s) => (
+								<li class="sales-item" data-slug={s.slug} data-area={s.area} data-band={s.band} data-type={s.type}>
+									{s.img ? <img src={s.img} alt="" width="84" height="64" loading="lazy" /> : <span class="sales-item__noimg" aria-hidden="true" />}
+									<div class="sales-item__text">
+										<a class="sales-item__name" href={`/closed-sales/${s.slug}/`}>
+											{s.name}
+										</a>
+										<span class="sales-item__meta">
+											{s.city}, {s.state} &middot; {s.units ? `${s.units} units` : 'Development site'} &middot; {s.priceLabel}
+										</span>
+										<button type="button" class="sales-item__show" data-show={s.slug}>
+											Show on map
+										</button>
+									</div>
+								</li>
+							))
+						}
+					</ul>
+					<p id="map-empty" class="sales-map-empty" hidden>No closed sales match those filters.</p>
+				</div>
+			</div>
+
+			<p class="sales-map-note">
+				Pins mark the building's street address. Each sale is a closed transaction by Highlight Multifamily Group; see the <a href="/closed-sales/">full list</a> for
+				all {closingStats.totalClosings} sales. Map data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors.
+			</p>
+		</div>
+	</section>
+
+	<script type="application/json" id="sales-data" set:html={JSON.stringify(sales)} />
+	<script is:inline src="/vendor/leaflet/leaflet.js"></script>
+	<script is:inline>
+		(function () {
+			var sales = JSON.parse(document.getElementById('sales-data').textContent);
+			var el = document.getElementById('sales-map');
+			if (!el || typeof L === 'undefined') return;
+
+			var map = L.map(el, { scrollWheelZoom: false, zoomControl: true });
+			L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				maxZoom: 19,
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			}).addTo(map);
+			// Wheel zoom only after the visitor clicks into the map, so scrolling the page never gets stuck on it.
+			map.on('click', function () { map.scrollWheelZoom.enable(); });
+			map.on('mouseout', function () { map.scrollWheelZoom.disable(); });
+
+			var NAVY = '#14467a', GOLD = '#b6944a';
+			var layer = L.layerGroup().addTo(map);
+			var markers = {}; // slug -> marker
+
+			var areaSel = document.getElementById('map-filter-area');
+			var priceSel = document.getElementById('map-filter-price');
+			var typeSel = document.getElementById('map-filter-type');
+			var countEl = document.getElementById('map-count');
+			var emptyEl = document.getElementById('map-empty');
+			var items = Array.prototype.slice.call(document.querySelectorAll('.sales-item'));
+
+			function popupFor(group) {
+				var wrap = document.createElement('div');
+				wrap.className = 'pop';
+				group.forEach(function (s, i) {
+					var block = document.createElement('div');
+					block.className = 'pop__sale';
+					if (i === 0 && s.img) {
+						var img = document.createElement('img');
+						img.src = s.img;
+						img.alt = '';
+						img.width = 240;
+						img.height = 150;
+						block.appendChild(img);
+					}
+					var title = document.createElement('a');
+					title.className = 'pop__name';
+					title.href = '/closed-sales/' + s.slug + '/';
+					title.textContent = s.name;
+					block.appendChild(title);
+					var loc = document.createElement('div');
+					loc.className = 'pop__meta';
+					loc.textContent = s.city + ', ' + s.state + (s.zip ? ' ' + s.zip : '');
+					block.appendChild(loc);
+					var facts = document.createElement('div');
+					facts.className = 'pop__facts';
+					facts.textContent = (s.units ? s.units + ' units' : 'Development site') + ' · Sold for ' + s.priceLabel + (s.perUnit ? ' · ' + s.perUnit + ' per unit' : '');
+					block.appendChild(facts);
+					if (s.approx) {
+						var ap = document.createElement('div');
+						ap.className = 'pop__meta';
+						ap.textContent = 'Approximate location';
+						block.appendChild(ap);
+					}
+					var more = document.createElement('a');
+					more.className = 'pop__link';
+					more.href = '/closed-sales/' + s.slug + '/';
+					more.textContent = 'View sale details →';
+					block.appendChild(more);
+					wrap.appendChild(block);
+				});
+				return wrap;
+			}
+
+			// Sales at the same address (for example a building we sold twice) share one pin and one popup.
+			function draw(visible) {
+				layer.clearLayers();
+				markers = {};
+				var groups = {};
+				visible.forEach(function (s) {
+					var key = s.lat.toFixed(5) + ',' + s.lng.toFixed(5);
+					(groups[key] = groups[key] || []).push(s);
+				});
+				Object.keys(groups).forEach(function (key) {
+					var g = groups[key].sort(function (a, b) { return b.price - a.price; });
+					var apartment = g.some(function (s) { return s.type === 'apartment'; });
+					var m = L.circleMarker([g[0].lat, g[0].lng], {
+						radius: 9,
+						color: '#ffffff',
+						weight: 2,
+						fillColor: apartment ? NAVY : GOLD,
+						fillOpacity: 0.9,
+					});
+					m.bindPopup(popupFor(g), { maxWidth: 260, minWidth: 220 });
+					m.on('click', function () { highlight(g.map(function (s) { return s.slug; })); });
+					m.addTo(layer);
+					g.forEach(function (s) { markers[s.slug] = m; });
+				});
+			}
+
+			function highlight(slugs) {
+				var first = null;
+				items.forEach(function (it) {
+					var on = slugs.indexOf(it.dataset.slug) !== -1;
+					it.classList.toggle('is-active', on);
+					if (on && !first) first = it;
+				});
+				if (first && !first.hidden) first.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+			}
+
+			function fit(visible, area) {
+				// Without a neighborhood chosen, frame the Los Angeles area; the few sales in Texas and Indio stay on the map but out of frame.
+				var pts = visible.filter(function (s) { return area || s.area !== 'outside'; });
+				if (!pts.length) pts = visible;
+				if (!pts.length) return;
+				var b = L.latLngBounds(pts.map(function (s) { return [s.lat, s.lng]; }));
+				if (pts.length === 1) map.setView(b.getCenter(), 15);
+				else map.fitBounds(b, { padding: [40, 40], maxZoom: 15 });
+			}
+
+			function apply(refit) {
+				var area = areaSel.value, band = priceSel.value, type = typeSel.value;
+				var visible = sales.filter(function (s) {
+					return (!area || s.area === area) && (!band || s.band === band) && (!type || s.type === type);
+				});
+				var ok = {};
+				visible.forEach(function (s) { ok[s.slug] = true; });
+				items.forEach(function (it) { it.hidden = !ok[it.dataset.slug]; });
+				countEl.textContent = visible.length + (visible.length === 1 ? ' sale' : ' sales');
+				emptyEl.hidden = visible.length > 0;
+				draw(visible);
+				if (refit) fit(visible, area);
+			}
+
+			[areaSel, priceSel, typeSel].forEach(function (s) { s.addEventListener('change', function () { apply(true); }); });
+
+			function focusSale(slug) {
+				var m = markers[slug];
+				if (!m) return;
+				map.setView(m.getLatLng(), Math.max(map.getZoom(), 16));
+				m.openPopup();
+				highlight([slug]);
+				el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+			}
+			document.getElementById('sales-list').addEventListener('click', function (e) {
+				var btn = e.target.closest && e.target.closest('[data-show]');
+				if (btn) focusSale(btn.getAttribute('data-show'));
+			});
+
+			// Links can open the map on a neighborhood (?area=koreatown) or on one sale (?sale=slug).
+			var params = new URLSearchParams(window.location.search);
+			var wantArea = params.get('area');
+			if (wantArea && areaSel.querySelector('option[value="' + wantArea + '"]')) areaSel.value = wantArea;
+			apply(true);
+			var wantSale = params.get('sale');
+			if (wantSale) {
+				map.once('moveend', function () { focusSale(wantSale); });
+				var s0 = sales.filter(function (s) { return s.slug === wantSale; })[0];
+				if (s0) map.setView([s0.lat, s0.lng], 16);
+			}
+			setTimeout(function () { map.invalidateSize(); }, 300);
+		})();
+	</script>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 6vw, 4.5rem);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 720px;
+		font-size: 1.1rem;
+		color: var(--ink-soft);
+	}
+
+	.sales-map-section {
+		padding-top: 2rem;
+	}
+
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.25rem;
+		align-items: end;
+		margin-bottom: 1.5rem;
+	}
+
+	.filters__group {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+
+	.filters__group label {
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+		font-weight: 700;
+	}
+
+	.filters__group select {
+		padding: 0.55rem 0.75rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-family: var(--font-sans);
+		min-width: 190px;
+		background: var(--paper);
+	}
+
+	.filters__count {
+		margin: 0 0 0 auto;
+		font-weight: 600;
+		color: var(--ink-light);
+	}
+
+	.sales-map-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 360px;
+		gap: 1.25rem;
+		align-items: start;
+	}
+
+	.sales-map-wrap {
+		position: relative;
+	}
+
+	#sales-map {
+		height: min(680px, 78vh);
+		min-height: 420px;
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		background: var(--navy-tint);
+		z-index: 0;
+	}
+
+	.sales-map-legend {
+		position: absolute;
+		z-index: 400;
+		left: 12px;
+		bottom: 28px;
+		display: flex;
+		gap: 1rem;
+		margin: 0;
+		padding: 0.4rem 0.7rem;
+		list-style: none;
+		background: rgba(255, 253, 250, 0.94);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		font-size: 0.76rem;
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.sales-map-legend li {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.dot {
+		display: inline-block;
+		width: 12px;
+		height: 12px;
+		border-radius: 50%;
+		border: 2px solid #fff;
+		box-shadow: 0 0 0 1px var(--border);
+	}
+
+	.dot--apartment {
+		background: #14467a;
+	}
+
+	.dot--land {
+		background: #b6944a;
+	}
+
+	.sales-list-wrap {
+		max-height: min(680px, 78vh);
+		min-height: 420px;
+		overflow-y: auto;
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		background: var(--paper);
+	}
+
+	.sales-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.sales-item {
+		display: flex;
+		gap: 0.85rem;
+		padding: 0.8rem 0.9rem;
+		border-bottom: 1px solid var(--border);
+		transition: background 0.2s ease;
+	}
+
+	.sales-item[hidden] {
+		display: none;
+	}
+
+	.sales-item.is-active {
+		background: var(--navy-tint);
+	}
+
+	.sales-item img,
+	.sales-item__noimg {
+		flex: none;
+		width: 84px;
+		height: 64px;
+		object-fit: cover;
+		border-radius: 1px;
+		background: var(--navy-tint);
+	}
+
+	.sales-item__text {
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+		min-width: 0;
+	}
+
+	.sales-item__name {
+		font-weight: 600;
+		color: var(--navy-dark);
+		text-decoration: none;
+	}
+
+	.sales-item__name:hover {
+		text-decoration: underline;
+	}
+
+	.sales-item__meta {
+		font-size: 0.8rem;
+		color: var(--ink-light);
+		line-height: 1.4;
+	}
+
+	.sales-item__show {
+		align-self: flex-start;
+		margin-top: 0.15rem;
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--gold-dark);
+		cursor: pointer;
+	}
+
+	.sales-item__show:hover {
+		text-decoration: underline;
+	}
+
+	.sales-map-empty {
+		padding: 1.25rem;
+		margin: 0;
+		color: var(--ink-light);
+	}
+
+	.sales-map-note {
+		margin-top: 1.25rem;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	:global(.pop) {
+		font-family: var(--font-sans);
+		font-size: 0.85rem;
+		line-height: 1.45;
+	}
+
+	:global(.pop__sale + .pop__sale) {
+		margin-top: 0.8rem;
+		padding-top: 0.8rem;
+		border-top: 1px solid var(--border);
+	}
+
+	:global(.pop img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin-bottom: 0.5rem;
+		border-radius: 1px;
+	}
+
+	:global(.pop__name) {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: 1.05rem;
+		color: var(--navy-dark);
+		text-decoration: none;
+	}
+
+	:global(.pop__meta) {
+		color: var(--ink-light);
+	}
+
+	:global(.pop__facts) {
+		margin: 0.15rem 0 0.35rem;
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	:global(.pop__link) {
+		font-weight: 600;
+		color: var(--gold-dark);
+	}
+
+	@media (max-width: 900px) {
+		.sales-map-layout {
+			grid-template-columns: 1fr;
+		}
+
+		#sales-map {
+			height: 60vh;
+			min-height: 380px;
+		}
+
+		.sales-list-wrap {
+			max-height: 520px;
+			min-height: 0;
+		}
+
+		.filters__count {
+			margin-left: 0;
+			width: 100%;
+		}
+	}
+</style>

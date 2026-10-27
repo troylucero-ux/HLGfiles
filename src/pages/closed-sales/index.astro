@@ -63,6 +63,7 @@ const priceBands = [
 						<option value="development-site">Development Site</option>
 					</select>
 				</div>
+				<a class="filters__map" href="/closed-sales/map/">View on a map &rarr;</a>
 				<p class="filters__count" id="filter-count" aria-live="polite">{closingStats.totalClosings} sales</p>
 			</div>
 
@@ -171,6 +172,12 @@ const priceBands = [
 		border-radius: 1px;
 		font-family: var(--font-sans);
 		min-width: 190px;
+	}
+
+	.filters__map {
+		align-self: center;
+		font-weight: 600;
+		color: var(--gold-dark);
 	}
 
 	.filters__count {

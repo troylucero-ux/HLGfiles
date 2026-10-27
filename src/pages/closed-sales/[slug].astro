@@ -7,6 +7,7 @@ import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
 import { submarkets } from '../../data/submarkets';
 import { listings } from '../../data/listings';
+import { closingCoordinates } from '../../data/closingCoordinates';
 import { site } from '../../data/site';
 import { formatPrice, formatPriceFull, formatSoldDate, soldWhen } from '../../lib/format';
 
@@ -197,13 +198,18 @@ const videoSchema = sale.youtubeId
 				{
 					submarket && (
 						<p>
-							The property sits in the <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a> submarket ({submarket.region}), which scores {submarket.walkScore} for Walk
-							Score{submarket.transitScore !== undefined ? ` and ${submarket.transitScore} for Transit Score` : ''}.
+							The property sits in the <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a> submarket ({submarket.region}){submarket.walkScore !== undefined ? `, which scores ${submarket.walkScore} for Walk Score${submarket.transitScore !== undefined ? ` and ${submarket.transitScore} for Transit Score` : ''}` : ''}.
 						</p>
 					)
 				}
 				<p>
 					This sale is one of the <a href="/closed-sales/">{closings.length} transactions</a> in the Highlight Multifamily Group track record.
+					{closingCoordinates[sale.slug] && (
+						<>
+							{' '}
+							<a href={`/closed-sales/map/?sale=${sale.slug}`}>See it on our closed sales map</a>.
+						</>
+					)}
 				</p>
 			</div>
 
