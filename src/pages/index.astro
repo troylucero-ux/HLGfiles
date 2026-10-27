@@ -449,6 +449,21 @@ const services = [
 		border-radius: 2px;
 	}
 
+	/* The suggestion script wraps the input in .bov-address, so the wrapper takes over the flex sizing. */
+	.hero__form :global(.bov-address--hero) {
+		flex: 1 1 260px;
+		min-width: 0;
+	}
+
+	.hero__form :global(.bov-address--hero) .hero__input {
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.hero__form :global(.bov-address__list) {
+		text-align: left;
+	}
+
 	.hero__input:focus-visible {
 		outline: 2px solid var(--gold-light);
 		outline-offset: 2px;
@@ -1108,7 +1123,11 @@ const services = [
 	heroForm?.addEventListener('submit', () => {
 		const address = (heroForm.querySelector('.hero__input') as HTMLInputElement | null)?.value.trim();
 		try {
-			if (address) sessionStorage.setItem('hlg_bov_address', address);
+			if (address) {
+				sessionStorage.setItem('hlg_bov_address', address);
+				if (heroForm.dataset.googleAddress === address) sessionStorage.setItem('hlg_bov_address_google', '1');
+				else sessionStorage.removeItem('hlg_bov_address_google');
+			}
 		} catch {
 			// Storage can be blocked; the form still works, the visitor just types the address again.
 		}

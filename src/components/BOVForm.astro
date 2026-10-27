@@ -120,10 +120,15 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 	try {
 		const savedAddress = sessionStorage.getItem('hlg_bov_address');
 		if (savedAddress) {
+			// The homepage box notes when the address was picked from Google's suggestions, so the lead keeps that flag.
+			const fromGoogle = sessionStorage.getItem('hlg_bov_address_google') === '1';
 			document.querySelectorAll<HTMLInputElement>('.js-bov-form input[name="address"]').forEach((input) => {
-				if (!input.value) input.value = savedAddress;
+				if (input.value) return;
+				input.value = savedAddress;
+				if (fromGoogle && input.form) input.form.dataset.googleAddress = savedAddress;
 			});
 			sessionStorage.removeItem('hlg_bov_address');
+			sessionStorage.removeItem('hlg_bov_address_google');
 		}
 	} catch {
 		// Session storage can be unavailable; the field simply stays empty.
@@ -136,11 +141,13 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 	// Google's billing session with a free "IDs only" lookup, so each completed search costs nothing at our volume.
 	if (placesKey) {
 		const API = 'https://places.googleapis.com/v1/';
-		document.querySelectorAll('.js-bov-form input[name="address"], #val-address').forEach((input, index) => {
+		document.querySelectorAll('.js-bov-form input[name="address"], #val-address, #hero-address').forEach((input, index) => {
 			const form = input.closest('form');
 			const californiaOnly = input.dataset.californiaOnly === 'true';
 			const wrap = document.createElement('div');
-			wrap.className = 'bov-address';
+			wrap.className = 'bov-address' + (input.id === 'hero-address' ? ' bov-address--hero' : '');
+			// Browser address autofill would stack its own list on top of ours.
+			input.setAttribute('autocomplete', 'off');
 			input.parentNode.insertBefore(wrap, input);
 			wrap.appendChild(input);
 			const list = document.createElement('ul');
