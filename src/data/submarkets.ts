@@ -22,6 +22,8 @@ export type Submarket = {
 	metaDescription?: string;
 	// Shows the City of LA owner's guide (rent control, Measure ULA by building size, pre-listing moves).
 	laOwnerGuide?: boolean;
+	// Closed sale whose photo the card on /submarkets/ shows. Omit to use the neighborhood's highest-value apartment sale with a photo.
+	cardSaleSlug?: string;
 };
 
 export const submarkets: Submarket[] = [
@@ -142,6 +144,7 @@ export const submarkets: Submarket[] = [
 	},
 	{
 		slug: 'south-la',
+		cardSaleSlug: '2204-7th-ave-los-angeles-ca-90018', // the top sale, 1135 Leighton Ave, only has an interior photo
 		name: 'South LA',
 		region: 'South LA',
 		blurb: 'A large, mostly rent-controlled submarket with some of the lowest prices per unit in the City of LA.',

@@ -1,6 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { submarkets } from '../../data/submarkets';
+import { closings } from '../../data/closings';
+import { formatPrice } from '../../lib/format';
+
+// Each card shows one of our own closed sales in that neighborhood: its highest-value apartment sale with a
+// photo, the same rule the neighborhood pages use for their hero image. A submarket can pin a different sale
+// with cardSaleSlug (for example when the top sale only has an interior photo). With no sale to show, the card
+// gets a plain panel with the neighborhood name.
+const cards = submarkets.map((sm) => {
+	const sale = sm.cardSaleSlug
+		? closings.find((c) => c.slug === sm.cardSaleSlug)
+		: closings
+				.filter((c) => c.submarket === sm.slug && c.type === 'apartment' && c.images?.[0])
+				.sort((a, b) => b.price - a.price)[0];
+	return { sm, sale: sale?.images?.[0] ? sale : undefined };
+});
 ---
 
 <BaseLayout
@@ -18,18 +33,43 @@ import { submarkets } from '../../data/submarkets';
 	<section class="section">
 		<div class="container submarket-grid">
 			{
-				submarkets.map((sm) => {
-					return (
-						<a href={`/submarkets/${sm.slug}/`} class="submarket-card">
-							<span class="submarket-card__region">{sm.region}</span>
-							<h2>{sm.name}</h2>
-							<p>{sm.blurb}</p>
-							<div class="submarket-card__meta">
-								{sm.walkScore !== undefined && <span>Walk Score {sm.walkScore}</span>}
+				cards.map(({ sm, sale }) => (
+					<article class="submarket-card">
+						{sale ? (
+							<div class="submarket-card__photo">
+								<img
+									src={sale.images![0]}
+									alt={`${sale.name}, ${sale.city}, ${sale.state}, ${sale.units ? `${sale.units}-unit apartment building` : 'property'} sold by Highlight Multifamily Group`}
+									width="600"
+									height="400"
+									loading="lazy"
+								/>
+								<a class="submarket-card__sale" href={`/closed-sales/${sale.slug}/`}>
+									Sold: {sale.name}
+									{sale.units ? `, ${sale.units} units` : ''}, {formatPrice(sale.price)}
+								</a>
 							</div>
-						</a>
-					);
-				})
+						) : (
+							<div class="submarket-card__photo submarket-card__photo--empty" aria-hidden="true">
+								<span>{sm.name}</span>
+							</div>
+						)}
+						<div class="submarket-card__body">
+							<span class="submarket-card__region">{sm.region}</span>
+							<h2>
+								<a class="submarket-card__link" href={`/submarkets/${sm.slug}/`}>
+									{sm.name}
+								</a>
+							</h2>
+							<p>{sm.blurb}</p>
+							{sm.walkScore !== undefined && (
+								<div class="submarket-card__meta">
+									<span>Walk Score {sm.walkScore}</span>
+								</div>
+							)}
+						</div>
+					</article>
+				))
 			}
 		</div>
 	</section>
@@ -53,10 +93,13 @@ import { submarkets } from '../../data/submarkets';
 	}
 
 	.submarket-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
 		background: var(--paper);
 		border: 1px solid var(--border);
 		border-radius: 2px;
-		padding: 2rem;
+		overflow: hidden;
 		color: var(--ink);
 		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 	}
@@ -65,11 +108,101 @@ import { submarkets } from '../../data/submarkets';
 		border-color: var(--gold);
 		box-shadow: 0 18px 40px -26px rgba(12, 46, 80, 0.35);
 		transform: translateY(-2px);
+	}
+
+	/* The neighborhood name is the card's main link, stretched over the whole card. The sale caption sits above it
+	   so it can link to its own page. */
+	.submarket-card__link {
+		color: inherit;
 		text-decoration: none;
+	}
+
+	.submarket-card__link::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+	}
+
+	.submarket-card__photo {
+		position: relative;
+		aspect-ratio: 3 / 2;
+		overflow: hidden;
+		background: var(--navy-tint);
+	}
+
+	.submarket-card__photo img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.5s ease;
+	}
+
+	.submarket-card:hover .submarket-card__photo img {
+		transform: scale(1.03);
+	}
+
+	.submarket-card__photo::after {
+		content: '';
+		position: absolute;
+		inset: auto 0 0 0;
+		height: 50%;
+		background: linear-gradient(to top, rgba(12, 46, 80, 0.75), rgba(12, 46, 80, 0));
+		pointer-events: none;
+	}
+
+	.submarket-card__sale {
+		position: absolute;
+		z-index: 2;
+		left: 1rem;
+		right: 1rem;
+		bottom: 0.8rem;
+		color: #fff;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+		text-decoration: none;
+	}
+
+	.submarket-card__sale:hover {
+		text-decoration: underline;
+	}
+
+	.submarket-card__photo--empty {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+	}
+
+	.submarket-card__photo--empty::after {
+		display: none;
+	}
+
+	.submarket-card__photo--empty span {
+		font-family: var(--font-serif);
+		font-size: 1.6rem;
+		color: #fff;
+		opacity: 0.9;
+	}
+
+	.submarket-card__body {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		padding: 1.5rem 1.75rem 1.75rem;
 	}
 
 	.submarket-card h2 {
 		font-size: 1.5rem;
+		margin: 0.2rem 0 0.45rem;
+	}
+
+	.submarket-card p {
+		margin: 0 0 0.5rem;
+		font-size: 0.96rem;
 	}
 
 	.submarket-card__region {
@@ -83,7 +216,7 @@ import { submarkets } from '../../data/submarkets';
 	.submarket-card__meta {
 		display: flex;
 		gap: 1.25rem;
-		margin-top: 1rem;
+		margin-top: auto;
 		padding-top: 1rem;
 		border-top: 1px solid var(--border);
 		font-size: 0.78rem;
