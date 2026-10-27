@@ -130,6 +130,14 @@ const videoSchema = sale.youtubeId
 					<dd>{formatPriceFull(sale.price)}</dd>
 				</div>
 				{
+					sale.role && (
+						<div>
+							<dt>We Represented</dt>
+							<dd>{sale.role === 'buyer' ? 'The Buyer' : 'The Seller'}</dd>
+						</div>
+					)
+				}
+				{
 					sale.soldDate && (
 						<div>
 							<dt>Sale Date</dt>
