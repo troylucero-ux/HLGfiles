@@ -49,7 +49,7 @@ const sales = closings
 const areaLabels: Record<string, string> = {
 	...submarketNames,
 	'other-la': 'Other LA-Area Neighborhoods',
-	outside: 'Outside Los Angeles (Texas, Indio)',
+	outside: 'Coachella Valley (Indio)',
 };
 const presentAreas = new Set(sales.map((s) => s.area));
 const areaOptions = [...submarkets.map((s) => s.slug), 'other-la', 'outside'].filter((a) => presentAreas.has(a)).map((a) => ({ value: a, label: areaLabels[a] }));

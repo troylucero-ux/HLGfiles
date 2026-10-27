@@ -1,12 +1,10 @@
 // Map coordinates for the closed sales shown on /closed-sales/map/, keyed by closing slug. Street addresses were
 // geocoded once (October 27, 2026) with the US Census Geocoder and each match was checked against the ZIP code on the
-// sale. The two named Texas properties have no street address in our records, so they are placed from
-// OpenStreetMap search and marked approx. A sale with no entry here is left off the map. Two are, for now:
-// Dallas Flats (no match found) and 3943 W 7th St (it geocodes to ZIP 90005, not the 90062 on its record).
+// sale. A sale with no entry here is left off the map. The Texas sales are left off on purpose (the map is
+// Los Angeles), and so is 3943 W 7th St until its location is confirmed: it geocodes to ZIP 90005, not the 90062
+// on its record.
 export const closingCoordinates: Record<string, { lat: number; lng: number; approx?: boolean }> = {
-	'lenox-stone-oak-apartments-san-antonio-tx': { lat: 29.61954, lng: -98.47401, approx: true },
 	'131-171-s-burlington-ave-los-angeles-ca-90057': { lat: 34.06439, lng: -118.26706 },
-	'urban-north-apartments-austin-tx': { lat: 30.43759, lng: -97.77061, approx: true },
 	'49270-cochran-dr-indio-ca-92201': { lat: 33.69073, lng: -116.23310 },
 	'236-s-bonnie-brae-st-los-angeles-ca-90057': { lat: 34.06344, lng: -118.26907 },
 	'8377-blackburn-ave-los-angeles-ca-90048': { lat: 34.07206, lng: -118.37254 },
