@@ -435,6 +435,9 @@ const services = [
 		gap: 0.75rem;
 		margin-top: 2.25rem;
 		max-width: 620px;
+		/* The entrance animation gives each hero block its own layer; without this the links below paint over the suggestion list. */
+		position: relative;
+		z-index: 2;
 	}
 
 	.hero__input {
