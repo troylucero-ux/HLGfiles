@@ -1,8 +1,36 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
+import { toParts, stripLinks } from '../../lib/inlineLinks';
 
+// Every answer restates facts already published in one of our Insights articles or on the page it links to,
+// so when one of those changes, edit the answer here too. Answers can use [link text](/path/) links.
 const faqCategories = [
+	{
+		category: 'Value & Pricing',
+		items: [
+			{
+				q: 'How much is my apartment building worth?',
+				a: 'For a quick range, use our [free property value calculator](/property-value/), which estimates a value from your monthly rent, the building’s age, and your neighborhood using real 2026 LA County sales. For a number you can plan around, request a free [Broker Opinion of Value](/contact/?intent=bov), built from your actual rent roll, expenses, and condition.',
+			},
+			{
+				q: 'What is a cap rate, and how does it set the price of my building?',
+				a: 'The cap rate is a building’s net operating income (NOI) divided by its price, so value is NOI divided by the cap rate. A building with $100,000 of NOI that buyers price at a 5.5% cap rate is worth about $1.8 million. A lower cap rate means buyers are paying more for each dollar of income. See [how buyers value an apartment building](/insights/how-to-value-an-apartment-building-in-los-angeles/).',
+			},
+			{
+				q: 'What is a Broker Opinion of Value (BOV)?',
+				a: 'A BOV is a broker’s estimate of what your building would likely sell for, based on your actual rents and expenses, the building’s condition and unit mix, and recent comparable sales. It is a professional opinion grounded in the market, not a formal appraisal and not a guarantee of what a buyer will pay.',
+			},
+			{
+				q: 'Do I need an appraisal to sell my apartment building?',
+				a: 'No. If you are deciding whether to sell or setting a price, a BOV is what you want, and you do not need an appraisal to list. If you need a formal valuation for another reason, such as an estate or a legal dispute, ask your attorney or CPA. See [Broker Opinion of Value vs. appraisal](/insights/broker-opinion-of-value-vs-appraisal-apartment-building/).',
+			},
+			{
+				q: 'Does rent control lower the value of my building?',
+				a: 'It limits how fast income can grow, so it affects value. Buyers price a rent-controlled building on the rents in place and give partial credit for upside, because they cannot capture it until units turn over. See our guide to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
+			},
+		],
+	},
 	{
 		category: 'Selling Timeline',
 		items: [
@@ -13,6 +41,22 @@ const faqCategories = [
 			{
 				q: 'Do I need to fix up the property before selling?',
 				a: 'Usually not. Many of the buildings we sell have deferred maintenance or below-market rents. We position these honestly as value-add opportunities rather than asking owners to invest in repairs before a sale.',
+			},
+			{
+				q: 'What are the steps to selling an apartment building?',
+				a: 'There are eight: decide what you want from the sale, find out what the building is worth, choose a broker and sign a listing agreement, gather your documents, market the building, review offers and negotiate, open escrow and go through due diligence, and close. Our [step-by-step guide](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) covers each one.',
+			},
+			{
+				q: 'What paperwork do I need to sell my apartment building?',
+				a: 'Typically a current rent roll, the leases, and the last two to three years of income and expenses, along with your utility bills, property tax bill, insurance, permits, inspection reports, and records of major repairs. In Los Angeles, have your Rent Stabilization Ordinance registration and fee records ready as well.',
+			},
+			{
+				q: 'Should I sell off-market or list my building publicly?',
+				a: 'A wide listing usually offers the best chance at the highest price, because more buyers mean more competition. An off-market sale offers privacy but can leave you unsure what you left on the table. A middle path is to contact a curated list of active buyers without a public listing. See [off-market vs. listing](/insights/selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles/).',
+			},
+			{
+				q: 'Should I always take the highest offer?',
+				a: 'No. Price matters, but so do the buyer’s financing, the length of the due diligence period, the size of the deposit, and how likely the buyer is to close. Your broker should help you compare offers on net proceeds and certainty.',
 			},
 		],
 	},
@@ -27,11 +71,77 @@ const faqCategories = [
 				q: 'How is your commission structured?',
 				a: 'Commission is negotiated per listing and is only earned when a sale closes. We\'ll walk through the specifics during your BOV consultation.',
 			},
+			{
+				q: 'What comes out of the sale price before I get paid?',
+				a: 'Plan for the broker’s commission, transfer taxes, and, for buildings in the City of Los Angeles priced above $5.4 million, [Measure ULA](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/). Federal and California capital gains tax and depreciation recapture come out of your return, not escrow. Our [net proceeds calculator](/measure-ula-calculator/) shows the transfer-tax part at your price.',
+			},
+		],
+	},
+	{
+		category: 'Rent Control & Tenants',
+		items: [
+			{
+				q: 'Is my building rent controlled?',
+				a: 'In the City of Los Angeles, buildings with a certificate of occupancy issued before October 1, 1978 are generally covered by the Rent Stabilization Ordinance (RSO). Newer buildings typically fall under the statewide AB 1482 cap instead. Other cities, such as Santa Monica, West Hollywood, and Beverly Hills, have their own rules.',
+			},
+			{
+				q: 'How much can I raise rent in Los Angeles in 2026?',
+				a: 'For buildings under AB 1482, the maximum for increases effective on or after August 1, 2026 is 8.7%, the regional CPI change of 3.7% plus 5%. For RSO units, the City publishes a lower figure, 3% at the time of writing, and since February 2, 2026 landlords can no longer add an extra percentage for utilities. Confirm the current figure with the Los Angeles Housing Department before you send a notice. See [the 2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/) and [the City’s RSO changes](/insights/la-rso-rent-increase-rules-2026-apartment-owners/).',
+			},
+			{
+				q: 'Can I sell my apartment building with tenants still living in it?',
+				a: 'Yes. Most apartment buildings in Los Angeles sell with tenants in place, and many buyers look for occupied buildings with stable income. A sale does not by itself end anyone’s tenancy. The leases and rent rules stay with the building, so the new owner steps into the owner’s position.',
+			},
+			{
+				q: 'What is an estoppel, and will my tenants have to sign one?',
+				a: 'An estoppel is a short statement in which a tenant confirms the terms of their tenancy, such as the rent, the deposit, and the lease dates. Buyers commonly request them during escrow to check your rent roll against what tenants say. Plan for the access and written notice that showings, inspections, and estoppels require.',
+			},
+			{
+				q: 'What should I tell my tenants when I am selling?',
+				a: 'Tell them honestly, and do not promise anything on a buyer’s behalf. Most tenants just want to know that their lease and their rent stay the same, and in a sale of an occupied building they generally do.',
+			},
+		],
+	},
+	{
+		category: 'Taxes & Measure ULA',
+		items: [
+			{
+				q: 'How much tax will I pay if I sell my rental property in California?',
+				a: 'If you owned the property for more than a year, the gain is generally a long-term capital gain, taxed federally at 0%, 15%, or 20% depending on your income. Depreciation recapture is taxed at up to 25%, high-income sellers may owe the 3.8% net investment income tax, and California taxes the gain as ordinary income. See [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/), and ask your CPA to run your numbers.',
+			},
+			{
+				q: 'What is depreciation recapture?',
+				a: 'Residential rental property is generally depreciated over 27.5 years. When you sell, the part of your gain that comes from that depreciation is taxed at a maximum federal rate of 25%. The IRS generally measures it by the depreciation you were allowed to take, whether or not you claimed it.',
+			},
+			{
+				q: 'What is Measure ULA, and when does it apply?',
+				a: 'Measure ULA is the City of Los Angeles transfer tax, often called the mansion tax. For closings after June 30, 2026, a sale of $5.4 million or less owes no ULA tax, a sale above $5.4 million and under $10.9 million owes 4%, and a sale at $10.9 million or more owes 5.5%. It applies only inside the City of Los Angeles. See our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/).',
+			},
+			{
+				q: 'Does Measure ULA tax the whole price or just the part above the threshold?',
+				a: 'The whole price. A building that sells for $5,400,000 owes no ULA tax, but one that sells for $5,400,001 owes 4% of the full price, about $216,000. That can make a higher price leave you with less money. Try it in our [Measure ULA calculator](/measure-ula-calculator/).',
+			},
+			{
+				q: 'Can I avoid Measure ULA with a 1031 exchange?',
+				a: 'No. A 1031 exchange can defer your capital gains tax, but it does not exempt a sale from Measure ULA, and exchanges are not among the exemptions the City lists. If you are weighing whether to sell at all, see [hold or sell under Measure ULA](/insights/measure-ula-hold-or-sell-la-apartment-building/).',
+			},
+			{
+				q: 'Does Measure ULA apply in West Hollywood, Santa Monica, or Beverly Hills?',
+				a: 'No. ULA applies only inside the City of Los Angeles. West Hollywood and Beverly Hills have no city transfer tax. Santa Monica has its own version, Measure GS, which takes 5.6% of the full price at $8 million and up. See our [West Hollywood](/submarkets/west-hollywood/), [Beverly Hills](/submarkets/beverly-hills/), and [Santa Monica](/submarkets/santa-monica/) pages.',
+			},
+			{
+				q: 'Should I close my sale in December or January?',
+				a: 'Neither is automatically better. A sale is reported for the year it closes, so a December close puts the gain on your 2026 return and a January close pushes the tax bill out a full year. Which works depends on your income this year and next, so talk to your CPA before you list. See [selling before year-end](/insights/selling-la-apartment-building-before-year-end/).',
+			},
 		],
 	},
 	{
 		category: '1031 Exchanges',
 		items: [
+			{
+				q: 'What is a 1031 exchange?',
+				a: 'Named for Section 1031 of the Internal Revenue Code, it lets you sell an investment property and defer the capital gains tax you would otherwise owe, as long as you reinvest the proceeds into another investment property of equal or greater value. The tax is deferred, not eliminated. Read our [1031 exchange guide](/1031-exchanges/).',
+			},
 			{
 				q: 'How does the 1031 exchange timeline work?',
 				a: 'Once your relinquished property closes, you have 45 days to identify replacement properties and 180 days total to close on the exchange. We start sourcing replacement options before your sale closes to protect that window.',
@@ -40,10 +150,18 @@ const faqCategories = [
 				q: 'Can I exchange into property outside of California?',
 				a: 'Yes. We\'ve helped clients exchange into multifamily properties in Texas and other states as part of a 1031 strategy, coordinating with brokers in those markets directly.',
 			},
+			{
+				q: 'Can I sell my apartment building and buy a triple-net (NNN) property?',
+				a: 'Yes. Multifamily and commercial real estate both qualify as like-kind to each other under current tax code, which is what makes an apartment-to-NNN exchange possible. In a triple-net lease, the tenant pays property taxes, insurance, and maintenance. See [1031 exchanges into triple-net properties](/insights/1031-exchange-into-triple-net-properties/) and our [triple-net and DST page](/triple-net-dst/).',
+			},
+			{
+				q: 'Do I touch the money in a 1031 exchange?',
+				a: 'No. A Qualified Intermediary holds the funds from your sale and uses them to buy your replacement property on your behalf. If you take the proceeds yourself, the exchange fails and the tax is due.',
+			},
 		],
 	},
 	{
-		category: 'Trust & Probate Sales',
+		category: 'Trust, Estate & Inherited Buildings',
 		items: [
 			{
 				q: 'Do you work with trustees and probate attorneys directly?',
@@ -52,6 +170,81 @@ const faqCategories = [
 			{
 				q: 'What if the property hasn\'t been touched in decades?',
 				a: 'That\'s common with trust and estate sales. We market these properties clearly to value-add buyers who understand what they\'re taking on, so families aren\'t asked to modernize a building before selling it.',
+			},
+			{
+				q: 'I inherited an apartment building. What should I do first?',
+				a: 'Protect the building and the tenants first: confirm the insurance is in force, keep the rents in an account for the estate or trust, tell tenants who to pay, and gather the documents. Then talk to a probate or trust attorney and a CPA before you decide whether to keep or sell. See our guide to [inherited apartment buildings](/insights/inherited-apartment-building-los-angeles-what-to-do/).',
+			},
+			{
+				q: 'Do I have to go through probate to sell an inherited building?',
+				a: 'It depends on how the building was owned. If it was in a living trust, the successor trustee can generally sell under the trust’s terms without probate. If it was not, it generally goes through probate, because an apartment building is worth far more than California’s small-estate limit.',
+			},
+			{
+				q: 'Do I pay capital gains tax if I sell a building I inherited?',
+				a: 'Often very little. An heir’s basis in inherited property is generally its fair market value on the date of death, so a sale soon afterward typically produces little or no taxable gain. Confirm with your CPA, and keep documentation of the date-of-death value.',
+			},
+			{
+				q: 'Will property taxes go up if I keep an inherited apartment building?',
+				a: 'Usually, yes. A change in ownership triggers a reassessment to market value, and the Proposition 19 parent-child exclusion does not apply to a rental property. Expect the building to be reassessed.',
+			},
+		],
+	},
+	{
+		category: 'Building Rules & Compliance',
+		items: [
+			{
+				q: 'What is SB 721, and does it apply to my building?',
+				a: 'SB 721 requires owners of buildings with three or more multifamily units to have their exterior elevated elements (balconies, decks, porches, stairways, and walkways) inspected by a licensed professional. It applies if those elements are more than six feet above ground and rely mainly on wood for support. The first inspection was due by January 1, 2026. See our [SB 721 guide](/insights/sb-721-balcony-inspection-los-angeles-apartment-owners/).',
+			},
+			{
+				q: 'What does California’s AB 628 require for stoves and refrigerators?',
+				a: 'For leases entered into, amended, or extended on or after January 1, 2026, a rental unit must have a stove and a refrigerator in good working order. A tenant may agree in the lease to supply their own refrigerator, but not as a condition of the tenancy. Some housing types, such as single-room occupancy units, are exempt. See our [AB 628 guide](/insights/ab-628-stove-refrigerator-law-la-apartment-owners/).',
+			},
+			{
+				q: 'Do I have to provide air conditioning in my apartments?',
+				a: 'We found no law in California or in the City of Los Angeles that requires an owner to install air conditioning in every unit. Los Angeles County has an 82°F maximum indoor temperature rule for rentals in unincorporated areas, and the City Council has directed the City to consider a similar standard. See our [air conditioning guide](/insights/air-conditioning-law-los-angeles-apartment-owners-electrical-panel/).',
+			},
+			{
+				q: 'Can I raise rents after a declared emergency?',
+				a: 'Generally not by more than 10%. California’s price gouging law caps rent increases at 10% for 30 days after an emergency is declared, or longer if extended, unless an exception applies. SB 1365, signed September 30, 2026, extends this to leases of any length starting in 2027. See [the SB 1365 guide](/insights/sb-1365-emergency-rent-cap-la-apartment-owners/).',
+			},
+			{
+				q: 'Does deferred maintenance or a utility leak affect my sale price?',
+				a: 'Yes. Buyers value a building on its net operating income, so extra expense lowers the price: at a 7% cap rate, $8,000 a year of avoidable water expense reduces value by roughly $114,000. Track utility bills as a percentage of expenses to catch leaks early. See [utility bill diligence](/insights/utility-bill-diligence-la-apartment-owners/).',
+			},
+		],
+	},
+	{
+		category: 'Market & Neighborhoods',
+		items: [
+			{
+				q: 'What are apartment buildings selling for in Los Angeles?',
+				a: 'It varies widely by neighborhood, age, and size, which is why one citywide number is not very useful. Our [cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/) and [Q3 2026 market update](/insights/la-apartment-market-update-q3-2026/) show real 2026 LA County sales, and each [neighborhood page](/submarkets/) lists the sales behind its numbers.',
+			},
+			{
+				q: 'Which neighborhoods do you cover?',
+				a: 'Koreatown, Mid-Wilshire, Westlake, Pico-Union, East Hollywood, Silver Lake, North Hollywood, Van Nuys, West LA, Brentwood, Santa Monica, West Hollywood, and Beverly Hills each have their own [neighborhood page](/submarkets/). We also sell buildings elsewhere in Los Angeles County.',
+			},
+			{
+				q: 'Can I see the buildings you have actually sold?',
+				a: 'Yes. Our [closed sales](/closed-sales/) page lists each sale with its address, unit count, size, and price, and more than 1,390 units and $345 million in closed sales are behind it. Our [case studies](/case-studies/) explain how we handled some of the more complex ones.',
+			},
+		],
+	},
+	{
+		category: 'Working With Us',
+		items: [
+			{
+				q: 'Who is Highlight Multifamily Group?',
+				a: 'We are a team of multifamily brokers at Equity Union Commercial. Co-founders Josh Kaplan and Troy Lucero work every listing themselves, making the calls to investors and other brokers and negotiating directly with buyers. Meet the [team](/about/).',
+			},
+			{
+				q: 'Do you represent buyers as well as sellers?',
+				a: 'Yes. We have represented buyers as well as sellers, and on some deals both sides. Each [closed sale](/closed-sales/) page says which side we represented.',
+			},
+			{
+				q: 'What is the best way to get started?',
+				a: 'Run a quick range through our [free property value calculator](/property-value/), then [request a free Broker Opinion of Value](/contact/?intent=bov). We will walk you through our approach, our recent sales, and your options, with no obligation to list.',
 			},
 		],
 	},
@@ -66,16 +259,18 @@ const faqSchema = {
 			name: f.q,
 			acceptedAnswer: {
 				'@type': 'Answer',
-				text: f.a,
+				text: stripLinks(f.a),
 			},
 		}))
 	),
 };
+
+const slugify = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
 
 <BaseLayout
-	title="Frequently Asked Questions | Highlight Multifamily Group"
-	description="Answers to common questions LA apartment owners ask about selling timelines, fees, 1031 exchanges, and trust or probate sales."
+	title="LA Apartment Building FAQs | Highlight Multifamily Group"
+	description="Answers for LA apartment owners on value, selling, rent control, Measure ULA, taxes, 1031 exchanges, inherited buildings, and building rules."
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
@@ -89,15 +284,33 @@ const faqSchema = {
 
 	<section class="section">
 		<div class="container narrow">
+			<nav class="faq-jump" aria-label="Question topics">
+				{faqCategories.map((cat) => <a href={`#${slugify(cat.category)}`}>{cat.category}</a>)}
+			</nav>
+
 			{
 				faqCategories.map((cat) => (
-					<div class="faq-category">
+					<div class="faq-category" id={slugify(cat.category)}>
 						<h2>{cat.category}</h2>
 						<div class="faq-list">
 							{cat.items.map((f) => (
 								<details class="faq-item">
 									<summary>{f.q}</summary>
-									<p>{f.a}</p>
+									<p>
+										{toParts(f.a).map((part) =>
+											part.href ? (
+												part.href.startsWith('http') ? (
+													<a href={part.href} target="_blank" rel="noopener noreferrer">
+														{part.text}
+													</a>
+												) : (
+													<a href={part.href}>{part.text}</a>
+												)
+											) : (
+												part.text
+											)
+										)}
+									</p>
 									{f.q === 'How does the 1031 exchange timeline work?' && <ExchangeTimeline />}
 								</details>
 							))}
@@ -105,6 +318,10 @@ const faqSchema = {
 					</div>
 				))
 			}
+
+			<p class="faq-more">
+				Not here? <a href="/contact/">Ask us directly</a>, or read our <a href="/insights/">Insights</a> for longer guides.
+			</p>
 		</div>
 	</section>
 </BaseLayout>
@@ -120,8 +337,31 @@ const faqSchema = {
 		max-width: 760px;
 	}
 
+	.faq-jump {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.faq-jump a {
+		font-size: 0.82rem;
+		font-weight: 600;
+		padding: 0.4rem 0.8rem;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		color: var(--navy-dark);
+		text-decoration: none;
+		background: var(--paper);
+	}
+
+	.faq-jump a:hover {
+		border-color: var(--gold);
+	}
+
 	.faq-category {
 		margin-bottom: 2.5rem;
+		scroll-margin-top: 6rem;
 	}
 
 	.faq-list {
@@ -145,5 +385,10 @@ const faqSchema = {
 	.faq-item p {
 		margin-top: 0.75rem;
 		margin-bottom: 0;
+	}
+
+	.faq-more {
+		margin-top: 1rem;
+		color: var(--ink-light);
 	}
 </style>

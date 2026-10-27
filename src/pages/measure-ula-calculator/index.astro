@@ -1,0 +1,566 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+import { stripLinks } from '../../lib/inlineLinks';
+
+// Rates and thresholds, checked October 27, 2026:
+// - City of Los Angeles Office of Finance (https://finance.lacity.gov/faq/measure-ula): for closings after
+//   June 30, 2026 the ULA tax is 4% above $5,400,000 and under $10,900,000 and 5.5% at $10,900,000 or more,
+//   applied to the whole price (ULA is figured on gross value, including any loan the buyer assumes). The
+//   City's regular tax is $2.25 per $500 or part of $500 (0.45%). The thresholds are adjusted every year.
+// - LA County Registrar-Recorder: documentary transfer tax of $1.10 per $1,000 everywhere in the county.
+// - Santa Monica (Measure GS): $3 per $1,000 under $5M, $6 per $1,000 from $5M to just under $8M, $56 per
+//   $1,000 at $8M and up, each rate applied to the whole price. Same figures as MeasureGsCliff.astro.
+// The script below must stay in step with these numbers.
+const faqs = [
+	{
+		q: 'How do I calculate the Measure ULA tax on my apartment building?',
+		a: 'Multiply the sale price by the ULA rate that applies to it: nothing at or below $5,400,000, 4% above $5,400,000 and below $10,900,000, and 5.5% at $10,900,000 or more. The rate applies to the whole price, not only the part above the line. The calculator above also adds the City of Los Angeles base transfer tax and the LA County tax.',
+	},
+	{
+		q: 'Who pays the Measure ULA tax, the buyer or the seller?',
+		a: 'Contracts usually put it on the seller, and this calculator assumes that. Who pays is a term of the purchase agreement, so it can be negotiated, and your escrow officer will show it on the settlement statement. Ask your broker and attorney how it is allocated in your deal.',
+	},
+	{
+		q: 'Does this calculator include capital gains tax?',
+		a: 'No. It stops at what you would have left after transfer taxes, commission and closing costs, and your loan payoff, before federal and California income tax. Your gain depends on your basis and depreciation, so ask your CPA. Our guide to [capital gains and depreciation recapture](/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/) explains what comes out of a sale.',
+	},
+	{
+		q: 'Why does a higher price sometimes leave me with less money?',
+		a: 'Because the ULA tax is not marginal. At $5,400,000 no ULA tax is owed, but at $5,500,000 it is 4% of the full price, or $220,000. The calculator flags this range and shows the price you would need to reach to come out even. We explain it in our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/).',
+	},
+	{
+		q: 'Do the ULA thresholds change?',
+		a: 'Yes. The City adjusts them every year for inflation, and the current figures apply to sales closing after June 30, 2026. Rates can also change if the law changes, so confirm the figures with the City of Los Angeles Office of Finance before you price a building near a line.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((f) => ({
+		'@type': 'Question',
+		name: f.q,
+		acceptedAnswer: { '@type': 'Answer', text: stripLinks(f.a) },
+	})),
+};
+---
+
+<BaseLayout
+	title="Measure ULA Calculator: Net Proceeds From an LA Sale"
+	description="Free Measure ULA calculator for LA apartment owners. See your transfer taxes and net proceeds at any price, and whether a higher price leaves you with less."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Free Tool</span>
+			<h1>Measure ULA and Net Proceeds Calculator</h1>
+			<p>
+				See what you would pay in transfer taxes, including the Measure ULA &ldquo;mansion tax,&rdquo; and what you would have left from the sale of an
+				LA apartment building. It also shows when a higher price would leave you with less.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container ula-layout">
+			<div class="ula-card">
+				<form id="ula-form" novalidate>
+					<div class="ula-field">
+						<label for="ula-price">Sale Price</label>
+						<input id="ula-price" name="price" type="text" inputmode="numeric" autocomplete="off" placeholder="5,500,000" required />
+						<p id="ula-error" class="ula-error" role="alert" hidden></p>
+					</div>
+
+					<div class="ula-field">
+						<label for="ula-where">Where Is the Building?</label>
+						<select id="ula-where" name="where">
+							<option value="la" selected>City of Los Angeles (Measure ULA applies)</option>
+							<option value="sm">Santa Monica (Measure GS applies)</option>
+							<option value="other">West Hollywood, Beverly Hills, or another LA County city with no city transfer tax</option>
+						</select>
+						<span class="ula-field__hint">Culver City, Pomona, and Redondo Beach have their own city transfer taxes, which this calculator does not include.</span>
+					</div>
+
+					<div class="ula-row">
+						<div class="ula-field">
+							<label for="ula-costs">Commission and Closing Costs <span class="ula-field__optional">(optional)</span></label>
+							<input id="ula-costs" name="costs" type="number" inputmode="decimal" min="0" max="20" step="0.1" placeholder="% of price" />
+							<span class="ula-field__hint">Your commission is negotiable. Enter the total you expect, as a percent of the price.</span>
+						</div>
+						<div class="ula-field">
+							<label for="ula-loan">Loan Payoff <span class="ula-field__optional">(optional)</span></label>
+							<input id="ula-loan" name="loan" type="text" inputmode="numeric" autocomplete="off" placeholder="2,000,000" />
+							<span class="ula-field__hint">What you owe the lender. The buyer is assumed to pay it off, not assume it.</span>
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-gold">Calculate My Net Proceeds</button>
+					<p class="ula-disclaimer">
+						Informational estimate only, not tax or legal advice. Rates and thresholds are those published for closings after June 30, 2026 and are
+						adjusted every year. It assumes the seller pays the transfer taxes, which is negotiable, and it stops before federal and California income tax.
+					</p>
+				</form>
+
+				<div id="ula-result" class="ula-result" hidden aria-live="polite">
+					<span class="eyebrow">Estimated Transfer Taxes</span>
+					<p class="ula-result__big" id="ula-total-tax"></p>
+					<p class="ula-result__sub" id="ula-total-sub"></p>
+
+					<div id="ula-flag" class="ula-flag" hidden></div>
+
+					<table class="ula-breakdown">
+						<caption>Where the money goes</caption>
+						<tbody id="ula-breakdown-body"></tbody>
+					</table>
+
+					<table class="ula-whatif">
+						<caption>What if the price were different?</caption>
+						<thead>
+							<tr>
+								<th scope="col">Sale Price</th>
+								<th scope="col">Transfer Taxes</th>
+								<th scope="col" id="ula-whatif-net-head">Cash After Taxes</th>
+							</tr>
+						</thead>
+						<tbody id="ula-whatif-body"></tbody>
+					</table>
+
+					<a href="#bov-form" class="btn btn-navy ula-result__cta">Have Us Model Your Exact Numbers &rarr;</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container ula-notes">
+			<h2>How Measure ULA Works</h2>
+			<p>
+				Measure ULA is the City of Los Angeles transfer tax on sales above a set price. For closings after June 30, 2026, a sale of
+				$5,400,000 or less owes no ULA tax, a sale above $5,400,000 and under $10,900,000 owes 4%, and a sale at $10,900,000 or more owes 5.5%. The rate
+				applies to the <strong>entire</strong> price, which is why a price just over a line can leave you with less money than a price just under it. The
+				tax is on top of the City&rsquo;s regular transfer tax of 0.45% and the LA County tax of $1.10 per $1,000.
+			</p>
+			<p>
+				Read the full explanation in our <a href="/insights/measure-ula-2026-thresholds-selling-la-apartment-building/">Measure ULA guide</a>, and see
+				whether it is smarter to <a href="/insights/measure-ula-hold-or-sell-la-apartment-building/">hold or sell</a> if your building sits near a line.
+				Owners in <a href="/submarkets/west-hollywood/">West Hollywood</a> and <a href="/submarkets/santa-monica/">Santa Monica</a> are outside
+				Measure ULA.
+			</p>
+			<p class="ula-notes__source">
+				Source for rates and thresholds: <a href="https://finance.lacity.gov/faq/measure-ula" target="_blank" rel="noopener noreferrer">City of Los Angeles
+				Office of Finance</a>. Santa Monica and LA County rates from the LA County Registrar-Recorder.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container ula-faq">
+			<ArticleFaq faqs={faqs} />
+		</div>
+	</section>
+
+	<section class="section section-alt" id="bov-form">
+		<div class="container">
+			<BOVForm
+				heading="Want Your Exact Net Proceeds?"
+				subheading="A calculator can't see your tax basis, your loan terms, or your timing. A free Broker Opinion of Value from Highlight Multifamily Group can."
+			/>
+		</div>
+	</section>
+</BaseLayout>
+
+<script>
+	const COUNTY_PER_1000 = 1.1;
+
+	// Each line is the price where a higher tax tier begins: `start` is the lowest price in the higher tier and
+	// `below` is the highest price in the lower tier.
+	const LINES = {
+		la: [
+			{ name: '$5.4 million', at: 5400000, start: 5400000.01, below: 5400000, belowLabel: '$5,400,000' },
+			{ name: '$10.9 million', at: 10900000, start: 10900000, below: 10899999, belowLabel: 'just under $10,900,000' },
+		],
+		sm: [
+			{ name: '$5 million', at: 5000000, start: 5000000, below: 4999999, belowLabel: 'just under $5,000,000' },
+			{ name: '$8 million', at: 8000000, start: 8000000, below: 7999999, belowLabel: 'just under $8,000,000' },
+		],
+		other: [],
+	};
+
+	const money = (n) => `$${Math.round(n).toLocaleString('en-US')}`;
+	const digits = (s) => Number(String(s ?? '').replace(/[^0-9]/g, ''));
+
+	// Tax pieces for a sale price in the chosen place. The City of LA base tax is $2.25 per $500 or part of $500.
+	function taxPieces(price, where) {
+		const pieces = [];
+		if (where === 'la') {
+			pieces.push({ label: 'City of Los Angeles transfer tax (0.45%)', amount: Math.ceil(price / 500) * 2.25 });
+			const rate = price > 5400000 ? (price >= 10900000 ? 0.055 : 0.04) : 0;
+			pieces.push({ label: rate ? `Measure ULA tax (${rate * 100}% of the full price)` : 'Measure ULA tax (price is at or below $5.4 million)', amount: price * rate, ula: true });
+		} else if (where === 'sm') {
+			const rate = price >= 8000000 ? 0.056 : price >= 5000000 ? 0.006 : 0.003;
+			pieces.push({ label: `Santa Monica transfer tax (${(rate * 100).toFixed(1)}%${rate === 0.056 ? ', Measure GS' : ''})`, amount: price * rate });
+		}
+		pieces.push({ label: 'LA County transfer tax ($1.10 per $1,000)', amount: (price / 1000) * COUNTY_PER_1000 });
+		return pieces;
+	}
+
+	const totalTax = (price, where) => taxPieces(price, where).reduce((s, p) => s + p.amount, 0);
+
+	// What the seller keeps from a sale price, before any loan payoff and before income tax.
+	const keepsFrom = (price, where, costsPct) => price - totalTax(price, where) - price * costsPct;
+
+	// Lowest price above the line at which the seller keeps at least as much as at the highest price below it.
+	function breakEven(line, where, costsPct) {
+		const target = keepsFrom(line.below, where, costsPct);
+		let lo = line.start;
+		let hi = line.start * 1.25;
+		for (let i = 0; i < 80; i++) {
+			const mid = (lo + hi) / 2;
+			if (keepsFrom(mid, where, costsPct) >= target) hi = mid;
+			else lo = mid;
+		}
+		return Math.ceil(hi / 5000) * 5000;
+	}
+
+	const form = document.getElementById('ula-form');
+	const result = document.getElementById('ula-result');
+	const errorEl = document.getElementById('ula-error');
+	const priceInput = document.getElementById('ula-price');
+	const loanInput = document.getElementById('ula-loan');
+
+	// Show commas while typing.
+	for (const input of [priceInput, loanInput]) {
+		input?.addEventListener('input', () => {
+			const n = digits(input.value);
+			input.value = n ? n.toLocaleString('en-US') : '';
+			errorEl.hidden = true;
+		});
+	}
+
+	function render() {
+		const price = digits(priceInput.value);
+		const where = document.getElementById('ula-where').value;
+		const costsPct = Math.max(0, Number(document.getElementById('ula-costs').value) || 0) / 100;
+		const loan = digits(loanInput.value);
+
+		if (price < 100000) {
+			errorEl.textContent = 'Enter the sale price in dollars, for example 5,500,000.';
+			errorEl.hidden = false;
+			result.hidden = true;
+			priceInput.focus();
+			return;
+		}
+		errorEl.hidden = true;
+
+		const pieces = taxPieces(price, where);
+		const tax = pieces.reduce((s, p) => s + p.amount, 0);
+		const costs = price * costsPct;
+		const cash = price - tax - costs - loan;
+
+		document.getElementById('ula-total-tax').textContent = money(tax);
+		document.getElementById('ula-total-sub').textContent = `${((tax / price) * 100).toFixed(2)}% of the ${money(price)} sale price`;
+
+		// Breakdown table
+		const rows = [['Sale price', money(price), false]];
+		for (const p of pieces) rows.push([p.label, `− ${money(p.amount)}`, false]);
+		if (costs > 0) rows.push([`Commission and closing costs (${(costsPct * 100).toFixed(1).replace(/\.0$/, '')}%)`, `− ${money(costs)}`, false]);
+		if (loan > 0) rows.push(['Loan payoff', `− ${money(loan)}`, false]);
+		rows.push([loan > 0 || costs > 0 ? 'Estimated cash to you, before income tax' : 'Left after transfer taxes', money(cash), true]);
+		const body = document.getElementById('ula-breakdown-body');
+		body.replaceChildren();
+		for (const [label, value, strong] of rows) {
+			const tr = document.createElement('tr');
+			if (strong) tr.className = 'is-total';
+			const th = document.createElement('th');
+			th.scope = 'row';
+			th.textContent = label;
+			const td = document.createElement('td');
+			td.textContent = value;
+			tr.append(th, td);
+			body.append(tr);
+		}
+
+		// Threshold flag
+		const flag = document.getElementById('ula-flag');
+		flag.hidden = true;
+		flag.className = 'ula-flag';
+		const lines = LINES[where] ?? [];
+		let message = '';
+		let tone = '';
+		for (const line of lines) {
+			if (price >= line.start) {
+				const be = breakEven(line, where, costsPct);
+				if (price < be) {
+					const gap = keepsFrom(line.below, where, costsPct) - keepsFrom(price, where, costsPct);
+					message = `<strong>You are in the dead zone above the ${line.name} line.</strong> At ${money(price)} you would keep about ${money(gap)} less than from a sale at ${line.belowLabel}. The price has to reach about ${money(be)} before you come out ahead.`;
+					tone = 'warn';
+				}
+			} else if (price >= line.start * 0.88 && !message) {
+				const be = breakEven(line, where, costsPct);
+				message = `<strong>You are ${money(line.at - price)} under the ${line.name} line.</strong> Pricing above that line only pays off at about ${money(be)} or more, because the higher tax applies to the whole price. Any price from the line up to about ${money(be)} would leave you with less than a sale at ${line.belowLabel}.`;
+				tone = 'note';
+			}
+		}
+		if (message) {
+			flag.innerHTML = message;
+			flag.classList.add(tone === 'warn' ? 'ula-flag--warn' : 'ula-flag--note');
+			flag.hidden = false;
+		}
+
+		// What-if table: the price rounded, steps around it, and the nearest line if it is close.
+		const net = (p) => p - totalTax(p, where) - p * costsPct - loan;
+		const base = Math.round(price / 10000) * 10000 || price;
+		const prices = new Set([price]);
+		for (const f of [0.9, 0.95, 1.05, 1.1]) prices.add(Math.round((base * f) / 10000) * 10000);
+		for (const line of lines) {
+			if (line.below >= price * 0.85 && line.below <= price * 1.15) prices.add(Math.round(line.below));
+		}
+		document.getElementById('ula-whatif-net-head').textContent = loan > 0 || costsPct > 0 ? 'Cash to You, Before Income Tax' : 'Left After Transfer Taxes';
+		const wb = document.getElementById('ula-whatif-body');
+		wb.replaceChildren();
+		for (const p of [...prices].sort((a, b) => a - b)) {
+			const tr = document.createElement('tr');
+			if (p === price) tr.className = 'is-you';
+			const a = document.createElement('th');
+			a.scope = 'row';
+			a.textContent = money(p) + (p === price ? ' (yours)' : '');
+			const b = document.createElement('td');
+			b.textContent = money(totalTax(p, where));
+			const c = document.createElement('td');
+			c.textContent = money(net(p));
+			tr.append(a, b, c);
+			wb.append(tr);
+		}
+
+		result.hidden = false;
+		result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
+
+	form?.addEventListener('submit', (e) => {
+		e.preventDefault();
+		render();
+	});
+
+	// A link from an article can pass a price, as in /measure-ula-calculator/?price=5500000
+	const fromLink = new URLSearchParams(window.location.search).get('price');
+	if (fromLink && digits(fromLink) >= 100000) {
+		priceInput.value = digits(fromLink).toLocaleString('en-US');
+		render();
+	}
+</script>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 6vw, 4.5rem);
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		font-size: 1.1rem;
+		color: var(--ink-soft);
+	}
+
+	.ula-layout {
+		display: flex;
+		justify-content: center;
+	}
+
+	.ula-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: clamp(2rem, 4vw, 3rem);
+		max-width: 680px;
+		width: 100%;
+	}
+
+	.ula-field {
+		margin-bottom: 1.25rem;
+	}
+
+	.ula-field label {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 700;
+		margin-bottom: 0.35rem;
+		color: var(--navy-dark);
+	}
+
+	.ula-field__optional {
+		font-weight: 400;
+		color: var(--ink-light);
+	}
+
+	.ula-field__hint {
+		display: block;
+		font-size: 0.75rem;
+		color: var(--ink-light);
+		margin-top: 0.3rem;
+	}
+
+	.ula-field input,
+	.ula-field select {
+		width: 100%;
+		padding: 0.75rem 0.9rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-size: 0.95rem;
+		font-family: var(--font-sans);
+		background: var(--paper);
+	}
+
+	.ula-field input:focus,
+	.ula-field select:focus {
+		outline: none;
+		border-color: var(--gold);
+	}
+
+	.ula-error {
+		margin: 0.5rem 0 0;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: #b3261e;
+	}
+
+	.ula-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
+
+	.ula-disclaimer {
+		font-size: 0.72rem;
+		color: var(--ink-light);
+		margin-top: 1rem;
+		line-height: 1.5;
+	}
+
+	.ula-result {
+		margin-top: 2.5rem;
+		padding-top: 2rem;
+		border-top: 1px solid var(--border);
+		text-align: center;
+	}
+
+	.ula-result__big {
+		font-family: var(--font-serif);
+		font-size: clamp(2.2rem, 6vw, 3rem);
+		color: var(--navy-dark);
+		margin: 0.4rem 0 0;
+	}
+
+	.ula-result__sub {
+		color: var(--ink-light);
+		font-size: 0.9rem;
+		margin-top: 0.25rem;
+	}
+
+	.ula-flag {
+		text-align: left;
+		margin: 1.5rem 0;
+		padding: 1rem 1.15rem;
+		border-left: 3px solid var(--gold);
+		background: var(--navy-tint);
+		font-size: 0.92rem;
+		line-height: 1.6;
+	}
+
+	.ula-flag--warn {
+		border-left-color: #b3261e;
+		background: #fbeeed;
+	}
+
+	.ula-breakdown,
+	.ula-whatif {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.9rem;
+		text-align: left;
+		margin-top: 1.75rem;
+	}
+
+	.ula-breakdown caption,
+	.ula-whatif caption {
+		text-align: left;
+		font-family: var(--font-serif);
+		font-size: 1.05rem;
+		font-weight: 500;
+		color: var(--navy-dark);
+		margin-bottom: 0.6rem;
+	}
+
+	.ula-breakdown th,
+	.ula-breakdown td,
+	.ula-whatif th,
+	.ula-whatif td {
+		padding: 0.6rem 0.5rem;
+		border-bottom: 1px solid var(--border);
+		font-weight: 400;
+	}
+
+	.ula-breakdown td,
+	.ula-whatif td,
+	.ula-whatif thead th:not(:first-child) {
+		text-align: right;
+	}
+
+	.ula-whatif thead th {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+		color: #fff;
+		background: var(--navy-dark);
+		padding: 0.65rem 0.5rem;
+	}
+
+	.ula-breakdown .is-total th,
+	.ula-breakdown .is-total td {
+		font-weight: 700;
+		color: var(--navy-dark);
+		border-bottom: none;
+		border-top: 2px solid var(--navy-dark);
+	}
+
+	.ula-whatif .is-you {
+		background: var(--navy-tint);
+		font-weight: 600;
+	}
+
+	.ula-result__cta {
+		margin-top: 2rem;
+	}
+
+	.ula-notes {
+		max-width: 760px;
+	}
+
+	.ula-notes h2 {
+		margin-top: 0;
+	}
+
+	.ula-notes p {
+		line-height: 1.75;
+	}
+
+	.ula-notes__source {
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	.ula-faq {
+		max-width: 760px;
+	}
+
+	@media (max-width: 640px) {
+		.ula-row {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

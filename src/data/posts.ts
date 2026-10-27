@@ -526,7 +526,7 @@ const allPosts: Post[] = [
 			{
 				heading: 'Run the Numbers Before You List',
 				paragraphs: [
-					'If your building could land near $5.4 million or $10.9 million, the time to look at the math is before you set a price. Start with our [free property value calculator](/property-value/) for a quick range, then request a [free Broker Opinion of Value](/contact/?intent=bov) and we will show you what you would net at different prices and closing dates.',
+					'If your building could land near $5.4 million or $10.9 million, the time to look at the math is before you set a price. Try our [Measure ULA calculator](/measure-ula-calculator/) to see your transfer taxes and net proceeds at any price, start with our [free property value calculator](/property-value/) for a quick range, then request a [free Broker Opinion of Value](/contact/?intent=bov) and we will show you what you would net at different prices and closing dates. If you are deciding whether to sell at all, read our guide to [holding or selling under Measure ULA](/insights/measure-ula-hold-or-sell-la-apartment-building/).',
 					'Planning around year-end? Our article on [timing a sale before December 31](/insights/selling-la-apartment-building-before-year-end/) covers how closing dates affect your taxes.',
 					'This article is general information, not tax or legal advice. Please confirm how Measure ULA applies to your sale with your CPA or tax attorney.',
 				],
@@ -1624,6 +1624,331 @@ const allPosts: Post[] = [
 			},
 		],
 	},
+	{
+		slug: 'measure-ula-hold-or-sell-la-apartment-building',
+		title: 'Measure ULA: Should You Hold or Sell Your LA Apartment Building?',
+		seoTitle: 'Measure ULA: Hold or Sell Your LA Apartment Building?',
+		description:
+			'Measure ULA taxes the whole sale price, not your profit. How the tax changes the hold-or-sell decision for LA apartment owners, with worked examples.',
+		date: '2026-10-27',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Measure ULA is charged on the sale price, not on your gain. It is owed whether you made money on the building or lost it.',
+					'Waiting does not make the tax go away. It is a cost of selling at any time, so for most owners it affects when and at what price they sell more than whether they sell.',
+					'The tax matters most when a price lands near $5.4 million or $10.9 million. Between those lines, a few percent on the whole price can cost more than a year of the building’s income.',
+					'Decide on your goals first, then model the tax. Our free Measure ULA calculator shows what you would keep at any price.',
+				],
+			},
+			{
+				heading: 'Why Measure ULA Is a Hold-or-Sell Question',
+				paragraphs: [
+					'Most taxes on a sale depend on how much you gained. Measure ULA does not. The City of Los Angeles charges it on the value of the property being sold, and for closings after June 30, 2026 the rate is 0% at or below $5.4 million, 4% above $5.4 million and under $10.9 million, and 5.5% at $10.9 million or more. The rate applies to the entire price. If you want the mechanics, start with our [Measure ULA guide](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/).',
+					'Because it is a flat percentage of the price, it hits an owner with a low basis and an owner with a high basis equally. That is why it changes how owners think about holding: for a building above the first line, a sale carries a large, certain cost that has nothing to do with how well the building has performed.',
+				],
+			},
+			{
+				heading: 'What the Tax Costs at Different Prices',
+				paragraphs: [
+					'At $5,400,000 the ULA tax is zero. At $5,400,001 it is 4% of the full price, about $216,000.',
+					'At $6,000,000 the ULA tax is $240,000. The City’s regular transfer tax of 0.45% adds $27,000, and the LA County tax of $1.10 per $1,000 adds $6,600, for $273,600 in transfer taxes in all, or 4.56% of the price.',
+					'At $12,000,000 the ULA tax is $660,000. With the regular City and County taxes, transfer taxes total $727,200, or 6.06% of the price.',
+					'These figures are before the broker’s commission, other closing costs, and your income taxes. You can run your own price through the [Measure ULA calculator](/measure-ula-calculator/).',
+				],
+			},
+			{
+				heading: 'The Tax in Terms of Income',
+				paragraphs: [
+					'A useful way to judge the tax is to compare it with what the building earns. Suppose a building sells for $6,000,000 at a 5.5% cap rate. Its net operating income is about $330,000 a year. The $240,000 ULA tax is about 8.7 months of that income, paid once, on the day you sell.',
+					'That framing does not tell you whether to sell. It tells you what the exit costs, so you can weigh it against the other things on the scale: the income you keep earning if you hold, the repairs and compliance work coming up, and what you plan to do with the proceeds.',
+				],
+			},
+			{
+				heading: 'Reasons Owners Choose to Hold',
+				paragraphs: [
+					'The income continues. Every year you hold, you keep collecting the building’s net operating income, and the tax is not due until you sell.',
+					'The thresholds move up. The City adjusts both lines every year for inflation, so a building that sits just over a line today could be under it after a future adjustment, if its value does not rise faster. We confirm the current figures with the City before pricing, because they change each July.',
+					'A planned handoff. Some owners intend to pass the building to family. That does not avoid ULA, since a later sale above a line would owe it too, but an heir’s income tax on a sale soon after inheriting is often small because of the stepped-up basis rule. Ask your CPA and attorney how it applies to you. Our guide to [inherited apartment buildings](/insights/inherited-apartment-building-los-angeles-what-to-do/) covers the basics.',
+				],
+			},
+			{
+				heading: 'Reasons Owners Sell Anyway',
+				paragraphs: [
+					'The tax is real, but it is only one side of the decision. Owners still sell above the lines for reasons that have nothing to do with ULA. They may be ready to stop managing, face costly repairs or compliance work, want to move capital out of one building into several, or be concerned about how much of their wealth sits in a single property.',
+					'It also helps to remember that waiting does not remove the tax. If you will sell eventually, and the building will still be above a line then, the tax is part of the exit either way. It is worth modeling now, but it should not trap you into holding a building that no longer fits your plans. A [1031 exchange](/1031-exchanges/) can defer your capital gains tax, but it does not exempt a sale from Measure ULA.',
+				],
+			},
+			{
+				heading: 'Questions to Ask Before You Decide',
+				paragraphs: [
+					'What would I net at today’s price, and at a price just under the nearest line? Run both in the [calculator](/measure-ula-calculator/).',
+					'What does the building earn after expenses, and what repairs or compliance costs are coming?',
+					'What will I do with the money, and how does that compare with what the building earns now?',
+					'Is my price close enough to a line that a modest price change would leave me with more? If so, a [Broker Opinion of Value](/contact/?intent=bov) can show your net at several prices.',
+					'Which tax advisor and attorney will confirm how ULA and my income taxes apply before I list?',
+				],
+			},
+			{
+				heading: 'If Your Building Is Near a Line',
+				paragraphs: [
+					'A building priced just over $5.4 million or $10.9 million is in a stretch where a higher price can put less money in your pocket, which we describe in our guide to the [dead zone above each threshold](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/). The calculator flags it and shows the price you would need to reach to come out even. If your building sits in that range, the decision is not only hold versus sell. It is also what price to sell at.',
+					'Be careful with any plan to restructure a sale to avoid the tax. The City reviews payments through its own compliance process, and it will invoice the difference if it finds an underpayment. Take any such idea to a tax attorney first.',
+				],
+			},
+			{
+				heading: 'Not in the City of Los Angeles?',
+				paragraphs: [
+					'Measure ULA stops at the City of Los Angeles line. Buildings in [West Hollywood](/submarkets/west-hollywood/) and [Beverly Hills](/submarkets/beverly-hills/) owe no city transfer tax, and [Santa Monica](/submarkets/santa-monica/) has its own tax, Measure GS, at $8 million and up. The calculator covers all of these.',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'If you are weighing a sale and your building could land near a line, start with the [Measure ULA calculator](/measure-ula-calculator/), then request a free [Broker Opinion of Value](/contact/?intent=bov). We will show you what you would net at different prices and closing dates, and whether holding makes sense for you.',
+					'This article is general information, not tax or legal advice. Please confirm how Measure ULA applies to your sale with your CPA or tax attorney.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[City of Los Angeles Office of Finance: Real Property Transfer Tax and Measure ULA FAQ](https://finance.lacity.gov/faq/measure-ula)',
+				],
+			},
+		],
+	},
+	{
+		slug: 'sb-1365-emergency-rent-cap-la-apartment-owners',
+		title: 'SB 1365: California’s Emergency Rent Cap Will Cover Leases of Any Length',
+		seoTitle: 'SB 1365 Emergency Rent Cap: What LA Owners Must Know',
+		description:
+			'SB 1365 extends California’s 10% emergency rent cap to every lease and makes the repair-cost exception a defense you must prove. What LA owners should do.',
+		date: '2026-10-27',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'Governor Newsom signed SB 1365 on September 30, 2026. It changes the part of California’s price gouging law that limits rent increases after a declared emergency.',
+					'The 10% cap will now apply to rental housing with a lease of any length. Before, it covered only housing with an initial lease term of one year or less.',
+					'The old exceptions are now affirmative defenses. If you charge more than 10% during an emergency, you would have to prove the exception applies.',
+					'As a regular, non-urgency law, it takes effect January 1, 2027. It does not change rent control. The City’s Rent Stabilization Ordinance and AB 1482 still set their own, lower limits.',
+				],
+			},
+			{
+				heading: 'How the Emergency Rent Cap Works',
+				paragraphs: [
+					'California Penal Code section 396 is the state’s price gouging law. When the President or the Governor proclaims a state of emergency, or a county, city, or city and county declares a local emergency, it becomes unlawful to raise the rental price of housing by more than 10% for an existing or prospective tenant. The limit lasts for 30 days after the proclamation or declaration, or for any longer period the proclamation is extended, and local officials can extend it in steps of up to 30 days.',
+					'A violation is a misdemeanor, punishable by up to a year in county jail, a fine of up to $10,000, or both. It is also treated as an unlawful business practice, which opens the door to civil remedies on top of the criminal penalty. SB 1365 amends section 396 and does not change those penalties.',
+				],
+			},
+			{
+				heading: 'What SB 1365 Changes',
+				paragraphs: [
+					'Leases of any length. Under the old law, “housing” meant rental housing with an initial lease term of no longer than one year. SB 1365 defines it as any rental housing, regardless of the length of the initial lease. A long-term lease will no longer put a unit outside the cap.',
+					'Exceptions become defenses. The old statute exempted certain increases. The new statute makes them affirmative defenses, which means a landlord charged with violating the cap has to prove the facts that bring the increase within the defense.',
+					'Two defenses for rent increases. First, the tenant contractually agreed to the increase before the emergency was proclaimed. Second, the increase is directly attributable to the cost of repairs or additions beyond normal maintenance that were incurred within the year before the proclamation, and either the unit was rented, advertised, or offered for rent when the costs were incurred, or the owner can prove that, within that year, the intent to offer the unit for rent within six months of the work already existed.',
+					'A tighter daily-rate rule. For housing that was not offered at a daily rate in the year before the emergency but is afterward, the bill sets the rental price at one-thirtieth of the amount that applies to housing not offered for rent in the prior year. That mostly affects short-term rentals.',
+				],
+			},
+			{
+				heading: 'How the Rental Price Is Measured',
+				paragraphs: [
+					'The cap is measured from the rent the tenant actually paid. For a unit rented within the year before the emergency, the baseline is the actual rent paid. For a unit not rented but offered within that year, it is the most recent rent offered. For a unit not rented or offered at all in the prior year, the statute uses 160% of the fair market rent set by the U.S. Department of Housing and Urban Development, plus 5% if the unit is offered fully furnished.',
+					'For a unit that becomes vacant during the emergency and is covered by a local rent control ordinance, the baseline is the greater of the previous tenant’s actual rent or the HUD-based amount. The law does not let you add charges for other goods or services, such as gardening or utilities, to the baseline.',
+				],
+			},
+			{
+				heading: 'What It Does Not Change',
+				paragraphs: [
+					'Rent control still sets the limit. The statute says it does not authorize a landlord to charge more than a local rent control ordinance allows, so an RSO building stays under the City’s limit. For newer buildings, see our guide to the [2026 AB 1482 rent cap](/insights/ab-1482-rent-cap-2026/), which sets its own ceiling.',
+					'Lawful evictions are still allowed. The statute says it does not stop an owner from evicting a tenant for any lawful reason. It does bar evicting a residential tenant and then renting the unit to someone else at a price above what the evicted tenant could be charged under the cap, though an eviction that was lawfully begun before the proclamation can continue.',
+				],
+			},
+			{
+				heading: 'What It Means for LA Owners',
+				paragraphs: [
+					'Plan renewals around the calendar. If an emergency has been declared where your building is, do not assume a two-year lease or a long-term renewal puts a larger increase outside the cap after January 1, 2027.',
+					'Keep proof. To rely on either defense you need records: the tenant’s signed agreement and its date, invoices and permits that show when repair costs were incurred, and rent rolls, listings, or ads that show the unit was rented or offered for rent at the time. Organize them now, because the burden is on you.',
+					'Know your local emergencies. Both state and local declarations trigger the cap, and local officials can extend it. Check your city and county announcements, and ask your attorney or apartment association before you send any increase above 10% during a declared emergency.',
+					'Expect buyers to ask. A buyer reviewing a building that raised rents in the weeks after an emergency may ask how those increases comply. Clean records make a sale smoother. See our guides to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/) and to [getting ready to sell](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/).',
+				],
+			},
+			{
+				heading: 'What About the El Niño Emergency?',
+				paragraphs: [
+					'On September 21, 2026, the Governor proclaimed a statewide state of emergency ahead of a forecast strong El Niño, which we describe in our [El Niño checklist for apartment owners](/insights/el-nino-2026-la-apartment-owners-checklist/). As we note there, the California Apartment Association reported that the proclamation expressly suspends the price gouging restrictions “at this time.” SB 1365 takes effect January 1, 2027, so it does not govern what you do today. Ask your attorney how it applies if an emergency is still in effect when it begins.',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'If you are thinking about selling, we can help you present your rent roll and records in the way buyers expect. Start with a free [Broker Opinion of Value](/contact/?intent=bov) or the [free property value calculator](/property-value/).',
+					'This article is general information, not legal advice. Please confirm how SB 1365 applies to your property with an attorney.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[California Legislative Information: SB 1365 (Allen), chaptered September 30, 2026, Chapter 1028, Statutes of 2026](https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260SB1365)',
+				],
+			},
+		],
+	},
+	{
+		slug: 'ab-628-stove-refrigerator-law-la-apartment-owners',
+		title: 'AB 628: California’s Stove and Refrigerator Law for Rental Units',
+		seoTitle: 'AB 628 Stove and Refrigerator Law: LA Owner Guide',
+		description:
+			'AB 628 requires a working stove and refrigerator in rentals under leases signed, amended, or extended from January 1, 2026. Exemptions, recalls, and sale prep.',
+		date: '2026-10-27',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'AB 628, signed October 6, 2025, adds a working stove and a working refrigerator to the list of things a California rental unit must have to be considered tenantable.',
+					'It applies to leases entered into, amended, or extended on or after January 1, 2026.',
+					'A tenant may supply their own refrigerator, but only under rules written into the lease, and a landlord cannot make it a condition of renting. The law has no similar option for stoves.',
+					'Some housing is exempt, including single-room occupancy units and units with shared kitchens. For an owner preparing to sell, an appliance check is a simple way to avoid surprises in due diligence.',
+				],
+			},
+			{
+				heading: 'What the Law Requires',
+				paragraphs: [
+					'AB 628 amends Civil Code section 1941.1, the list of characteristics a dwelling needs so that it is not considered untenantable. The list already includes things like weatherproofing, plumbing, heating, and electrical service. For covered leases it now also includes:',
+					'A stove that is maintained in good working order and capable of safely generating heat for cooking purposes.',
+					'A refrigerator that is maintained in good working order and capable of safely storing food.',
+					'The statute treats a stove or refrigerator that is subject to a recall by the manufacturer or a public entity as not capable of safely cooking or storing food.',
+				],
+			},
+			{
+				heading: 'Which Leases Are Covered',
+				paragraphs: [
+					'The new requirements apply only to a lease that is entered into, amended, or extended on or after January 1, 2026. A new lease signed this year is covered. A renewal or an amended lease is covered as well. The statute speaks of leases, and does not say how it treats a month-to-month tenancy that simply continues, so ask your attorney how to handle those units. The safest approach is to plan on every unit meeting the standard.',
+				],
+			},
+			{
+				heading: 'The Tenant-Supplied Refrigerator Option',
+				paragraphs: [
+					'Older buildings often have tenants who bring their own refrigerator. The law allows that, with conditions. The landlord and tenant must agree when the lease is signed, and the lease must include a statement in substantially this form: that under state law the landlord is required to provide a refrigerator in good working order, and that by checking the box the tenant acknowledges they asked to bring their own and are responsible for keeping it in working order.',
+					'The lease must also say the tenant can give 30 days’ written notice that they no longer want to keep their own refrigerator, and that at the end of the 30 days the landlord will install one in good working order. A landlord may not condition the tenancy on the tenant providing a refrigerator, and is not responsible for maintaining one the tenant provides.',
+					'The statute offers no equivalent arrangement for stoves, so plan on supplying the stove.',
+				],
+			},
+			{
+				heading: 'Recalls: The 30-Day Rule',
+				paragraphs: [
+					'If a stove or refrigerator is subject to a recall by the manufacturer or a public entity, the landlord must repair or replace it within 30 days of receiving notice of the recall. The statute does not say who must give that notice. The 30-day period does not take away any remedy the tenant already has under Civil Code section 1942, which lets a tenant repair dilapidations that make the premises untenantable, or move out, when a landlord neglects them.',
+					'It is worth checking your appliances’ make and model numbers against the U.S. Consumer Product Safety Commission’s [recall database](https://www.cpsc.gov/Recalls).',
+				],
+			},
+			{
+				heading: 'Who Is Exempt',
+				paragraphs: [
+					'The stove and refrigerator requirements do not apply to permanent supportive housing, to single-room occupancy units that provide living and sleeping space for the occupant’s exclusive use (including those where occupants share food preparation facilities), to units in a residential hotel, or to dwelling units in a facility with shared or communal kitchen spaces, including assisted living facilities.',
+				],
+			},
+			{
+				heading: 'What Happens If a Unit Falls Short',
+				paragraphs: [
+					'The bill creates no separate fine. The consequence is that a unit that substantially lacks a working stove or refrigerator is deemed untenantable under section 1941.1, and the tenant’s existing remedies for untenantable housing apply. That is why an appliance that is missing, broken, or recalled is a real exposure and not a technicality.',
+				],
+			},
+			{
+				heading: 'Why This Matters When You Sell',
+				paragraphs: [
+					'A buyer’s inspection and unit walk-throughs will turn up missing, old, or tenant-owned appliances. If several units have them, a buyer may ask for a price credit or fold the cost into their offer. Getting ahead of it costs less than negotiating it in escrow.',
+					'Before you list: walk the units and list each stove and refrigerator, noting who owns it and its age. Look up recalls. Replace what is broken. For tenant-owned refrigerators, document the lease language the statute requires when each lease is signed or renewed. Keep the records with your lease files so they are ready for buyers. Our [step-by-step guide to selling](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/) lists the other documents buyers ask for.',
+					'AB 628 is part of a run of recent habitability rules that affect older buildings, along with [SB 721 balcony inspections](/insights/sb-721-balcony-inspection-los-angeles-apartment-owners/) and the [air conditioning rules and electrical panels](/insights/air-conditioning-law-los-angeles-apartment-owners-electrical-panel/). Buyers price the combined cost, so a clear picture of what is done and what is left helps your sale.',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'If you are thinking about selling an older building, request a free [Broker Opinion of Value](/contact/?intent=bov) and we will tell you which items buyers in your neighborhood are likely to raise. Or start with the [free property value calculator](/property-value/).',
+					'This article is general information, not legal advice. Please confirm how AB 628 applies to your leases with an attorney.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[California Legislative Information: AB 628 (McKinnor), chaptered October 6, 2025, Chapter 342, Statutes of 2025](https://leginfo.legislature.ca.gov/faces/billTextClient.xhtml?bill_id=202520260AB628)',
+					'[U.S. Consumer Product Safety Commission: Recalls](https://www.cpsc.gov/Recalls)',
+				],
+			},
+		],
+	},
+	{
+		slug: 'la-rso-rent-increase-rules-2026-apartment-owners',
+		title: 'LA Rent Stabilization in 2026: What Changed for Apartment Owners',
+		seoTitle: 'LA RSO Rent Increase Rules 2026: What Owners Need to Know',
+		description:
+			'Los Angeles rewrote its rent control formula in 2025. What changed for RSO buildings in 2026: the annual increase, the utility add-on, and what buyers underwrite.',
+		date: '2026-10-27',
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					'The City of Los Angeles passed an ordinance in December 2025 that lowers how much rent can rise each year in buildings covered by the Rent Stabilization Ordinance (RSO).',
+					'According to the Los Angeles Housing Department, since February 2, 2026 a landlord can no longer include any extra percentage for utilities in an annual increase.',
+					'The City’s published annual increase for RSO units is 3%, and a council office page states it stays at 3% through June 30, 2027. The ordinance also describes a new formula, covered below, so confirm the current number and how it applies with the Housing Department before you send a notice.',
+					'This is separate from the statewide AB 1482 cap, which applies to newer buildings and is 8.7% for increases effective on or after August 1, 2026.',
+				],
+			},
+			{
+				heading: 'Which Buildings Are Covered',
+				paragraphs: [
+					'The RSO generally covers apartment buildings in the City of Los Angeles with a certificate of occupancy issued before October 1, 1978. Newer buildings typically fall under the statewide cap instead. You can check a property on the City’s ZIMAS map, and the Housing Department lists a text-message lookup on its RSO page. Other cities, including [Santa Monica](/submarkets/santa-monica/), [West Hollywood](/submarkets/west-hollywood/), and [Beverly Hills](/submarkets/beverly-hills/), have their own rent control, so a building outside the City of Los Angeles follows different rules.',
+				],
+			},
+			{
+				heading: 'What the 2025 Ordinance Changed',
+				paragraphs: [
+					'The City Council passed the ordinance on December 12, 2025, and Mayor Bass signed it on December 23. The Apartment Association of Greater Los Angeles summarizes its main points as follows.',
+					'A new formula. The annual allowable increase is to be calculated at 90% of the Consumer Price Index for all items, down from 100%, with a ceiling of 4%, down from 8%, and a floor of 1%, down from 3%.',
+					'No utility add-on. The extra 1% previously allowed for owners who pay for gas or electricity on behalf of tenants was eliminated. The Housing Department says that beginning February 2, 2026, a landlord can no longer include any additional percentage increase for utilities.',
+					'No automatic 10% for added dependents. The separate 10% increase that had been allowed when an additional dependent was added to a tenancy was eliminated.',
+					'Relocation amounts. Relocation assistance amounts are to be adjusted each year using 100% of the CPI.',
+				],
+			},
+			{
+				heading: 'What You Can Charge Now',
+				paragraphs: [
+					'The Housing Department’s RSO rent increase calculator uses 3%, and a City Council office page last updated in March 2026 states that the RSO annual rent increase remains at 3% from July 1, 2025 to June 30, 2027. The Housing Department’s own announcement on its calculator page still describes the earlier period, so check it before you rely on a number.',
+					'A few practical points. State law requires 30 days’ written notice for rent increases of less than 10%. The City’s RSO and Systematic Code Enforcement Program fees can be passed through to tenants only after you register the unit and give written notice. The calculator page lists the current pass-through amounts of $1.61 and $2.83 a month.',
+				],
+			},
+			{
+				heading: 'How This Compares With AB 1482',
+				paragraphs: [
+					'For newer buildings outside the RSO, the statewide rent cap is the lower of 10% or 5% plus the regional CPI change. For increases effective on or after August 1, 2026, that is 8.7%. Our [AB 1482 guide](/insights/ab-1482-rent-cap-2026/) explains how it is calculated.',
+					'The gap is large. On a $2,000 rent, a 3% increase is $60 a month, and an 8.7% increase is $174. Over a year that is about $720 versus $2,088 per unit, which is why the two kinds of buildings are priced differently.',
+				],
+			},
+			{
+				heading: 'What It Means for Value',
+				paragraphs: [
+					'Buyers underwrite rents in place and the legal limit on how fast they can grow. A lower ceiling slows rent growth in an RSO building, and buyers give only partial credit for upside they cannot capture until units turn over. See our [cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/).',
+					'As an illustration, take a 10-unit building with $2,000 rents. A 3% increase adds $7,200 a year in rent. At a 6% cap rate, that income is worth about $120,000 to a buyer, and expenses that do not rise with rent mean most of it reaches net operating income. This is an example, not a quote for your building, but it shows why an unused allowable increase has value.',
+					'Before you list, ask whether to take an allowable increase you have not yet used. Notices have to be served properly, and timing relative to a listing matters. A free [Broker Opinion of Value](/contact/?intent=bov) can show what the increase is worth to a buyer.',
+				],
+			},
+			{
+				heading: 'Selling an RSO Building',
+				paragraphs: [
+					'The rent rules stay with the building, so a buyer steps into your position. Have your RSO registration and fee records, rent increase notices, and rent roll ready. Our guide to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/) walks through what buyers ask for, and our [property value calculator](/property-value/) gives a quick range.',
+					'This article is general information, not legal advice. Rent rules change, so please confirm the current figures with the Los Angeles Housing Department or an attorney before you serve any notice.',
+				],
+			},
+			{
+				heading: 'Sources',
+				paragraphs: [
+					'[Los Angeles Housing Department: RSO Rent Increase Calculator](https://housing.lacity.gov/rso-rent-increase-calculator)',
+					'[Councilmember Nithya Raman, Council District 4: Renters Rights and Protections](https://cd4.lacity.gov/initiative/renters-rights/)',
+					'[Apartment Association of Greater Los Angeles: L.A. RSO Formula Change](https://members.aagla.org/news/la-rso-formula-change-we-address-the-1-adders-for-utilities)',
+				],
+			},
+		],
+	},
 ];
 
 // Scheduled publishing: a post dated in the future is held back until that date (Pacific time). The
@@ -1646,10 +1971,10 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'should-i-sell-my-la-apartment-building': ['how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'capital-gains-depreciation-recapture-selling-la-apartment-building', 'how-to-choose-a-multifamily-broker-in-los-angeles'],
 	'selling-la-apartment-building-with-tenants-rent-control': ['ab-1482-rent-cap-2026', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'selling-a-fourplex-or-small-apartment-building-in-los-angeles'],
 	'capital-gains-depreciation-recapture-selling-la-apartment-building': ['1031-exchange-into-triple-net-properties', 'measure-ula-2026-thresholds-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end'],
-	'measure-ula-2026-thresholds-selling-la-apartment-building': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-before-year-end'],
+	'measure-ula-2026-thresholds-selling-la-apartment-building': ['measure-ula-hold-or-sell-la-apartment-building', 'capital-gains-depreciation-recapture-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end'],
 	'el-nino-2026-la-apartment-owners-checklist': ['ab-1482-rent-cap-2026', 'selling-la-apartment-building-with-tenants-rent-control', 'utility-bill-diligence-la-apartment-owners'],
 	'selling-la-apartment-building-before-year-end': ['capital-gains-depreciation-recapture-selling-la-apartment-building', '1031-exchange-into-triple-net-properties', 'should-i-sell-my-la-apartment-building'],
-	'ab-1482-rent-cap-2026': ['selling-la-apartment-building-with-tenants-rent-control', 'el-nino-2026-la-apartment-owners-checklist', 'how-to-value-an-apartment-building-in-los-angeles'],
+	'ab-1482-rent-cap-2026': ['la-rso-rent-increase-rules-2026-apartment-owners', 'selling-la-apartment-building-with-tenants-rent-control', 'sb-1365-emergency-rent-cap-la-apartment-owners'],
 	'utility-bill-diligence-la-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'el-nino-2026-la-apartment-owners-checklist', 'should-i-sell-my-la-apartment-building'],
 	'1031-exchange-into-triple-net-properties': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end', 'should-i-sell-my-la-apartment-building'],
 	'la-apartment-cap-rates-and-prices-by-neighborhood-2026': ['how-to-value-an-apartment-building-in-los-angeles', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'should-i-sell-my-la-apartment-building'],
@@ -1661,6 +1986,10 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'inherited-apartment-building-los-angeles-what-to-do': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles'],
 	'sb-721-balcony-inspection-los-angeles-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'selling-la-apartment-building-with-tenants-rent-control'],
 	'air-conditioning-law-los-angeles-apartment-owners-electrical-panel': ['sb-721-balcony-inspection-los-angeles-apartment-owners', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control'],
+	'measure-ula-hold-or-sell-la-apartment-building': ['measure-ula-2026-thresholds-selling-la-apartment-building', 'capital-gains-depreciation-recapture-selling-la-apartment-building', 'should-i-sell-my-la-apartment-building'],
+	'sb-1365-emergency-rent-cap-la-apartment-owners': ['ab-1482-rent-cap-2026', 'el-nino-2026-la-apartment-owners-checklist', 'selling-la-apartment-building-with-tenants-rent-control'],
+	'ab-628-stove-refrigerator-law-la-apartment-owners': ['sb-721-balcony-inspection-los-angeles-apartment-owners', 'air-conditioning-law-los-angeles-apartment-owners-electrical-panel', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step'],
+	'la-rso-rent-increase-rules-2026-apartment-owners': ['ab-1482-rent-cap-2026', 'selling-la-apartment-building-with-tenants-rent-control', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026'],
 };
 
 // Questions and answers shown at the end of an article (and written into its FAQPage structured data),
@@ -2275,6 +2604,110 @@ export const postFaqs: Record<string, PostFaq[]> = {
 		{
 			q: 'What is a Federal Pacific or Zinsco electrical panel, and should I worry?',
 			a: 'These are older panel brands that inspectors often flag because their breakers may not trip when they should. They are common in older apartment buildings. We are not engineers, so have a licensed electrician inspect the panel, and ask your insurance agent whether the panel type affects your coverage. Buyers and their inspectors also look closely at them.',
+		},
+	],
+	'measure-ula-hold-or-sell-la-apartment-building': [
+		{
+			q: 'Does Measure ULA make it better to hold my apartment building instead of selling?',
+			a: 'Not by itself. The tax is owed whenever you sell above the first threshold, so holding does not remove it. It affects when and at what price you sell more than whether you sell. Decide on your goals, then model the tax in our [Measure ULA calculator](/measure-ula-calculator/).',
+		},
+		{
+			q: 'Is Measure ULA charged on my profit or on the sale price?',
+			a: 'On the sale price. The City charges it on the value of the property sold, so it applies whether you made a large gain or none. For closings after June 30, 2026, the rate is 0% at or below $5.4 million, 4% above $5.4 million and under $10.9 million, and 5.5% at $10.9 million or more.',
+		},
+		{
+			q: 'How much is the Measure ULA tax on a $6 million apartment building?',
+			a: 'The ULA tax is $240,000, which is 4% of $6,000,000. With the City’s regular transfer tax of 0.45% ($27,000) and the LA County tax of $1.10 per $1,000 ($6,600), transfer taxes total $273,600. These figures are before commissions and income taxes.',
+		},
+		{
+			q: 'Can I wait for Measure ULA to be repealed or changed?',
+			a: 'You can, but a decision that depends on a rule change that has not happened is a risk. The rates and thresholds in this article are the current rules. Confirm them with the City of Los Angeles Office of Finance before you price a building near a line.',
+		},
+		{
+			q: 'Does a 1031 exchange avoid Measure ULA?',
+			a: 'No. A 1031 exchange can defer your capital gains tax, but it does not exempt a sale from Measure ULA. See our [1031 exchange guide](/1031-exchanges/) for what an exchange does cover.',
+		},
+		{
+			q: 'How do I find out what I would keep after Measure ULA at different prices?',
+			a: 'Use our [Measure ULA calculator](/measure-ula-calculator/) for transfer taxes and net proceeds at any price, and request a free [Broker Opinion of Value](/contact/?intent=bov) to see the numbers on your actual building.',
+		},
+	],
+	'sb-1365-emergency-rent-cap-la-apartment-owners': [
+		{
+			q: 'What is SB 1365?',
+			a: 'A California law signed on September 30, 2026 that amends the state’s price gouging statute, Penal Code section 396. It applies the 10% emergency rent cap to rental housing regardless of the length of the lease, and it turns the old exceptions into defenses the landlord must prove.',
+		},
+		{
+			q: 'When does SB 1365 take effect?',
+			a: 'January 1, 2027. It is a regular, non-urgency statute. Ask your attorney how it applies if an emergency is already in effect when it begins.',
+		},
+		{
+			q: 'How long does the emergency rent cap last?',
+			a: 'For 30 days after a state or local emergency is proclaimed or declared, or any longer period the proclamation is extended. Local officials can extend the limit in steps of up to 30 days each.',
+		},
+		{
+			q: 'Does SB 1365 replace Los Angeles rent control or AB 1482?',
+			a: 'No. The statute says it does not authorize a landlord to charge more than a local rent control ordinance allows. Rent-stabilized buildings stay under the City’s limit, and newer buildings stay under the [AB 1482 cap](/insights/ab-1482-rent-cap-2026/).',
+		},
+		{
+			q: 'What can I use as a defense if I raised rent more than 10% during an emergency?',
+			a: 'Two are listed: the tenant contractually agreed to the increase before the emergency was proclaimed, or the increase is directly attributable to repairs or additions beyond normal maintenance incurred in the prior year, if the unit was rented or offered for rent at the time or the intent to offer it within six months already existed. You would have to prove the facts.',
+		},
+		{
+			q: 'What are the penalties for violating the emergency rent cap?',
+			a: 'A violation is a misdemeanor punishable by up to a year in county jail, a fine of up to $10,000, or both, and it is also treated as an unlawful business practice. Talk to an attorney before raising rent by more than 10% during a declared emergency.',
+		},
+	],
+	'ab-628-stove-refrigerator-law-la-apartment-owners': [
+		{
+			q: 'Do California landlords have to provide a stove and refrigerator?',
+			a: 'Yes, for leases entered into, amended, or extended on or after January 1, 2026. AB 628 added a working stove and a working refrigerator to the list of things a rental unit must have to be tenantable. Some housing types are exempt.',
+		},
+		{
+			q: 'Can a tenant bring their own refrigerator under AB 628?',
+			a: 'Yes, with conditions. The landlord and tenant must agree when the lease is signed, the lease must include the statement the law prescribes, and the tenant can give 30 days’ written notice to have the landlord install one. A landlord cannot require a tenant to bring a refrigerator. There is no similar option for stoves.',
+		},
+		{
+			q: 'What happens if a stove or refrigerator is recalled?',
+			a: 'The landlord must repair or replace it within 30 days of receiving notice of the recall. A recalled appliance is treated as not safe for cooking or storing food. You can check models against the [CPSC recall database](https://www.cpsc.gov/Recalls).',
+		},
+		{
+			q: 'Which rental units are exempt from AB 628?',
+			a: 'Permanent supportive housing, single-room occupancy units, units in a residential hotel, and dwelling units in a facility with shared or communal kitchens, including assisted living facilities.',
+		},
+		{
+			q: 'What is the penalty if my rental unit has no stove or refrigerator?',
+			a: 'AB 628 sets no separate fine. A unit that substantially lacks a working stove or refrigerator is treated as untenantable, which gives the tenant the remedies California law already provides for untenantable housing.',
+		},
+		{
+			q: 'Should I check my appliances before selling my apartment building?',
+			a: 'Yes. Buyers walk the units, and missing, old, or tenant-owned appliances can lead to price credits. List each unit’s stove and refrigerator, look up recalls, replace what is broken, and keep the required lease language on file. See our [guide to selling step by step](/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/).',
+		},
+	],
+	'la-rso-rent-increase-rules-2026-apartment-owners': [
+		{
+			q: 'How much can I raise rent on a rent-stabilized unit in Los Angeles in 2026?',
+			a: 'The City’s Rent Stabilization Ordinance calculator uses 3%, and a City Council office page states the annual increase remains at 3% from July 1, 2025 to June 30, 2027. Confirm the current figure with the Los Angeles Housing Department before you send a notice.',
+		},
+		{
+			q: 'Can I still add an extra 1% for utilities on an RSO unit?',
+			a: 'No. The Los Angeles Housing Department says that beginning February 2, 2026, a landlord can no longer include any additional percentage increase for utilities in an annual rent increase.',
+		},
+		{
+			q: 'What is the new RSO rent increase formula?',
+			a: 'According to the Apartment Association of Greater Los Angeles, the ordinance sets the annual allowable increase at 90% of the Consumer Price Index for all items, with a ceiling of 4% and a floor of 1%. Confirm with the Housing Department how it applies to your notice date.',
+		},
+		{
+			q: 'Which Los Angeles buildings are covered by the RSO?',
+			a: 'Generally apartment buildings in the City of Los Angeles with a certificate of occupancy issued before October 1, 1978. Newer buildings typically fall under the statewide AB 1482 cap, which is 8.7% for increases effective on or after August 1, 2026.',
+		},
+		{
+			q: 'How much notice do I have to give for a rent increase?',
+			a: 'State law requires 30 days’ written notice for rent increases of less than 10%. The Housing Department also notes that RSO and Systematic Code Enforcement Program fees can be passed through to tenants only with proper written notice.',
+		},
+		{
+			q: 'How does the lower RSO cap affect what my building is worth?',
+			a: 'It limits how fast rents can grow, and buyers give only partial credit for upside they cannot capture until units turn over. A free [Broker Opinion of Value](/contact/?intent=bov) shows how buyers would price your building today.',
 		},
 	],
 };
