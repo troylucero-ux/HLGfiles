@@ -8,7 +8,7 @@ import { caseStudies } from '../../data/caseStudies';
 import { submarkets } from '../../data/submarkets';
 import { listings } from '../../data/listings';
 import { site } from '../../data/site';
-import { formatPrice, formatPriceFull, formatSoldDate } from '../../lib/format';
+import { formatPrice, formatPriceFull, formatSoldDate, soldWhen } from '../../lib/format';
 
 export function getStaticPaths() {
 	return closings.map((sale) => ({
@@ -22,6 +22,9 @@ const isLand = sale.type === 'development-site';
 const submarket = sale.submarket ? submarkets.find((s) => s.slug === sale.submarket) : null;
 const caseStudy = sale.caseStudySlug ? caseStudies.find((c) => c.slug === sale.caseStudySlug) : null;
 const image = sale.images?.[0];
+// A building that sold more than once with us gets the sale year after its name; a recorded year (or a year in the slug) tells the pages apart.
+const hasSibling = closings.some((c) => c.name === sale.name && c.slug !== sale.slug);
+const saleYear = sale.soldDate && hasSibling ? sale.soldDate.slice(0, 4) : /-20\d\d$/.test(sale.slug) ? sale.slug.slice(-4) : null;
 
 // The blurb is plain text, with [link text](/internal-path/) links supported (same format as Insights posts).
 const linkPattern = /\[([^\]]+)\]\((\/[^)\s]*)\)/g;
@@ -44,7 +47,7 @@ const kind = isLand ? 'development site' : sale.units ? `${sale.units}-unit apar
 const article = /^(8|11|18)(\D|$)/.test(kind) || /^[aeiou]/i.test(kind) ? 'an' : 'a';
 const place = [sale.city + ',', sale.state, sale.zip].filter(Boolean).join(' ');
 const summary = [
-	`${sale.name} is ${article} ${kind} in ${place}, closed ${sale.soldDate ? `on ${formatSoldDate(sale.soldDate)} ` : ''}for ${formatPriceFull(sale.price)}.`,
+	`${sale.name} is ${article} ${kind} in ${place}, closed ${sale.soldDate ? `${soldWhen(sale.soldDate)} ` : ''}for ${formatPriceFull(sale.price)}.`,
 	pricePerUnit && pricePerSf
 		? `That works out to ${formatPriceFull(pricePerUnit)} per unit and $${pricePerSf.toLocaleString('en-US')} per square foot of building area.`
 		: pricePerSf
@@ -94,7 +97,7 @@ const videoSchema = sale.youtubeId
 		<div class="container sale-detail">
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Closed Sales', href: '/closed-sales/' }, { label: sale.name }]} />
 			<span class="eyebrow">Closed Sale</span>
-			<h1>{sale.name}{/-20\d\d$/.test(sale.slug) ? ` (${sale.slug.slice(-4)})` : ''}</h1>
+			<h1>{sale.name}{saleYear ? ` (${saleYear})` : ''}</h1>
 			<p class="sale-detail__location">
 				{place}
 				{
@@ -133,7 +136,7 @@ const videoSchema = sale.youtubeId
 					sale.role && (
 						<div>
 							<dt>We Represented</dt>
-							<dd>{sale.role === 'buyer' ? 'The Buyer' : 'The Seller'}</dd>
+							<dd>{sale.role === 'buyer' ? 'The Buyer' : sale.role === 'seller' ? 'The Seller' : 'Buyer and Seller'}</dd>
 						</div>
 					)
 				}

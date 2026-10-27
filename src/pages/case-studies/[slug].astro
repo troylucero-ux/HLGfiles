@@ -7,7 +7,7 @@ import { submarkets } from '../../data/submarkets';
 import ArticleFaq from '../../components/ArticleFaq.astro';
 import { toParts } from '../../lib/inlineLinks';
 import { site, testimonials } from '../../data/site';
-import { formatPrice } from '../../lib/format';
+import { formatPrice, soldWhen } from '../../lib/format';
 
 export function getStaticPaths() {
 	return caseStudies.map((cs) => ({
@@ -73,13 +73,14 @@ if (closing) {
 	const unitPart = closing.units ? ` The building has ${closing.units} units${pricePerUnit ? `, or about ${money(pricePerUnit)} per unit` : ''}${closing.sqft && pricePerSf ? `, and about ${money(pricePerSf)} per square foot of building area` : ''}.` : '';
 	faqs.push({
 		q: `How much did ${cs.title} sell for?`,
-		a: `${cs.title} (${cs.location}) sold for ${money(closing.price)}.${unitPart}`,
+		a: `${cs.title} (${cs.location}) sold for ${money(closing.price)}${cs.addendum && closing.soldDate ? ` ${soldWhen(closing.soldDate)}` : ''}.${unitPart}${cs.addendum ? ' It later sold again in a separate transaction; see below.' : ''}`,
 	});
 }
 faqs.push({
 	q: `What happened in the sale of ${cs.title}?`,
 	a: cs.summary,
 });
+if (cs.addendum) faqs.push({ q: cs.addendum.faqQuestion, a: cs.addendum.faqAnswer });
 faqs.push({
 	q: 'Can Highlight help me sell a similar building?',
 	a: 'Yes. We advise apartment owners across the Los Angeles area on sales, 1031 exchanges, and trust and probate sales. Start with a free, confidential [Broker Opinion of Value](/contact/?intent=bov), or see our other [case studies](/case-studies/) and [closed sales](/closed-sales/).',
@@ -175,6 +176,14 @@ const articleSchema = {
 				<p>{cs.solution}</p>
 				<h2>The Results</h2>
 				<p>{cs.results}</p>
+				{
+					cs.addendum && (
+						<>
+							<h2>{cs.addendum.heading}</h2>
+							<p>{toParts(cs.addendum.text).map((part) => (part.href ? <a href={part.href}>{part.text}</a> : part.text))}</p>
+						</>
+					)
+				}
 				{
 					closing && (
 						<p>

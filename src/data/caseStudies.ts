@@ -13,6 +13,8 @@ export type CaseStudy = {
 	results: string;
 	closingSlug?: string;
 	images?: string[];
+	// A later, separate transaction on the same building; shown after the results and mirrored into the FAQ.
+	addendum?: { heading: string; text: string; faqQuestion: string; faqAnswer: string };
 };
 
 export const caseStudies: CaseStudy[] = [
@@ -196,14 +198,20 @@ export const caseStudies: CaseStudy[] = [
 		title: '453 S Gramercy Pl',
 		location: 'Western Koreatown / Hancock Park, Los Angeles, CA',
 		submarket: 'koreatown',
-		summary: 'A 14-unit Koreatown building with long-term, below-market tenants sold off-market to a buyer that assumed the soft-story retrofit.',
+		summary: 'A 14-unit Koreatown building, rents about 80% below market, sold off-market in January 2017 with us on both sides. We sold it again in 2020 for the seller.',
 		dealType: ['value-add'],
 		opportunity:
-			'453 S. Gramercy Place is a value-add, rent-controlled, 14-unit apartment building built in 1966 in Western Koreatown/Hancock Park. Most tenants were long-term occupants paying well below market, complicating a sale at full value.',
+			'453 S. Gramercy Place is a value-add, rent-controlled, 14-unit apartment building built in 1966 in Western Koreatown/Hancock Park. Most tenants were long-term occupants paying rents about 80% below market, complicating a sale at full value.',
 		solution:
-			'We identified an off-market buyer with proven expertise acquiring below-market rental properties with established tenants, enabling a direct transaction.',
-		results: 'The sale closed smoothly and quickly. The buyer agreed to assume the soft-story retrofit requirement, a key win for the seller given the complexity involved.',
-		closingSlug: '453-s-gramercy-pl-los-angeles-ca-90020',
+			'We represented both the buyer and the seller in this January 2017 sale. We identified an off-market buyer with proven expertise acquiring below-market rental properties with established tenants, enabling a direct transaction.',
+		results: 'The building sold for $2,200,000 in January 2017. The sale closed smoothly and quickly. The buyer agreed to assume the soft-story retrofit requirement, a key win for the seller given the complexity involved.',
+		closingSlug: '453-s-gramercy-pl-los-angeles-ca-90020-2017',
+		addendum: {
+			heading: 'The Second Sale, in 2020',
+			text: 'We later sold 453 S Gramercy Pl a second time, in a separate transaction in 2020. This time we represented only the seller, and the buyer was represented by another broker. By then most of the units had been fully renovated and the seismic retrofit was complete, so the building suited investors looking for a stabilized asset. We held multiple tours for individual investors and brokers, and the building sold for $4,050,000. See the [2020 closed sale record](/closed-sales/453-s-gramercy-pl-los-angeles-ca-90020/).',
+			faqQuestion: 'Did Highlight sell 453 S Gramercy Pl more than once?',
+			faqAnswer: 'Yes, in two separate transactions. In January 2017 we represented both the buyer and the seller, and the building sold for $2,200,000. In 2020 we represented only the seller, and it sold for $4,050,000 after most of the units were renovated and the seismic retrofit was completed.',
+		},
 		images: ['/images/listings/453-s-gramercy-pl-los-angeles-ca-90020/453-s-gramercy-pl-los-angeles-ca.webp'],
 	},
 	{

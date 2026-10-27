@@ -12,8 +12,15 @@ export function formatPriceFull(price: number): string {
 
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-// 'YYYY-MM-DD' -> 'August 11, 2017' (parsed by hand so the date never shifts with the build machine's timezone)
+// 'YYYY-MM-DD' -> 'August 11, 2017', 'YYYY-MM' -> 'January 2017', 'YYYY' -> '2020' (parsed by hand so the date never shifts with the build machine's timezone)
 export function formatSoldDate(iso: string): string {
 	const [y, m, d] = iso.split('-').map(Number);
+	if (!m) return String(y);
+	if (!d) return `${MONTHS[m - 1]} ${y}`;
 	return `${MONTHS[m - 1]} ${d}, ${y}`;
+}
+
+// 'on August 11, 2017' for a full date, 'in January 2017' or 'in 2020' when only the month or year is known
+export function soldWhen(iso: string): string {
+	return `${iso.split('-').length === 3 ? 'on' : 'in'} ${formatSoldDate(iso)}`;
 }
