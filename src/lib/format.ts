@@ -24,3 +24,9 @@ export function formatSoldDate(iso: string): string {
 export function soldWhen(iso: string): string {
 	return `${iso.split('-').length === 3 ? 'on' : 'in'} ${formatSoldDate(iso)}`;
 }
+
+// 'YYYY-MM-DD' -> 'Q4 2026'. Insights show the quarter instead of the month, parsed by hand so the date never shifts with the build machine's timezone.
+export function formatQuarter(iso: string): string {
+	const [y, m] = iso.split('-').map(Number);
+	return `Q${Math.ceil(m / 3)} ${y}`;
+}

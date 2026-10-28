@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { posts } from '../../data/posts';
+import { formatQuarter } from '../../lib/format';
 ---
 
 <BaseLayout
@@ -32,7 +33,7 @@ import { posts } from '../../data/posts';
 							<a href={`/insights/${post.slug}/`} class="post-card">
 								{post.image && <img class="post-card__image" src={post.image.src} alt={post.image.alt} width={post.image.width} height={post.image.height} loading="lazy" />}
 								<div class="post-card__body">
-									<span class="post-card__date">{new Date(`${post.date}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</span>
+									<span class="post-card__date">{formatQuarter(post.date)}</span>
 									<h2>{post.title}</h2>
 									<p>{post.description}</p>
 									<span class="post-card__cta">Read the article &rarr;</span>

@@ -12,6 +12,7 @@ import ArticleFaq from '../../components/ArticleFaq.astro';
 import { posts, relatedPostSlugs, postFaqs } from '../../data/posts';
 import { site } from '../../data/site';
 import { toParts, stripLinks } from '../../lib/inlineLinks';
+import { formatQuarter } from '../../lib/format';
 
 export function getStaticPaths() {
 	return posts.map((post) => ({
@@ -41,7 +42,7 @@ const faqSchema = faqs.length
 
 // Appending a time avoids the date being parsed as UTC midnight, which can display as the
 // previous day in timezones behind UTC.
-const dateFormatted = new Date(`${post.date}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+const dateFormatted = formatQuarter(post.date);
 
 const articleSchema = {
 	'@context': 'https://schema.org',
