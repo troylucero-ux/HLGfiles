@@ -24,6 +24,8 @@ export type Submarket = {
 	laOwnerGuide?: boolean;
 	// Closed sale whose photo the card on /submarkets/ shows. Omit to use the neighborhood's highest-value apartment sale with a photo.
 	cardSaleSlug?: string;
+	// A licensed photo for the card when there is no closed sale to show. The credit line appears under the cards.
+	cardPhoto?: { src: string; alt: string; caption: string; credit: string; creditUrl: string };
 };
 
 export const submarkets: Submarket[] = [
@@ -274,6 +276,13 @@ export const submarkets: Submarket[] = [
 	// not a set date).
 	{
 		slug: 'beverly-hills',
+		cardPhoto: {
+			src: '/images/submarkets/beverly-hills-sign.webp',
+			alt: 'The Beverly Hills sign, an arch of lettering over a fountain at Beverly Gardens Park',
+			caption: 'Beverly Hills sign, Beverly Gardens Park',
+			credit: 'Tony Hisgett, CC BY 2.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Beverly_Hills_3_(14952153353).jpg',
+		},
 		name: 'Beverly Hills',
 		region: 'Westside LA',
 		blurb: 'Its own city, with its own rent control law and no city transfer tax or Measure ULA, and some of the highest per-unit prices in LA County.',

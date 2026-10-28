@@ -14,8 +14,9 @@ const cards = submarkets.map((sm) => {
 		: closings
 				.filter((c) => c.submarket === sm.slug && c.type === 'apartment' && c.images?.[0])
 				.sort((a, b) => b.price - a.price)[0];
-	return { sm, sale: sale?.images?.[0] ? sale : undefined };
+	return { sm, sale: sm.cardPhoto ? undefined : sale?.images?.[0] ? sale : undefined };
 });
+const credits = submarkets.filter((sm) => sm.cardPhoto);
 ---
 
 <BaseLayout
@@ -49,6 +50,11 @@ const cards = submarkets.map((sm) => {
 									{sale.units ? `, ${sale.units} units` : ''}, {formatPrice(sale.price)}
 								</a>
 							</div>
+						) : sm.cardPhoto ? (
+							<div class="submarket-card__photo">
+								<img src={sm.cardPhoto.src} alt={sm.cardPhoto.alt} width="600" height="400" loading="lazy" />
+								<span class="submarket-card__sale">{sm.cardPhoto.caption}</span>
+							</div>
 						) : (
 							<div class="submarket-card__photo submarket-card__photo--empty" aria-hidden="true">
 								<span>{sm.name}</span>
@@ -72,6 +78,24 @@ const cards = submarkets.map((sm) => {
 				))
 			}
 		</div>
+		{
+			credits.length > 0 && (
+				<div class="container">
+					<p class="submarket-credits">
+						Photo credit:{' '}
+						{credits.map((sm) => (
+							<>
+								{sm.name},{' '}
+								<a href={sm.cardPhoto!.creditUrl} target="_blank" rel="noopener noreferrer">
+									{sm.cardPhoto!.credit}
+								</a>
+								, via Wikimedia Commons.{' '}
+							</>
+						))}
+					</p>
+				</div>
+			)
+		}
 	</section>
 </BaseLayout>
 
@@ -168,6 +192,12 @@ const cards = submarkets.map((sm) => {
 
 	.submarket-card__sale:hover {
 		text-decoration: underline;
+	}
+
+	.submarket-credits {
+		margin: 2rem 0 0;
+		font-size: 0.78rem;
+		color: var(--ink-light);
 	}
 
 	.submarket-card__photo--empty {
