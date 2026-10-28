@@ -15,6 +15,7 @@ export const site = {
 	stats: {
 		unitsSold: '1,400+',
 		closedSalesVolume: '$350M',
+		landSqFtSold: '135,000+', // matches statsPrecise.landSqFt (135,000 SF of land for development), rounded
 		listToSaleRatio: '97.2%',
 		exchangeSuccessRate: '100%',
 	},
