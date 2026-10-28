@@ -217,6 +217,7 @@ export const submarkets: Submarket[] = [
 		overview:
 			'Santa Monica is a rent-controlled coastal submarket that consistently commands some of the highest per-unit multifamily pricing in the Los Angeles Metro Area. Highlight has closed multiple transactions here, including properties near the Third Street Promenade and Montana Ave corridors, drawing on strong long-term demand from the Silicon Beach employment base.',
 		city: 'santa-monica',
+		cardSaleSlug: '2820-3rd-st-santa-monica-ca-90405',
 		metaDescription:
 			'Santa Monica multifamily broker: 2026 apartment sale prices and cap rates, the Measure GS transfer tax explained, and a free valuation for owners.',
 	},
