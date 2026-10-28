@@ -170,7 +170,7 @@ export const submarkets: Submarket[] = [
 		retail: ['San Vicente Blvd retail and restaurant corridor', 'Brentwood Country Mart', 'Proximity to Westwood and Santa Monica retail districts'],
 		employers: ['VA West Los Angeles Medical Center', 'UCLA (adjacent submarket)', 'West LA/Sunset Blvd professional office corridor'],
 		overview:
-			'Brentwood is one of West LA’s most prestigious multifamily ownership markets, with consistently below-market rents on older rent-controlled stock creating repeat value-add opportunities. Highlight has closed three separate transactions in Brentwood: 11667 Goshen Ave, 11642 Kiowa Ave, and 11747 Mayfield Ave, building deep buyer relationships in the immediate area.',
+			'Brentwood is one of West LA’s most prestigious multifamily ownership markets, with consistently below-market rents on older rent-controlled stock creating repeat value-add opportunities. Highlight has closed transactions in Brentwood, including 11667 Goshen Ave, 11642 Kiowa Ave, and 11747 Mayfield Ave, building deep buyer relationships in the immediate area.',
 		metaDescription:
 			'Brentwood multifamily broker: 2026 apartment prices, LA rent control and Measure ULA explained, and a free valuation for Westside apartment owners.',
 		laOwnerGuide: true,

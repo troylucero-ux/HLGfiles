@@ -57,7 +57,7 @@ const areaOptions = [...submarkets.map((s) => s.slug), 'other-la', 'outside'].fi
 
 <BaseLayout
 	title="Map of Our LA Apartment Sales | Highlight Multifamily Group"
-	description={`See where Highlight Multifamily Group closed ${sales.length} apartment building and development site sales across Los Angeles, and filter them by neighborhood, price, and type.`}
+	description={`See where Highlight Multifamily Group has closed apartment building and development site sales across Los Angeles, and filter them by neighborhood, price, and type.`}
 >
 	<link rel="stylesheet" href="/vendor/leaflet/leaflet.css" slot="head" />
 
@@ -97,7 +97,6 @@ const areaOptions = [...submarkets.map((s) => s.slug), 'other-la', 'outside'].fi
 						<option value="development-site">Development Site</option>
 					</select>
 				</div>
-				<p class="filters__count" id="map-count" aria-live="polite">{sales.length} sales</p>
 			</div>
 
 			<div class="sales-map-layout">
@@ -136,7 +135,7 @@ const areaOptions = [...submarkets.map((s) => s.slug), 'other-la', 'outside'].fi
 
 			<p class="sales-map-note">
 				Pins mark the building's street address. Each sale is a closed transaction by Highlight Multifamily Group; see the <a href="/closed-sales/">full list</a> for
-				all {closingStats.totalClosings} sales. Map data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors.
+				every sale. Map data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors.
 			</p>
 		</div>
 	</section>
@@ -165,7 +164,6 @@ const areaOptions = [...submarkets.map((s) => s.slug), 'other-la', 'outside'].fi
 			var areaSel = document.getElementById('map-filter-area');
 			var priceSel = document.getElementById('map-filter-price');
 			var typeSel = document.getElementById('map-filter-type');
-			var countEl = document.getElementById('map-count');
 			var emptyEl = document.getElementById('map-empty');
 			var items = Array.prototype.slice.call(document.querySelectorAll('.sales-item'));
 
@@ -266,7 +264,6 @@ const areaOptions = [...submarkets.map((s) => s.slug), 'other-la', 'outside'].fi
 				var ok = {};
 				visible.forEach(function (s) { ok[s.slug] = true; });
 				items.forEach(function (it) { it.hidden = !ok[it.dataset.slug]; });
-				countEl.textContent = visible.length + (visible.length === 1 ? ' sale' : ' sales');
 				emptyEl.hidden = visible.length > 0;
 				draw(visible);
 				if (refit) fit(visible, area);

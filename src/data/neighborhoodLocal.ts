@@ -172,7 +172,7 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 			},
 		],
 		proof:
-			'We have closed three sales in North Hollywood, including the 10-unit [6938 Coldwater Canyon Ave](/case-studies/6938-coldwater-canyon-ave-north-hollywood-apartments/), a soft-story retrofit property.',
+			'We have closed sales in North Hollywood, including the 10-unit [6938 Coldwater Canyon Ave](/case-studies/6938-coldwater-canyon-ave-north-hollywood-apartments/), a soft-story retrofit property.',
 		source: 'Sources: LA Metro press release, October 3, 2024 (District NoHo); walkscore.com. Checked October 2026.',
 		faqs: [
 			{
@@ -330,7 +330,7 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 			},
 		],
 		proof:
-			'We have closed four sales in Pico-Union, including the 24-unit [1136 S Alvarado St](/closed-sales/1136-s-alvarado-st-los-angeles-ca-90006/).',
+			'We have closed sales in Pico-Union, including the 24-unit [1136 S Alvarado St](/closed-sales/1136-s-alvarado-st-los-angeles-ca-90006/).',
 		source: 'Sources: LA Housing Department RSO Property Search (housing.lacity.gov); Highlight analysis of CoStar sold multifamily comps, January to September 2026. The cap rate range is the middle half of sales that reported one. Checked October 2026.',
 		faqs: [
 			{

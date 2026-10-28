@@ -17,15 +17,15 @@ const priceBands = [
 
 <BaseLayout
 	title="LA Apartment Closed Sales | Highlight Multifamily Group"
-	description={`Browse all ${closingStats.totalClosings} apartment building and development site sales closed by Highlight Multifamily Group across the Los Angeles Metro Area, sorted by sale price.`}
+	description={`Browse the apartment building and development site sales closed by Highlight Multifamily Group across the Los Angeles Metro Area, sorted by sale price.`}
 >
 	<section class="page-hero">
 		<div class="container">
 			<span class="eyebrow">Track Record</span>
 			<h1>LA Apartment Building Closed Sales</h1>
 			<p>
-				{closingStats.totalClosings} transactions, {closingStats.totalUnits.toLocaleString()}+ units, and {formatPrice(closingStats.totalVolume)} in
-				closed sale value across Los Angeles multifamily and development land.
+				{closingStats.totalUnits.toLocaleString()}+ units and {formatPrice(closingStats.totalVolume)} in closed sale value across Los Angeles
+				multifamily and development land.
 			</p>
 		</div>
 	</section>
@@ -64,7 +64,6 @@ const priceBands = [
 					</select>
 				</div>
 				<a class="filters__map" href="/closed-sales/map/">View on a map &rarr;</a>
-				<p class="filters__count" id="filter-count" aria-live="polite">{closingStats.totalClosings} sales</p>
 			</div>
 
 			<div class="closings-grid" id="closings-grid">
@@ -269,7 +268,6 @@ const priceBands = [
 <script>
 	const grid = document.getElementById('closings-grid');
 	const cards = Array.from(document.querySelectorAll<HTMLElement>('.closing-card'));
-	const countEl = document.getElementById('filter-count');
 	const noResults = document.getElementById('no-results');
 
 	const submarketSel = document.getElementById('filter-submarket') as HTMLSelectElement;
@@ -291,7 +289,6 @@ const priceBands = [
 			if (matches) visible++;
 		}
 
-		if (countEl) countEl.textContent = `${visible} sale${visible === 1 ? '' : 's'}`;
 		if (noResults) noResults.hidden = visible !== 0;
 		if (grid) grid.hidden = visible === 0;
 	}

@@ -1631,6 +1631,12 @@ const allPosts: Post[] = [
 		description:
 			'Measure ULA taxes the whole sale price, not your profit. How the tax changes the hold-or-sell decision for LA apartment owners, with worked examples.',
 		date: '2026-10-27',
+		image: {
+			src: '/images/insights/measure-ula-hold-or-sell.webp',
+			alt: 'Graphic: the Measure ULA tax is charged on the sale price, not your profit, at 0%, 4%, or 5.5% depending on price. Waiting does not remove it, so model it with the free calculator.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',
@@ -1724,6 +1730,12 @@ const allPosts: Post[] = [
 		description:
 			'SB 1365 extends California’s 10% emergency rent cap to every lease and makes the repair-cost exception a defense you must prove. What LA owners should do.',
 		date: '2026-10-27',
+		image: {
+			src: '/images/insights/sb-1365-emergency-rent-cap.webp',
+			alt: 'Graphic: under SB 1365, California’s 10% emergency rent cap applies to leases of any length, effective January 1, 2027.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',
@@ -1801,6 +1813,12 @@ const allPosts: Post[] = [
 		description:
 			'AB 628 requires a working stove and refrigerator in rentals under leases signed, amended, or extended from January 1, 2026. Exemptions, recalls, and sale prep.',
 		date: '2026-10-27',
+		image: {
+			src: '/images/insights/ab-628-stove-refrigerator.webp',
+			alt: 'Graphic: AB 628 requires a working stove and refrigerator in rentals for leases entered into, amended, or extended from January 1, 2026, with 30 days to fix a recalled appliance.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',
@@ -1884,6 +1902,12 @@ const allPosts: Post[] = [
 		description:
 			'Los Angeles rewrote its rent control formula in 2025. What changed for RSO buildings in 2026: the annual increase, the utility add-on, and what buyers underwrite.',
 		date: '2026-10-27',
+		image: {
+			src: '/images/insights/la-rso-rent-increase-2026.webp',
+			alt: 'Graphic: the City of Los Angeles publishes a 3% rent increase for rent-stabilized units through June 2027, the utility add-on ended February 2, 2026, and the AB 1482 cap for newer buildings is 8.7%.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',
@@ -1956,6 +1980,12 @@ const allPosts: Post[] = [
 		description:
 			'A due diligence checklist for buying an LA apartment building: rent roll and estoppels, rent control, SB 721, permits, property tax, and red flags.',
 		date: '2026-10-27',
+		image: {
+			src: '/images/insights/buyer-due-diligence-checklist.webp',
+			alt: 'Graphic: a due diligence checklist for LA apartment buyers: verify income three ways, confirm rent control and permits, and inspect the building’s systems.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',
@@ -2049,6 +2079,12 @@ const allPosts: Post[] = [
 		description:
 			'How buyers finance LA apartment buildings: agency, bank, and bridge loans, what lenders test, and why a higher interest rate can cut your cash return.',
 		date: '2026-10-27',
+		image: {
+			src: '/images/insights/financing-apartment-building.webp',
+			alt: 'Graphic: on an illustrative building with a 6.0% cap rate, an all-cash buyer earns 6.0%, a buyer with a 65% loan at 6.5% earns about 3.1%, and at 5.0% earns about 5.2%.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',
@@ -2123,6 +2159,12 @@ const allPosts: Post[] = [
 		description:
 			'Learn cap rate, GRM, DSCR, and cash-on-cash return with one worked LA example, and see how rent control and interest rates change the numbers for buyers.',
 		date: '2026-10-27',
+		image: {
+			src: '/images/insights/analyze-apartment-building-cap-rate.webp',
+			alt: 'Graphic: an illustrative 10-unit building with $144,000 of net operating income, a 6.0% cap rate at a $2.4 million price, and a debt service coverage ratio of 1.22.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',
@@ -2193,6 +2235,12 @@ const allPosts: Post[] = [
 		description:
 			'The mistakes buyers make on LA apartment buildings: trusting pro forma rents, skipping estoppels, ignoring rent control and reassessment, and over-borrowing.',
 		date: '2026-10-27',
+		image: {
+			src: '/images/insights/buyer-mistakes.webp',
+			alt: 'Graphic: common LA buyer mistakes: underwriting rents a rent-controlled building cannot charge, forgetting the property tax reassessment, and skipping estoppels to verify the rent roll.',
+			width: 1200,
+			height: 900,
+		},
 		sections: [
 			{
 				heading: 'Key Takeaways',

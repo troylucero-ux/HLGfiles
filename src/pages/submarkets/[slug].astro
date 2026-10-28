@@ -255,7 +255,7 @@ if (closedHere.length > 0) {
 	const top = closedHere.slice(0, 3);
 	faqs.push({
 		q: `What apartment buildings has Highlight sold in ${shortName}?`,
-		a: `Highlight has closed ${closedHere.length} sale${closedHere.length === 1 ? '' : 's'} in ${shortName}${closedHere.length === 1 ? ':' : ', including'} ${joinList(top.map((c) => `${c.name} (${c.units ? `${c.units} units, ` : 'development site, '}${formatPrice(c.price)})`))}. Every closed sale is listed with its details on our closed sales page.`,
+		a: `Highlight has closed ${closedHere.length === 1 ? 'a sale' : 'sales'} in ${shortName}${closedHere.length === 1 ? ':' : ', including'} ${joinList(top.map((c) => `${c.name} (${c.units ? `${c.units} units, ` : 'development site, '}${formatPrice(c.price)})`))}. Every closed sale is listed with its details on our closed sales page.`,
 		links: [...top.map((c) => ({ label: c.name, href: `/closed-sales/${c.slug}/` })), { label: 'All closed sales', href: '/closed-sales/' }],
 	});
 }
