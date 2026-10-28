@@ -511,6 +511,11 @@ const areaOptions = [...submarkets.map((s) => s.slug), 'other-la', 'outside'].fi
 		color: var(--ink-light);
 	}
 
+	/* Black-and-white base map; the pins keep their navy and gold so they stand out. */
+	:global(.leaflet-tile-pane) {
+		filter: grayscale(1) contrast(1.05) brightness(1.04);
+	}
+
 	:global(.pop) {
 		font-family: var(--font-sans);
 		font-size: 0.85rem;

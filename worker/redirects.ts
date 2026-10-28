@@ -19,6 +19,9 @@ export const redirects: Record<string, string> = {
 	'/project/453-s-gramercy-pl-los-angeles-ca-90020': '/case-studies/453-s-gramercy-pl-koreatown-apartments/',
 	'/project/5455-inglewood-blvd-culver-city-ca-90230': '/case-studies/5455-inglewood-blvd-culver-city-apartments/',
 
+	// 3943 W 7th St was first published with ZIP 90062 in its URL; the correct ZIP is 90005 (Koreatown).
+	'/closed-sales/3943-w-7th-st-los-angeles-ca-90062': '/closed-sales/3943-w-7th-st-los-angeles-ca-90005/',
+
 	'/success-stories': '/testimonials/',
 	'/privacy-policy-2': '/privacy-policy/',
 };

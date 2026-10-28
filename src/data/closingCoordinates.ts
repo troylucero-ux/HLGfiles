@@ -1,8 +1,7 @@
 // Map coordinates for the closed sales shown on /closed-sales/map/, keyed by closing slug. Street addresses were
 // geocoded once (October 27, 2026) with the US Census Geocoder and each match was checked against the ZIP code on the
 // sale. A sale with no entry here is left off the map. The Texas sales are left off on purpose (the map is
-// Los Angeles), and so is 3943 W 7th St until its location is confirmed: it geocodes to ZIP 90005, not the 90062
-// on its record.
+// Los Angeles).
 export const closingCoordinates: Record<string, { lat: number; lng: number; approx?: boolean }> = {
 	'131-171-s-burlington-ave-los-angeles-ca-90057': { lat: 34.06439, lng: -118.26706 },
 	'49270-cochran-dr-indio-ca-92201': { lat: 33.69073, lng: -116.23310 },
@@ -29,6 +28,7 @@ export const closingCoordinates: Record<string, { lat: number; lng: number; appr
 	'1127-18th-st-santa-monica-ca-90403': { lat: 34.03104, lng: -118.48635 },
 	'318-s-mariposa-ave-los-angeles-ca-90020': { lat: 34.06865, lng: -118.29914 },
 	'12716-venice-blvd-los-angeles-ca-90066': { lat: 34.00102, lng: -118.43840 },
+	'3943-w-7th-st-los-angeles-ca-90005': { lat: 34.05973, lng: -118.31261 },
 	'3148-james-m-wood-blvd-los-angeles-ca-90006': { lat: 34.05585, lng: -118.29910 },
 	'5631-whitnall-hwy-north-hollywood-ca-91601': { lat: 34.17313, lng: -118.35862 },
 	'1443-18th-st-santa-monica-ca-90404': { lat: 34.02661, lng: -118.48117 },
