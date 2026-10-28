@@ -15,7 +15,7 @@ export const site = {
 	stats: {
 		unitsSold: '1,400+',
 		closedSalesVolume: '$350M',
-		listToSaleRatio: '98%',
+		listToSaleRatio: '97.2%',
 		exchangeSuccessRate: '100%',
 	},
 	// Precise figures per the About page / project brief — use these in body copy and schema, not the rounded stat bar.
