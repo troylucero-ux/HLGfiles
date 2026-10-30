@@ -5,9 +5,21 @@
 // Numbers in the quarterly market update article come from src/data/marketUpdate.ts, which
 // scripts/market-update.mjs generates from the CoStar export, so the text, tables, and FAQs stay in step.
 import { MARKET_UPDATE as MU } from './marketUpdate';
+// The monthly report (October 2026) reads src/data/marketReportOct2026.ts, generated the same way from the CoStar export, plus the
+// Treasury and CoStar market-report figures in src/data/marketReportOct2026Context.ts.
+import { MARKET_REPORT_OCT_2026 as OCT } from './marketReportOct2026';
+import { TREASURY, COSTAR_OCT_2026 } from './marketReportOct2026Context';
+import { SALES_STATS } from './valuationAssumptions';
 const muMoney = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
 const muPct = (n: number) => `${n.toFixed(2)}%`;
 const muBillion = (millions: number) => `$${(Math.round(millions / 10) / 100).toFixed(2)} billion`;
+// Gap between the median cap rate on older buildings and the 10-year Treasury's average yield, in percentage points, for month m (1 to 10).
+const octSpread = (m: number) => (OCT.months[m - 1].olderCapRateMedian - TREASURY.monthlyAverage[m]).toFixed(1);
+// Neighborhood figures quoted in several articles come from the sales data in valuationAssumptions.ts, so they follow each refresh.
+const hoodRso = (slug: string) => SALES_STATS[slug].rso;
+const hoodPpu = (slug: string) => muMoney(hoodRso(slug).pricePerUnit!.median);
+const hoodPsf = (slug: string) => `$${hoodRso(slug).pricePerSf!.median}`;
+const hoodCap = (slug: string) => `${(hoodRso(slug).capRate!.low * 100).toFixed(2)}% to ${(hoodRso(slug).capRate!.high * 100).toFixed(2)}%`;
 const muDate = (iso: string) => new Date(`${iso}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
 export type Post = {
@@ -21,6 +33,111 @@ export type Post = {
 };
 
 const allPosts: Post[] = [
+	{
+		slug: 'la-apartment-market-report-october-2026',
+		title: 'LA Apartment Market Report, October 2026: Prices, Cap Rates, and the 10-Year Treasury',
+		seoTitle: 'LA Apartment Market Report, October 2026',
+		description:
+			'October 2026 LA apartment market report: where the 10-year Treasury ended the month, what sold, cap rates, and our read of CoStar’s latest market data.',
+		date: '2026-10-30',
+		image: {
+			src: '/images/insights/la-apartment-market-report-october-2026.webp',
+			alt: 'Graphic: the 10-year Treasury eased and LA apartment prices held. The 10-year closed October at 4.94%, the median price per unit for older buildings was $220,417, and the median cap rate was 5.96%.',
+			width: 1200,
+			height: 900,
+		},
+		sections: [
+			{
+				heading: 'Key Takeaways',
+				paragraphs: [
+					`The 10-year Treasury yield ended October at ${TREASURY.close}%, down from ${TREASURY.septemberClose}% on September 30. It peaked at ${TREASURY.octoberHigh}% on October 5, so the month was a retreat of about ${Math.round((TREASURY.septemberClose - TREASURY.close) * 100)} basis points from the end of September.`,
+					`Prices held. From January 2 through October 30, older LA County apartment buildings (built before 1978) sold for a median of ${muMoney(OCT.headline.older.pricePerUnit)} per unit, essentially where they started the year.`,
+					`Cap rates did not follow Treasury yields up. The median cap rate on older buildings stayed near ${OCT.headline.older.capRateMedian.toFixed(1)}% while the 10-year climbed more than a full point from its February low, so buyers are earning a thinner premium over the Treasury than they were in January.`,
+					`CoStar’s October market report describes a split market. New, higher-priced buildings carry most of the vacancy, while demand for older, lower-priced units has held up. Overall vacancy is ${COSTAR_OCT_2026.vacancy}% and asking rents are up just ${COSTAR_OCT_2026.askingRentGrowth12Mo}% over twelve months.`,
+					'In our view, October gave owners and buyers some relief on interest rates, but not a reason to expect a rebound in prices. The owners who do best this year are the ones who price from income and comparable sales.',
+				],
+			},
+			{
+				heading: 'Where the 10-Year Treasury Ended October',
+				paragraphs: [
+					`The 10-year Treasury closed at ${TREASURY.close}% on Friday, October 30, the last trading day of the month. It opened October at ${TREASURY.octoberFirstClose}% and reached ${TREASURY.octoberHigh}% on October 5. A sharp drop on October 22 took it to 4.96%, it hovered around 5% for the rest of the month, and it finished at its low for the month. The monthly average was ${TREASURY.monthlyAverage[10].toFixed(2)}%, up from ${TREASURY.monthlyAverage[9].toFixed(2)}% in September.`,
+					`The bigger picture is the climb. The 10-year hit its low for the year, ${TREASURY.februaryLow}%, at the end of February, and averaged ${TREASURY.monthlyAverage[1].toFixed(2)}% in January. By the end of September it had risen to ${TREASURY.septemberClose}%. October’s decline took back about a quarter of that rise.`,
+					'Why this matters to an apartment owner: lenders generally price multifamily loans as a spread over Treasury yields of a similar term. When the 10-year rises, the cost of a new loan tends to rise with it, which lowers what a buyer can pay for a given amount of income. We do not try to explain individual days in the bond market, and a one-month move can reverse. What we watch is whether the yield settles below 5%.',
+				],
+			},
+			{
+				heading: 'Cap Rates Have Not Moved With Treasury Yields',
+				paragraphs: [
+					`Here is what stands out in our sales data. The median cap rate on older LA County buildings was ${muPct(OCT.months[0].olderCapRateMedian)} in January and ${muPct(OCT.months[8].olderCapRateMedian)} in September. Over the same months, the average 10-year yield went from ${TREASURY.monthlyAverage[1].toFixed(2)}% to ${TREASURY.monthlyAverage[9].toFixed(2)}%.`,
+					`That means the gap between the cap rate buyers accepted and the Treasury yield narrowed from about ${octSpread(1)} percentage points in January to about ${octSpread(9)} in September. Measured against October’s closing yield, the median cap rate for the year so far is about ${(OCT.headline.older.capRateMedian - TREASURY.close).toFixed(1)} points above the 10-year.`,
+					'A thin gap like this has to resolve one of three ways: cap rates drift up, Treasury yields come down, or rents grow enough to lift income. October’s move helped with the second. The CoStar section below explains why we would not count on the third. We are also careful with the word “spread” here. A building’s cap rate is based on income before debt, and a buyer’s loan costs more than the Treasury yield, so this is a gauge of the market’s mood, not a measure of any one buyer’s returns.',
+				],
+			},
+			{
+				heading: 'What Sold Through October 30',
+				paragraphs: [
+					`Our sales analysis now runs from January 2 through October 30, 2026. It covers ${OCT.headline.all.sales.toLocaleString('en-US')} sales of LA County apartment buildings with 5 to 99 units, worth about ${muBillion(OCT.headline.all.volumeMillions)}, taken from CoStar sales data. We leave out sales whose price CoStar marks as approximate or allocated, portfolio sales of 100 or more units, and repeated records.`,
+					`Older buildings sold for a median of ${muMoney(OCT.headline.older.pricePerUnit)} per unit and ${muMoney(OCT.headline.older.pricePerSf)} per square foot, with a median cap rate of ${muPct(OCT.headline.older.capRateMedian)}. Buildings built in 1978 or later sold for a median of ${muMoney(OCT.headline.newer.pricePerUnit)} per unit at a ${muPct(OCT.headline.newer.capRateMedian)} median cap rate.`,
+					`By quarter, the median price per unit for older buildings was ${muMoney(OCT.quarters[0].olderPricePerUnit)} in the first quarter, ${muMoney(OCT.quarters[1].olderPricePerUnit)} in the second, and ${muMoney(OCT.quarters[2].olderPricePerUnit)} in the third. The first weeks of the fourth quarter show ${muMoney(OCT.months[9].olderPricePerUnit)}, but treat that as a preview. October’s sales are still being recorded (${OCT.months[9].sales} so far, against ${OCT.months[8].sales} in September), and the ${OCT.months[9].olderCapRateCount} cap rates reported for older buildings are too few to say that cap rates moved.`,
+					`Size still matters. Older buildings of 5 to 9 units sold for a median of ${muMoney(OCT.sizes[0].olderPricePerUnit)} per unit, compared with ${muMoney(OCT.sizes[1].olderPricePerUnit)} for 10 to 19 units and ${muMoney(OCT.sizes[2].olderPricePerUnit)} for 20 to 49 units.`,
+					`Sellers still gave ground on price. Among sales with a recorded asking price, the median sale was ${OCT.asking.medianPct}% of asking, about ${muMoney(OCT.asking.medianDollarsBelow)} below it. Only ${Math.round(OCT.asking.atOrAbovePct)}% sold at or above asking, and ${Math.round(OCT.asking.over10Pct)}% sold for more than 10% less.`,
+				],
+			},
+			{
+				heading: 'What CoStar’s October Market Report Shows',
+				paragraphs: [
+					`CoStar’s Los Angeles multifamily report, dated ${COSTAR_OCT_2026.reportDate}, puts overall vacancy at ${COSTAR_OCT_2026.vacancy}%, below the national average of ${COSTAR_OCT_2026.nationalVacancy}% but high for California. The split is by quality. Vacancy in the newest, highest-priced buildings (4 and 5 Star) is ${COSTAR_OCT_2026.vacancyFourFiveStar}%, against ${COSTAR_OCT_2026.vacancyThreeStar}% for 3 Star and ${COSTAR_OCT_2026.vacancyOneTwoStar}% for 1 and 2 Star buildings, which include many older apartments.`,
+					`Rents are flat. Asking rents rose ${COSTAR_OCT_2026.askingRentGrowth12Mo}% over the past twelve months, and CoStar notes that rent growth has stayed at or below 1% for several years. In the higher-priced buildings, landlords are offering one to two months of free rent, and more in the weakest submarkets. Renters absorbed about ${COSTAR_OCT_2026.absorbedUnits12Mo.toLocaleString('en-US')} net units over the year, against about ${COSTAR_OCT_2026.deliveredUnits12Mo.toLocaleString('en-US')} new units delivered.`,
+					`The demand side is soft. CoStar points to population loss, slower job growth, and the loss of roughly 60,000 jobs in the information sector (tech and entertainment) since 2023, which has shrunk the pool of renters who can afford new, higher-priced apartments.`,
+					`On supply, about ${COSTAR_OCT_2026.underConstructionUnits.toLocaleString('en-US')} units are under construction, which CoStar describes as the lowest level since 2015, after several years of falling construction starts. CoStar’s forecast has vacancy beginning to compress around mid-2027 and rent growth recovering after that, reaching about 1.5% by mid-2028.`,
+					`On sales, CoStar estimates that LA multifamily volume over the past twelve months was about $${COSTAR_OCT_2026.salesVolume12MoBillions.toFixed(1)} billion, close to the prior twelve months and in line with the ten-year average. It puts the market-wide price at roughly ${muMoney(COSTAR_OCT_2026.pricePerUnit)} per unit, more than 20% below the 2021 peak of about ${muMoney(COSTAR_OCT_2026.pricePerUnitPeak2021)}. That figure covers every size and age of building, including new construction, so it runs well above what older buildings sold for in our data. CoStar’s outlook is that prices have probably reached their low and that the rise in cap rates over the past two years has leveled off, but that getting back to earlier price levels will take years.`,
+					`Institutional investors are less active. CoStar reports that institutions made up ${COSTAR_OCT_2026.institutionalSellerSharePct}% of sellers and ${COSTAR_OCT_2026.institutionalBuyerSharePct}% of buyers in 2026, down from ${COSTAR_OCT_2026.institutionalSellerShareBeforeUlaPct}% and ${COSTAR_OCT_2026.institutionalBuyerShareBeforeUlaPct}% before Measure ULA took effect. In our own data, about ${OCT.parties.privateBuyersPct}% of buyers were private, and institutions were about ${OCT.parties.institutionalBuyersPct}%.`,
+				],
+			},
+			{
+				heading: 'Neighborhood Notes',
+				paragraphs: [
+					`Santa Monica. CoStar lists Santa Monica among the weakest submarkets for vacancy at ${COSTAR_OCT_2026.vacancySantaMonica}%, behind a wave of new buildings, with landlords offering extra months of free rent. Older buildings in our sales data are a different story. They sold for a median of ${muMoney(SALES_STATS['santa-monica'].rso.pricePerUnit!.median)} per unit, among the highest in our neighborhood data. See our [Santa Monica market page](/submarkets/santa-monica/).`,
+					`Koreatown. CoStar ranks Koreatown second in the county for units under construction, so competition from new buildings is a factor there. Older Koreatown buildings sold for a median of ${muMoney(SALES_STATS.koreatown.rso.pricePerUnit!.median)} per unit in our data. See our [Koreatown market page](/submarkets/koreatown/).`,
+					`South LA. CoStar shows the tightest vacancy in the county in South Los Angeles (${COSTAR_OCT_2026.vacancySouthLa}%) and Southeast Los Angeles (${COSTAR_OCT_2026.vacancySoutheastLa}%), where there is little new construction. Older South LA buildings sold for a median of ${muMoney(SALES_STATS['south-la'].rso.pricePerUnit!.median)} per unit. See our [South LA market page](/submarkets/south-la/).`,
+					'For every neighborhood, see our guide to [LA apartment cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/).',
+				],
+			},
+			{
+				heading: 'Our Read: What This Means for Owners',
+				paragraphs: [
+					'The market is split by building type, and older buildings sit on the steadier side. CoStar’s numbers show demand holding up for lower-priced units while new buildings fight for renters. That helps explain why older-building prices have been so stable this year. It does not mean rents will jump. With rent growth near zero, the income side of a valuation is not going to carry prices higher on its own.',
+					'Rates matter more than rents right now. If the 10-year stays below 5%, the financing math improves for buyers and gives cap rates room to hold. If it climbs back, we would expect buyers to push harder on price, since the gap over the Treasury is already thin. Either way, a seller should be ready for buyers to negotiate.',
+					`Price from income, not hope. With the median sale closing at ${OCT.asking.medianPct}% of asking, an asking price that your rents and recent sales do not support usually comes down, and the weeks lost cost more than a realistic starting price would. Use our [free property value calculator](/property-value/), which now includes sales through October 30, and ask for a [Broker Opinion of Value](/contact/?intent=bov) for a number built on your own rent roll.`,
+					`Know where the tax lines fall. About ${Math.round(OCT.bands[2].sharePct + OCT.bands[3].sharePct + OCT.bands[4].sharePct)}% of sales this year closed above $5.4 million, the point where the City of Los Angeles’s Measure ULA transfer tax begins. CoStar notes that efforts to revise the measure did not make the November ballot. If your building is near a threshold, read our guide to [Measure ULA](/insights/measure-ula-2026-thresholds-selling-la-apartment-building/) before you set a price.`,
+					'Think about year-end early. If you want to close in 2026 for tax reasons, a sale that starts in November is already tight. See our guides to [selling before year-end](/insights/selling-la-apartment-building-before-year-end/) and [1031 exchanges](/1031-exchanges/).',
+				],
+			},
+			{
+				heading: 'What We Are Watching in November',
+				paragraphs: [
+					'The 10-year Treasury. A close back above 5% would put pressure on buyers again, and a move lower would help.',
+					'Whether the cap rate keeps its distance from the Treasury. If it narrows further, we expect more price negotiation, not less.',
+					'The rest of October’s sales. As CoStar records them, we will see whether the early look at fourth-quarter pricing holds.',
+					'Supply. CoStar expects fewer new apartments from 2027, which is the main reason it forecasts vacancy to improve.',
+					'We plan to publish this report each month, with a longer update each quarter. See our [third-quarter update](/insights/la-apartment-market-update-q3-2026/) for the numbers through September 22.',
+				],
+			},
+			{
+				heading: 'About the Data',
+				paragraphs: [
+					'Treasury yields are the U.S. Department of the Treasury’s daily par yield curve rates for the 10-year maturity. Market statistics in the CoStar section come from CoStar’s Los Angeles Multi-Family Market Report dated October 30, 2026, and are paraphrased. The sales analysis, neighborhood figures, and opinions are Highlight Multifamily Group’s, based on CoStar sales data through October 30, 2026. Cap rates come from the sales that reported one, and we use medians throughout.',
+					'Recent sales are recorded with a delay, so the latest weeks will look different as more are added. This article is general information, not legal, tax, or investment advice, and not an appraisal.',
+				],
+			},
+			{
+				heading: 'Talk With Us',
+				paragraphs: [
+					'To see how this market applies to your building, start with our [free property value calculator](/property-value/), then request a free [Broker Opinion of Value](/contact/?intent=bov). We will build it from your rents, expenses, and condition.',
+				],
+			},
+		],
+	},
 	{
 		slug: 'how-to-choose-a-multifamily-broker-in-los-angeles',
 		title: 'How to Choose the Best Multifamily Broker in Los Angeles',
@@ -162,7 +279,7 @@ const allPosts: Post[] = [
 				heading: '2. Capitalization Rate (Cap Rate)',
 				paragraphs: [
 					'The cap rate is NOI divided by price. Flip it around and you get a quick estimate of value: NOI divided by the cap rate. For example, a building with $100,000 of NOI that buyers are pricing at a 5.5% cap rate is worth about $1.8 million. A lower cap rate means buyers are paying more for each dollar of income.',
-					'Cap rates are not one number across Los Angeles. In 2026 sales through September, rent-stabilized buildings (built before 1978) with a recorded cap rate traded at a typical range of 5.86% to 7.34% in Koreatown, 5.55% to 6.98% in North Hollywood, and 4.81% to 5.96% in Santa Monica. We publish these ranges, with the number of sales behind each, on our [neighborhood pages](/submarkets/).',
+					`Cap rates are not one number across Los Angeles. In 2026 sales through October, rent-stabilized buildings (built before 1978) with a recorded cap rate traded at a typical range of ${hoodCap('koreatown')} in Koreatown, ${hoodCap('north-hollywood')} in North Hollywood, and ${hoodCap('santa-monica')} in Santa Monica. We publish these ranges, with the number of sales behind each, on our [neighborhood pages](/submarkets/).`,
 				],
 			},
 			{
@@ -176,7 +293,7 @@ const allPosts: Post[] = [
 				heading: '4. Price Per Unit and Price Per Square Foot',
 				paragraphs: [
 					'Price per unit and price per square foot are the quickest ways to compare a building with recent sales. They are sanity checks, not valuations, because they ignore income, condition, and rent levels.',
-					'They also vary widely by neighborhood. Among rent-stabilized buildings sold so far in 2026, the median price per unit was about $173,700 in Koreatown, $189,500 in North Hollywood, and $388,300 in Santa Monica, and the median price per square foot was $230, $247, and $398. A figure from the wrong neighborhood can be off by hundreds of thousands of dollars.',
+					`They also vary widely by neighborhood. Among rent-stabilized buildings sold so far in 2026, the median price per unit was ${hoodPpu('koreatown')} in Koreatown, ${hoodPpu('north-hollywood')} in North Hollywood, and ${hoodPpu('santa-monica')} in Santa Monica, and the median price per square foot was ${hoodPsf('koreatown')}, ${hoodPsf('north-hollywood')}, and ${hoodPsf('santa-monica')}. A figure from the wrong neighborhood can be off by hundreds of thousands of dollars.`,
 				],
 			},
 			{
@@ -1270,7 +1387,7 @@ const allPosts: Post[] = [
 			{
 				heading: 'Neighborhood Detail',
 				paragraphs: [
-					'For prices and cap rates by neighborhood, see our article on [LA apartment cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/), or find your area on our [submarkets](/submarkets/) page.',
+					'For prices and cap rates by neighborhood, see our article on [LA apartment cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/), or find your area on our [submarkets](/submarkets/) page. For numbers through October 30 and the 10-year Treasury, see our [October 2026 market report](/insights/la-apartment-market-report-october-2026/).',
 				],
 			},
 			{
@@ -2340,7 +2457,8 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'broker-opinion-of-value-vs-appraisal-apartment-building': ['how-to-value-an-apartment-building-in-los-angeles', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-choose-a-multifamily-broker-in-los-angeles'],
 	'selling-a-fourplex-or-small-apartment-building-in-los-angeles': ['how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step'],
 	'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles': ['how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
-	'la-apartment-market-update-q3-2026': ['la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-value-an-apartment-building-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
+	'la-apartment-market-update-q3-2026': ['la-apartment-market-report-october-2026', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-value-an-apartment-building-in-los-angeles'],
+	'la-apartment-market-report-october-2026': ['la-apartment-market-update-q3-2026', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'should-i-sell-my-la-apartment-building'],
 	'inherited-apartment-building-los-angeles-what-to-do': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles'],
 	'sb-721-balcony-inspection-los-angeles-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'selling-la-apartment-building-with-tenants-rent-control'],
 	'air-conditioning-law-los-angeles-apartment-owners-electrical-panel': ['sb-721-balcony-inspection-los-angeles-apartment-owners', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control'],
@@ -2397,11 +2515,11 @@ export const postFaqs: Record<string, PostFaq[]> = {
 		},
 		{
 			q: 'What is a good cap rate for an apartment building in Los Angeles?',
-			a: 'It depends on the neighborhood. In 2026 sales through September, rent-stabilized buildings (built before 1978) with a recorded cap rate traded at a typical range of 5.86% to 7.34% in Koreatown, 5.55% to 6.98% in North Hollywood, and 4.81% to 5.96% in Santa Monica. See our [cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/) and each [neighborhood page](/submarkets/) for the number of sales behind each range.',
+			a: `It depends on the neighborhood. In 2026 sales through October, rent-stabilized buildings (built before 1978) with a recorded cap rate traded at a typical range of ${hoodCap('koreatown')} in Koreatown, ${hoodCap('north-hollywood')} in North Hollywood, and ${hoodCap('santa-monica')} in Santa Monica. See our [cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/) and each [neighborhood page](/submarkets/) for the number of sales behind each range.`,
 		},
 		{
 			q: 'How much is an apartment building worth per unit in Los Angeles?',
-			a: 'No. Price per unit and price per square foot are quick sanity checks, not valuations, because they ignore income, condition, and rent levels. They also vary widely: among rent-stabilized buildings sold so far in 2026, the median price per unit was about $173,700 in Koreatown, $189,500 in North Hollywood, and $388,300 in Santa Monica.',
+			a: `No. Price per unit and price per square foot are quick sanity checks, not valuations, because they ignore income, condition, and rent levels. They also vary widely: among rent-stabilized buildings sold so far in 2026, the median price per unit was ${hoodPpu('koreatown')} in Koreatown, ${hoodPpu('north-hollywood')} in North Hollywood, and ${hoodPpu('santa-monica')} in Santa Monica.`,
 		},
 		{
 			q: 'Does rent control lower the value of my apartment building?',
@@ -2758,6 +2876,28 @@ export const postFaqs: Record<string, PostFaq[]> = {
 		{
 			q: 'Is an NNN exchange right for my apartment building?',
 			a: 'Not every owner should exchange into a triple-net property, and not every apartment building is the right one to sell right now. The first conversation is about your goals: stopping management altogether, reducing your workload without fully exiting real estate, or moving capital out of California. See our [triple-net and DST page](/triple-net-dst/), or [request a free Broker Opinion of Value](/contact/?intent=bov) to start.',
+		},
+	],
+	'la-apartment-market-report-october-2026': [
+		{
+			q: 'Where did the 10-year Treasury yield end October 2026?',
+			a: `The 10-year Treasury closed at ${TREASURY.close}% on October 30, 2026, the last trading day of the month. It was ${TREASURY.septemberClose}% on September 30 and reached ${TREASURY.octoberHigh}% on October 5, so it ended the month about ${Math.round((TREASURY.septemberClose - TREASURY.close) * 100)} basis points lower than it began.`,
+		},
+		{
+			q: 'What did LA apartment buildings sell for in October 2026?',
+			a: `Older buildings (built before 1978) sold in LA County for a median of ${muMoney(OCT.headline.older.pricePerUnit)} per unit from January 2 through October 30, 2026, and ${muMoney(OCT.months[9].olderPricePerUnit)} in October so far. October’s sales are still being recorded, so the month’s figure may change. Prices have been steady all year.`,
+		},
+		{
+			q: 'What cap rate are LA apartment buildings selling at?',
+			a: `The median cap rate on older LA County apartment buildings was ${muPct(OCT.headline.older.capRateMedian)} for 2026 through October 30, and the middle half of sales were between ${muPct(OCT.headline.older.capRateLow)} and ${muPct(OCT.headline.older.capRateHigh)}. Neighborhoods differ a lot. See our [cap rates and prices by neighborhood](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/).`,
+		},
+		{
+			q: 'What is the vacancy rate for Los Angeles apartments?',
+			a: `CoStar’s October 30, 2026 report puts overall LA multifamily vacancy at ${COSTAR_OCT_2026.vacancy}%, compared with ${COSTAR_OCT_2026.nationalVacancy}% nationally. Newer, higher-priced buildings have the most vacancy (${COSTAR_OCT_2026.vacancyFourFiveStar}%), while older, lower-priced buildings are the tightest (${COSTAR_OCT_2026.vacancyOneTwoStar}%).`,
+		},
+		{
+			q: 'Is now a good time to sell an LA apartment building?',
+			a: 'It depends on your goals, your tax position, and your building. Prices have been steady in 2026, buyers are negotiating, and Treasury yields eased in October. Start with a free [Broker Opinion of Value](/contact/?intent=bov) so you can see a realistic price and your likely net proceeds, then decide. Our guide on [whether to sell](/insights/should-i-sell-my-la-apartment-building/) covers the questions to ask first.',
 		},
 	],
 	'la-apartment-market-update-q3-2026': [

@@ -252,7 +252,7 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 		],
 		proof:
 			'We have sold 1330 Portia St, an 8-unit building, and 1421 Waterloo St, a 4-unit building, in Silver Lake, and have also marketed [1118-1120 Sanborn Ave](/listings/1118-1120-sanborn-ave-los-angeles-ca-90029/) and [333 N Union Ave](/listings/333-n-union-ave-los-angeles-ca-90026/).',
-		source: 'Sources: LA Housing Department RSO Property Search (housing.lacity.gov); Highlight analysis of CoStar sold multifamily comps, January to September 2026. Checked October 2026.',
+		source: 'Sources: LA Housing Department RSO Property Search (housing.lacity.gov); Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked October 2026.',
 		faqs: [
 			{
 				q: 'Could my Silver Lake lot be worth more than my building?',
@@ -289,7 +289,7 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 		],
 		proof:
 			'We sold the 7-unit [941 N Normandie Ave](/case-studies/941-normandie-ave-east-hollywood-apartments/) in East Hollywood and are marketing [4412-4414 Lockwood Ave](/listings/4412-4414-lockwood-ave-los-angeles-ca-90029/) in the Virgil Village pocket.',
-		source: 'Sources: Highlight analysis of CoStar sold multifamily comps, January to September 2026. Each median rests on the sale count shown.',
+		source: 'Sources: Highlight analysis of CoStar sold multifamily comps, January to October 2026. Each median rests on the sale count shown.',
 		faqs: [
 			{
 				q: 'How much would a 20-unit apartment building cost in East Hollywood?',
@@ -331,7 +331,7 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 		],
 		proof:
 			'We have closed sales in Pico-Union, including the 24-unit [1136 S Alvarado St](/closed-sales/1136-s-alvarado-st-los-angeles-ca-90006/).',
-		source: 'Sources: LA Housing Department RSO Property Search (housing.lacity.gov); Highlight analysis of CoStar sold multifamily comps, January to September 2026. The cap rate range is the middle half of sales that reported one. Checked October 2026.',
+		source: 'Sources: LA Housing Department RSO Property Search (housing.lacity.gov); Highlight analysis of CoStar sold multifamily comps, January to October 2026. The cap rate range is the middle half of sales that reported one. Checked October 2026.',
 		faqs: [
 			{
 				q: 'What cap rate do Pico-Union apartment buildings sell for?',
@@ -344,11 +344,11 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 		eyebrow: 'What’s Local in Brentwood',
 		heading: 'Brentwood Apartment Owners: Very Few Sales, Big Numbers, and Why Building Age Matters',
 		intro: [
-			`Very few apartment buildings trade in Brentwood. Our 2026 sales data, which runs through September, has only ${rso('brentwood').pricePerUnit!.compCount + newer('brentwood').pricePerUnit!.compCount} Brentwood multifamily sales, ${rso('brentwood').pricePerUnit!.compCount} of older buildings and ${newer('brentwood').pricePerUnit!.compCount} of newer ones.`,
+			`Very few apartment buildings trade in Brentwood. Our 2026 sales data, which runs through October, has only ${rso('brentwood').pricePerUnit!.compCount + newer('brentwood').pricePerUnit!.compCount} Brentwood multifamily sales, ${rso('brentwood').pricePerUnit!.compCount} of older buildings and ${newer('brentwood').pricePerUnit!.compCount} of newer ones.`,
 			'Older Brentwood buildings were built before the 1978 cutoff for LA rent control, and newer buildings fall under the statewide AB 1482 cap instead. That difference is the most important thing to understand about Brentwood pricing, because newer buildings sell for far more per unit and say little about an older one.',
 		],
 		facts: [
-			{ value: `${rso('brentwood').pricePerUnit!.compCount + newer('brentwood').pricePerUnit!.compCount}`, label: 'Brentwood multifamily sales in our 2026 data through September' },
+			{ value: `${rso('brentwood').pricePerUnit!.compCount + newer('brentwood').pricePerUnit!.compCount}`, label: 'Brentwood multifamily sales in our 2026 data through October' },
 			{ value: `${money(rso('brentwood').pricePerUnit!.median)} vs. ${money(newer('brentwood').pricePerUnit!.median)}`, label: `median price per unit, older vs. newer Brentwood buildings (${rso('brentwood').pricePerUnit!.compCount} and ${newer('brentwood').pricePerUnit!.compCount} sales)` },
 			{ value: '3', label: 'Brentwood buildings we have sold, on Kiowa Ave, Goshen Ave, and Mayfield Ave' },
 		],
@@ -368,11 +368,11 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 		],
 		proof:
 			'We have sold three Brentwood buildings: [11642 Kiowa Ave](/case-studies/11642-kiowa-ave-brentwood-apartments/) (9 units), [11667 Goshen Ave](/case-studies/11667-goshen-ave-brentwood-apartments/) (10 units), and [11747 Mayfield Ave](/closed-sales/11747-mayfield-ave-los-angeles-ca-90049/) (8 units).',
-		source: 'Sources: Highlight analysis of CoStar sold multifamily comps, January to September 2026. Checked October 2026.',
+		source: 'Sources: Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked October 2026.',
 		faqs: [
 			{
 				q: 'How many apartment buildings sell in Brentwood each year?',
-				a: `Very few. Our 2026 sales data, which runs through September, has only ${rso('brentwood').pricePerUnit!.compCount + newer('brentwood').pricePerUnit!.compCount} Brentwood multifamily sales: ${rso('brentwood').pricePerUnit!.compCount} older rent-controlled buildings and ${newer('brentwood').pricePerUnit!.compCount} newer ones. With so few sales, any average moves a lot with one deal, so a price built on your own building’s rents and expenses is more reliable.`,
+				a: `Very few. Our 2026 sales data, which runs through October, has only ${rso('brentwood').pricePerUnit!.compCount + newer('brentwood').pricePerUnit!.compCount} Brentwood multifamily sales: ${rso('brentwood').pricePerUnit!.compCount} older rent-controlled buildings and ${newer('brentwood').pricePerUnit!.compCount} newer ones. With so few sales, any average moves a lot with one deal, so a price built on your own building’s rents and expenses is more reliable.`,
 			},
 			{
 				q: 'Why do Brentwood apartment buildings sell for more per unit than Central LA?',
@@ -409,7 +409,7 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 		],
 		proof:
 			'We have sold two buildings in the area: [3667 Mentone Ave](/closed-sales/3667-mentone-ave-los-angeles-ca-90034/), 10 units in Palms, and [12770 Caswell Avenue](/closed-sales/12770-caswell-avenue-los-angeles-ca-90066/), 11 units in Mar Vista.',
-		source: 'Sources: Highlight analysis of CoStar sold multifamily comps, January to September 2026 (ZIP codes 90024, 90025, 90064, 90034, and 90066); LA Metro; walkscore.com. Each median rests on the sale count shown. Checked October 2026.',
+		source: 'Sources: Highlight analysis of CoStar sold multifamily comps, January to October 2026 (ZIP codes 90024, 90025, 90064, 90034, and 90066); LA Metro; walkscore.com. Each median rests on the sale count shown. Checked October 2026.',
 		faqs: [
 			{
 				q: 'Which Metro lines serve West LA?',

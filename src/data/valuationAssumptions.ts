@@ -1,8 +1,10 @@
 // Sales statistics and valuation assumptions for the free property value calculator
 // (/property-value/) and the "2026 Sales Data" section on each submarket page.
 //
-// Source: "LA County Sales 01.01.26 to 09.22.26.xlsx" (CoStar export supplied by the user),
-// filtered to Sale Status = Sold and Property Type = Multifamily (1,321 comps).
+// Source: two CoStar exports supplied by the user, "LA County Sales 01.01.26 to 09.22.26.xlsx" and "CostarExport (22).xlsx"
+// (sales dated 9/1/26 to 10/30/26), merged with repeated rows (same address, price, and date) counted once and filtered to
+// Sale Status = Sold and Property Type = Multifamily: 1,513 sold comps from January 2 to October 30, 2026, of which 1,407
+// remain after the rules below.
 //
 // RSO buildings (built before 1978, under the LA Rent Stabilization Ordinance) trade differently
 // than buildings built 1978 or later (AB 1482), so every figure is computed separately for each
@@ -20,8 +22,8 @@
 // This goes stale as comps age. Re-derive it from a fresh county sales export every quarter or
 // two: send Claude the new file and ask it to rerun the analysis and update this file.
 
-export const VALUATION_DATA_AS_OF = 'September 2026';
-export const VALUATION_DATA_PERIOD = 'January-September 2026';
+export const VALUATION_DATA_AS_OF = 'October 2026';
+export const VALUATION_DATA_PERIOD = 'January-October 2026';
 
 // Minimum comps before a figure is shown (see the note at the top of this file).
 export const MIN_PRICE_COMPS_PAGE = 3;
@@ -40,32 +42,43 @@ export interface GroupStats {
 	capRate: { low: number; high: number; compCount: number } | null; // decimals, e.g. 0.0586 = 5.86%
 }
 
+// Neighborhood groups (rebuilt October 30, 2026 so every group can be reproduced from the export). Unless a comment says
+// otherwise, each group is the sales in the City of Los Angeles under these CoStar submarket names: Koreatown = Koreatown;
+// Pico-Union = Pico-Union and Harvard Heights; Westlake = Westlake North and MacArthur Park; East Hollywood = East
+// Hollywood, Little Armenia, and Thai Town; Silver Lake = Silver Lake; Brentwood = ZIP 90049; Santa Monica = Property
+// City Santa Monica; North Hollywood = the North Hollywood submarket; Van Nuys = the Van Nuys submarket. The first nine
+// were defined differently before this rebuild (that earlier definition was not written down), so their figures moved
+// for that reason as well as from the new sales.
 export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 	koreatown: {
 		rso: {
-			pricePerUnit: { median: 173684, compCount: 34 },
-			pricePerSf: { median: 230, compCount: 34 },
-			capRate: { low: 0.0586, high: 0.0734, compCount: 26 },
+			pricePerUnit: { median: 161875, compCount: 28 },
+			pricePerSf: { median: 217, compCount: 28 },
+			capRate: { low: 0.0595, high: 0.0767, compCount: 23 },
 		},
 		post1978: {
-			pricePerUnit: { median: 250000, compCount: 2 },
-			pricePerSf: { median: 256, compCount: 2 },
+			pricePerUnit: null,
+			pricePerSf: null,
 			capRate: null,
 		},
 	},
 	'pico-union': {
 		rso: {
-			pricePerUnit: { median: 184000, compCount: 11 },
-			pricePerSf: { median: 294, compCount: 11 },
-			capRate: { low: 0.07, high: 0.08, compCount: 5 },
+			pricePerUnit: { median: 173945, compCount: 14 },
+			pricePerSf: { median: 233, compCount: 14 },
+			capRate: { low: 0.0501, high: 0.0771, compCount: 7 },
 		},
-		post1978: { pricePerUnit: null, pricePerSf: null, capRate: null },
+		post1978: {
+			pricePerUnit: null,
+			pricePerSf: null,
+			capRate: null,
+		},
 	},
 	westlake: {
 		rso: {
-			pricePerUnit: { median: 133150, compCount: 7 },
-			pricePerSf: { median: 237, compCount: 7 },
-			capRate: { low: 0.0528, high: 0.062, compCount: 6 },
+			pricePerUnit: { median: 135857, compCount: 14 },
+			pricePerSf: { median: 219, compCount: 14 },
+			capRate: { low: 0.059, high: 0.0719, compCount: 9 },
 		},
 		post1978: {
 			pricePerUnit: { median: 198611, compCount: 1 },
@@ -75,74 +88,74 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 	},
 	'east-hollywood': {
 		rso: {
-			pricePerUnit: { median: 186667, compCount: 13 },
-			pricePerSf: { median: 245, compCount: 13 },
-			capRate: { low: 0.06, high: 0.0655, compCount: 7 },
+			pricePerUnit: { median: 173684, compCount: 19 },
+			pricePerSf: { median: 228, compCount: 19 },
+			capRate: { low: 0.0596, high: 0.068, compCount: 16 },
 		},
 		post1978: {
-			pricePerUnit: { median: 339286, compCount: 4 },
-			pricePerSf: { median: 324, compCount: 4 },
-			capRate: null,
+			pricePerUnit: { median: 259722, compCount: 6 },
+			pricePerSf: { median: 323, compCount: 6 },
+			capRate: { low: 0.0515, high: 0.0669, compCount: 6 },
 		},
 	},
 	'silver-lake': {
 		rso: {
-			pricePerUnit: { median: 225000, compCount: 11 },
-			pricePerSf: { median: 270, compCount: 11 },
-			capRate: { low: 0.0544, high: 0.063, compCount: 7 },
+			pricePerUnit: { median: 266667, compCount: 13 },
+			pricePerSf: { median: 392, compCount: 13 },
+			capRate: { low: 0.0558, high: 0.0629, compCount: 6 },
 		},
 		post1978: {
-			pricePerUnit: { median: 302250, compCount: 2 },
-			pricePerSf: { median: 235, compCount: 2 },
+			pricePerUnit: { median: 206250, compCount: 1 },
+			pricePerSf: { median: 302, compCount: 1 },
 			capRate: null,
 		},
 	},
 	brentwood: {
 		rso: {
-			pricePerUnit: { median: 475000, compCount: 3 },
-			pricePerSf: { median: 363, compCount: 3 },
+			pricePerUnit: { median: 446250, compCount: 4 },
+			pricePerSf: { median: 407, compCount: 4 },
 			capRate: null,
 		},
 		post1978: {
-			pricePerUnit: { median: 687417, compCount: 2 },
-			pricePerSf: { median: 464, compCount: 2 },
+			pricePerUnit: { median: 779217, compCount: 2 },
+			pricePerSf: { median: 582, compCount: 2 },
 			capRate: null,
 		},
 	},
 	'santa-monica': {
 		rso: {
-			pricePerUnit: { median: 388333, compCount: 34 },
-			pricePerSf: { median: 398, compCount: 34 },
-			capRate: { low: 0.0481, high: 0.0596, compCount: 19 },
+			pricePerUnit: { median: 387500, compCount: 37 },
+			pricePerSf: { median: 415, compCount: 37 },
+			capRate: { low: 0.0493, high: 0.0594, compCount: 22 },
 		},
 		post1978: {
-			pricePerUnit: { median: 561000, compCount: 3 },
-			pricePerSf: { median: 485, compCount: 3 },
+			pricePerUnit: { median: 592764, compCount: 4 },
+			pricePerSf: { median: 539, compCount: 4 },
 			capRate: null,
 		},
 	},
 	'north-hollywood': {
 		rso: {
-			pricePerUnit: { median: 189500, compCount: 27 },
-			pricePerSf: { median: 247, compCount: 27 },
-			capRate: { low: 0.0555, high: 0.0698, compCount: 24 },
+			pricePerUnit: { median: 195000, compCount: 31 },
+			pricePerSf: { median: 276, compCount: 31 },
+			capRate: { low: 0.0542, high: 0.0706, compCount: 28 },
 		},
 		post1978: {
-			pricePerUnit: { median: 230000, compCount: 7 },
-			pricePerSf: { median: 288, compCount: 7 },
-			capRate: { low: 0.05, high: 0.058, compCount: 6 },
+			pricePerUnit: { median: 233215, compCount: 6 },
+			pricePerSf: { median: 285, compCount: 6 },
+			capRate: null,
 		},
 	},
 	'van-nuys': {
 		rso: {
-			pricePerUnit: { median: 178167, compCount: 12 },
-			pricePerSf: { median: 230, compCount: 12 },
-			capRate: { low: 0.054, high: 0.0606, compCount: 10 },
+			pricePerUnit: { median: 195833, compCount: 19 },
+			pricePerSf: { median: 214, compCount: 19 },
+			capRate: { low: 0.054, high: 0.0646, compCount: 13 },
 		},
 		post1978: {
-			pricePerUnit: { median: 327586, compCount: 7 },
-			pricePerSf: { median: 345, compCount: 7 },
-			capRate: { low: 0.0583, high: 0.0597, compCount: 5 },
+			pricePerUnit: { median: 235834, compCount: 6 },
+			pricePerSf: { median: 312, compCount: 6 },
+			capRate: null,
 		},
 	},
 	// The export has no "Mid-Wilshire" submarket; its "Miracle Mile" submarket (the Wilshire corridor blocks
@@ -155,8 +168,8 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: { low: 0.0563, high: 0.0641, compCount: 5 },
 		},
 		post1978: {
-			pricePerUnit: { median: 502500, compCount: 5 },
-			pricePerSf: { median: 375, compCount: 5 },
+			pricePerUnit: { median: 567917, compCount: 2 },
+			pricePerSf: { median: 394, compCount: 2 },
 			capRate: null,
 		},
 	},
@@ -170,7 +183,7 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: { low: 0.0498, high: 0.0585, compCount: 10 },
 		},
 		post1978: {
-			pricePerUnit: { median: 489759, compCount: 3 },
+			pricePerUnit: { median: 566667, compCount: 3 },
 			pricePerSf: { median: 391, compCount: 3 },
 			capRate: null,
 		},
@@ -179,12 +192,12 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 	// Multifamily, sales whose price is marked Approximate or Allocated left out, portfolio sales of 100 or more
 	// units left out, and repeated rows (same address, price, and date) counted once. The older/newer split is
 	// the same 1978 line as everywhere else, though Beverly Hills' rent control follows its own rules.
-	// Beverly Hills is the export's Property City = Beverly Hills (13 sales after the rules above).
+	// Beverly Hills is the export's Property City = Beverly Hills (16 sales after the rules above).
 	'beverly-hills': {
 		rso: {
-			pricePerUnit: { median: 442679, compCount: 12 },
-			pricePerSf: { median: 444, compCount: 12 },
-			capRate: { low: 0.045, high: 0.0561, compCount: 9 },
+			pricePerUnit: { median: 462500, compCount: 15 },
+			pricePerSf: { median: 445, compCount: 15 },
+			capRate: { low: 0.0437, high: 0.0499, compCount: 12 },
 		},
 		post1978: {
 			pricePerUnit: { median: 1320000, compCount: 1 },
@@ -193,29 +206,29 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 		},
 	},
 	// West LA combines the City of LA ZIP codes 90024 (Westwood), 90025 and 90064 (West Los Angeles), 90034
-	// (Palms), and 90066 (Mar Vista), 73 sales after the rules above. Brentwood (90049) is its own page and
+	// (Palms), and 90066 (Mar Vista), 92 sales after the rules above. Brentwood (90049) is its own page and
 	// Culver City is a separate city, so both are left out. WEST_LA_AREAS below splits the same sales by area.
 	'west-la': {
 		rso: {
-			pricePerUnit: { median: 266984, compCount: 56 },
-			pricePerSf: { median: 316, compCount: 56 },
-			capRate: { low: 0.0476, high: 0.0602, compCount: 44 },
+			pricePerUnit: { median: 251667, compCount: 69 },
+			pricePerSf: { median: 308, compCount: 69 },
+			capRate: { low: 0.0483, high: 0.0631, compCount: 50 },
 		},
 		post1978: {
-			pricePerUnit: { median: 407143, compCount: 17 },
-			pricePerSf: { median: 405, compCount: 17 },
-			capRate: { low: 0.0499, high: 0.0532, compCount: 10 },
+			pricePerUnit: { median: 407143, compCount: 21 },
+			pricePerSf: { median: 402, compCount: 21 },
+			capRate: { low: 0.05, high: 0.0538, compCount: 12 },
 		},
 	},
 	// Added October 27, 2026 from the same CoStar export and the same rules as Beverly Hills above (Sale Status = Sold,
 	// Property Type = Multifamily, Approximate or Allocated prices and portfolios of 100 or more units left out, repeated
 	// rows counted once, price per unit = sale price divided by units, cap rates the 25th to 75th percentile).
-	// Hollywood is the export's Hollywood submarket in the City of Los Angeles (29 sales; ZIPs 90028, 90038, 90046).
+	// Hollywood is the export's Hollywood submarket in the City of Los Angeles (31 sales; ZIPs 90028, 90038, 90046).
 	hollywood: {
 		rso: {
-			pricePerUnit: { median: 210400, compCount: 23 },
-			pricePerSf: { median: 267, compCount: 23 },
-			capRate: { low: 0.0583, high: 0.0706, compCount: 18 },
+			pricePerUnit: { median: 210400, compCount: 25 },
+			pricePerSf: { median: 267, compCount: 25 },
+			capRate: { low: 0.057, high: 0.0699, compCount: 20 },
 		},
 		post1978: {
 			pricePerUnit: { median: 708929, compCount: 6 },
@@ -223,18 +236,18 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: { low: 0.0534, high: 0.0663, compCount: 5 },
 		},
 	},
-	// South LA combines the export's South Central LA and Crenshaw submarkets in the City of Los Angeles (46 sales;
+	// South LA combines the export's South Central LA and Crenshaw submarkets in the City of Los Angeles (53 sales;
 	// ZIPs 90003, 90007, 90008, 90018, 90037, 90044, 90047, 90062). Only 2 were built in 1978 or later, so that group
 	// shows "not enough data".
 	'south-la': {
 		rso: {
-			pricePerUnit: { median: 143498, compCount: 44 },
-			pricePerSf: { median: 193, compCount: 44 },
-			capRate: { low: 0.0633, high: 0.0799, compCount: 26 },
+			pricePerUnit: { median: 146354, compCount: 48 },
+			pricePerSf: { median: 193, compCount: 48 },
+			capRate: { low: 0.0637, high: 0.0799, compCount: 27 },
 		},
 		post1978: {
-			pricePerUnit: { median: 230477, compCount: 2 },
-			pricePerSf: { median: 353, compCount: 2 },
+			pricePerUnit: { median: 335443, compCount: 3 },
+			pricePerSf: { median: 467, compCount: 3 },
 			capRate: null,
 		},
 	},
@@ -243,9 +256,9 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 // Median price per unit for older (built before 1978) buildings inside the West LA group, by area, from the same
 // sales. Shown on the West LA page, which only prints an area when it has at least MIN_PRICE_COMPS_PAGE sales.
 export const WEST_LA_AREAS: { name: string; zips: string; pricePerUnit: { median: number; compCount: number } }[] = [
-	{ name: 'Westwood', zips: '90024', pricePerUnit: { median: 451786, compCount: 6 } },
-	{ name: 'West Los Angeles', zips: '90025 and 90064', pricePerUnit: { median: 303333, compCount: 19 } },
-	{ name: 'Palms', zips: '90034', pricePerUnit: { median: 237500, compCount: 21 } },
+	{ name: 'Westwood', zips: '90024', pricePerUnit: { median: 450000, compCount: 7 } },
+	{ name: 'West Los Angeles', zips: '90025 and 90064', pricePerUnit: { median: 303333, compCount: 25 } },
+	{ name: 'Palms', zips: '90034', pricePerUnit: { median: 237500, compCount: 27 } },
 	{ name: 'Mar Vista', zips: '90066', pricePerUnit: { median: 247542, compCount: 10 } },
 ];
 

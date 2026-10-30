@@ -7,7 +7,7 @@ import { submarkets } from '../data/submarkets';
 import { testimonials, press } from '../data/site';
 import fs from 'node:fs';
 import { formatPrice } from '../lib/format';
-import { MARKET_UPDATE as MU } from '../data/marketUpdate';
+import { MARKET_REPORT_OCT_2026 as MU } from '../data/marketReportOct2026';
 import { posts } from '../data/posts';
 
 const notableSales = closings.filter((c) => c.city === 'Los Angeles').slice(0, 6);
@@ -19,7 +19,8 @@ const cardImage = (sale: (typeof closings)[number]) =>
 // Selected closings for the scrolling strip: California apartment sales, highest first.
 const stripSales = closings.filter((c) => c.state === 'CA' && c.type === 'apartment' && c.units).slice(0, 14);
 
-// Homepage market snapshot, drawn from the same generated data as the quarterly market update article.
+// Homepage market snapshot, drawn from the same generated data as the latest monthly market report. Each month, point the
+// import above at the new data file and update the report link below.
 const snapshot = [
 	{ num: MU.headline.all.sales.toLocaleString('en-US'), label: 'LA County apartment sales' },
 	{ num: `$${MU.headline.older.pricePerUnit.toLocaleString('en-US')}`, label: 'Median price per unit, older buildings' },
@@ -28,7 +29,7 @@ const snapshot = [
 ];
 
 const insightSlugs = [
-	'la-apartment-market-update-q3-2026',
+	'la-apartment-market-report-october-2026',
 	'sb-721-balcony-inspection-los-angeles-apartment-owners',
 	'air-conditioning-law-los-angeles-apartment-owners-electrical-panel',
 	'inherited-apartment-building-los-angeles-what-to-do',
@@ -258,9 +259,9 @@ const services = [
 				}
 			</div>
 			<p class="snapshot__note">
-				Los Angeles County apartment sales from January 2 to September 22, 2026. Older buildings are those built before 1978. Our analysis of CoStar sales data.
+				Los Angeles County apartment sales from January 2 to October 30, 2026. Older buildings are those built before 1978. Our analysis of CoStar sales data.
 			</p>
-			<a href="/insights/la-apartment-market-update-q3-2026/" class="btn btn-gold">Read the Q3 Market Update</a>
+			<a href="/insights/la-apartment-market-report-october-2026/" class="btn btn-gold">Read the October Market Report</a>
 		</div>
 	</section>
 
