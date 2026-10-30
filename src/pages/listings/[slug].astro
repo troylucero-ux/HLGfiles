@@ -5,6 +5,7 @@ import BOVForm from '../../components/BOVForm.astro';
 import YouTubeFacade from '../../components/YouTubeFacade.astro';
 import { listings } from '../../data/listings';
 import { site } from '../../data/site';
+import { youtubeMeta } from '../../data/youtubeMeta';
 import { formatPrice, formatPriceFull } from '../../lib/format';
 
 export function getStaticPaths() {
@@ -67,8 +68,7 @@ const schema = {
 		: {}),
 };
 
-// Omitting uploadDate/duration on the VideoObject rather than guessing -- neither is known, and
-// Google's video rich-result guidance treats uploadDate as recommended, not required for validity.
+// uploadDate and duration come from src/data/youtubeMeta.ts (read from each video's YouTube page).
 const videoSchema = listing.youtubeId
 	? {
 			'@context': 'https://schema.org',
@@ -77,6 +77,7 @@ const videoSchema = listing.youtubeId
 			description: listing.description,
 			thumbnailUrl: `https://img.youtube.com/vi/${listing.youtubeId}/hqdefault.jpg`,
 			embedUrl: `https://www.youtube-nocookie.com/embed/${listing.youtubeId}`,
+			...youtubeMeta[listing.youtubeId],
 		}
 	: null;
 ---

@@ -9,6 +9,7 @@ import { submarkets } from '../../data/submarkets';
 import { listings } from '../../data/listings';
 import { closingCoordinates } from '../../data/closingCoordinates';
 import { site } from '../../data/site';
+import { youtubeMeta } from '../../data/youtubeMeta';
 import { formatPrice, formatPriceFull, formatSoldDate, soldWhen } from '../../lib/format';
 
 export function getStaticPaths() {
@@ -87,6 +88,7 @@ const videoSchema = sale.youtubeId
 			description: summary,
 			thumbnailUrl: `https://img.youtube.com/vi/${sale.youtubeId}/hqdefault.jpg`,
 			embedUrl: `https://www.youtube-nocookie.com/embed/${sale.youtubeId}`,
+			...youtubeMeta[sale.youtubeId],
 		}
 	: null;
 ---
