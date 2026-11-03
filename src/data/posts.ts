@@ -10,6 +10,7 @@ import { MARKET_UPDATE as MU } from './marketUpdate';
 import { MARKET_REPORT_OCT_2026 as OCT } from './marketReportOct2026';
 import { TREASURY, COSTAR_OCT_2026 } from './marketReportOct2026Context';
 import { SALES_STATS } from './valuationAssumptions';
+import { listings } from './listings';
 const muMoney = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
 const muPct = (n: number) => `${n.toFixed(2)}%`;
 const muBillion = (millions: number) => `$${(Math.round(millions / 10) / 100).toFixed(2)} billion`;
@@ -20,6 +21,8 @@ const hoodRso = (slug: string) => SALES_STATS[slug].rso;
 const hoodPpu = (slug: string) => muMoney(hoodRso(slug).pricePerUnit!.median);
 const hoodPsf = (slug: string) => `$${hoodRso(slug).pricePerSf!.median}`;
 const hoodCap = (slug: string) => `${(hoodRso(slug).capRate!.low * 100).toFixed(2)}% to ${(hoodRso(slug).capRate!.high * 100).toFixed(2)}%`;
+// 3815 Don Tomaso Dr is quoted in the cap rate and GRM guide; read its price, GRM, and cap rate from the listing so the text follows price changes.
+const donTomaso = listings.find((l) => l.slug === '3815-don-tomaso-dr-los-angeles-ca-90008')!;
 const muDate = (iso: string) => new Date(`${iso}T00:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
 export type Post = {
@@ -286,7 +289,7 @@ const allPosts: Post[] = [
 				heading: '3. Gross Rent Multiplier (GRM)',
 				paragraphs: [
 					'The gross rent multiplier is price divided by annual gross rent. It is a fast screen, and buyers and brokers use it to compare buildings at a glance, but it ignores expenses, so two buildings with the same GRM can have very different NOI.',
-					'A real example: our listing at [3815 Don Tomaso Dr](/listings/3815-don-tomaso-dr-los-angeles-ca-90008/) is priced at $1,300,000, which is a 10.35 GRM and a 6.04% cap rate on in-place rents. The two numbers tell different parts of the story, which is why we look at both.',
+					`A real example: our listing at [3815 Don Tomaso Dr](/listings/3815-don-tomaso-dr-los-angeles-ca-90008/) is priced at ${muMoney(donTomaso.askingPrice!)}, which is a ${donTomaso.grm} GRM and a ${donTomaso.capRate}% cap rate on in-place rents. The two numbers tell different parts of the story, which is why we look at both.`,
 				],
 			},
 			{
@@ -300,7 +303,7 @@ const allPosts: Post[] = [
 				heading: '5. In-Place Income Versus Pro Forma',
 				paragraphs: [
 					'Buyers look at two sets of numbers: what the building earns today (in-place) and what it could earn at market rents (pro forma). The gap between them is called loss to lease, and it is where much of the negotiation happens.',
-					'At 3815 Don Tomaso, in-place rents sit about 47% below market, a loss to lease of $4,904 per month. Reaching market rents through normal turnover would lift NOI from $78,553 to $129,231 and the cap rate from 6.04% to 9.94%. Buyers will pay for that upside, but only partly, because under rent control they cannot capture it until units turn over. We explain how in our guide to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
+					'At 3815 Don Tomaso, in-place rents sit about 47% below market, a loss to lease of $4,904 per month. Reaching market rents through normal turnover would lift NOI from $79,148 to $129,826 and the cap rate from 6.33% to 10.39%. Buyers will pay for that upside, but only partly, because under rent control they cannot capture it until units turn over. We explain how in our guide to [selling with tenants under rent control](/insights/selling-la-apartment-building-with-tenants-rent-control/).',
 				],
 			},
 			{
