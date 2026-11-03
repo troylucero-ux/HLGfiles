@@ -93,6 +93,7 @@ const simpleLinks = [
 		</nav>
 
 		<div class="site-header__actions">
+			<a href="/es/" class="site-header__lang" hreflang="es" lang="es">Español</a>
 			<ul class="social-icons" aria-label="Social media">
 				{site.social.linkedin && (
 					<li>
@@ -299,6 +300,19 @@ const simpleLinks = [
 		align-items: center;
 		gap: 1.25rem;
 		flex-shrink: 0;
+	}
+
+	.site-header__lang {
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--navy-dark);
+		white-space: nowrap;
+	}
+
+	.site-header__lang:hover {
+		color: var(--gold-dark);
 	}
 
 	.social-icons {

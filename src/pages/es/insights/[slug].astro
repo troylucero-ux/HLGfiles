@@ -54,7 +54,7 @@ const articleSchema = {
 
 	<article class="section">
 		<div class="container post-detail">
-			<Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Artículos en español', href: '/es/insights/' }, { label: post.title }]} />
+			<Breadcrumbs items={[{ label: 'Inicio', href: '/es/' }, { label: 'Artículos en español', href: '/es/insights/' }, { label: post.title }]} />
 			<span class="eyebrow">Artículos</span>
 			<h1>{post.title}</h1>
 			<p class="post-detail__date">{formatTrimestre(post.date)}</p>

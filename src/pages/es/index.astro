@@ -1,0 +1,447 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { site, team } from '../../data/site';
+import { closings } from '../../data/closings';
+import { postsEs, formatTrimestre } from '../../data/postsEs';
+import { formatPrice } from '../../lib/format';
+
+const troy = team.find((m) => m.slug === 'troy-lucero')!;
+const en = `${site.url}/`;
+const es = `${site.url}/es/`;
+
+const notableSales = closings.filter((c) => c.city === 'Los Angeles').slice(0, 6);
+
+const stats = [
+	{ num: site.stats.unitsSold, label: 'Unidades vendidas' },
+	{ num: site.stats.closedSalesVolume, label: 'En ventas cerradas' },
+	{ num: site.stats.landSqFtSold, label: 'Pies cuadrados de terreno para desarrollo vendidos' },
+	{ num: site.stats.listToSaleRatio, label: 'Precio de venta como porcentaje del precio pedido' },
+];
+
+const services = [
+	{
+		title: 'Venta de edificios multifamiliares',
+		body: 'Representación completa para vendedores y compradores de edificios de apartamentos en el área metropolitana de Los Ángeles, desde la estrategia de precio hasta el cierre del escrow.',
+	},
+	{
+		title: 'Intercambios 1031',
+		body: 'Estrategia y ejecución para dueños que pasan su capital de un edificio multifamiliar a otro, incluso a propiedades de reemplazo en otros mercados o fuera de California.',
+		href: '/1031-exchanges/',
+	},
+	{
+		title: 'Ventas de fideicomisos y herencias',
+		body: 'Orientación tranquila e informada para fideicomisarios, albaceas y familias que venden un edificio de apartamentos heredado.',
+		href: '/trust-and-estate-sales/',
+	},
+	{
+		title: 'Terrenos para desarrollo',
+		body: 'Promoción y mercadeo de terrenos para desarrollo, respaldados por análisis de zonificación y de su mejor uso.',
+	},
+	{
+		title: 'Opinión de valor (Broker Opinion of Value)',
+		body: 'Una opinión de valor gratis y sin presión, basada en ventas cerradas reales y no en suposiciones.',
+	},
+	{
+		title: 'Triple net (NNN) y DST',
+		body: 'Presentaciones a corredores de NNN y profesionales de DST de confianza para dueños que hacen un intercambio hacia una inversión pasiva, sin administración.',
+		href: '/triple-net-dst/',
+	},
+];
+
+const webPageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	inLanguage: 'es',
+	name: 'Corredor de edificios de apartamentos en Los Ángeles, en español',
+	url: es,
+	about: { '@type': 'RealEstateAgent', name: site.name, url: en },
+};
+---
+
+<BaseLayout
+	lang="es"
+	title="Corredor de Apartamentos en Los Ángeles, en Español"
+	description="Corredores de edificios de apartamentos en Los Ángeles. Troy Lucero le explica la venta en español: opinión de valor gratis, intercambios 1031 y herencias."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(webPageSchema)} slot="head" />
+	<link rel="alternate" hreflang="es" href={es} slot="head" />
+	<link rel="alternate" hreflang="en" href={en} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={en} slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Área metropolitana de Los Ángeles · En español</span>
+			<h1>Venta de edificios de apartamentos en Los Ángeles, con un corredor que habla su idioma</h1>
+			<p>
+				Los dueños de edificios de apartamentos en Los Ángeles nos contratan para fijar el precio, promover y vender sus propiedades. Troy Lucero habla
+				español con fluidez y le explica cada paso, a usted y a su familia. Empiece con una opinión de valor gratis, basada en ventas cerradas reales.
+			</p>
+			<div class="hero-actions">
+				<a href="#formulario" class="btn btn-gold">Pida una opinión de valor gratis</a>
+				<a href={`tel:${troy.phone.replace(/\D/g, '')}`} class="btn btn-outline">Llame a Troy: {troy.phone}</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="stat-bar">
+		<div class="container stat-bar__grid">
+			{
+				stats.map((s) => (
+					<div class="stat-bar__item">
+						<span class="stat-bar__num">{s.num}</span>
+						<span class="stat-bar__label">{s.label}</span>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container who-we-are">
+			<div>
+				<span class="eyebrow">Quiénes somos</span>
+				<h2>Un equipo con experiencia en el que los dueños pueden confiar</h2>
+				<p>
+					Highlight Multifamily Group aporta más de 20 años de experiencia como corredores de ventas de inversión, junto con experiencia como
+					inversionistas en compras, ventas, administración de activos y desarrollo. Conocemos de primera mano los retos de ser dueño a largo plazo,
+					comprador y vendedor, y eso nos ayuda a servir a nuestros clientes en cada etapa de la compra, la propiedad y la venta de propiedades
+					multifamiliares, incluidos los intercambios 1031.
+				</p>
+				<p>
+					Troy Lucero creció en un hogar de habla hispana y trabaja con dueños y sus familias en español o en inglés. Josh Kaplan, su socio, también
+					entiende español y participa en la conversación. Conozca más sobre <a href="/troy-lucero/">Troy</a> y <a href="/josh-kaplan/">Josh</a> (en inglés).
+				</p>
+				<a href="/es/vender-edificio-de-apartamentos-los-angeles/" class="btn btn-outline">Vender con un corredor que habla español</a>
+			</div>
+			<div class="who-we-are__photo">
+				<img
+					src="/images/bio/josh-kaplan-troy-lucero-together.webp"
+					alt="Josh Kaplan y Troy Lucero, cofundadores de Highlight Multifamily Group"
+					width="860"
+					height="860"
+					loading="lazy"
+				/>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Nuestros servicios</span>
+			<h2>Cómo ayudamos a los dueños de apartamentos en Los Ángeles</h2>
+			<div class="services-grid">
+				{
+					services.map((s) => (
+						<div class="service-card">
+							<h3>{s.title}</h3>
+							<p>{s.body}</p>
+							{s.href && (
+								<p class="service-card__more">
+									<a href={s.href}>Más información (en inglés)</a>
+								</p>
+							)}
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Lo que le explicamos en español</span>
+			<h2>Todo el proceso, en palabras sencillas</h2>
+			<ul class="check-list">
+				<li>Cuánto vale su edificio, con una opinión de valor gratis y confidencial.</li>
+				<li>Cómo funciona una venta de principio a fin: el precio, las ofertas, el escrow y el día del cierre.</li>
+				<li>El control de rentas de Los Ángeles (RSO) y cómo afecta el precio y a sus inquilinos.</li>
+				<li>Los impuestos de una venta: ganancias de capital, recuperación de la depreciación y cómo un intercambio 1031 puede diferirlos.</li>
+				<li>La Medida ULA, el impuesto de transferencia de la Ciudad de Los Ángeles, y si aplica a su venta.</li>
+				<li>Cada documento, línea por línea. Los contratos están escritos en inglés, y los revisamos con usted en español antes de que firme.</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Artículos en español</span>
+			<h2>Lo que los dueños de edificios en Los Ángeles necesitan saber</h2>
+			<div class="article-grid">
+				{
+					postsEs.map((post) => (
+						<a href={`/es/insights/${post.slug}/`} class="article-card">
+							<span class="article-card__date">{formatTrimestre(post.date)}</span>
+							<h3>{post.title}</h3>
+							<span class="article-card__cta">Leer el artículo &rarr;</span>
+						</a>
+					))
+				}
+			</div>
+			<p class="more-link"><a href="/es/insights/">Ver todos los artículos en español</a></p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Ventas cerradas</span>
+			<h2>Ventas cerradas en Los Ángeles</h2>
+			<ul class="sales-list">
+				{
+					notableSales.map((sale) => (
+						<li>
+							<a href={`/closed-sales/#${sale.slug}`}>
+								<span class="sales-list__name">{sale.name}</span>
+								<span class="sales-list__meta">
+									{sale.units} unidades · {formatPrice(sale.price)}
+								</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<p class="more-link"><a href="/closed-sales/">Ver todas nuestras ventas cerradas (en inglés)</a></p>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="formulario">
+		<div class="container">
+			<BOVForm
+				lang="es"
+				heading="Pida una opinión de valor gratis"
+				subheading="Vender un edificio no tiene que ser difícil. Empezamos con una conversación, no con una venta: le mostramos ventas reales, plazos reales y una estrategia hecha a la medida de sus metas."
+			/>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		font-size: 1.1rem;
+		line-height: 1.7;
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.stat-bar {
+		background: var(--navy);
+		color: #fff;
+		padding-block: 2rem;
+	}
+
+	.stat-bar__grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1.5rem;
+		text-align: center;
+	}
+
+	.stat-bar__item {
+		display: grid;
+		gap: 0.35rem;
+	}
+
+	.stat-bar__num {
+		font-family: var(--font-serif, inherit);
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		font-weight: 700;
+		color: var(--gold-light, #fff);
+		line-height: 1.1;
+	}
+
+	.stat-bar__label {
+		font-size: 0.8rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		opacity: 0.85;
+	}
+
+	.who-we-are {
+		display: grid;
+		grid-template-columns: 1.2fr 1fr;
+		gap: 3rem;
+		align-items: center;
+	}
+
+	.who-we-are p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.who-we-are__photo img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 2px;
+	}
+
+	.services-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.25rem;
+		margin-top: 1.5rem;
+	}
+
+	.service-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.5rem;
+	}
+
+	.service-card h3 {
+		font-size: 1.15rem;
+		margin: 0 0 0.6rem;
+	}
+
+	.service-card p {
+		margin: 0;
+		line-height: 1.65;
+	}
+
+	.service-card .service-card__more {
+		margin-top: 0.75rem;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	.narrow {
+		max-width: 720px;
+	}
+
+	.check-list {
+		list-style: none;
+		padding: 0;
+		margin: 1.25rem 0 0;
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.check-list li {
+		position: relative;
+		padding-left: 1.9rem;
+		line-height: 1.65;
+	}
+
+	.check-list li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.5rem;
+		width: 0.9rem;
+		height: 0.5rem;
+		border-left: 2px solid var(--gold-dark);
+		border-bottom: 2px solid var(--gold-dark);
+		transform: rotate(-45deg);
+	}
+
+	.article-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.25rem;
+		margin-top: 1.5rem;
+	}
+
+	.article-card {
+		display: grid;
+		gap: 0.5rem;
+		align-content: start;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.5rem;
+		color: var(--ink);
+		transition: border-color 0.2s ease;
+	}
+
+	.article-card:hover {
+		border-color: var(--gold);
+		text-decoration: none;
+	}
+
+	.article-card h3 {
+		font-size: 1.15rem;
+		margin: 0;
+	}
+
+	.article-card__date {
+		font-size: 0.75rem;
+		color: var(--ink-light);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.article-card__cta {
+		font-weight: 600;
+		font-size: 0.9rem;
+		color: var(--navy);
+	}
+
+	.sales-list {
+		list-style: none;
+		padding: 0;
+		margin: 1.5rem 0 0;
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+	}
+
+	.sales-list a {
+		display: grid;
+		gap: 0.2rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1rem 1.25rem;
+		color: var(--ink);
+	}
+
+	.sales-list a:hover {
+		border-color: var(--gold);
+		text-decoration: none;
+	}
+
+	.sales-list__name {
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.sales-list__meta {
+		font-size: 0.9rem;
+		color: var(--ink-light);
+	}
+
+	.more-link {
+		margin-top: 1.5rem;
+		font-weight: 600;
+	}
+
+	@media (max-width: 800px) {
+		.stat-bar__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.who-we-are,
+		.services-grid,
+		.article-grid,
+		.sales-list {
+			grid-template-columns: 1fr;
+		}
+
+		.who-we-are {
+			gap: 2rem;
+		}
+	}
+</style>
