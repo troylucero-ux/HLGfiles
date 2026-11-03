@@ -1,0 +1,168 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqCategoriesEs } from '../../../data/faqsEs';
+import { site } from '../../../data/site';
+import { toParts, stripLinks } from '../../../lib/inlineLinks';
+
+const en = `${site.url}/faqs/`;
+const es = `${site.url}/es/preguntas-frecuentes/`;
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	inLanguage: 'es',
+	mainEntity: faqCategoriesEs.flatMap((cat) =>
+		cat.items.map((f) => ({
+			'@type': 'Question',
+			name: f.q,
+			acceptedAnswer: { '@type': 'Answer', text: stripLinks(f.a) },
+		})),
+	),
+};
+
+// 'Impuestos y Medida ULA' -> 'impuestos-y-medida-ula' (accents removed so the anchors stay plain ASCII)
+const slugify = (s: string) =>
+	s
+		.normalize('NFD')
+		.replace(/[̀-ͯ]/g, '')
+		.toLowerCase()
+		.replace(/&/g, 'y')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-|-$/g, '');
+---
+
+<BaseLayout
+	lang="es"
+	title="Preguntas Frecuentes sobre Edificios de Apartamentos en LA"
+	description="Respuestas en español para dueños de edificios en Los Ángeles sobre valor, venta, control de rentas, Medida ULA, impuestos, intercambios 1031 y herencias."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="es" href={es} slot="head" />
+	<link rel="alternate" hreflang="en" href={en} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={en} slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Preguntas frecuentes</span>
+			<h1>Preguntas frecuentes de los dueños de edificios de apartamentos en Los Ángeles</h1>
+			<p>
+				Respuestas a lo que los dueños de apartamentos en Los Ángeles más nos preguntan antes de vender. ¿Prefiere leerlas en inglés?
+				Vea las <a href="/faqs/" hreflang="en" lang="en">preguntas frecuentes en inglés</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<nav class="faq-jump" aria-label="Temas de las preguntas">
+				{faqCategoriesEs.map((cat) => <a href={`#${slugify(cat.category)}`}>{cat.category}</a>)}
+			</nav>
+
+			{
+				faqCategoriesEs.map((cat) => (
+					<div class="faq-category" id={slugify(cat.category)}>
+						<h2>{cat.category}</h2>
+						<div class="faq-list">
+							{cat.items.map((f) => (
+								<details class="faq-item">
+									<summary>{f.q}</summary>
+									<p>
+										{toParts(f.a).map((part) =>
+											part.href ? (
+												part.href.startsWith('http') ? (
+													<a href={part.href} target="_blank" rel="noopener noreferrer">
+														{part.text}
+													</a>
+												) : (
+													<a href={part.href}>{part.text}</a>
+												)
+											) : (
+												part.text
+											),
+										)}
+									</p>
+								</details>
+							))}
+						</div>
+					</div>
+				))
+			}
+
+			<p class="faq-more">
+				¿No encuentra su pregunta? <a href="/es/vender-edificio-de-apartamentos-los-angeles/#formulario">Escríbanos</a> o lea nuestros
+				<a href="/es/insights/">artículos en español</a>, con guías más completas. Esta página es información general, no asesoría legal ni de impuestos.
+			</p>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+	}
+
+	.narrow {
+		max-width: 760px;
+	}
+
+	.faq-jump {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.faq-jump a {
+		font-size: 0.82rem;
+		font-weight: 600;
+		padding: 0.4rem 0.8rem;
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		color: var(--navy-dark);
+		text-decoration: none;
+		background: var(--paper);
+	}
+
+	.faq-jump a:hover {
+		border-color: var(--gold);
+	}
+
+	.faq-category {
+		margin-bottom: 2.5rem;
+		scroll-margin-top: 6rem;
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.15rem 1.5rem;
+	}
+
+	.faq-item summary {
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.faq-item p {
+		margin-top: 0.75rem;
+		margin-bottom: 0;
+	}
+
+	.faq-more {
+		margin-top: 1rem;
+		color: var(--ink-light);
+	}
+</style>

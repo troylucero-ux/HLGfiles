@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
 import { toParts, stripLinks } from '../../lib/inlineLinks';
+import { site } from '../../data/site';
 
 // Every answer restates facts already published in one of our Insights articles or on the page it links to,
 // so when one of those changes, edit the answer here too. Answers can use [link text](/path/) links.
@@ -294,12 +295,16 @@ const slugify = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a
 	description="Answers for LA apartment owners on value, selling, rent control, Measure ULA, taxes, 1031 exchanges, inherited buildings, and building rules."
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="en" href={`${site.url}/faqs/`} slot="head" />
+	<link rel="alternate" hreflang="es" href={`${site.url}/es/preguntas-frecuentes/`} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={`${site.url}/faqs/`} slot="head" />
 
 	<section class="page-hero">
 		<div class="container">
 			<span class="eyebrow">FAQs</span>
 			<h1>Frequently Asked Questions</h1>
 			<p>Answers to what LA apartment owners ask us most before selling.</p>
+			<p class="lang-link"><a href="/es/preguntas-frecuentes/" hreflang="es" lang="es">Preguntas frecuentes en español &rarr;</a></p>
 		</div>
 	</section>
 
@@ -352,6 +357,11 @@ const slugify = (s: string) => s.toLowerCase().replace(/&/g, 'and').replace(/[^a
 		background: var(--paper-alt);
 		padding-block: 3rem;
 		border-bottom: 1px solid var(--border);
+	}
+
+	.lang-link {
+		margin-top: 1rem;
+		font-weight: 600;
 	}
 
 	.narrow {
