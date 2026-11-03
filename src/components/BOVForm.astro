@@ -4,36 +4,100 @@ import { site } from '../data/site';
 interface Props {
 	heading?: string;
 	subheading?: string;
+	// 'es' shows the form in Spanish and tags every submission as Spanish. showLanguage adds an English/Spanish choice to the English form.
+	lang?: 'en' | 'es';
+	showLanguage?: boolean;
 }
 
-const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading = 'No pressure. Just data.' } = Astro.props;
+const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading = 'No pressure. Just data.', lang = 'en', showLanguage = false } = Astro.props;
+
+const text = {
+	en: {
+		name: 'Name',
+		email: 'Email',
+		phone: 'Phone',
+		address: 'Property Address',
+		rents: 'Monthly Gross Rents (optional)',
+		language: 'Preferred language',
+		submit: 'Submit',
+		checking: 'Checking the address...',
+		notFound:
+			"We couldn't confirm that address. Please check the street number and street name, and include the city and ZIP code (for example, 123 Main St, Los Angeles, CA 90001). If it is correct, click Submit again to send it as typed.",
+		thanks: "Thanks! We'll be in touch shortly.",
+		failed: 'Something went wrong. Please try again or contact us directly.',
+		error: 'Something went wrong. Please try again.',
+	},
+	es: {
+		name: 'Nombre',
+		email: 'Correo electrónico',
+		phone: 'Teléfono',
+		address: 'Dirección de la propiedad',
+		rents: 'Renta bruta mensual (opcional)',
+		language: 'Idioma preferido',
+		submit: 'Enviar',
+		checking: 'Verificando la dirección...',
+		notFound:
+			'No pudimos confirmar esa dirección. Por favor revise el número y el nombre de la calle, e incluya la ciudad y el código postal (por ejemplo, 123 Main St, Los Angeles, CA 90001). Si es correcta, haga clic en Enviar otra vez para mandarla tal como la escribió.',
+		thanks: '¡Gracias! Nos pondremos en contacto con usted pronto.',
+		failed: 'Algo salió mal. Por favor inténtelo de nuevo o comuníquese con nosotros directamente.',
+		error: 'Algo salió mal. Por favor inténtelo de nuevo.',
+	},
+}[lang];
 ---
 
 <div class="bov-form">
 	<h2>{heading}</h2>
 	<p class="bov-form__sub">{subheading}</p>
-	<form class="js-bov-form" data-endpoint="/api/bov-lead">
+	<form
+		class="js-bov-form"
+		data-endpoint="/api/bov-lead"
+		data-msg-checking={text.checking}
+		data-msg-notfound={text.notFound}
+		data-msg-thanks={text.thanks}
+		data-msg-failed={text.failed}
+		data-msg-error={text.error}
+	>
+		{lang === 'es' && <input type="hidden" name="language" value="Spanish" />}
 		<div class="bov-form__row">
-			<label for="bov-name" class="visually-hidden">Name</label>
-			<input id="bov-name" name="name" type="text" placeholder="Name" required />
-			<label for="bov-email" class="visually-hidden">Email</label>
-			<input id="bov-email" name="email" type="email" placeholder="Email" required />
-			<label for="bov-phone" class="visually-hidden">Phone</label>
-			<input id="bov-phone" name="phone" type="tel" placeholder="Phone" required />
+			<label for="bov-name" class="visually-hidden">{text.name}</label>
+			<input id="bov-name" name="name" type="text" placeholder={text.name} required />
+			<label for="bov-email" class="visually-hidden">{text.email}</label>
+			<input id="bov-email" name="email" type="email" placeholder={text.email} required />
+			<label for="bov-phone" class="visually-hidden">{text.phone}</label>
+			<input id="bov-phone" name="phone" type="tel" placeholder={text.phone} required />
 		</div>
 		<div class="bov-form__row bov-form__row--property">
-			<label for="bov-address" class="visually-hidden">Property Address</label>
-			<input id="bov-address" name="address" type="text" placeholder="Property Address" autocomplete="off" required />
-			<label for="bov-rents" class="visually-hidden">Monthly Gross Rents</label>
-			<input id="bov-rents" name="monthlyGrossRents" type="text" inputmode="numeric" placeholder="Monthly Gross Rents (optional)" />
+			<label for="bov-address" class="visually-hidden">{text.address}</label>
+			<input id="bov-address" name="address" type="text" placeholder={text.address} autocomplete="off" required />
+			<label for="bov-rents" class="visually-hidden">{text.rents}</label>
+			<input id="bov-rents" name="monthlyGrossRents" type="text" inputmode="numeric" placeholder={text.rents} />
 		</div>
+		{
+			showLanguage && lang === 'en' && (
+				<div class="bov-form__language">
+					<label for="bov-language">{text.language}</label>
+					<select id="bov-language" name="language">
+						<option value="English">English</option>
+						<option value="Spanish">Español (Spanish)</option>
+					</select>
+				</div>
+			)
+		}
 		<label class="bov-form__consent">
 			<input type="checkbox" name="privacyConsent" required />
-			<span>
-				I agree to the <a href="/privacy-policy/">Privacy Policy</a> and consent to receiving marketing emails. You can unsubscribe at any time.
-			</span>
+			{
+				lang === 'es' ? (
+					<span>
+						Acepto la <a href="/privacy-policy/">Política de Privacidad</a> (en inglés) y autorizo recibir correos de marketing. Puede cancelar la suscripción en cualquier momento.
+					</span>
+				) : (
+					<span>
+						I agree to the <a href="/privacy-policy/">Privacy Policy</a> and consent to receiving marketing emails. You can unsubscribe at any time.
+					</span>
+				)
+			}
 		</label>
-		<button type="submit" class="btn btn-gold">Submit</button>
+		<button type="submit" class="btn btn-gold">{text.submit}</button>
 		<p class="bov-form__status" role="status" hidden></p>
 	</form>
 </div>
@@ -58,7 +122,7 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 				if (status) {
 					status.hidden = false;
 					status.style.color = 'var(--ink-light)';
-					status.textContent = 'Checking the address...';
+					status.textContent = form.dataset.msgChecking ?? 'Checking the address...';
 				}
 				let addressStatus = 'unchecked';
 				try {
@@ -72,6 +136,7 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 					if (status) {
 						status.style.color = '#8a5a00';
 						status.textContent =
+							form.dataset.msgNotfound ??
 							"We couldn't confirm that address. Please check the street number and street name, and include the city and ZIP code (for example, 123 Main St, Los Angeles, CA 90001). If it is correct, click Submit again to send it as typed.";
 					}
 					if (button) button.disabled = false;
@@ -90,24 +155,25 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 				if (status) {
 					status.hidden = false;
 					if (res.ok) {
-						status.textContent = "Thanks! We'll be in touch shortly.";
+						status.textContent = form.dataset.msgThanks ?? "Thanks! We'll be in touch shortly.";
 						// Counts as a lead in Google Analytics. Only the page and the form's purpose are sent, never the visitor's details.
 						(window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'generate_lead', {
 							form_name: 'broker_opinion_of_value',
 							page_path: window.location.pathname,
 							intent: new URLSearchParams(window.location.search).get('intent') ?? 'none',
+							language: String(data.language ?? 'English'),
 						});
 						status.style.color = 'var(--success)';
 						form.reset();
 					} else {
-						status.textContent = result.error ?? 'Something went wrong. Please try again.';
+						status.textContent = result.error ?? form.dataset.msgError ?? 'Something went wrong. Please try again.';
 						status.style.color = '#b3261e';
 					}
 				}
 			} catch {
 				if (status) {
 					status.hidden = false;
-					status.textContent = 'Something went wrong. Please try again or contact us directly.';
+					status.textContent = form.dataset.msgFailed ?? 'Something went wrong. Please try again or contact us directly.';
 					status.style.color = '#b3261e';
 				}
 			} finally {
@@ -357,6 +423,25 @@ const { heading = 'Get a Free, Confidential Broker Opinion of Value', subheading
 	.bov-form input:focus {
 		outline: none;
 		border-color: var(--gold);
+	}
+
+	.bov-form__language {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin-bottom: 1.25rem;
+		font-size: 0.9rem;
+		color: var(--ink-light);
+	}
+
+	.bov-form__language select {
+		padding: 0.6rem 0.8rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-size: 0.95rem;
+		font-family: var(--font-sans);
+		background: var(--paper);
+		color: var(--ink);
 	}
 
 	.bov-form__consent {

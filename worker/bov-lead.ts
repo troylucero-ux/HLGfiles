@@ -10,7 +10,7 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 	if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders() });
 	if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: corsHeaders() });
 
-	let body: { name?: string; email?: string; phone?: string; address?: string; monthlyGrossRents?: string; privacyConsent?: boolean; addressSource?: string };
+	let body: { name?: string; email?: string; phone?: string; address?: string; monthlyGrossRents?: string; privacyConsent?: boolean; addressSource?: string; language?: string };
 	try {
 		body = await request.json();
 	} catch {
@@ -18,6 +18,8 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 	}
 
 	const { name, email, phone, address, monthlyGrossRents, privacyConsent } = body;
+	// Visitors on the Spanish pages, or who pick Spanish on the contact form, are flagged so they get a Spanish reply.
+	const spanish = body.language === 'Spanish';
 
 	if (
 		!name ||
@@ -52,9 +54,10 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 					`Phone: ${phone}`,
 				];
 				if (monthlyGrossRents) noteLines.push(`Monthly Gross Rents: ${monthlyGrossRents}`);
+				if (spanish) noteLines.push('Preferred language: Spanish (respond in Spanish).');
 
 				await createLead(env, {
-					title: `${addressCheck.status === 'not_found' ? '[CHECK ADDRESS] ' : ''}BOV Request — ${name} — ${address}`,
+					title: `${spanish ? '[ESPAÑOL] ' : ''}${addressCheck.status === 'not_found' ? '[CHECK ADDRESS] ' : ''}BOV Request — ${name} — ${address}`,
 					personId: person.id,
 					note: noteLines.join('\n'),
 				});

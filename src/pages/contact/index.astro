@@ -33,6 +33,7 @@ import { team, site } from '../../data/site';
 							<p class="contact-card__department">{member.department}</p>
 							<a href={`tel:${member.phone.replace(/\D/g, '')}`}>{member.phone}</a>
 							<a href={`mailto:${member.email}`}>{member.email}</a>
+							{member.languages.includes('Spanish') && <p class="contact-card__lang">Habla español · Speaks Spanish</p>}
 							<p class="contact-card__dre">DRE #{member.dre}</p>
 						</div>
 					))
@@ -46,7 +47,7 @@ import { team, site } from '../../data/site';
 			</div>
 
 			<div id="bov-form-wrap">
-				<BOVForm />
+				<BOVForm showLanguage />
 			</div>
 			<div id="om-form-wrap" hidden>
 				<OMRequestForm />
@@ -106,6 +107,13 @@ import { team, site } from '../../data/site';
 		letter-spacing: 0.06em;
 		font-size: 0.72rem;
 		margin-bottom: 0.5rem;
+	}
+
+	.contact-card__lang {
+		color: var(--gold-dark);
+		font-weight: 600;
+		font-size: 0.85rem;
+		margin-top: 0.4rem;
 	}
 
 	.contact-card__dre {

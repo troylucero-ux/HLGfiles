@@ -10,9 +10,10 @@ interface Props {
 	description: string;
 	noindex?: boolean;
 	image?: string;
+	lang?: 'en' | 'es';
 }
 
-const { title, description, noindex = false, image = '/images/hero/453-s-gramercy-pl-hero.webp' } = Astro.props;
+const { title, description, noindex = false, image = '/images/hero/453-s-gramercy-pl-hero.webp', lang = 'en' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Append the brand name only when the full title still fits in a search result (~60 chars). Long,
 // keyword-rich titles (listings, articles) get truncated by Google if the suffix pushes them over,
@@ -26,7 +27,7 @@ const builtAt = new Date().toISOString();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="built-at" content={builtAt} />
@@ -51,6 +52,7 @@ const builtAt = new Date().toISOString();
 		{noindex && <meta name="robots" content="noindex, nofollow" />}
 
 		<meta property="og:type" content="website" />
+		<meta property="og:locale" content={lang === 'es' ? 'es_US' : 'en_US'} />
 		<meta property="og:title" content={pageTitle} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonicalURL} />

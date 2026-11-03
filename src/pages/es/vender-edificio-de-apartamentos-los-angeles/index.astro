@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BOVForm from '../../../components/BOVForm.astro';
+import { site, team } from '../../../data/site';
+
+const troy = team.find((m) => m.slug === 'troy-lucero')!;
+const en = `${site.url}/spanish-speaking-apartment-broker-los-angeles/`;
+const es = `${site.url}/es/vender-edificio-de-apartamentos-los-angeles/`;
+
+const explain = [
+	'Cuánto vale su edificio, con una opinión de valor (Broker Opinion of Value) gratis y confidencial.',
+	'Cómo funciona una venta de principio a fin: el precio, las ofertas, el escrow (el proceso de cierre con un tercero neutral) y el día del cierre.',
+	'El control de rentas de Los Ángeles (RSO) y cómo afecta el precio y a sus inquilinos.',
+	'Qué pasa con sus inquilinos cuando se vende el edificio y qué no cambia para ellos.',
+	'Los impuestos de una venta: ganancias de capital, recuperación de la depreciación y cómo un intercambio 1031 puede diferirlos.',
+	'La Medida ULA, el impuesto de transferencia de la Ciudad de Los Ángeles, y si aplica a su venta.',
+	'Cada documento, línea por línea. Los contratos están escritos en inglés, y los revisamos con usted en español antes de que firme.',
+];
+
+const faqs = [
+	{
+		q: '¿Hay un corredor que hable español y venda edificios de apartamentos en Los Ángeles?',
+		a: 'Sí. Troy Lucero, de Highlight Multifamily Group, creció en un hogar de habla hispana y habla español con fluidez. Representa a dueños de edificios de apartamentos en Los Ángeles y explica la venta en español o en inglés, como usted prefiera.',
+	},
+	{
+		q: '¿Cuánto cuesta la opinión de valor?',
+		a: 'Es gratis y confidencial. No tiene ninguna obligación de vender.',
+	},
+	{
+		q: '¿Puedo hablar con ustedes si mis padres no hablan inglés?',
+		a: 'Sí. Podemos reunirnos con sus padres en español, mantenerlo a usted al tanto en inglés y enviar resúmenes por escrito en el idioma que cada persona prefiera.',
+	},
+	{
+		q: '¿Los documentos están en español?',
+		a: 'Los contratos de listado y de compraventa están escritos en inglés, y Troy los revisa con usted línea por línea en español. Si necesita una versión en español de algún documento en particular, avísenos al comienzo y revisaremos las opciones con usted, su abogado y el oficial de escrow.',
+	},
+	{
+		q: '¿Solo trabajan con dueños que hablan español?',
+		a: 'No. Trabajamos con todos los dueños de edificios de apartamentos en Los Ángeles. El español es una opción para las familias que se sienten más cómodas hablando de una venta en su propio idioma.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	inLanguage: 'es',
+	mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+	lang="es"
+	title="Vender su Edificio de Apartamentos en Los Ángeles"
+	description="Corredor que habla español para vender su edificio de apartamentos en Los Ángeles. Troy Lucero le explica todo en español. Opinión de valor gratis."
+>
+	<Fragment slot="head">
+		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+		<link rel="alternate" hreflang="es" href={es} />
+		<link rel="alternate" hreflang="en" href={en} />
+		<link rel="alternate" hreflang="x-default" href={en} />
+	</Fragment>
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">En español</span>
+			<h1>Venda su edificio de apartamentos en Los Ángeles con un corredor que habla su idioma</h1>
+			<p>
+				Vender un edificio que usted o su familia han tenido por muchos años es una decisión grande. Es más fácil cuando puede hablar de todo en el
+				idioma en que se siente más cómodo. Troy Lucero habla español con fluidez y asesora a dueños de edificios de apartamentos en Los Ángeles, y
+				a sus familias, en español o en inglés.
+			</p>
+			<div class="hero-actions">
+				<a href={`tel:${troy.phone.replace(/\D/g, '')}`} class="btn btn-gold">Llame a Troy: {troy.phone}</a>
+				<a href="#formulario" class="btn btn-navy">Pida una opinión de valor gratis</a>
+				<a href="/spanish-speaking-apartment-broker-los-angeles/" class="btn btn-outline" lang="en" hreflang="en">Read this page in English</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Por qué importa el idioma</span>
+			<h2>Entienda cada paso antes de decidir</h2>
+			<p>
+				Vender un edificio involucra dinero, impuestos, inquilinos y contratos. Cuando la conversación es en un segundo idioma, es fácil asentir con
+				la cabeza y aun así quedarse con dudas. Preferimos que haga todas sus preguntas, en el idioma en que usted piensa, antes de decidir
+				cualquier cosa.
+			</p>
+			<p>
+				Troy creció en un hogar de habla hispana y tiene más de 10 años de experiencia en bienes raíces comerciales. Nuestro equipo ha ayudado a
+				vender más de {site.statsPrecise.units.toLocaleString('en-US')} unidades de apartamentos y más de ${(site.statsPrecise.volume / 1_000_000).toLocaleString('en-US')} millones en valor de venta para dueños en Los Ángeles. Josh Kaplan,
+				socio de Troy, también entiende español y participa en la conversación. Conozca más sobre <a href="/troy-lucero/">Troy</a> y
+				<a href="/josh-kaplan/">Josh</a> (en inglés).
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Lo que le explicamos en español</span>
+			<h2>Todo el proceso, en palabras sencillas</h2>
+			<ul class="check-list">
+				{explain.map((item) => <li>{item}</li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Para familias</span>
+			<h2>Ayudamos a sus padres a vender el edificio de la familia</h2>
+			<p>
+				Muchas veces los dueños son padres que compraron el edificio hace muchos años, y sus hijos ayudan con la decisión. Estamos acostumbrados a
+				eso. Podemos reunirnos con toda la familia, explicar las opciones sin presión y avanzar al ritmo que su familia decida. Si sus padres
+				prefieren hablar en español y usted maneja los detalles en inglés, también es posible.
+			</p>
+			<p>
+				Si el edificio ha estado en la familia por mucho tiempo, es común que tenga inquilinos de muchos años, rentas por debajo del mercado o
+				mantenimiento pendiente. Eso no impide la venta: hay compradores que buscan justamente ese tipo de edificio y saben lo que están comprando.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Preguntas frecuentes</span>
+			<h2>Preguntas sobre vender con un corredor que habla español</h2>
+			<div class="faq-list">
+				{
+					faqs.map((f) => (
+						<details class="faq-item">
+							<summary>{f.q}</summary>
+							<p>{f.a}</p>
+						</details>
+					))
+				}
+			</div>
+			<p class="disclaimer">Esta página es información general, no asesoría legal ni de impuestos. Consulte con su abogado y su contador.</p>
+		</div>
+	</section>
+
+	<section class="section" id="formulario">
+		<div class="container">
+			<BOVForm lang="es" heading="Pida una opinión de valor gratis" subheading="Sin presión. Solo datos, en español." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		font-size: 1.1rem;
+		line-height: 1.7;
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.narrow {
+		max-width: 720px;
+	}
+
+	.narrow p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.check-list {
+		list-style: none;
+		padding: 0;
+		margin: 1.25rem 0 0;
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.check-list li {
+		position: relative;
+		padding-left: 1.9rem;
+		line-height: 1.65;
+	}
+
+	.check-list li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.5rem;
+		width: 0.9rem;
+		height: 0.5rem;
+		border-left: 2px solid var(--gold-dark);
+		border-bottom: 2px solid var(--gold-dark);
+		transform: rotate(-45deg);
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.15rem 1.5rem;
+	}
+
+	.faq-item summary {
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.faq-item p {
+		margin-top: 0.75rem;
+		margin-bottom: 0;
+	}
+
+	.disclaimer {
+		margin-top: 1.5rem;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+</style>

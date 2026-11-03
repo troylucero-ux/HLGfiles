@@ -39,6 +39,7 @@ export const team = [
 		title: 'Director',
 		department: 'Multifamily Investments',
 		dre: '01934177',
+		languages: ['English'],
 		phone: '310.405.1890',
 		email: 'josh.kaplan@equityunion.com',
 		linkedin: 'https://www.linkedin.com/in/josh-a-kaplan/',
@@ -59,6 +60,7 @@ export const team = [
 		title: 'Director',
 		department: 'Multifamily Investments',
 		dre: '02015705',
+		languages: ['English', 'Spanish'],
 		phone: '310.339.5477',
 		email: 'troy.lucero@equityunion.com',
 		linkedin: 'https://www.linkedin.com/in/troylucero/',
@@ -68,6 +70,7 @@ export const team = [
 		bio: [
 			'Troy Lucero has spent more than 10 years in commercial real estate, negotiating dispositions, 1031 exchanges, and development site sales for apartment owners across Los Angeles and nationwide. As co-founder of Highlight Multifamily Group, he has helped close over 1,390 multifamily units, 135,000 square feet of land for development, and more than $345,000,000 in sale value for his clients.',
 			'Troy holds a B.S. in Finance from California State University, Northridge, and brings a disciplined, data-driven approach to every listing and every client relationship.',
+			'Troy grew up in a Spanish-speaking household and is fluent in Spanish. He works with apartment owners and their families in English or Spanish. Se habla español.',
 		],
 		specialties: ['Seller Representation', 'Buyer Representation', '1031 Exchange Strategy', 'Property Management Advisory'],
 		education: 'B.S. Finance, California State University, Northridge',

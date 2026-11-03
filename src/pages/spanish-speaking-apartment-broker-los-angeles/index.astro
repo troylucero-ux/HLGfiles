@@ -1,0 +1,231 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { site, team } from '../../data/site';
+
+const troy = team.find((m) => m.slug === 'troy-lucero')!;
+const en = `${site.url}/spanish-speaking-apartment-broker-los-angeles/`;
+const es = `${site.url}/es/vender-edificio-de-apartamentos-los-angeles/`;
+
+const explain = [
+	'What your building is worth, through a free, confidential Broker Opinion of Value.',
+	'How a sale works from start to finish: pricing, offers, escrow, and closing day.',
+	'LA rent control (RSO) and how it affects the price and your tenants.',
+	'What happens to your tenants when the building sells, and what does not change for them.',
+	'Taxes on a sale: capital gains, depreciation recapture, and how a 1031 exchange can defer them.',
+	'Measure ULA, the City of Los Angeles transfer tax, and whether it applies to your sale.',
+	'Every document, line by line. The contracts are written in English, and we walk through each one with you in Spanish before you sign.',
+];
+
+const faqs = [
+	{
+		q: 'Is there a Spanish-speaking commercial real estate broker in Los Angeles who sells apartment buildings?',
+		a: 'Yes. Troy Lucero of Highlight Multifamily Group grew up in a Spanish-speaking household and is fluent in Spanish. He represents owners of apartment buildings in Los Angeles and explains the sale in Spanish or English, whichever you prefer.',
+	},
+	{
+		q: 'Can you meet with my parents in Spanish if I help with the paperwork in English?',
+		a: 'Yes. Many families do exactly that. We can meet with your parents in Spanish, keep you in the conversation in English, and send written summaries in whichever language each person prefers.',
+	},
+	{
+		q: 'Are the sale documents available in Spanish?',
+		a: 'The listing agreement and purchase documents are written in English, and Troy reviews them with you line by line in Spanish. If you need a Spanish-language version of a particular document, tell us at the start and we will go over the options with you, your attorney, and the escrow officer.',
+	},
+	{
+		q: 'Do you only work with Spanish-speaking owners?',
+		a: 'No. We work with all LA apartment building owners. Spanish is simply a choice for families who are more comfortable discussing a sale in their own language.',
+	},
+	{
+		q: 'How do I find out what my parents’ building is worth?',
+		a: 'Start with our free Broker Opinion of Value. It is confidential, it costs nothing, and you are under no obligation to sell. You can also try our free property value calculator for a first estimate.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+	title="Spanish-Speaking Apartment Building Broker in LA"
+	description="Helping your family sell an LA apartment building? Troy Lucero, fluent in Spanish, guides owners and their families through the sale in Spanish. Se habla español."
+>
+	<Fragment slot="head">
+		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+		<link rel="alternate" hreflang="en" href={en} />
+		<link rel="alternate" hreflang="es" href={es} />
+		<link rel="alternate" hreflang="x-default" href={en} />
+	</Fragment>
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Se habla español</span>
+			<h1>A Spanish-Speaking Broker to Help Your Family Sell the Apartment Building</h1>
+			<p>
+				Selling a building your parents or family have owned for decades is a big decision, and it is easier when you can talk it through in the
+				language you are most comfortable in. Troy Lucero is fluent in Spanish and works with Los Angeles apartment owners and their families in
+				Spanish or English.
+			</p>
+			<div class="hero-actions">
+				<a href={`tel:${troy.phone.replace(/\D/g, '')}`} class="btn btn-gold">Call Troy: {troy.phone}</a>
+				<a href="/es/vender-edificio-de-apartamentos-los-angeles/" class="btn btn-outline" lang="es" hreflang="es">Leer esta página en español</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Why Language Matters</span>
+			<h2>Understand Every Step Before You Decide</h2>
+			<p>
+				A building sale involves money, taxes, tenants, and contracts. When the conversation happens in a second language, it is easy to nod along
+				and still have questions at the end. We would rather you ask every question, in the language you think in, before you decide anything.
+			</p>
+			<p>
+				Troy grew up in a Spanish-speaking household and has spent more than 10 years in commercial real estate. Our team has helped sell more
+				than {site.statsPrecise.units.toLocaleString('en-US')} apartment units and more than ${(site.statsPrecise.volume / 1_000_000).toLocaleString('en-US')} million in sale value for Los Angeles owners.
+				Josh Kaplan, Troy’s partner, also understands Spanish and is part of the conversation. Read more about <a href="/troy-lucero/">Troy</a> and
+				<a href="/josh-kaplan/">Josh</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">What We Explain in Spanish</span>
+			<h2>The Whole Process, in Plain Language</h2>
+			<ul class="check-list">
+				{explain.map((item) => <li>{item}</li>)}
+			</ul>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">For Families</span>
+			<h2>Helping Your Parents Sell the Family Building</h2>
+			<p>
+				Often the owners are parents who bought the building many years ago, and their children help with the decision. We are used to that. We can
+				meet with everyone together, explain the options without pressure, and move at the pace your family sets. If your parents prefer to talk in
+				Spanish and you handle the details in English, that works too.
+			</p>
+			<p>
+				If the building has been in the family a long time, it may have older tenants, below-market rents, or deferred maintenance. That is common,
+				and it does not stop a sale. Our guides to <a href="/insights/selling-la-apartment-building-with-tenants-rent-control/">selling with tenants under rent control</a>
+				and <a href="/insights/capital-gains-depreciation-recapture-selling-la-apartment-building/">capital gains and depreciation recapture</a> explain the main issues in English.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Common Questions</span>
+			<h2>Spanish-Speaking Broker FAQs</h2>
+			<div class="faq-list">
+				{
+					faqs.map((f) => (
+						<details class="faq-item">
+							<summary>{f.q}</summary>
+							<p>{f.a}</p>
+						</details>
+					))
+				}
+			</div>
+			<p class="faq-cta">See more answers on our <a href="/faqs/">full FAQ page</a>.</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<BOVForm
+				showLanguage
+				heading="Find Out What Your Building Is Worth"
+				subheading="Free and confidential, in English or Spanish. Choose your language below and we will reply in it."
+			/>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		font-size: 1.1rem;
+		line-height: 1.7;
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.narrow {
+		max-width: 720px;
+	}
+
+	.narrow p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.check-list {
+		list-style: none;
+		padding: 0;
+		margin: 1.25rem 0 0;
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.check-list li {
+		position: relative;
+		padding-left: 1.9rem;
+		line-height: 1.65;
+	}
+
+	.check-list li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.5rem;
+		width: 0.9rem;
+		height: 0.5rem;
+		border-left: 2px solid var(--gold-dark);
+		border-bottom: 2px solid var(--gold-dark);
+		transform: rotate(-45deg);
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.15rem 1.5rem;
+	}
+
+	.faq-item summary {
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.faq-item p {
+		margin-top: 0.75rem;
+		margin-bottom: 0;
+	}
+
+	.faq-cta {
+		margin-top: 1.5rem;
+	}
+</style>
