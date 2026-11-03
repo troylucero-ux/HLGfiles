@@ -2,10 +2,33 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import BOVForm from '../../../components/BOVForm.astro';
 import { postsEs, formatTrimestre } from '../../../data/postsEs';
+import { ES } from '../../../data/esSlugs';
 import { site } from '../../../data/site';
 
 const en = `${site.url}/insights/`;
 const es = `${site.url}/es/insights/`;
+
+// Topic chips for the filter. Each topic lists the articles (by their key in ES) that belong to it.
+const topics: { id: string; label: string; keys: (keyof typeof ES)[] }[] = [
+	{ id: 'vender', label: 'Vender mi edificio', keys: ['paso', 'vender', 'corredor', 'fueraDelMercado', 'findeano', 'fourplex', 'inquilinos'] },
+	{ id: 'valor', label: 'Valor y precio', keys: ['valorar', 'bov', 'servicios'] },
+	{ id: 'impuestos', label: 'Impuestos y 1031', keys: ['impuestos', 'intercambio', 'findeano', 'heredado', 'ula', 'ulaConservar'] },
+	{ id: 'ula', label: 'Medida ULA', keys: ['ula', 'ulaConservar'] },
+	{ id: 'rentas', label: 'Control de rentas', keys: ['inquilinos', 'ab1482', 'rso'] },
+	{ id: 'leyes', label: 'Leyes y cumplimiento', keys: ['sb721', 'ab628', 'ab1482', 'rso'] },
+	{ id: 'herencias', label: 'Herencias', keys: ['heredado'] },
+];
+const keyOf = (slug: string) => Object.entries(ES).find(([, v]) => v === slug)?.[0] as keyof typeof ES | undefined;
+
+// Lowercase text without accents, so "inspeccion" finds "inspección". Every card carries it, and the page filters in the browser.
+const plain = (t: string) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const cards = postsEs.map((post) => {
+	const key = keyOf(post.slug);
+	const topicIds = topics.filter((t) => key && t.keys.includes(key)).map((t) => t.id);
+	const search = plain([post.slug.replace(/-/g, ' '), post.title, post.description, ...post.sections.map((sec) => sec.heading), ...post.faqs.map((faq) => faq.q)].join(' '));
+	return { post, topicIds, search };
+});
+const topicChips = topics.map((t) => ({ ...t, count: cards.filter((c) => c.topicIds.includes(t.id)).length })).filter((t) => t.count > 0);
 ---
 
 <BaseLayout
@@ -30,10 +53,27 @@ const es = `${site.url}/es/insights/`;
 
 	<section class="section">
 		<div class="container">
-			<div class="post-grid">
+			<div class="insights-tools">
+					<label class="insights-search" for="insights-q">
+						<span class="visually-hidden">Buscar artículos</span>
+						<input id="insights-q" type="search" placeholder="Busque un tema, por ejemplo SB 721, 1031, herencia o control de rentas" autocomplete="off" />
+					</label>
+					<div class="topic-chips" role="group" aria-label="Filtrar por tema">
+						<button type="button" class="chip is-active" data-topic="" aria-pressed="true">
+							Todos <span class="chip__n">{cards.length}</span>
+						</button>
+						{topicChips.map((t) => (
+							<button type="button" class="chip" data-topic={t.id} aria-pressed="false">
+								{t.label} <span class="chip__n">{t.count}</span>
+							</button>
+						))}
+					</div>
+					<p class="insights-status" id="insights-status" aria-live="polite"></p>
+				</div>
+				<div class="post-grid" id="post-grid">
 				{
-					postsEs.map((post) => (
-						<a href={`/es/insights/${post.slug}/`} class="post-card">
+					cards.map(({ post, topicIds, search }) => (
+						<a href={`/es/insights/${post.slug}/`} class="post-card" data-topics={topicIds.join(' ')} data-search={search}>
 							{post.image && <img class="post-card__image" src={post.image.src} alt={post.image.alt} width={post.image.width} height={post.image.height} loading="lazy" />}
 							<div class="post-card__body">
 								<span class="post-card__date">{formatTrimestre(post.date)}</span>
@@ -45,7 +85,10 @@ const es = `${site.url}/es/insights/`;
 					))
 				}
 			</div>
-			<p class="note">Estamos agregando más artículos en español. Si tiene una pregunta, <a href="/es/vender-edificio-de-apartamentos-los-angeles/">escríbanos o llámenos</a>: Troy Lucero le responde en español.</p>
+			<div class="insights-empty" id="insights-empty" hidden>
+					<p>Ningún artículo coincide con esa búsqueda. Pruebe una frase más corta o elija un tema arriba, o <a href="/es/vender-edificio-de-apartamentos-los-angeles/">pregúntenos directamente</a>.</p>
+				</div>
+				<p class="note">Estamos agregando más artículos en español. Si tiene una pregunta, <a href="/es/vender-edificio-de-apartamentos-los-angeles/">escríbanos o llámenos</a>: Troy Lucero le responde en español.</p>
 		</div>
 	</section>
 
@@ -56,7 +99,160 @@ const es = `${site.url}/es/insights/`;
 	</section>
 </BaseLayout>
 
+<script is:inline>
+	(() => {
+		const grid = document.getElementById('post-grid');
+		if (!grid) return;
+		const cards = Array.from(grid.querySelectorAll('.post-card'));
+		const input = document.getElementById('insights-q');
+		const chips = Array.from(document.querySelectorAll('.chip'));
+		const status = document.getElementById('insights-status');
+		const empty = document.getElementById('insights-empty');
+		let topic = '';
+		const plain = (t) => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+		const apply = () => {
+			const terms = plain(input.value).split(/\s+/).filter(Boolean);
+			let shown = 0;
+			for (const c of cards) {
+				const okTopic = !topic || (c.dataset.topics || '').split(' ').includes(topic);
+				const hay = c.dataset.search || '';
+				const show = okTopic && terms.every((t) => hay.includes(t));
+				c.hidden = !show;
+				if (show) shown++;
+			}
+			empty.hidden = shown !== 0;
+			const filtering = topic || terms.length;
+			status.textContent = filtering ? shown + (shown === 1 ? ' artículo encontrado' : ' artículos encontrados') : '';
+			try {
+				const url = new URL(location.href);
+				topic ? url.searchParams.set('tema', topic) : url.searchParams.delete('tema');
+				input.value.trim() ? url.searchParams.set('q', input.value.trim()) : url.searchParams.delete('q');
+				history.replaceState(null, '', url);
+			} catch (e) {}
+		};
+
+		const setTopic = (id) => {
+			topic = id;
+			for (const b of chips) {
+				const on = (b.dataset.topic || '') === id;
+				b.classList.toggle('is-active', on);
+				b.setAttribute('aria-pressed', on ? 'true' : 'false');
+			}
+		};
+
+		chips.forEach((b) =>
+			b.addEventListener('click', () => {
+				setTopic(b.dataset.topic || '');
+				apply();
+			}),
+		);
+		// Typing a search looks through every article, so a topic picked earlier is cleared.
+		input.addEventListener('input', () => {
+			if (input.value.trim() && topic) setTopic('');
+			apply();
+		});
+
+		const params = new URLSearchParams(location.search);
+		const t = params.get('tema');
+		if (t && chips.some((b) => b.dataset.topic === t)) setTopic(t);
+		if (params.get('q')) input.value = params.get('q');
+		apply();
+	})();
+</script>
+
 <style>
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+	}
+
+	.insights-tools {
+		max-width: 980px;
+		margin-bottom: 1.75rem;
+	}
+
+	.insights-search input {
+		width: 100%;
+		padding: 0.9rem 1.1rem;
+		font: inherit;
+		font-size: 1rem;
+		color: var(--ink);
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+	}
+
+	.insights-search input:focus {
+		outline: 2px solid var(--gold);
+		outline-offset: 1px;
+		border-color: var(--gold);
+	}
+
+	.topic-chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	.chip {
+		font: inherit;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--navy);
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		padding: 0.4rem 0.95rem;
+		cursor: pointer;
+		transition: border-color 0.15s ease, background 0.15s ease;
+	}
+
+	.chip:hover {
+		border-color: var(--gold);
+	}
+
+	.chip.is-active {
+		background: var(--navy);
+		border-color: var(--navy);
+		color: #fff;
+	}
+
+	.chip__n {
+		margin-left: 0.2rem;
+		font-weight: 500;
+		opacity: 0.65;
+	}
+
+	.insights-status {
+		min-height: 1.3em;
+		margin: 0.9rem 0 0;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	.insights-empty {
+		max-width: 980px;
+		margin-top: 1.5rem;
+		background: var(--paper-alt);
+		border-top: 3px solid var(--gold);
+		padding: 1.5rem 1.75rem;
+	}
+
+	.insights-empty p {
+		margin: 0;
+	}
+
+	.post-card[hidden],
+	.insights-empty[hidden] {
+		display: none;
+	}
+
 	.page-hero {
 		background: var(--paper-alt);
 		padding-block: 3rem;
