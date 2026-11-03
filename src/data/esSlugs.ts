@@ -15,6 +15,9 @@ export const ES = {
 	findeano: 'vender-edificio-de-apartamentos-antes-de-fin-de-ano',
 	fourplex: 'vender-un-fourplex-o-edificio-pequeno-en-los-angeles',
 	sb721: 'inspeccion-de-balcones-sb-721-edificios-de-apartamentos-los-angeles',
+	fueraDelMercado: 'vender-edificio-de-apartamentos-fuera-del-mercado-o-anunciarlo-los-angeles',
+	servicios: 'recibos-de-servicios-fugas-de-agua-valor-edificio-de-apartamentos-los-angeles',
+	ab628: 'ley-ab-628-estufa-y-refrigerador-unidades-de-renta-california',
 	ulaConservar: 'medida-ula-conservar-o-vender-edificio-de-apartamentos-los-angeles',
 };
 

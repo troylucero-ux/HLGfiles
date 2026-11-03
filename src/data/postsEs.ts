@@ -5,6 +5,7 @@ import { ES, BOV } from './esSlugs';
 import { postsEsMore } from './postsEsMore';
 import { postsEsMore2 } from './postsEsMore2';
 import { postsEsMore3 } from './postsEsMore3';
+import { postsEsMore4 } from './postsEsMore4';
 
 export type PostEs = {
 	slug: string;
@@ -58,7 +59,7 @@ const postsEsCore: PostEs[] = [
 				heading: 'Paso 4: Reúna sus documentos',
 				paragraphs: [
 					'Los compradores piden lo mismo desde el primer día, y tenerlo listo mantiene el impulso. Normalmente son una lista de rentas actualizada (rent roll), los contratos de renta, y los ingresos y gastos de los últimos dos o tres años, junto con sus recibos de servicios (agua, luz y gas), la factura de impuestos a la propiedad, el seguro, los permisos, los informes de inspección y el registro de las reparaciones grandes. En Los Ángeles, tenga también listos su registro de la Ordenanza de Estabilización de Rentas (RSO) y los comprobantes de pago de sus cuotas.',
-					'Los números exactos importan más que los números bonitos, porque los compradores lo verifican todo contra sus registros y los contratos. Los recibos de servicios merecen atención especial, como explicamos en nuestro artículo sobre [por qué los dueños cuidadosos los revisan cada mes](/insights/utility-bill-diligence-la-apartment-owners/) (en inglés).',
+					`Los números exactos importan más que los números bonitos, porque los compradores lo verifican todo contra sus registros y los contratos. Los recibos de servicios merecen atención especial, como explicamos en nuestro artículo sobre [por qué los dueños cuidadosos los revisan cada mes](/es/insights/${ES.servicios}/).`,
 				],
 			},
 			{
@@ -236,7 +237,7 @@ const postsEsCore: PostEs[] = [
 		enSlug: 'capital-gains-depreciation-recapture-selling-la-apartment-building',
 		title: 'Ganancias de capital y recuperación de la depreciación al vender un edificio de apartamentos en Los Ángeles',
 		seoTitle: 'Ganancias de Capital al Vender un Edificio en Los Ángeles',
-		description: 'Cómo funcionan el impuesto federal y el de California sobre las ganancias de capital y la recuperación de la depreciación, y cómo un intercambio 1031 los difiere.',
+		description: 'Cómo funcionan los impuestos federal y de California sobre ganancias de capital y recuperación de la depreciación, y cómo un intercambio 1031 los difiere.',
 		date: '2026-11-03',
 		image: { src: '/images/insights/es/ganancias-de-capital.webp', alt: 'Gráfica: el impuesto federal sobre las ganancias de capital es de 0%, 15% o 20%, la recuperación de la depreciación se grava hasta con 25%, y California grava la ganancia como ingreso ordinario.', width: 1200, height: 900 },
 		related: [ES.ula, ES.paso, ES.inquilinos],
@@ -434,7 +435,7 @@ const postsEsCore: PostEs[] = [
 	},
 ];
 
-export const postsEs: PostEs[] = [...postsEsCore, ...postsEsMore, ...postsEsMore2, ...postsEsMore3];
+export const postsEs: PostEs[] = [...postsEsCore, ...postsEsMore, ...postsEsMore2, ...postsEsMore3, ...postsEsMore4];
 
 // English slug -> Spanish slug, so an English article can point to its Spanish version.
 export const esSlugFor: Record<string, string> = Object.fromEntries(postsEs.map((p) => [p.enSlug, p.slug]));

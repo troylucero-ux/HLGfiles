@@ -199,7 +199,7 @@ export const postsEsMore2: PostEs[] = [
 		enSlug: 'inherited-apartment-building-los-angeles-what-to-do',
 		title: '¿Heredó un edificio de apartamentos en Los Ángeles? Qué hacer primero',
 		seoTitle: 'Heredó un Edificio de Apartamentos en Los Ángeles',
-		description: '¿Heredó un edificio en Los Ángeles? Qué hacer primero, cómo afectan el fideicomiso o el probate a la venta, la base actualizada, la Proposición 19 y sus opciones.',
+		description: '¿Heredó un edificio en Los Ángeles? Qué hacer primero, cómo influye el probate o el fideicomiso, la base actualizada, la Proposición 19 y sus opciones.',
 		date: '2026-11-03',
 		image: {
 			src: '/images/insights/es/heredo-un-edificio.webp',
@@ -259,7 +259,7 @@ export const postsEsMore2: PostEs[] = [
 				heading: '¿Conservarlo o venderlo?',
 				paragraphs: [
 					'No hay una respuesta correcta, solo la que le conviene a su familia. Algunas preguntas ayudan. ¿Alguien quiere administrar el edificio, y sabe lo que implica? ¿Pueden los herederos ponerse de acuerdo en un plan? ¿Cuánto sería la factura de impuestos a la propiedad después de la reevaluación? ¿Qué reparaciones vienen? ¿Y qué haría el dinero de la venta por la familia en comparación con el ingreso del edificio?',
-					`Nuestra guía sobre [si debe vender un edificio de apartamentos](${p('vender')}) repasa siete preguntas que conviene responder primero. Si los herederos quieren vender, pueden anunciar el edificio abiertamente o venderlo con discreción a un grupo limitado de compradores. Nuestro artículo sobre [vender fuera del mercado abierto frente a anunciarlo](/insights/selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles/) (en inglés) explica las ventajas y desventajas, incluido por qué la privacidad importa a muchas familias.`,
+					`Nuestra guía sobre [si debe vender un edificio de apartamentos](${p('vender')}) repasa siete preguntas que conviene responder primero. Si los herederos quieren vender, pueden anunciar el edificio abiertamente o venderlo con discreción a un grupo limitado de compradores. Nuestro artículo sobre [vender fuera del mercado abierto frente a anunciarlo](/es/insights/${ES.fueraDelMercado}/) explica las ventajas y desventajas, incluido por qué la privacidad importa a muchas familias.`,
 				],
 			},
 			{

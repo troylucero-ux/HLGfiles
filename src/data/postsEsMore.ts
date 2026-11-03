@@ -57,7 +57,7 @@ export const postsEsMore: PostEs[] = [
 			{
 				heading: '4. ¿Cuánto le va a costar el edificio en los próximos cinco años?',
 				paragraphs: [
-					'Mire hacia adelante además de hacia atrás. Los techos, la plomería y los sistemas eléctricos que envejecen, el aumento de las primas de seguro y el costo de cumplir con las reglas nuevas afectan lo que el edificio realmente producirá. Una fuga de agua que nadie nota puede costarle en silencio decenas de miles de dólares en valor, como explicamos en nuestro artículo sobre [cómo revisar los recibos de servicios](/insights/utility-bill-diligence-la-apartment-owners/) (en inglés).',
+					`Mire hacia adelante además de hacia atrás. Los techos, la plomería y los sistemas eléctricos que envejecen, el aumento de las primas de seguro y el costo de cumplir con las reglas nuevas afectan lo que el edificio realmente producirá. Una fuga de agua que nadie nota puede costarle en silencio decenas de miles de dólares en valor, como explicamos en nuestro artículo sobre [cómo revisar los recibos de servicios](/es/insights/${ES.servicios}/).`,
 					'El mantenimiento pendiente también suele reflejarse en el precio de venta, porque los compradores lo descuentan. Arreglar lo correcto antes de anunciar el edificio, o decidir no hacerlo, es una decisión que vale la pena tomar con cuidado.',
 				],
 			},
@@ -276,7 +276,7 @@ export const postsEsMore: PostEs[] = [
 				heading: '1. Ingreso operativo neto: el centro del valor',
 				paragraphs: [
 					'El ingreso operativo neto es la renta cobrada del edificio y otros ingresos, menos el costo de operarlo. No incluye el pago de su hipoteca, la depreciación ni los impuestos sobre la renta. Como el comprador está pagando por ese flujo de ingresos, el NOI determina el precio más que cualquier otro número.',
-					`Dos cosas hacen tropezar a los dueños. Primero, los compradores usan gastos realistas, no solo lo que usted paga hoy. Volverán a calcular los impuestos a la propiedad, porque California reevalúa un edificio cuando se vende, y nuestros memorandos de oferta normalmente suponen alrededor de 1.2% del precio de venta. Segundo, los problemas ocultos de gastos salen a la luz en la revisión del comprador, y por eso recomendamos a los dueños vigilar sus recibos, como explicamos en nuestro artículo sobre [cómo revisar los recibos de servicios](/insights/utility-bill-diligence-la-apartment-owners/) (en inglés).`,
+					`Dos cosas hacen tropezar a los dueños. Primero, los compradores usan gastos realistas, no solo lo que usted paga hoy. Volverán a calcular los impuestos a la propiedad, porque California reevalúa un edificio cuando se vende, y nuestros memorandos de oferta normalmente suponen alrededor de 1.2% del precio de venta. Segundo, los problemas ocultos de gastos salen a la luz en la revisión del comprador, y por eso recomendamos a los dueños vigilar sus recibos, como explicamos en nuestro artículo sobre [cómo revisar los recibos de servicios](/es/insights/${ES.servicios}/).`,
 				],
 			},
 			{
@@ -475,7 +475,7 @@ export const postsEsMore: PostEs[] = [
 		enSlug: 'ab-1482-rent-cap-2026',
 		title: 'El límite de rentas de la AB 1482 se actualizó: lo que significa para los edificios posteriores a 1978 en Los Ángeles',
 		seoTitle: 'Límite de Rentas AB 1482 en 2026: Lo que Deben Saber',
-		description: 'El límite de la AB 1482 se actualizó el 1 de agosto de 2026. Vea el nuevo máximo de 8.7% en Los Ángeles, qué edificios cubre y por qué importa al comprar o vender.',
+		description: 'El límite de la AB 1482 se actualizó el 1 de agosto de 2026. El nuevo máximo es 8.7% en Los Ángeles: qué edificios cubre y por qué importa.',
 		date: '2026-11-03',
 		image: {
 			src: '/images/insights/es/limite-ab-1482.webp',

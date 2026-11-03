@@ -54,7 +54,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 			},
 			{
 				q: '¿Debo vender fuera del mercado abierto o anunciar mi edificio públicamente?',
-				a: 'Un anuncio amplio normalmente ofrece la mejor oportunidad de lograr el precio más alto, porque más compradores significan más competencia. Una venta fuera del mercado abierto (off-market) ofrece privacidad, pero puede dejarle la duda de cuánto dejó sobre la mesa. Un punto medio es contactar a una lista seleccionada de compradores activos sin un anuncio público. Vea [vender fuera del mercado abierto o anunciar el edificio](/insights/selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles/) (en inglés).',
+				a: `Un anuncio amplio normalmente ofrece la mejor oportunidad de lograr el precio más alto, porque más compradores significan más competencia. Una venta fuera del mercado abierto (off-market) ofrece privacidad, pero puede dejarle la duda de cuánto dejó sobre la mesa. Un punto medio es contactar a una lista seleccionada de compradores activos sin un anuncio público. Vea [vender fuera del mercado abierto o anunciar el edificio](/es/insights/${ES.fueraDelMercado}/).`,
 			},
 			{
 				q: '¿Debo aceptar siempre la oferta más alta?',
@@ -200,7 +200,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 			},
 			{
 				q: '¿Qué exige la AB 628 de California sobre estufas y refrigeradores?',
-				a: 'Para los contratos de renta firmados, modificados o prorrogados a partir del 1 de enero de 2026, una unidad de renta debe tener una estufa y un refrigerador en buen estado de funcionamiento. Un inquilino puede acordar en el contrato poner su propio refrigerador, pero no como condición del arrendamiento. Algunos tipos de vivienda, como las unidades de ocupación de una sola habitación, están exentos. Vea nuestra [guía de la AB 628](/insights/ab-628-stove-refrigerator-law-la-apartment-owners/) (en inglés).',
+				a: `Para los contratos de renta firmados, modificados o prorrogados a partir del 1 de enero de 2026, una unidad de renta debe tener una estufa y un refrigerador en buen estado de funcionamiento. Un inquilino puede acordar en el contrato poner su propio refrigerador, pero no como condición del arrendamiento. Algunos tipos de vivienda, como las unidades de ocupación de una sola habitación, están exentos. Vea nuestra [guía de la AB 628](/es/insights/${ES.ab628}/).`,
 			},
 			{
 				q: '¿Tengo que dar aire acondicionado en mis apartamentos?',
@@ -212,7 +212,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 			},
 			{
 				q: '¿El mantenimiento pendiente o una fuga de servicios afectan el precio de venta?',
-				a: 'Sí. Los compradores valoran un edificio según su ingreso operativo neto, así que un gasto extra baja el precio: con una tasa de capitalización de 7%, $8,000 al año de gasto evitable de agua reducen el valor en unos $114,000. Vigile sus recibos de servicios como porcentaje de los gastos para detectar fugas a tiempo. Vea [cómo revisar los recibos de servicios](/insights/utility-bill-diligence-la-apartment-owners/) (en inglés).',
+				a: `Sí. Los compradores valoran un edificio según su ingreso operativo neto, así que un gasto extra baja el precio: con una tasa de capitalización de 7%, $8,000 al año de gasto evitable de agua reducen el valor en unos $114,000. Vigile sus recibos de servicios como porcentaje de los gastos para detectar fugas a tiempo. Vea [cómo revisar los recibos de servicios](/es/insights/${ES.servicios}/).`,
 			},
 		],
 	},
