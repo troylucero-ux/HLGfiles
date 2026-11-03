@@ -1,7 +1,37 @@
 ---
 // Visual timeline of the two hard IRS deadlines governing a 1031 exchange: 45 days to identify
 // replacement property, 180 days total to close. Reused on the 1031 exchange FAQ and the
-// "1031 exchange into triple-net properties" Insights post.
+// "1031 exchange into triple-net properties" Insights post. Pass lang="es" for the Spanish pages.
+interface Props {
+	lang?: 'en' | 'es';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const text = {
+	en: {
+		aria: '1031 exchange timeline: Day 0, the relinquished property sale closes. Day 45, the deadline to identify replacement properties. Day 180, the deadline for the exchange to close.',
+		day0: 'DAY 0',
+		day45: 'DAY 45',
+		day180: 'DAY 180',
+		closes: 'Relinquished property sale closes',
+		identify: 'Deadline to identify replacement properties',
+		mustClose: 'Exchange must close',
+		window45: '45-Day Identification Window',
+		window180: '180-Day Exchange Window',
+	},
+	es: {
+		aria: 'Calendario de un intercambio 1031: Día 0, cierra la venta de la propiedad que usted vende. Día 45, fecha límite para identificar las propiedades de reemplazo. Día 180, fecha límite para cerrar el intercambio.',
+		day0: 'DÍA 0',
+		day45: 'DÍA 45',
+		day180: 'DÍA 180',
+		closes: 'Cierra la venta de su propiedad',
+		identify: 'Fecha límite para identificar propiedades de reemplazo',
+		mustClose: 'El intercambio debe cerrar',
+		window45: 'Plazo de 45 días para identificar',
+		window180: 'Plazo de 180 días para el intercambio',
+	},
+}[lang];
 ---
 
 <div class="exchange-timeline-wrap">
@@ -9,7 +39,7 @@
 		viewBox="0 0 900 230"
 		class="exchange-timeline"
 		role="img"
-		aria-label="1031 exchange timeline: Day 0, the relinquished property sale closes. Day 45, the deadline to identify replacement properties. Day 180, the deadline for the exchange to close."
+		aria-label={text.aria}
 	>
 		<rect x="50" y="124" width="200" height="12" rx="6" fill="var(--gold)" />
 		<rect x="250" y="124" width="600" height="12" rx="6" fill="var(--navy)" />
@@ -18,26 +48,26 @@
 		<circle cx="250" cy="130" r="10" fill="var(--paper)" stroke="var(--gold-dark)" stroke-width="3" />
 		<circle cx="850" cy="130" r="10" fill="var(--paper)" stroke="var(--navy-dark)" stroke-width="3" />
 
-		<text x="50" y="95" text-anchor="start" class="exchange-timeline__day">DAY 0</text>
-		<text x="250" y="95" text-anchor="middle" class="exchange-timeline__day">DAY 45</text>
-		<text x="850" y="95" text-anchor="end" class="exchange-timeline__day">DAY 180</text>
+		<text x="50" y="95" text-anchor="start" class="exchange-timeline__day">{text.day0}</text>
+		<text x="250" y="95" text-anchor="middle" class="exchange-timeline__day">{text.day45}</text>
+		<text x="850" y="95" text-anchor="end" class="exchange-timeline__day">{text.day180}</text>
 
 		<foreignObject x="0" y="158" width="170" height="70">
-			<div xmlns="http://www.w3.org/1999/xhtml" class="exchange-timeline__desc">Relinquished property sale closes</div>
+			<div xmlns="http://www.w3.org/1999/xhtml" class="exchange-timeline__desc">{text.closes}</div>
 		</foreignObject>
 		<foreignObject x="145" y="158" width="230" height="70">
 			<div xmlns="http://www.w3.org/1999/xhtml" class="exchange-timeline__desc exchange-timeline__desc--center">
-				Deadline to identify replacement properties
+				{text.identify}
 			</div>
 		</foreignObject>
 		<foreignObject x="680" y="158" width="220" height="70">
-			<div xmlns="http://www.w3.org/1999/xhtml" class="exchange-timeline__desc exchange-timeline__desc--right">Exchange must close</div>
+			<div xmlns="http://www.w3.org/1999/xhtml" class="exchange-timeline__desc exchange-timeline__desc--right">{text.mustClose}</div>
 		</foreignObject>
 	</svg>
 
 	<ul class="exchange-timeline__legend">
-		<li><span class="exchange-timeline__swatch exchange-timeline__swatch--gold" />45-Day Identification Window</li>
-		<li><span class="exchange-timeline__swatch exchange-timeline__swatch--navy" />180-Day Exchange Window</li>
+		<li><span class="exchange-timeline__swatch exchange-timeline__swatch--gold" />{text.window45}</li>
+		<li><span class="exchange-timeline__swatch exchange-timeline__swatch--navy" />{text.window180}</li>
 	</ul>
 </div>
 

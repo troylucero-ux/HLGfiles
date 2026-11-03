@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
+import { site } from '../../data/site';
 
 const faqs = [
 	{
@@ -33,6 +34,9 @@ const faqSchema = {
 	description="Calm, informed guidance for trustees, executors, and families selling an inherited LA apartment building through a trust or probate sale."
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="en" href={`${site.url}/trust-and-estate-sales/`} slot="head" />
+	<link rel="alternate" hreflang="es" href={`${site.url}/es/ventas-de-fideicomisos-y-herencias/`} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={`${site.url}/trust-and-estate-sales/`} slot="head" />
 	<section class="page-hero">
 		<div class="container">
 			<span class="eyebrow">Trust &amp; Estate Sales</span>
@@ -42,6 +46,7 @@ const faqSchema = {
 				numbers. It's about family, legacy, and peace of mind. Our role is to make an already difficult moment simpler, not harder.
 			</p>
 			<a href="/contact/?intent=probate" class="btn btn-gold">Start a Confidential Conversation</a>
+			<p class="lang-link"><a href="/es/ventas-de-fideicomisos-y-herencias/" hreflang="es" lang="es">Esta página en español &rarr;</a></p>
 		</div>
 	</section>
 
@@ -97,6 +102,11 @@ const faqSchema = {
 </BaseLayout>
 
 <style>
+	.lang-link {
+		margin-top: 1rem;
+		font-weight: 600;
+	}
+
 	.page-hero {
 		background: var(--paper-alt);
 		padding-block: clamp(3rem, 7vw, 5rem);

@@ -5,6 +5,7 @@ import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
 import { caseStudies } from '../../data/caseStudies';
 import { closings } from '../../data/closings';
 import { formatPrice } from '../../lib/format';
+import { site } from '../../data/site';
 
 const exchangeCaseStudies = caseStudies.filter((cs) => cs.dealType.includes('1031'));
 
@@ -141,6 +142,9 @@ const faqSchema = {
 	description="1031 exchange help for LA apartment owners: the 45- and 180-day rules, our step-by-step process, and real exchanges into Texas, Florida, and Georgia."
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="en" href={`${site.url}/1031-exchanges/`} slot="head" />
+	<link rel="alternate" hreflang="es" href={`${site.url}/es/intercambios-1031/`} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={`${site.url}/1031-exchanges/`} slot="head" />
 
 	<section class="page-hero">
 		<div class="container">
@@ -151,6 +155,7 @@ const faqSchema = {
 				properties across California and out of state. Every selling client of ours who wanted to complete a 1031 exchange has done so.
 			</p>
 			<a href="/contact/?intent=bov" class="btn btn-gold">Start Your Exchange Strategy</a>
+			<p class="lang-link"><a href="/es/intercambios-1031/" hreflang="es" lang="es">Esta página en español &rarr;</a></p>
 		</div>
 	</section>
 
@@ -322,6 +327,15 @@ const faqSchema = {
 </BaseLayout>
 
 <style>
+	.lang-link {
+		margin-top: 1rem;
+		font-weight: 600;
+	}
+
+	.lang-link a {
+		color: #fff;
+	}
+
 	.page-hero {
 		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
 		color: #fff;

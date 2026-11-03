@@ -207,7 +207,7 @@ export const postsEsMore3: PostEs[] = [
 				heading: 'Razones por las que algunos dueños venden de todos modos',
 				paragraphs: [
 					'El impuesto es real, pero es solo un lado de la decisión. Los dueños siguen vendiendo por encima de las líneas por razones que no tienen nada que ver con la ULA. Pueden estar listos para dejar de administrar, enfrentar reparaciones o trabajo de cumplimiento costosos, querer pasar su capital de un edificio a varios, o preocuparse por cuánto de su patrimonio está en una sola propiedad.',
-					`También ayuda recordar que esperar no elimina el impuesto. Si va a vender algún día, y el edificio todavía estará por encima de una línea entonces, el impuesto es parte de la salida de cualquier manera. Conviene calcularlo desde ahora, pero no debe atraparlo en conservar un edificio que ya no encaja con sus planes. Un [intercambio 1031](/1031-exchanges/) (en inglés) puede diferir su impuesto sobre las ganancias de capital, pero no exime una venta de la Medida ULA.`,
+					`También ayuda recordar que esperar no elimina el impuesto. Si va a vender algún día, y el edificio todavía estará por encima de una línea entonces, el impuesto es parte de la salida de cualquier manera. Conviene calcularlo desde ahora, pero no debe atraparlo en conservar un edificio que ya no encaja con sus planes. Un [intercambio 1031](/es/intercambios-1031/) puede diferir su impuesto sobre las ganancias de capital, pero no exime una venta de la Medida ULA.`,
 				],
 			},
 			{

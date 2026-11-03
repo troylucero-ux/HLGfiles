@@ -5,6 +5,7 @@ import { site, team } from '../../data/site';
 import { closings } from '../../data/closings';
 import { postsEs, formatTrimestre } from '../../data/postsEs';
 import { formatPrice } from '../../lib/format';
+import { PAGES_ES } from '../../data/esSlugs';
 
 const troy = team.find((m) => m.slug === 'troy-lucero')!;
 const en = `${site.url}/`;
@@ -27,12 +28,14 @@ const services = [
 	{
 		title: 'Intercambios 1031',
 		body: 'Estrategia y ejecución para dueños que pasan su capital de un edificio multifamiliar a otro, incluso a propiedades de reemplazo en otros mercados o fuera de California.',
-		href: '/1031-exchanges/',
+		href: PAGES_ES.intercambios,
+		more: 'Más información',
 	},
 	{
 		title: 'Ventas de fideicomisos y herencias',
 		body: 'Orientación tranquila e informada para fideicomisarios, albaceas y familias que venden un edificio de apartamentos heredado.',
-		href: '/trust-and-estate-sales/',
+		href: PAGES_ES.fideicomisos,
+		more: 'Más información',
 	},
 	{
 		title: 'Terrenos para desarrollo',
@@ -138,7 +141,7 @@ const webPageSchema = {
 							<p>{s.body}</p>
 							{s.href && (
 								<p class="service-card__more">
-									<a href={s.href}>Más información (en inglés)</a>
+									<a href={s.href}>{s.more ?? 'Más información (en inglés)'}</a>
 								</p>
 							)}
 						</div>

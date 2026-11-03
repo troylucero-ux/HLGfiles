@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ExchangeTimeline from '../../../components/ExchangeTimeline.astro';
 import { faqCategoriesEs } from '../../../data/faqsEs';
 import { site } from '../../../data/site';
 import { toParts, stripLinks } from '../../../lib/inlineLinks';
@@ -81,6 +82,7 @@ const slugify = (s: string) =>
 											),
 										)}
 									</p>
+									{f.q === '¿Cómo funcionan los plazos de un intercambio 1031?' && <ExchangeTimeline lang="es" />}
 								</details>
 							))}
 						</div>

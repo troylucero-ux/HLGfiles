@@ -235,7 +235,7 @@ export const postsEsMore2: PostEs[] = [
 					'Si el edificio estaba en un fideicomiso en vida (living trust), el fideicomisario sucesor generalmente tiene la autoridad para vender, siguiendo los términos del fideicomiso. Una venta de un fideicomiso normalmente no necesita la aprobación de una corte.',
 					'Si el edificio no estaba en un fideicomiso, generalmente pasa por probate. Un edificio de apartamentos vale muchas veces el límite de California para herencias pequeñas, que es de unos $200,000, así que no aplica el proceso simplificado para herencias pequeñas. La corte nombra a un albacea o administrador, y esa persona, no los herederos directamente, maneja la venta.',
 					'Cuánto interviene la corte depende de la autoridad que otorgue. Con autoridad plena bajo la Ley de Administración Independiente de Herencias de California, un albacea generalmente puede vender después de avisar a los herederos de la venta propuesta, y la corte interviene solo si alguien se opone. Con autoridad limitada, la venta normalmente va a la corte para su confirmación, y en esa audiencia otros compradores pueden ofrecer más que el precio aceptado. Su abogado de sucesiones le dirá cuál aplica.',
-					'Por eso la pregunta legal viene antes que la del precio. Un comprador quiere saber que el vendedor puede entregar un título limpio y una fecha de cierre, y un corredor que entiende el proceso puede armar el calendario alrededor de eso. Nuestra página de [ventas de fideicomisos y herencias](/trust-and-estate-sales/) (en inglés) explica cómo trabajamos con fideicomisarios y albaceas.',
+					'Por eso la pregunta legal viene antes que la del precio. Un comprador quiere saber que el vendedor puede entregar un título limpio y una fecha de cierre, y un corredor que entiende el proceso puede armar el calendario alrededor de eso. Nuestra página de [ventas de fideicomisos y herencias](/es/ventas-de-fideicomisos-y-herencias/) explica cómo trabajamos con fideicomisarios y albaceas.',
 				],
 			},
 			{
@@ -282,7 +282,7 @@ export const postsEsMore2: PostEs[] = [
 			{
 				heading: 'Hable con nosotros',
 				paragraphs: [
-					`Acompañamos a familias, fideicomisarios y albaceas en estas ventas, a su ritmo, y Troy Lucero se los explica en español. Empiece con una [opinión de valor](${BOV}) gratis y confidencial, o lea más en nuestra página de [ventas de fideicomisos y herencias](/trust-and-estate-sales/) (en inglés).`,
+					`Acompañamos a familias, fideicomisarios y albaceas en estas ventas, a su ritmo, y Troy Lucero se los explica en español. Empiece con una [opinión de valor](${BOV}) gratis y confidencial, o lea más en nuestra página de [ventas de fideicomisos y herencias](/es/ventas-de-fideicomisos-y-herencias/).`,
 					'Este artículo es información general, no asesoría legal ni de impuestos. Las reglas de sucesiones y de impuestos son detalladas y cambian, así que confirme los detalles con un abogado de sucesiones o fideicomisos de California y con un contador.',
 				],
 			},
@@ -361,7 +361,7 @@ export const postsEsMore2: PostEs[] = [
 				heading: 'Si planea un intercambio 1031, el calendario importa todavía más',
 				paragraphs: [
 					'Un intercambio 1031 le da 45 días desde el cierre para identificar una propiedad de reemplazo y 180 días para cerrar su compra. Hay una trampa en las ventas de fin de año: los 180 días terminan antes si la fecha de entrega de su declaración de impuestos del año de la venta llega primero, a menos que presente una prórroga. Con una venta en diciembre, los 180 días pasarían de la fecha límite de abril, así que pregunte a su contador sobre presentar una prórroga para conservar el plazo completo.',
-					`Para ver con más detalle cómo funcionan los intercambios, vea nuestra guía de [intercambios 1031](/1031-exchanges/) (en inglés) y nuestro artículo sobre [por qué los dueños de apartamentos en Los Ángeles hacen intercambios hacia propiedades triple net](${p('intercambio')}).`,
+					`Para ver con más detalle cómo funcionan los intercambios, vea nuestra guía de [intercambios 1031](/es/intercambios-1031/) y nuestro artículo sobre [por qué los dueños de apartamentos en Los Ángeles hacen intercambios hacia propiedades triple net](${p('intercambio')}).`,
 				],
 			},
 			{
@@ -460,7 +460,7 @@ export const postsEsMore2: PostEs[] = [
 			{
 				heading: 'Un ejemplo de nuestras ventas cerradas',
 				paragraphs: [
-					'Hemos vendido edificios pequeños en todo Los Ángeles. En [14654 Gault St en Van Nuys](/closed-sales/14654-gault-st-van-nuys-ca-91405/) (en inglés), un edificio de cuatro unidades, nuestro cliente vendedor usó un [intercambio 1031](/1031-exchanges/) (en inglés) para pasar a un fourplex más nuevo en North Hollywood. Puede ver el resto de nuestras ventas en la página de [ventas cerradas](/closed-sales/) (en inglés).',
+					'Hemos vendido edificios pequeños en todo Los Ángeles. En [14654 Gault St en Van Nuys](/closed-sales/14654-gault-st-van-nuys-ca-91405/) (en inglés), un edificio de cuatro unidades, nuestro cliente vendedor usó un [intercambio 1031](/es/intercambios-1031/) para pasar a un fourplex más nuevo en North Hollywood. Puede ver el resto de nuestras ventas en la página de [ventas cerradas](/closed-sales/) (en inglés).',
 				],
 			},
 			{

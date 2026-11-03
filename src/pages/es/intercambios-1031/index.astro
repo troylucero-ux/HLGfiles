@@ -1,0 +1,560 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BOVForm from '../../../components/BOVForm.astro';
+import ExchangeTimeline from '../../../components/ExchangeTimeline.astro';
+import { closings } from '../../../data/closings';
+import { site } from '../../../data/site';
+import { formatPrice } from '../../../lib/format';
+import { ES } from '../../../data/esSlugs';
+
+const en = `${site.url}/1031-exchanges/`;
+const es = `${site.url}/es/intercambios-1031/`;
+
+// Nuestro proceso, en el orden en que lo seguimos. Los pasos 3 a 7 describen cómo trabaja Highlight un intercambio.
+const steps = [
+	{
+		title: 'Empezamos con sus metas',
+		body: 'En nuestra primera conversación le preguntamos qué quiere de la venta: sus metas, su plan y lo que quiere tener después. Eso incluye en qué estado quiere comprar y qué tipo de propiedad, ya sean apartamentos, triple net, un DST o un centro comercial.',
+	},
+	{
+		title: 'Fijamos el precio y promovemos el edificio pensando en el intercambio',
+		body: 'Preparamos una opinión de valor basada en ventas cerradas reales y promovemos su edificio para obtener el mejor precio, planeando alrededor de los plazos de su intercambio desde el primer día.',
+	},
+	{
+		title: 'Le presentamos a los mejores corredores para su propiedad de reemplazo',
+		body: 'Según el estado y el tipo de propiedad que elija, le presentamos a tres de los mejores corredores de ese mercado y de ese tipo de propiedad. Usted elige con cuál quiere trabajar.',
+	},
+	{
+		title: 'Lo conectamos con un intermediario calificado',
+		body: 'Lo conectamos con un intermediario calificado, que guarda el dinero de su venta para que usted nunca lo toque, y nos coordinamos con su contador y su abogado para mantener el intercambio dentro de los requisitos del IRS.',
+	},
+	{
+		title: 'Trabajamos de la mano y lo mantenemos informado',
+		body: 'Estamos en contacto en cada etapa de la venta, para que siempre sepa en qué punto está la operación y qué sigue.',
+	},
+	{
+		title: 'Empezamos a hacer ofertas mientras todavía está en escrow',
+		body: 'Cuando se eliminan las condiciones de la venta de su edificio, lo animamos a empezar a hacer ofertas por la propiedad de reemplazo, aunque el escrow todavía esté abierto. Nuestros clientes suelen tener una operación de reemplazo lista antes de que cierre su edificio.',
+	},
+	{
+		title: 'Dejamos un margen de tiempo',
+		body: 'Agregamos a cada contraoferta de la venta una opción de extender el cierre del escrow por 30 días. Si todavía no ha encontrado su propiedad de reemplazo, la ejercemos, y eso le da más tiempo antes de que empiece a correr el reloj.',
+	},
+	{
+		title: 'Cerramos la venta y completamos el intercambio',
+		body: 'Nos quedamos con usted durante la identificación y el cierre de la propiedad de reemplazo, trabajando con el corredor de reemplazo, su intermediario y sus asesores hasta completar el intercambio.',
+	},
+];
+
+const routes = [
+	{
+		title: 'De apartamentos a apartamentos',
+		body: 'Muchos dueños se quedan en multifamiliares: cambian a edificios más grandes, más unidades, mejor flujo de efectivo, construcción más nueva o propiedades sin control de rentas, en Los Ángeles o en otros estados. Un cliente de Highlight vendió un portafolio de 192 unidades en Westlake y lo cambió a dos propiedades multifamiliares en Texas.',
+		href: '/case-studies/the-burlington-portfolio-westlake-apartments/',
+		cta: 'Lea el caso de estudio de Burlington (en inglés)',
+	},
+	{
+		title: 'Propiedades triple net (NNN)',
+		body: 'En un contrato triple net, el inquilino paga los impuestos a la propiedad, el seguro y el mantenimiento, lo que elimina el trabajo diario de administrar una propiedad. Una clienta de Highlight vendió su edificio de 24 unidades en Los Ángeles y lo cambió a dos propiedades NNN distintas, una en Florida y otra en Georgia.',
+		href: `/es/insights/${ES.intercambio}/`,
+		cta: 'Lea sobre el intercambio hacia NNN',
+	},
+	{
+		title: 'Fideicomisos Estatutarios de Delaware (DST)',
+		body: 'Un DST le permite comprar una participación fraccionada en una propiedad más grande con administración profesional, como inversionista pasivo, y las participaciones en un DST pueden calificar como propiedad de reemplazo en un intercambio. Le presentamos a corredores especializados en ellos.',
+		href: '/triple-net-dst/',
+		cta: 'Conozca las opciones NNN y DST (en inglés)',
+	},
+];
+
+// Intercambios que Highlight ha manejado, según el equipo. El tamaño y el precio vienen de la venta cerrada.
+const exchangeDeals = [
+	{ slug: '14654-gault-st-van-nuys-ca-91405', role: 'Intercambio del vendedor', note: 'Nuestro cliente vendedor cambió a un fourplex más nuevo en North Hollywood.' },
+	{ slug: '707-crenshaw-blvd-los-angeles-ca-90005', role: 'Intercambio del vendedor', note: 'Nuestro cliente vendedor cambió a propiedades triple net.' },
+	{ slug: '1136-s-alvarado-st-los-angeles-ca-90006', role: 'Intercambio del vendedor', note: 'Nuestra clienta vendedora cambió a dos propiedades triple net, una en Florida y otra en Georgia.' },
+	{ slug: '49270-cochran-dr-indio-ca-92201', role: 'Intercambio del comprador', note: 'Ayudamos a nuestro cliente comprador, que había vendido un terreno en Nevada, a cambiar a este nuevo desarrollo.' },
+]
+	.map((d) => ({ ...d, sale: closings.find((c) => c.slug === d.slug) }))
+	.filter((d) => d.sale);
+
+const rules = [
+	{
+		label: 'Qué califica',
+		text: 'Los bienes raíces que se tienen para inversión o para un negocio pueden cambiarse por otros bienes raíces de tipo similar (like-kind). Desde 2018, solo califican los bienes raíces.',
+	},
+	{
+		label: 'La regla de 45 días',
+		text: 'Usted tiene que identificar su propiedad de reemplazo dentro de los 45 días siguientes al cierre de su edificio.',
+	},
+	{
+		label: 'La regla de 180 días',
+		text: 'Tiene que recibir la propiedad de reemplazo dentro de 180 días, o antes de la fecha de entrega de su declaración de impuestos (incluidas las prórrogas), lo que ocurra primero.',
+	},
+	{
+		label: 'Un intermediario calificado',
+		text: 'Usted no puede tocar el dinero de la venta. Un intermediario calificado lo guarda y lo usa para comprar su propiedad de reemplazo.',
+	},
+	{
+		label: 'Cuánto comprar',
+		text: 'Para diferir todo el impuesto, generalmente compra una propiedad de reemplazo de igual o mayor valor y reinvierte todo el dinero neto. El efectivo o el alivio de deuda que reciba puede estar sujeto a impuestos.',
+	},
+	{
+		label: 'Cómo nombrar propiedades',
+		text: 'Generalmente identifica hasta tres propiedades de cualquier valor, o más si cumplen ciertos límites de valor. Su intermediario y su contador confirmarán qué regla le aplica.',
+	},
+];
+
+const faqs = [
+	{
+		q: '¿Qué es un intercambio 1031?',
+		a: 'Un intercambio 1031, llamado así por la Sección 1031 del Código de Impuestos Internos, le permite vender una propiedad de inversión y diferir el impuesto sobre las ganancias de capital, incluida la recuperación de la depreciación, al reinvertir el dinero en otros bienes raíces de tipo similar. Difiere el impuesto, no lo elimina.',
+	},
+	{
+		q: '¿De cuánto tiempo dispongo para completar un intercambio 1031?',
+		a: 'Tiene 45 días después de que cierre su venta para identificar la propiedad de reemplazo y 180 días, o hasta la fecha de entrega de su declaración de impuestos incluidas las prórrogas, si es anterior, para recibirla. Esos plazos son firmes. Si su venta cierra tarde en el año, los 180 días pueden terminar antes a menos que presente una prórroga, así que hable con su contador.',
+	},
+	{
+		q: '¿Tengo que comprar la propiedad de reemplazo en California?',
+		a: 'No. La propiedad de reemplazo puede estar en otro estado, y muchos dueños de Los Ángeles hacen intercambios fuera del estado. California tiene su propio formulario para reportar los intercambios de tipo similar, y la ganancia diferida de California generalmente sigue sujeta a impuestos si después vende la propiedad de otro estado, así que pregunte a su contador cómo le aplica.',
+	},
+	{
+		q: '¿Qué pasa si no encuentro propiedad de reemplazo a tiempo?',
+		a: 'Si se pasa de un plazo, el intercambio falla y la ganancia generalmente queda sujeta a impuestos en el año de la venta. Por eso empezamos temprano, lo animamos a hacer ofertas mientras su venta todavía está en escrow, y agregamos a cada contraoferta de su edificio una opción de extender el cierre por 30 días.',
+	},
+	{
+		q: '¿Puedo cambiar hacia algo pasivo?',
+		a: 'Sí. Muchos dueños cambian a propiedades triple net o a Fideicomisos Estatutarios de Delaware para dejar de administrar inquilinos y propiedades. Le presentamos a corredores especializados en esos tipos de activos.',
+	},
+	{
+		q: '¿Un intercambio 1031 evita la Medida ULA de la Ciudad de Los Ángeles?',
+		a: 'No, hasta donde sabemos. Un intercambio 1031 puede diferir su impuesto sobre las ganancias de capital, pero los intercambios no están entre las exenciones de la Medida ULA que enumera la Ciudad, así que el impuesto de transferencia se calcula igual sobre la venta. Confírmelo con su contador o abogado de impuestos.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	inLanguage: 'es',
+	mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+	lang="es"
+	title="Intercambio 1031 en Los Ángeles para Dueños de Apartamentos"
+	description="Ayuda con intercambios 1031 para dueños en Los Ángeles: las reglas de 45 y 180 días, nuestro proceso y ejemplos reales hacia Texas, Florida y Georgia."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="es" href={es} slot="head" />
+	<link rel="alternate" hreflang="en" href={en} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={en} slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Intercambios 1031 · En español</span>
+			<h1>Estrategia de intercambio 1031 para dueños de apartamentos en Los Ángeles</h1>
+			<p>
+				¿Va a vender un edificio de apartamentos y quiere diferir las ganancias de capital? Hemos guiado a dueños multifamiliares de Los Ángeles en
+				intercambios 1031 hacia propiedades de reemplazo en California y fuera del estado. Todos nuestros clientes vendedores que quisieron completar un
+				intercambio 1031 lo lograron.
+			</p>
+			<a href="#formulario" class="btn btn-gold">Empiece su estrategia de intercambio</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Lo básico</span>
+			<h2>¿Qué es un intercambio 1031?</h2>
+			<p>
+				Un intercambio 1031, llamado así por la Sección 1031 del Código de Impuestos Internos, le permite vender una propiedad de inversión y diferir el
+				impuesto sobre las ganancias de capital, incluida la recuperación de la depreciación, al reinvertir el dinero en otros bienes raíces de tipo similar.
+				Difiere el impuesto, no lo elimina. Para saber cómo funciona el impuesto y cuánto puede costar sin un intercambio, lea nuestra guía sobre
+				<a href={`/es/insights/${ES.impuestos}/`}>ganancias de capital y recuperación de la depreciación</a>.
+			</p>
+			<div class="rules">
+				{
+					rules.map((r) => (
+						<div class="rule">
+							<span class="rule__label">{r.label}</span>
+							<p>{r.text}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">El reloj</span>
+			<h2>Los plazos de 45 y 180 días</h2>
+			<p class="timeline-intro">
+				Cuando cierra el escrow de la propiedad que usted vende, empiezan a correr dos plazos del IRS en paralelo. Los dos son límites firmes, no pautas, y
+				por eso empezamos a buscar opciones de reemplazo antes de que cierre su venta.
+			</p>
+			<ExchangeTimeline lang="es" />
+			<p class="timeline-intro">
+				¿Vende a fin de año? Vea cómo interactúa su fecha de cierre con estos plazos en nuestro artículo sobre
+				<a href={`/es/insights/${ES.findeano}/`}>vender antes de fin de año</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Adónde puede cambiar</span>
+			<h2>Tres caminos comunes para los dueños de apartamentos en Los Ángeles</h2>
+			<div class="routes">
+				{
+					routes.map((r) => (
+						<div class="route">
+							<h3>{r.title}</h3>
+							<p>{r.body}</p>
+							<a href={r.href}>{r.cta} &rarr;</a>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Cómo funciona</span>
+			<h2>Nuestro proceso de intercambio 1031</h2>
+			<div class="steps">
+				{
+					steps.map((step, i) => (
+						<div class="step">
+							<span class="step__num">{i + 1}</span>
+							<div>
+								<h3>{step.title}</h3>
+								<p>{step.body}</p>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Por qué funciona</span>
+			<h2>El tiempo es el mayor riesgo, así que lo compramos desde el principio</h2>
+			<p>
+				La mayoría de los intercambios que fallan fallan por el calendario, no por el precio. Dos cosas en nuestro enfoque le dan margen. Primero, lo
+				ayudamos a sentirse cómodo haciendo ofertas por la propiedad de reemplazo de inmediato, para que no tenga que apurarse a encontrar un edificio el
+				último día de su plazo de 45 días. Segundo, la opción de extender el cierre por 30 días en cada contraoferta nos permite posponer su cierre cuando
+				lo necesite. Como los 45 días solo empiezan cuando cierra su venta, una extensión de 30 días le da hasta 75 días, a partir de la fecha de cierre
+				programada originalmente, para identificar una propiedad.
+			</p>
+		</div>
+	</section>
+
+	{
+		exchangeDeals.length > 0 && (
+			<section class="section section-alt">
+				<div class="container">
+					<span class="eyebrow">Intercambios que hemos manejado</span>
+					<h2>Intercambios 1031 en la práctica</h2>
+					<div class="deal-grid">
+						{exchangeDeals.map((d) => (
+							<a href={`/closed-sales/${d.slug}/`} class="deal">
+								<span class="deal__role">{d.role}</span>
+								<strong>{d.sale!.name}</strong>
+								<span class="deal__meta">
+									{d.sale!.city}, {d.sale!.state} &middot; {d.sale!.units} unidades &middot; Cerró en {formatPrice(d.sale!.price)}
+								</span>
+								<span class="deal__note">{d.note}</span>
+							</a>
+						))}
+					</div>
+					<p class="timeline-intro">Las páginas de cada venta cerrada están en inglés.</p>
+				</div>
+			</section>
+		)
+	}
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Preguntas</span>
+			<h2>Preguntas frecuentes sobre el intercambio 1031</h2>
+			<div class="faq__list">
+				{
+					faqs.map((item) => (
+						<details class="faq__item">
+							<summary>{item.q}</summary>
+							<p>{item.a}</p>
+						</details>
+					))
+				}
+			</div>
+			<p class="sources">
+				Esta página es información general, no asesoría legal ni de impuestos. Las reglas y los umbrales cambian, así que confirme todo con su contador o
+				abogado de impuestos. Fuentes (en inglés):
+				<a href="https://www.irs.gov/instructions/i8824" target="_blank" rel="noopener noreferrer">Instrucciones del IRS para el Formulario 8824</a>,
+				<a href="https://www.irs.gov/publications/p544" target="_blank" rel="noopener noreferrer">Publicación 544 del IRS</a> y el
+				<a href="https://www.ftb.ca.gov/forms/2025/2025-3840.pdf" target="_blank" rel="noopener noreferrer">Formulario 3840 de la Junta de Impuestos sobre Franquicias de California</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container links-row">
+			<a href={`/es/insights/${ES.intercambio}/`} class="btn btn-outline">¿Qué es un intercambio 1031? Lea la guía completa</a>
+			<a href="/triple-net-dst/" class="btn btn-outline">¿Cambiar a una inversión pasiva NNN o DST? (en inglés)</a>
+			<a href={`/es/insights/${ES.vender}/`} class="btn btn-outline">¿No está seguro de vender? Empiece aquí</a>
+		</div>
+	</section>
+
+	<section class="section" id="formulario">
+		<div class="container">
+			<BOVForm lang="es" heading="¿Explora un intercambio 1031?" subheading="Pida una opinión de valor gratis y confidencial, y una conversación sobre la estrategia de su intercambio, en español." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero h1 {
+		color: #fff;
+	}
+
+	.page-hero p {
+		color: #d7e0ea;
+		max-width: 700px;
+		font-size: 1.05rem;
+	}
+
+	.page-hero .btn-gold {
+		background: var(--gold);
+		color: var(--navy-dark);
+		border-color: var(--gold);
+	}
+
+	.page-hero .btn-gold:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+	}
+
+	.narrow {
+		max-width: 820px;
+	}
+
+	.rules {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		gap: 1rem;
+		margin-top: 1.75rem;
+	}
+
+	.rule {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 1px;
+		padding: 1.25rem 1.5rem;
+	}
+
+	.rule__label {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--gold-dark);
+		font-weight: 700;
+	}
+
+	.rule p {
+		margin: 0.4rem 0 0;
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.routes {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.route {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.route h3 {
+		margin-bottom: 0.5rem;
+	}
+
+	.route p {
+		flex: 1;
+		line-height: 1.65;
+	}
+
+	.route a {
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	.steps {
+		display: grid;
+		gap: 1.5rem;
+		max-width: 760px;
+		margin-top: 2rem;
+	}
+
+	.step {
+		display: flex;
+		gap: 1.25rem;
+	}
+
+	.step__num {
+		flex-shrink: 0;
+		width: 42px;
+		height: 42px;
+		border-radius: 2px;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.1rem;
+	}
+
+	.step h3 {
+		margin-bottom: 0.25rem;
+	}
+
+	.timeline-intro {
+		max-width: 700px;
+		margin-bottom: 1.5rem;
+	}
+
+	.links-row {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.cs-preview-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.cs-preview {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.75rem;
+		color: var(--ink);
+		transition: border-color 0.2s ease, transform 0.2s ease;
+	}
+
+	.cs-preview:hover {
+		border-color: var(--gold);
+		transform: translateY(-2px);
+		text-decoration: none;
+	}
+
+	.cs-preview span {
+		font-weight: 600;
+		font-size: 0.85rem;
+	}
+
+	.more-title {
+		margin-top: 2.5rem;
+	}
+
+	.deal-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+
+	.deal {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.4rem;
+		color: var(--ink);
+		transition: border-color 0.2s ease;
+	}
+
+	.deal:hover {
+		border-color: var(--gold);
+		text-decoration: none;
+	}
+
+	.deal__role {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--gold-dark);
+		font-weight: 700;
+	}
+
+	.deal strong {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+	}
+
+	.deal__meta {
+		font-size: 0.8rem;
+		color: var(--ink-light);
+	}
+
+	.deal__note {
+		font-size: 0.92rem;
+		line-height: 1.55;
+		margin-top: 0.3rem;
+	}
+
+	.faq__item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		margin-bottom: 0.75rem;
+		padding: 0 1.25rem;
+	}
+
+	.faq__item summary {
+		cursor: pointer;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+		padding-block: 1rem;
+	}
+
+	.faq__item p {
+		margin: 0 0 1rem;
+		line-height: 1.7;
+	}
+
+	.sources {
+		margin-top: 1.5rem;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+</style>

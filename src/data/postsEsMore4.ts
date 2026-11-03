@@ -43,7 +43,7 @@ export const postsEsMore4: PostEs[] = [
 			{
 				heading: 'Los argumentos a favor de vender fuera del mercado',
 				paragraphs: [
-					'Privacidad. Algunos dueños no quieren que los inquilinos, los empleados o los vecinos sepan que una venta es posible, y las familias que manejan una herencia muchas veces prefieren la discreción, como describimos en nuestra guía de [ventas de fideicomisos y herencias](/trust-and-estate-sales/) (en inglés).',
+					'Privacidad. Algunos dueños no quieren que los inquilinos, los empleados o los vecinos sepan que una venta es posible, y las familias que manejan una herencia muchas veces prefieren la discreción, como describimos en nuestra guía de [ventas de fideicomisos y herencias](/es/ventas-de-fideicomisos-y-herencias/).',
 					'Menos molestias. Con menos compradores de visita, hay menos recorridos y menos visitas a las unidades de los inquilinos.',
 					'Rapidez y sencillez. Cuando un comprador motivado ya conoce el tipo de edificio y el vecindario, el proceso puede avanzar rápido.',
 				],
@@ -266,7 +266,7 @@ export const postsEsMore4: PostEs[] = [
 				paragraphs: [
 					'La inspección del comprador y los recorridos por las unidades revelarán aparatos que faltan, viejos o que son del inquilino. Si varias unidades los tienen, un comprador puede pedir un crédito en el precio o incluir el costo en su oferta. Adelantarse cuesta menos que negociarlo en el escrow.',
 					`Antes de anunciar: recorra las unidades y anote cada estufa y cada refrigerador, con quién es el dueño y su antigüedad. Revise si hay retiros del mercado. Reemplace lo que esté descompuesto. Para los refrigeradores de los inquilinos, documente el lenguaje del contrato que exige la ley cada vez que se firme o se renueve un contrato. Guarde los registros con los expedientes de los contratos para tenerlos listos para los compradores. Nuestra [guía paso a paso para vender](${p('paso')}) enumera los demás documentos que piden los compradores.`,
-					`La AB 628 es parte de una serie de reglas recientes de habitabilidad que afectan a los edificios antiguos, junto con las [inspecciones de balcones de la SB 721](${p('sb721')}) y las [reglas de aire acondicionado y los paneles eléctricos](/insights/air-conditioning-law-los-angeles-apartment-owners-electrical-panel/) (en inglés). Los compradores calculan el costo combinado, así que una imagen clara de lo que está hecho y de lo que falta ayuda a su venta.`,
+					`La AB 628 es parte de una serie de reglas recientes de habitabilidad que afectan a los edificios antiguos, junto con las [inspecciones de balcones de la SB 721](${p('sb721')}) y las [reglas de aire acondicionado y los paneles eléctricos](/es/insights/${ES.aire}/). Los compradores calculan el costo combinado, así que una imagen clara de lo que está hecho y de lo que falta ayuda a su venta.`,
 				],
 			},
 			{

@@ -1,0 +1,174 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BOVForm from '../../../components/BOVForm.astro';
+import { site } from '../../../data/site';
+import { ES } from '../../../data/esSlugs';
+
+const en = `${site.url}/trust-and-estate-sales/`;
+const es = `${site.url}/es/ventas-de-fideicomisos-y-herencias/`;
+
+const faqs = [
+	{
+		q: '¿Trabajan directamente con fideicomisarios y albaceas, y no solo con los familiares?',
+		a: 'Sí. Trabajamos con regularidad junto a fideicomisarios, albaceas, abogados de sucesiones (probate) y contadores para asegurar que una venta cumpla con los requisitos fiduciarios y con los plazos de la corte, cuando aplican.',
+	},
+	{
+		q: '¿Y si la propiedad no se ha actualizado en décadas?',
+		a: 'Es común, y no es un obstáculo. Vendemos con regularidad edificios con mantenimiento pendiente y rentas por debajo del mercado, presentándolos con claridad a compradores de valor agregado que saben lo que están asumiendo.',
+	},
+	{
+		q: '¿Cuánto suele tardar una venta de un fideicomiso o de un probate?',
+		a: 'Depende de la herencia y de los requisitos de aprobación de la corte, pero una vez que nos contratan, avanzamos al ritmo que permiten la familia y el proceso, y no al revés.',
+	},
+	{
+		q: '¿Tengo que pasar por probate para vender un edificio heredado?',
+		a: `Depende de cómo era propietario del edificio. Si estaba en un fideicomiso en vida, el fideicomisario sucesor generalmente puede vender según los términos del fideicomiso, sin probate. Si no, generalmente pasa por probate, porque un edificio de apartamentos vale mucho más que el límite de California para herencias pequeñas. Vea nuestra guía sobre <a href="/es/insights/${ES.heredado}/">qué hacer al heredar un edificio</a>.`,
+	},
+	{
+		q: '¿Pago impuesto sobre las ganancias de capital si vendo un edificio que heredé?',
+		a: `Muchas veces muy poco. La base de un heredero en una propiedad heredada generalmente es su valor justo de mercado en la fecha del fallecimiento, así que una venta poco después normalmente produce poca o ninguna ganancia sujeta a impuestos. Confirme con su contador y conserve la documentación del valor en la fecha del fallecimiento. Vea <a href="/es/insights/${ES.hijos}/">traspasar el edificio a sus hijos o venderlo</a>.`,
+	},
+];
+
+const stripTags = (t: string) => t.replace(/<[^>]+>/g, '');
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	inLanguage: 'es',
+	mainEntity: faqs.map((f) => ({
+		'@type': 'Question',
+		name: f.q,
+		acceptedAnswer: { '@type': 'Answer', text: stripTags(f.a) },
+	})),
+};
+---
+
+<BaseLayout
+	lang="es"
+	title="Venta de Edificios de Fideicomisos y Herencias en LA"
+	description="Orientación tranquila e informada para fideicomisarios, albaceas y familias que venden un edificio heredado en Los Ángeles, por fideicomiso o probate."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="es" href={es} slot="head" />
+	<link rel="alternate" hreflang="en" href={en} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={en} slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Fideicomisos y herencias · En español</span>
+			<h1>Vender un edificio de apartamentos heredado, con cuidado</h1>
+			<p>
+				Nos especializamos en guiar a dueños de muchos años y a sus familias, que quizá venden por primera vez en décadas. Sabemos que esto es más que
+				números. Se trata de la familia, del legado y de la tranquilidad. Nuestro papel es hacer más sencillo, no más difícil, un momento que ya es
+				difícil. Troy Lucero lo atiende en español.
+			</p>
+			<a href="#formulario" class="btn btn-gold">Empiece una conversación confidencial</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Cómo ayudamos</span>
+			<h2>Una mano firme en un proceso difícil</h2>
+			<p>
+				Cuando un edificio de apartamentos pasa por un fideicomiso o una herencia, las personas responsables muchas veces están manejando el duelo, la
+				dinámica familiar y un proceso legal desconocido, todo a la vez. Trabajamos a su ritmo, explicamos cada paso en palabras sencillas y nos
+				coordinamos directamente con abogados, contadores y los demás beneficiarios, para que nadie se quede sin saber qué sigue.
+			</p>
+			<p>
+				Muchas de las propiedades que vendemos para fideicomisos y herencias no se han tocado en años: el mantenimiento pendiente, las rentas por debajo del
+				mercado y los sistemas anticuados son la norma, no la excepción. Fijamos el precio y promovemos estas propiedades con honestidad, para los compradores
+				que entienden exactamente lo que están asumiendo, para que a la familia no se le pida arreglar décadas de decisiones pospuestas antes de poder vender.
+			</p>
+			<p>
+				¿Acaba de heredar un edificio? Lea nuestra guía en palabras sencillas sobre
+				<a href={`/es/insights/${ES.heredado}/`}>qué hacer primero cuando se hereda un edificio de apartamentos</a>, desde los primeros 30 días hasta las
+				preguntas de impuestos. También puede leer cómo se decide entre
+				<a href={`/es/insights/${ES.hijos}/`}>traspasar el edificio a sus hijos o venderlo</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Preguntas frecuentes</span>
+			<h2>Preguntas sobre la venta de fideicomisos y herencias</h2>
+			<div class="faq-list">
+				{
+					faqs.map((f) => (
+						<details class="faq-item">
+							<summary>{f.q}</summary>
+							<p set:html={f.a} />
+						</details>
+					))
+				}
+			</div>
+			<p class="faq-cta">
+				Vea más respuestas en nuestras <a href="/es/preguntas-frecuentes/">preguntas frecuentes completas</a>. Esta página es información general, no asesoría
+				legal ni de impuestos. Consulte con su abogado y su contador.
+			</p>
+		</div>
+	</section>
+
+	<section class="section" id="formulario">
+		<div class="container">
+			<BOVForm
+				lang="es"
+				heading="Sin presión. Solo claridad."
+				subheading="Le explicaremos cuánto vale la propiedad y cómo es el proceso, a su ritmo y en español."
+			/>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+		font-size: 1.1rem;
+		line-height: 1.7;
+	}
+
+	.narrow {
+		max-width: 720px;
+	}
+
+	.narrow p {
+		font-size: 1.05rem;
+		line-height: 1.75;
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.15rem 1.5rem;
+	}
+
+	.faq-item summary {
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.faq-item p {
+		margin-top: 0.75rem;
+		margin-bottom: 0;
+	}
+
+	.faq-cta {
+		margin-top: 1.5rem;
+		font-size: 0.9rem;
+	}
+</style>

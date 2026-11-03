@@ -18,7 +18,19 @@ export const ES = {
 	fueraDelMercado: 'vender-edificio-de-apartamentos-fuera-del-mercado-o-anunciarlo-los-angeles',
 	servicios: 'recibos-de-servicios-fugas-de-agua-valor-edificio-de-apartamentos-los-angeles',
 	ab628: 'ley-ab-628-estufa-y-refrigerador-unidades-de-renta-california',
+	sb1365: 'sb-1365-limite-de-rentas-de-emergencia-todos-los-contratos-california',
+	aire: 'aire-acondicionado-regla-de-82-grados-edificios-de-apartamentos-los-angeles',
+	sinCorredor: 'puedo-vender-mi-edificio-de-apartamentos-sin-corredor',
+	costos: 'cuanto-cuesta-vender-un-edificio-de-apartamentos-comision-y-costos',
+	hijos: 'traspasar-el-edificio-a-mis-hijos-o-venderlo-proposicion-19',
+	inquilinosVenta: 'que-pasa-con-mis-inquilinos-si-vendo-el-edificio',
 	ulaConservar: 'medida-ula-conservar-o-vender-edificio-de-apartamentos-los-angeles',
+};
+
+// Spanish versions of the two service pages (English: /1031-exchanges/ and /trust-and-estate-sales/).
+export const PAGES_ES = {
+	intercambios: '/es/intercambios-1031/',
+	fideicomisos: '/es/ventas-de-fideicomisos-y-herencias/',
 };
 
 // Link target for the Spanish valuation form.

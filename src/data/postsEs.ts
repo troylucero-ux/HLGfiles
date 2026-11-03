@@ -6,10 +6,11 @@ import { postsEsMore } from './postsEsMore';
 import { postsEsMore2 } from './postsEsMore2';
 import { postsEsMore3 } from './postsEsMore3';
 import { postsEsMore4 } from './postsEsMore4';
+import { postsEsMore5 } from './postsEsMore5';
 
 export type PostEs = {
 	slug: string;
-	enSlug: string;
+	enSlug?: string; // the English article this one mirrors; left out for articles written in Spanish first
 	title: string;
 	seoTitle?: string; // shorter <title> tag (60 characters or fewer)
 	description: string; // also the meta description, ~155 characters
@@ -83,7 +84,7 @@ const postsEsCore: PostEs[] = [
 			{
 				heading: 'Paso 8: El cierre',
 				paragraphs: [
-					`En las últimas semanas, el comprador elimina sus condiciones y paga la compra, y el escrow registra la escritura y le envía su dinero neto. Planee los costos de la venta, que incluyen la comisión del corredor, los impuestos de transferencia y, para edificios dentro de la Ciudad de Los Ángeles con un precio superior a $5.4 millones, la [Medida ULA](/es/insights/${ES.ula}/). Si va a hacer un intercambio 1031, recuerde el reloj: tiene [45 días para identificar y 180 días para cerrar](/1031-exchanges/) (en inglés) la propiedad de reemplazo, así que tenga ese plan listo antes de anunciar el edificio. El calendario también puede afectar sus impuestos, como explicamos en nuestro artículo sobre [vender antes de fin de año](/es/insights/${ES.findeano}/).`,
+					`En las últimas semanas, el comprador elimina sus condiciones y paga la compra, y el escrow registra la escritura y le envía su dinero neto. Planee los costos de la venta, que incluyen la comisión del corredor, los impuestos de transferencia y, para edificios dentro de la Ciudad de Los Ángeles con un precio superior a $5.4 millones, la [Medida ULA](/es/insights/${ES.ula}/). Si va a hacer un intercambio 1031, recuerde el reloj: tiene [45 días para identificar y 180 días para cerrar](/es/intercambios-1031/) la propiedad de reemplazo, así que tenga ese plan listo antes de anunciar el edificio. El calendario también puede afectar sus impuestos, como explicamos en nuestro artículo sobre [vender antes de fin de año](/es/insights/${ES.findeano}/).`,
 				],
 			},
 			{
@@ -278,9 +279,9 @@ const postsEsCore: PostEs[] = [
 				heading: 'Formas en que los dueños manejan el impuesto',
 				paragraphs: [
 					'Hay maneras legítimas de reducir, diferir o programar el impuesto, y la correcta depende de su situación. Algunas de las más comunes son las siguientes.',
-					`Un intercambio 1031. Si reinvierte el dinero en una propiedad de inversión del mismo tipo (like-kind), puede diferir tanto el impuesto sobre las ganancias de capital como la recuperación de la depreciación. Las reglas son estrictas, e incluyen 45 días para identificar una propiedad de reemplazo y 180 días para cerrar. Lea nuestra [guía de intercambios 1031](/1031-exchanges/) (en inglés) y nuestro artículo sobre [intercambiar hacia propiedades triple net](/es/insights/${ES.intercambio}/).`,
+					`Un intercambio 1031. Si reinvierte el dinero en una propiedad de inversión del mismo tipo (like-kind), puede diferir tanto el impuesto sobre las ganancias de capital como la recuperación de la depreciación. Las reglas son estrictas, e incluyen 45 días para identificar una propiedad de reemplazo y 180 días para cerrar. Lea nuestra [guía de intercambios 1031](/es/intercambios-1031/) y nuestro artículo sobre [intercambiar hacia propiedades triple net](/es/insights/${ES.intercambio}/).`,
 					`El momento de la venta. Cerrar en diciembre o enero pone la ganancia en un año fiscal distinto, lo que puede importar para su ingreso total. Vea nuestro artículo sobre [el momento de la venta antes de fin de año](/es/insights/${ES.findeano}/).`,
-					'Planeación patrimonial. La propiedad heredada al fallecer generalmente recibe una nueva base ajustada al valor de ese momento (stepped-up basis), lo que puede eliminar gran parte de la ganancia para los herederos. Si usted está manejando un edificio después del fallecimiento de un dueño, vea nuestra página de [ventas de fideicomisos y herencias](/trust-and-estate-sales/) (en inglés).',
+					'Planeación patrimonial. La propiedad heredada al fallecer generalmente recibe una nueva base ajustada al valor de ese momento (stepped-up basis), lo que puede eliminar gran parte de la ganancia para los herederos. Si usted está manejando un edificio después del fallecimiento de un dueño, vea nuestra página de [ventas de fideicomisos y herencias](/es/ventas-de-fideicomisos-y-herencias/).',
 					'Registros. Conserve la documentación de las mejoras de capital que ha hecho a lo largo de los años, porque se suman a su base y reducen su ganancia.',
 				],
 			},
@@ -327,11 +328,11 @@ const postsEsCore: PostEs[] = [
 			},
 			{
 				q: '¿Cómo puedo diferir el impuesto sobre las ganancias de capital al vender mi propiedad de renta? ¿Sirve un intercambio 1031?',
-				a: 'Sí. Si reinvierte el dinero en una propiedad de inversión del mismo tipo, puede diferir tanto el impuesto sobre las ganancias de capital como la recuperación de la depreciación. Las reglas son estrictas, e incluyen 45 días para identificar una propiedad de reemplazo y 180 días para cerrar. Vea nuestra [guía de intercambios 1031](/1031-exchanges/) (en inglés).',
+				a: 'Sí. Si reinvierte el dinero en una propiedad de inversión del mismo tipo, puede diferir tanto el impuesto sobre las ganancias de capital como la recuperación de la depreciación. Las reglas son estrictas, e incluyen 45 días para identificar una propiedad de reemplazo y 180 días para cerrar. Vea nuestra [guía de intercambios 1031](/es/intercambios-1031/).',
 			},
 			{
 				q: '¿Debo impuestos sobre las ganancias de capital si heredo un edificio de apartamentos y lo vendo?',
-				a: 'La propiedad heredada al fallecer generalmente recibe una nueva base ajustada al valor de ese momento (stepped-up basis), lo que puede eliminar gran parte de la ganancia para los herederos. Si usted está manejando un edificio después del fallecimiento de un dueño, vea nuestra página de [ventas de fideicomisos y herencias](/trust-and-estate-sales/) (en inglés) y confirme los detalles con su contador o abogado de impuestos.',
+				a: 'La propiedad heredada al fallecer generalmente recibe una nueva base ajustada al valor de ese momento (stepped-up basis), lo que puede eliminar gran parte de la ganancia para los herederos. Si usted está manejando un edificio después del fallecimiento de un dueño, vea nuestra página de [ventas de fideicomisos y herencias](/es/ventas-de-fideicomisos-y-herencias/) y confirme los detalles con su contador o abogado de impuestos.',
 			},
 		],
 	},
@@ -371,7 +372,7 @@ const postsEsCore: PostEs[] = [
 					'Si el precio de su edificio está cerca de cualquiera de los dos números, vale la pena considerar varias cosas antes de anunciarlo.',
 					'Fije el precio teniendo en cuenta el umbral. A veces un ajuste modesto del precio le deja más dinero que un precio más alto que cruza la línea. Calculamos lo que usted recibiría neto con varios precios antes de anunciar el edificio, no después de estar en contrato.',
 					'Observe el calendario. Los umbrales se ajustan cada año por inflación, así que un edificio con un precio apenas arriba de una línea hoy podría quedar por debajo después del siguiente ajuste. Si está cerca, pregúntenos cómo interactúa su fecha de cierre con el ajuste.',
-					'No cuente con un intercambio 1031 para reducir el impuesto. Un intercambio 1031 puede diferir su impuesto sobre las ganancias de capital, pero no exime una venta de la Medida ULA, y los intercambios no están entre las exenciones que enumera la Ciudad. El impuesto se calcula sobre la venta de su edificio de cualquier manera. Un intercambio sigue siendo una herramienta poderosa para la ganancia, y puede leer más en nuestra guía de [intercambios 1031](/1031-exchanges/) (en inglés), pero resuelve un problema distinto.',
+					'No cuente con un intercambio 1031 para reducir el impuesto. Un intercambio 1031 puede diferir su impuesto sobre las ganancias de capital, pero no exime una venta de la Medida ULA, y los intercambios no están entre las exenciones que enumera la Ciudad. El impuesto se calcula sobre la venta de su edificio de cualquier manera. Un intercambio sigue siendo una herramienta poderosa para la ganancia, y puede leer más en nuestra guía de [intercambios 1031](/es/intercambios-1031/), pero resuelve un problema distinto.',
 					'Sepa quién es el comprador. En casos limitados, el comprador importa. Las ventas a ciertas organizaciones sin fines de lucro de vivienda asequible que califiquen, y a agencias de gobierno, están exentas de ULA, y la exención para las organizaciones de vivienda asequible calificadas hay que solicitarla por medio del Departamento de Vivienda de Los Ángeles. En la mayoría de las ventas privadas no aplicará, pero vale la pena preguntar.',
 				],
 			},
@@ -417,7 +418,7 @@ const postsEsCore: PostEs[] = [
 			},
 			{
 				q: '¿Puedo evitar el impuesto a las mansiones de Los Ángeles (Medida ULA) con un intercambio 1031?',
-				a: 'No. Un intercambio 1031 puede diferir su impuesto sobre las ganancias de capital, pero no exime una venta de la Medida ULA, y los intercambios no están entre las exenciones que enumera la Ciudad. El impuesto se calcula sobre la venta de su edificio de cualquier manera. Vea nuestra [guía de intercambios 1031](/1031-exchanges/) (en inglés) para saber qué cubre un intercambio.',
+				a: 'No. Un intercambio 1031 puede diferir su impuesto sobre las ganancias de capital, pero no exime una venta de la Medida ULA, y los intercambios no están entre las exenciones que enumera la Ciudad. El impuesto se calcula sobre la venta de su edificio de cualquier manera. Vea nuestra [guía de intercambios 1031](/es/intercambios-1031/) para saber qué cubre un intercambio.',
 			},
 			{
 				q: '¿Pago la Medida ULA si mi edificio está en West Hollywood o Santa Mónica?',
@@ -435,10 +436,10 @@ const postsEsCore: PostEs[] = [
 	},
 ];
 
-export const postsEs: PostEs[] = [...postsEsCore, ...postsEsMore, ...postsEsMore2, ...postsEsMore3, ...postsEsMore4];
+export const postsEs: PostEs[] = [...postsEsCore, ...postsEsMore, ...postsEsMore2, ...postsEsMore3, ...postsEsMore4, ...postsEsMore5];
 
 // English slug -> Spanish slug, so an English article can point to its Spanish version.
-export const esSlugFor: Record<string, string> = Object.fromEntries(postsEs.map((p) => [p.enSlug, p.slug]));
+export const esSlugFor: Record<string, string> = Object.fromEntries(postsEs.filter((p) => p.enSlug).map((p) => [p.enSlug as string, p.slug]));
 
 // 'YYYY-MM-DD' -> 'T4 2026' (trimestre), parsed by hand so the date never shifts with the build machine's timezone.
 export function formatTrimestre(iso: string): string {

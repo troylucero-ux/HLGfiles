@@ -10,13 +10,13 @@ const es = `${site.url}/es/insights/`;
 
 // Topic chips for the filter. Each topic lists the articles (by their key in ES) that belong to it.
 const topics: { id: string; label: string; keys: (keyof typeof ES)[] }[] = [
-	{ id: 'vender', label: 'Vender mi edificio', keys: ['paso', 'vender', 'corredor', 'fueraDelMercado', 'findeano', 'fourplex', 'inquilinos'] },
+	{ id: 'vender', label: 'Vender mi edificio', keys: ['paso', 'vender', 'corredor', 'fueraDelMercado', 'findeano', 'fourplex', 'inquilinos', 'sinCorredor', 'costos', 'inquilinosVenta'] },
 	{ id: 'valor', label: 'Valor y precio', keys: ['valorar', 'bov', 'servicios'] },
-	{ id: 'impuestos', label: 'Impuestos y 1031', keys: ['impuestos', 'intercambio', 'findeano', 'heredado', 'ula', 'ulaConservar'] },
+	{ id: 'impuestos', label: 'Impuestos y 1031', keys: ['impuestos', 'intercambio', 'findeano', 'heredado', 'ula', 'ulaConservar', 'costos', 'hijos'] },
 	{ id: 'ula', label: 'Medida ULA', keys: ['ula', 'ulaConservar'] },
-	{ id: 'rentas', label: 'Control de rentas', keys: ['inquilinos', 'ab1482', 'rso'] },
-	{ id: 'leyes', label: 'Leyes y cumplimiento', keys: ['sb721', 'ab628', 'ab1482', 'rso'] },
-	{ id: 'herencias', label: 'Herencias', keys: ['heredado'] },
+	{ id: 'rentas', label: 'Control de rentas', keys: ['inquilinos', 'ab1482', 'rso', 'sb1365', 'inquilinosVenta'] },
+	{ id: 'leyes', label: 'Leyes y cumplimiento', keys: ['sb721', 'ab628', 'ab1482', 'rso', 'sb1365', 'aire'] },
+	{ id: 'herencias', label: 'Herencias', keys: ['heredado', 'hijos'] },
 ];
 const keyOf = (slug: string) => Object.entries(ES).find(([, v]) => v === slug)?.[0] as keyof typeof ES | undefined;
 

@@ -142,7 +142,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 		items: [
 			{
 				q: '¿Qué es un intercambio 1031?',
-				a: 'Llamado así por la Sección 1031 del Código de Impuestos Internos, le permite vender una propiedad de inversión y diferir el impuesto sobre las ganancias de capital que de otra forma pagaría, siempre que reinvierta el dinero en otra propiedad de inversión de igual o mayor valor. El impuesto se difiere, no se elimina. Lea nuestra [guía de intercambios 1031](/1031-exchanges/) (en inglés).',
+				a: 'Llamado así por la Sección 1031 del Código de Impuestos Internos, le permite vender una propiedad de inversión y diferir el impuesto sobre las ganancias de capital que de otra forma pagaría, siempre que reinvierta el dinero en otra propiedad de inversión de igual o mayor valor. El impuesto se difiere, no se elimina. Lea nuestra [guía de intercambios 1031](/es/intercambios-1031/).',
 			},
 			{
 				q: '¿Cómo funcionan los plazos de un intercambio 1031?',
@@ -204,11 +204,11 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 			},
 			{
 				q: '¿Tengo que dar aire acondicionado en mis apartamentos?',
-				a: 'No encontramos ninguna ley de California ni de la Ciudad de Los Ángeles que exija a un dueño instalar aire acondicionado en todas las unidades. El condado de Los Ángeles tiene una regla de temperatura interior máxima de 82°F para las rentas en áreas no incorporadas, y el Concejo Municipal ha pedido a la Ciudad considerar una norma similar. Vea nuestra [guía sobre aire acondicionado](/insights/air-conditioning-law-los-angeles-apartment-owners-electrical-panel/) (en inglés).',
+				a: `No encontramos ninguna ley de California ni de la Ciudad de Los Ángeles que exija a un dueño instalar aire acondicionado en todas las unidades. El condado de Los Ángeles tiene una regla de temperatura interior máxima de 82°F para las rentas en áreas no incorporadas, y el Concejo Municipal ha pedido a la Ciudad considerar una norma similar. Vea nuestra [guía sobre aire acondicionado](/es/insights/${ES.aire}/).`,
 			},
 			{
 				q: '¿Puedo subir las rentas después de una emergencia declarada?',
-				a: 'Generalmente no más de 10%. La ley de California contra el abuso de precios limita los aumentos de renta a 10% durante 30 días después de que se declara una emergencia, o más tiempo si se prorroga, salvo que aplique una excepción. La SB 1365, firmada el 30 de septiembre de 2026, extiende esto a contratos de cualquier duración a partir de 2027. Vea [la guía de la SB 1365](/insights/sb-1365-emergency-rent-cap-la-apartment-owners/) (en inglés).',
+				a: `Generalmente no más de 10%. La ley de California contra el abuso de precios limita los aumentos de renta a 10% durante 30 días después de que se declara una emergencia, o más tiempo si se prorroga, salvo que aplique una excepción. La SB 1365, firmada el 30 de septiembre de 2026, extiende esto a contratos de cualquier duración a partir de 2027. Vea [la guía de la SB 1365](/es/insights/${ES.sb1365}/).`,
 			},
 			{
 				q: '¿El mantenimiento pendiente o una fuga de servicios afectan el precio de venta?',
