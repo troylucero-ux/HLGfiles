@@ -2,6 +2,19 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { posts } from '../../data/posts';
 import { formatQuarter } from '../../lib/format';
+import { topics, topicsFor } from '../../lib/postTopics';
+
+// Every card carries its topics and a lowercase search string (title, description, and section headings). The page filters
+// them in the browser, so all articles stay in the HTML for search engines.
+const cards = posts.map((post) => {
+	const titleText = `${post.slug.replace(/-/g, ' ')} ${post.title}`;
+	const allText = `${titleText} ${post.description}`;
+	const search = [post.title, post.description, ...post.sections.map((sec) => sec.heading)].join(' ').toLowerCase();
+	return { post, topicIds: topicsFor(titleText, allText), search };
+});
+const topicChips = topics
+	.map((t) => ({ ...t, count: cards.filter((c) => c.topicIds.includes(t.id)).length }))
+	.filter((t) => t.count > 0);
 ---
 
 <BaseLayout
@@ -28,9 +41,26 @@ import { formatQuarter } from '../../lib/format';
 						</p>
 					</div>
 				) : (
-					<div class="post-grid">
-						{posts.map((post) => (
-							<a href={`/insights/${post.slug}/`} class="post-card">
+					<div class="insights-tools" id="insights-tools">
+						<label class="insights-search" for="insights-q">
+							<span class="visually-hidden">Search articles</span>
+							<input id="insights-q" type="search" placeholder="Search articles, for example SB 721, 1031 exchange, or rent increase" autocomplete="off" />
+						</label>
+						<div class="topic-chips" role="group" aria-label="Filter by topic">
+							<button type="button" class="chip is-active" data-topic="" aria-pressed="true">
+								All <span class="chip__n">{cards.length}</span>
+							</button>
+							{topicChips.map((t) => (
+								<button type="button" class="chip" data-topic={t.id} aria-pressed="false">
+									{t.label} <span class="chip__n">{t.count}</span>
+								</button>
+							))}
+						</div>
+						<p class="insights-status" id="insights-status" aria-live="polite"></p>
+					</div>
+					<div class="post-grid" id="post-grid">
+						{cards.map(({ post, topicIds, search }) => (
+							<a href={`/insights/${post.slug}/`} class="post-card" data-topics={topicIds.join(' ')} data-search={search}>
 								{post.image && <img class="post-card__image" src={post.image.src} alt={post.image.alt} width={post.image.width} height={post.image.height} loading="lazy" />}
 								<div class="post-card__body">
 									<span class="post-card__date">{formatQuarter(post.date)}</span>
@@ -40,12 +70,73 @@ import { formatQuarter } from '../../lib/format';
 								</div>
 							</a>
 						))}
+						<div class="insights-empty" id="insights-empty" hidden>
+							<p>No articles match that search. Try a shorter phrase or pick a topic above, or <a href="/contact/">ask us directly</a>.</p>
+						</div>
 					</div>
 				)
 			}
 		</div>
 	</section>
 </BaseLayout>
+
+<script is:inline>
+	(() => {
+		const grid = document.getElementById('post-grid');
+		if (!grid) return;
+		const cards = Array.from(grid.querySelectorAll('.post-card'));
+		const input = document.getElementById('insights-q');
+		const chips = Array.from(document.querySelectorAll('.chip'));
+		const status = document.getElementById('insights-status');
+		const empty = document.getElementById('insights-empty');
+		let topic = '';
+
+		const apply = () => {
+			const terms = input.value.toLowerCase().split(/s+/).filter(Boolean);
+			let shown = 0;
+			for (const c of cards) {
+				const okTopic = !topic || (c.dataset.topics || '').split(' ').includes(topic);
+				const hay = c.dataset.search || '';
+				const okSearch = terms.every((t) => hay.includes(t));
+				const show = okTopic && okSearch;
+				c.hidden = !show;
+				if (show) shown++;
+			}
+			empty.hidden = shown !== 0;
+			const filtering = topic || terms.length;
+			status.textContent = filtering ? shown + (shown === 1 ? ' article' : ' articles') + ' found' : '';
+			try {
+				const url = new URL(location.href);
+				topic ? url.searchParams.set('topic', topic) : url.searchParams.delete('topic');
+				input.value.trim() ? url.searchParams.set('q', input.value.trim()) : url.searchParams.delete('q');
+				history.replaceState(null, '', url);
+			} catch (e) {}
+		};
+
+		const setTopic = (id) => {
+			topic = id;
+			for (const b of chips) {
+				const on = (b.dataset.topic || '') === id;
+				b.classList.toggle('is-active', on);
+				b.setAttribute('aria-pressed', on ? 'true' : 'false');
+			}
+		};
+
+		chips.forEach((b) =>
+			b.addEventListener('click', () => {
+				setTopic(b.dataset.topic || '');
+				apply();
+			}),
+		);
+		input.addEventListener('input', apply);
+
+		const params = new URLSearchParams(location.search);
+		const t = params.get('topic');
+		if (t && chips.some((b) => b.dataset.topic === t)) setTopic(t);
+		if (params.get('q')) input.value = params.get('q');
+		apply();
+	})();
+</script>
 
 <style>
 	.page-hero {
@@ -64,6 +155,95 @@ import { formatQuarter } from '../../lib/format';
 		border-top: 3px solid var(--gold);
 		border-radius: 1px;
 		padding: 2.75rem;
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+	}
+
+	.insights-tools {
+		max-width: 980px;
+		margin-bottom: 1.75rem;
+	}
+
+	.insights-search input {
+		width: 100%;
+		padding: 0.9rem 1.1rem;
+		font: inherit;
+		font-size: 1rem;
+		color: var(--ink);
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+	}
+
+	.insights-search input:focus {
+		outline: 2px solid var(--gold);
+		outline-offset: 1px;
+		border-color: var(--gold);
+	}
+
+	.topic-chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	.chip {
+		font: inherit;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--navy);
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 999px;
+		padding: 0.4rem 0.95rem;
+		cursor: pointer;
+		transition: border-color 0.15s ease, background 0.15s ease;
+	}
+
+	.chip:hover {
+		border-color: var(--gold);
+	}
+
+	.chip.is-active {
+		background: var(--navy);
+		border-color: var(--navy);
+		color: #fff;
+	}
+
+	.chip__n {
+		margin-left: 0.2rem;
+		font-weight: 500;
+		opacity: 0.65;
+	}
+
+	.insights-status {
+		min-height: 1.3em;
+		margin: 0.9rem 0 0;
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	.insights-empty {
+		background: var(--paper-alt);
+		border-top: 3px solid var(--gold);
+		padding: 1.5rem 1.75rem;
+	}
+
+	.insights-empty p {
+		margin: 0;
+	}
+
+	.post-card[hidden],
+	.insights-empty[hidden] {
+		display: none;
 	}
 
 	.post-grid {
