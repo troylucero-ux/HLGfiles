@@ -2,6 +2,9 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import BOVForm from '../../../components/BOVForm.astro';
 import { site, team } from '../../../data/site';
+import { postsEs } from '../../../data/postsEs';
+
+const guides = postsEs;
 
 const troy = team.find((m) => m.slug === 'troy-lucero')!;
 const en = `${site.url}/spanish-speaking-apartment-broker-los-angeles/`;
@@ -120,6 +123,17 @@ const faqSchema = {
 		</div>
 	</section>
 
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Guías en español</span>
+			<h2>Lea más sobre cómo vender</h2>
+			<ul class="check-list">
+				{guides.map((g) => <li><a href={`/es/insights/${g.slug}/`}>{g.title}</a></li>)}
+			</ul>
+			<p class="faq-cta"><a href="/es/insights/">Ver todos los artículos en español</a></p>
+		</div>
+	</section>
+
 	<section class="section section-alt">
 		<div class="container narrow">
 			<span class="eyebrow">Preguntas frecuentes</span>
@@ -221,6 +235,10 @@ const faqSchema = {
 	.faq-item p {
 		margin-top: 0.75rem;
 		margin-bottom: 0;
+	}
+
+	.faq-cta {
+		margin-top: 1.5rem;
 	}
 
 	.disclaimer {

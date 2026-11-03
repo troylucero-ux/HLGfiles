@@ -9,7 +9,9 @@ import SubmarketStatsTable from '../../components/SubmarketStatsTable.astro';
 import DepreciationRecaptureExample from '../../components/DepreciationRecaptureExample.astro';
 import MarketUpdateCharts from '../../components/MarketUpdateCharts.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import LanguageSwitch from '../../components/LanguageSwitch.astro';
 import { posts, relatedPostSlugs, postFaqs } from '../../data/posts';
+import { esSlugFor } from '../../data/postsEs';
 import { site } from '../../data/site';
 import { toParts, stripLinks } from '../../lib/inlineLinks';
 import { formatQuarter } from '../../lib/format';
@@ -22,6 +24,9 @@ export function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+
+// Set when this article also has a Spanish version.
+const esSlug = esSlugFor[post.slug];
 
 // Hand-picked onward reading for this article. Posts that are not live yet are skipped.
 const related = (relatedPostSlugs[post.slug] ?? []).map((slug) => posts.find((p) => p.slug === slug)).filter((p): p is NonNullable<typeof p> => Boolean(p));
@@ -65,6 +70,9 @@ const articleSchema = {
 <BaseLayout title={post.seoTitle ?? post.title} description={post.description} image={post.image?.src}>
 	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
 	{faqSchema && <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />}
+	{esSlug && <link rel="alternate" hreflang="en" href={`${site.url}/insights/${post.slug}/`} slot="head" />}
+	{esSlug && <link rel="alternate" hreflang="es" href={`${site.url}/es/insights/${esSlug}/`} slot="head" />}
+	{esSlug && <link rel="alternate" hreflang="x-default" href={`${site.url}/insights/${post.slug}/`} slot="head" />}
 
 	<article class="section">
 		<div class="container post-detail">
@@ -72,6 +80,7 @@ const articleSchema = {
 			<span class="eyebrow">Insights</span>
 			<h1>{post.title}</h1>
 			<p class="post-detail__date">{dateFormatted}</p>
+			{esSlug && <LanguageSwitch to="es" href={`/es/insights/${esSlug}/`} />}
 			{post.image && <img class="post-detail__image" src={post.image.src} alt={post.image.alt} width={post.image.width} height={post.image.height} loading="eager" />}
 
 			<div class="post-detail__body">

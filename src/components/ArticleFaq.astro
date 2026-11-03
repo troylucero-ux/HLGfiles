@@ -6,13 +6,14 @@ import { toParts } from '../lib/inlineLinks';
 
 interface Props {
 	faqs: { q: string; a: string }[];
+	heading?: string;
 }
 
-const { faqs } = Astro.props;
+const { faqs, heading = 'Frequently Asked Questions' } = Astro.props;
 ---
 
 <section class="article-faq" aria-labelledby="article-faq-heading">
-	<h2 id="article-faq-heading">Frequently Asked Questions</h2>
+	<h2 id="article-faq-heading">{heading}</h2>
 	<div class="faq-list">
 		{
 			faqs.map((f) => (

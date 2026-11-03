@@ -1,0 +1,38 @@
+---
+// Notice at the top of an Insights article that points to the same article in the other language.
+interface Props {
+	to: 'es' | 'en';
+	href: string;
+}
+
+const { to, href } = Astro.props;
+const text =
+	to === 'es'
+		? { message: 'Este artículo también está disponible en español.', cta: 'Leer en español' }
+		: { message: 'This article is also available in English.', cta: 'Read in English' };
+---
+
+<aside class="lang-switch" lang={to}>
+	<p>{text.message}</p>
+	<a href={href} hreflang={to} class="btn btn-outline">{text.cta} &rarr;</a>
+</aside>
+
+<style>
+	.lang-switch {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem 1.25rem;
+		background: var(--paper-alt);
+		border-left: 3px solid var(--gold);
+		padding: 0.9rem 1.25rem;
+		margin: 0 0 1.75rem;
+	}
+
+	.lang-switch p {
+		margin: 0;
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+</style>

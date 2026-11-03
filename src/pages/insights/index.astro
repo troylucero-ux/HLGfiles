@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { posts, postFaqs } from '../../data/posts';
+import { site } from '../../data/site';
 import { formatQuarter } from '../../lib/format';
 import { topics, topicsFor } from '../../lib/postTopics';
 
@@ -23,11 +24,16 @@ const topicChips = topics
 	title="LA Multifamily Market Insights | Highlight Multifamily Group"
 	description="LA multifamily market insights from Highlight Multifamily Group: legislative updates, submarket trends, and guidance for apartment building owners."
 >
+	<link rel="alternate" hreflang="en" href={`${site.url}/insights/`} slot="head" />
+	<link rel="alternate" hreflang="es" href={`${site.url}/es/insights/`} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={`${site.url}/insights/`} slot="head" />
+
 	<section class="page-hero">
 		<div class="container">
 			<span class="eyebrow">Insights</span>
 			<h1>LA Multifamily Market Insights</h1>
 			<p>Legislative updates, submarket trends, and practical guidance for apartment building owners across Los Angeles.</p>
+			<p class="lang-link"><a href="/es/insights/" hreflang="es" lang="es">Artículos en español: guías para vender, impuestos, control de rentas y la Medida ULA &rarr;</a></p>
 		</div>
 	</section>
 
@@ -94,7 +100,7 @@ const topicChips = topics
 		let topic = '';
 
 		const apply = () => {
-			const terms = input.value.toLowerCase().split(/s+/).filter(Boolean);
+			const terms = input.value.toLowerCase().split(/\s+/).filter(Boolean);
 			let shown = 0;
 			for (const c of cards) {
 				const okTopic = !topic || (c.dataset.topics || '').split(' ').includes(topic);
@@ -153,6 +159,11 @@ const topicChips = topics
 
 	.page-hero p {
 		max-width: 700px;
+	}
+
+	.lang-link {
+		margin-top: 1rem;
+		font-weight: 600;
 	}
 
 	.empty-state {

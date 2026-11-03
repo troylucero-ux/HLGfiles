@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import BOVForm from '../../../components/BOVForm.astro';
+import ArticleFaq from '../../../components/ArticleFaq.astro';
+import LanguageSwitch from '../../../components/LanguageSwitch.astro';
+import { postsEs, formatTrimestre } from '../../../data/postsEs';
+import { site } from '../../../data/site';
+import { toParts, stripLinks } from '../../../lib/inlineLinks';
+
+export function getStaticPaths() {
+	return postsEs.map((post) => ({
+		params: { slug: post.slug },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+
+const related = post.related.map((slug) => postsEs.find((p) => p.slug === slug)).filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+const enUrl = `${site.url}/insights/${post.enSlug}/`;
+const esUrl = `${site.url}/es/insights/${post.slug}/`;
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	inLanguage: 'es',
+	mainEntity: post.faqs.map((f) => ({
+		'@type': 'Question',
+		name: f.q,
+		acceptedAnswer: { '@type': 'Answer', text: stripLinks(f.a) },
+	})),
+};
+
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	inLanguage: 'es',
+	headline: post.title,
+	description: post.description,
+	datePublished: post.date,
+	author: { '@type': 'Organization', name: site.name },
+	publisher: { '@type': 'Organization', name: site.name },
+};
+---
+
+<BaseLayout lang="es" title={post.seoTitle ?? post.title} description={post.description}>
+	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="es" href={esUrl} slot="head" />
+	<link rel="alternate" hreflang="en" href={enUrl} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={enUrl} slot="head" />
+
+	<article class="section">
+		<div class="container post-detail">
+			<Breadcrumbs items={[{ label: 'Inicio', href: '/' }, { label: 'Artículos en español', href: '/es/insights/' }, { label: post.title }]} />
+			<span class="eyebrow">Artículos</span>
+			<h1>{post.title}</h1>
+			<p class="post-detail__date">{formatTrimestre(post.date)}</p>
+			<LanguageSwitch to="en" href={`/insights/${post.enSlug}/`} />
+
+			<div class="post-detail__body">
+				{
+					post.sections.map((s) => (
+						<>
+							<h2>{s.heading}</h2>
+							{s.paragraphs.map((p) => (
+								<p>{toParts(p).map((part) => (part.href ? (part.href.startsWith('http') ? <a href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a> : <a href={part.href}>{part.text}</a>) : part.text))}</p>
+							))}
+						</>
+					))
+				}
+			</div>
+
+			<ArticleFaq faqs={post.faqs} heading="Preguntas frecuentes" />
+
+			{
+				related.length > 0 && (
+					<aside class="related" aria-labelledby="related-heading">
+						<h2 id="related-heading">Lecturas relacionadas</h2>
+						<ul class="related__list">
+							{related.map((r) => (
+								<li>
+									<a href={`/es/insights/${r.slug}/`}>{r.title}</a>
+									<span>{r.description}</span>
+								</li>
+							))}
+						</ul>
+						<p class="related__explore">
+							Explore más: <a href="/es/vender-edificio-de-apartamentos-los-angeles/">Vender su edificio con un corredor que habla español</a> · <a href="/property-value/">Calculadora de valor (en inglés)</a> · <a href="/measure-ula-calculator/">Calculadora de la Medida ULA (en inglés)</a> · <a href="/1031-exchanges/">Intercambios 1031 (en inglés)</a>
+						</p>
+					</aside>
+				)
+			}
+
+			<div class="post-detail__links">
+				<a href="/es/insights/" class="btn btn-outline">Más artículos</a>
+				<a href="#formulario" class="btn btn-gold">Pida una opinión de valor gratis</a>
+			</div>
+		</div>
+	</article>
+
+	<section class="section section-alt" id="formulario">
+		<div class="container">
+			<BOVForm lang="es" heading="Pida una opinión de valor gratis" subheading="Sin presión. Solo datos, en español." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.post-detail {
+		max-width: 760px;
+	}
+
+	.post-detail__date {
+		color: var(--ink-light);
+		font-size: 0.85rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		margin-top: -0.5rem;
+	}
+
+	.post-detail__body {
+		font-size: 1.05rem;
+		line-height: 1.75;
+		margin-top: 2rem;
+	}
+
+	.post-detail__body h2 {
+		margin-top: 2.25rem;
+		font-size: 1.5rem;
+	}
+
+	.related {
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.related h2 {
+		font-size: 1.25rem;
+		margin: 0 0 1rem;
+	}
+
+	.related__list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.related__list li {
+		display: grid;
+		gap: 0.2rem;
+	}
+
+	.related__list a {
+		font-weight: 600;
+	}
+
+	.related__list span {
+		color: var(--ink-light);
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.related__explore {
+		margin-top: 1.5rem;
+		font-size: 0.95rem;
+		font-weight: 600;
+	}
+
+	.post-detail__links {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+		margin: 2.5rem 0 0;
+	}
+</style>

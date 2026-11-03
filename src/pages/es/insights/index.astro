@@ -1,0 +1,128 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BOVForm from '../../../components/BOVForm.astro';
+import { postsEs, formatTrimestre } from '../../../data/postsEs';
+import { site } from '../../../data/site';
+
+const en = `${site.url}/insights/`;
+const es = `${site.url}/es/insights/`;
+---
+
+<BaseLayout
+	lang="es"
+	title="Artículos para Dueños de Edificios en Los Ángeles"
+	description="Guías en español para dueños de edificios de apartamentos en Los Ángeles: cómo vender, impuestos, control de rentas y la Medida ULA."
+>
+	<link rel="alternate" hreflang="es" href={es} slot="head" />
+	<link rel="alternate" hreflang="en" href={en} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={en} slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">En español</span>
+			<h1>Artículos para dueños de edificios de apartamentos en Los Ángeles</h1>
+			<p>
+				Guías claras sobre cómo vender un edificio, los impuestos de una venta, el control de rentas y la Medida ULA. ¿Prefiere leerlas en inglés?
+				Tenemos muchos más en la <a href="/insights/" hreflang="en" lang="en">biblioteca de artículos en inglés</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<div class="post-grid">
+				{
+					postsEs.map((post) => (
+						<a href={`/es/insights/${post.slug}/`} class="post-card">
+							<div class="post-card__body">
+								<span class="post-card__date">{formatTrimestre(post.date)}</span>
+								<h2>{post.title}</h2>
+								<p>{post.description}</p>
+								<span class="post-card__cta">Leer el artículo &rarr;</span>
+							</div>
+						</a>
+					))
+				}
+			</div>
+			<p class="note">Estamos agregando más artículos en español. Si tiene una pregunta, <a href="/es/vender-edificio-de-apartamentos-los-angeles/">escríbanos o llámenos</a>: Troy Lucero le responde en español.</p>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="formulario">
+		<div class="container">
+			<BOVForm lang="es" heading="Pida una opinión de valor gratis" subheading="Sin presión. Solo datos, en español." />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: var(--paper-alt);
+		padding-block: 3rem;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.page-hero p {
+		max-width: 700px;
+	}
+
+	.post-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+		max-width: 980px;
+	}
+
+	.post-card {
+		display: block;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		color: var(--ink);
+		transition: border-color 0.2s ease, transform 0.2s ease;
+	}
+
+	.post-card:hover {
+		border-color: var(--gold);
+		transform: translateY(-2px);
+		text-decoration: none;
+	}
+
+	.post-card__body {
+		padding: 1.75rem 2rem;
+	}
+
+	.post-card__body h2 {
+		font-size: 1.45rem;
+		margin: 0.35rem 0 0.6rem;
+	}
+
+	.post-card__body p {
+		margin: 0 0 1rem;
+		color: var(--ink-soft);
+	}
+
+	.post-card__date {
+		font-size: 0.75rem;
+		color: var(--ink-light);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.post-card__cta {
+		font-weight: 600;
+		font-size: 0.9rem;
+		color: var(--navy);
+	}
+
+	.note {
+		margin-top: 2rem;
+		max-width: 980px;
+	}
+
+	@media (max-width: 700px) {
+		.post-card__body {
+			padding: 1.25rem 1.5rem 1.5rem;
+		}
+	}
+</style>
