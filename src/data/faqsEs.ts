@@ -154,7 +154,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 			},
 			{
 				q: '¿Puedo vender mi edificio de apartamentos y comprar una propiedad triple net (NNN)?',
-				a: `Sí. Según el código fiscal actual, las propiedades multifamiliares y las comerciales califican entre sí como de tipo similar, y eso es lo que hace posible un intercambio de apartamentos a NNN. En un contrato triple net, el inquilino paga los impuestos a la propiedad, el seguro y el mantenimiento. Vea [intercambios 1031 hacia propiedades triple net](${p('intercambio')}) y nuestra [página de triple net y DST](/triple-net-dst/) (en inglés).`,
+				a: `Sí. Según el código fiscal actual, las propiedades multifamiliares y las comerciales califican entre sí como de tipo similar, y eso es lo que hace posible un intercambio de apartamentos a NNN. En un contrato triple net, el inquilino paga los impuestos a la propiedad, el seguro y el mantenimiento. Vea [intercambios 1031 hacia propiedades triple net](${p('intercambio')}) y nuestra [página de triple net y DST](/es/triple-net-dst/).`,
 			},
 			{
 				q: '¿Toco el dinero en un intercambio 1031?',

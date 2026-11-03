@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
+import { site } from '../../data/site';
 
 const helpItems = [
 	{
@@ -40,6 +41,9 @@ const faqSchema = {
 	description="Highlight Multifamily Group connects LA apartment owners with trusted NNN commercial brokers and DST professionals for passive, zero-management investments."
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="en" href={`${site.url}/triple-net-dst/`} slot="head" />
+	<link rel="alternate" hreflang="es" href={`${site.url}/es/triple-net-dst/`} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={`${site.url}/triple-net-dst/`} slot="head" />
 	<section class="page-hero">
 		<div class="container">
 			<span class="eyebrow">Triple Net (NNN) & DSTs</span>
@@ -50,6 +54,7 @@ const faqSchema = {
 				so you're never navigating the process alone.
 			</p>
 			<a href="/contact/?intent=nnn-dst" class="btn btn-gold">Talk Through Your Options</a>
+			<p class="lang-link"><a href="/es/triple-net-dst/" hreflang="es" lang="es">Esta página en español &rarr;</a></p>
 		</div>
 	</section>
 
@@ -98,6 +103,11 @@ const faqSchema = {
 </BaseLayout>
 
 <style>
+	.lang-link {
+		margin-top: 1rem;
+		font-weight: 600;
+	}
+
 	.page-hero {
 		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
 		color: #fff;

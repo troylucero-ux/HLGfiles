@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BOVForm from '../../../components/BOVForm.astro';
+import { site } from '../../../data/site';
+import { ES, PAGES_ES } from '../../../data/esSlugs';
+
+const en = `${site.url}/triple-net-dst/`;
+const es = `${site.url}/es/triple-net-dst/`;
+
+const helpItems = [
+	{
+		title: 'Presentaciones a corredores triple net (NNN)',
+		body: 'Cuando usted esté listo para dejar la administración activa de apartamentos, le presentamos a corredores comerciales de NNN de confianza en los mercados donde quiere estar, en cualquier parte del país, no solo en Los Ángeles. Nos mantenemos involucrados durante todo el proceso y nos coordinamos directamente con su corredor NNN, para que usted siempre sepa en qué punto están las cosas, incluso cuando se eliminan las condiciones de la venta de su edificio.',
+	},
+	{
+		title: 'Presentaciones para colocar un DST',
+		body: 'Un Fideicomiso Estatutario de Delaware (DST) permite que el dinero de un intercambio 1031 pase a bienes raíces de nivel institucional sin responsabilidades de propietario. Le explicamos cómo funciona un DST en palabras sencillas y luego lo conectamos con un profesional de DST que maneja directamente la oferta, la estructura y la ejecución.',
+	},
+];
+
+const basics = [
+	{
+		title: 'Qué es una propiedad triple net (NNN)',
+		body: 'En un contrato triple net, el inquilino, no el dueño, paga los impuestos a la propiedad, el seguro y el mantenimiento. Muchas veces la propiedad está arrendada a un solo inquilino comercial con un contrato a largo plazo, así que desaparece la administración diaria de inquilinos.',
+	},
+	{
+		title: 'Qué es un DST',
+		body: 'Un DST le permite comprar una participación fraccionada en una propiedad más grande, con administración profesional, como inversionista pasivo. Las participaciones en un DST pueden calificar como propiedad de reemplazo en un intercambio 1031.',
+	},
+];
+
+const faqs = [
+	{
+		q: '¿Ustedes mismos venden DST o propiedades NNN?',
+		a: 'No. Las participaciones en un DST son valores (securities), así que las ofrecen y las venden los patrocinadores de DST y los profesionales con licencia de valores, no nuestro equipo de bienes raíces. Le presentamos a esos especialistas y seguimos involucrados de nuestro lado de la operación, sobre todo si usted hace un intercambio desde una propiedad que nosotros estamos vendiendo.',
+	},
+	{
+		q: '¿Esto es solo para clientes de intercambio 1031?',
+		a: 'La mayoría de los dueños a quienes presentamos a especialistas de NNN y DST están haciendo un intercambio desde un edificio de apartamentos, pero no necesita vender con nosotros para pedir una presentación.',
+	},
+	{
+		q: '¿Puedo hacer un intercambio 1031 de mi edificio de apartamentos hacia una propiedad triple net?',
+		a: 'Sí. Según el código fiscal actual, las propiedades multifamiliares y las comerciales califican entre sí como de tipo similar, y eso es lo que hace posible un intercambio de apartamentos a NNN. Los plazos son estrictos: 45 días para identificar y 180 días para cerrar.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	inLanguage: 'es',
+	mainEntity: faqs.map((f) => ({
+		'@type': 'Question',
+		name: f.q,
+		acceptedAnswer: { '@type': 'Answer', text: f.a },
+	})),
+};
+---
+
+<BaseLayout
+	lang="es"
+	title="Propiedades Triple Net (NNN) y DST para Dueños en LA"
+	description="Highlight Multifamily Group conecta a dueños de apartamentos en Los Ángeles con corredores NNN y profesionales de DST de confianza para inversiones pasivas."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+	<link rel="alternate" hreflang="es" href={es} slot="head" />
+	<link rel="alternate" hreflang="en" href={en} slot="head" />
+	<link rel="alternate" hreflang="x-default" href={en} slot="head" />
+
+	<section class="page-hero">
+		<div class="container">
+			<span class="eyebrow">Triple net (NNN) y DST · En español</span>
+			<h1>Presentaciones para inversiones pasivas: NNN y DST</h1>
+			<p>
+				No todos los dueños de apartamentos quieren seguir administrando propiedades después de una venta. Para los clientes que exploran un intercambio
+				1031 o una nueva inversión, los conectamos con especialistas de confianza en bienes raíces comerciales triple net (NNN) y en Fideicomisos
+				Estatutarios de Delaware (DST), y nos mantenemos involucrados para que nunca navegue el proceso solo. Troy Lucero lo atiende en español.
+			</p>
+			<a href="#formulario" class="btn btn-gold">Conversemos sobre sus opciones</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Lo básico</span>
+			<h2>Qué son las dos opciones</h2>
+			<div class="help-grid">
+				{
+					basics.map((item) => (
+						<div class="help-card">
+							<h3>{item.title}</h3>
+							<p>{item.body}</p>
+						</div>
+					))
+				}
+			</div>
+			<p class="basics-links">
+				Lea cómo funciona un
+				<a href={PAGES_ES.intercambios}>intercambio 1031</a>
+				y por qué muchos dueños en Los Ángeles
+				<a href={`/es/insights/${ES.intercambio}/`}>cambian de apartamentos a propiedades triple net</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">Cómo ayudamos</span>
+			<h2>Dos caminos hacia una inversión pasiva</h2>
+			<div class="help-grid">
+				{
+					helpItems.map((item) => (
+						<div class="help-card">
+							<h3>{item.title}</h3>
+							<p>{item.body}</p>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Preguntas frecuentes</span>
+			<h2>Preguntas sobre NNN y DST</h2>
+			<div class="faq-list">
+				{
+					faqs.map((f) => (
+						<details class="faq-item">
+							<summary>{f.q}</summary>
+							<p>{f.a}</p>
+						</details>
+					))
+				}
+			</div>
+			<p class="faq-cta">
+				Vea más respuestas en nuestras <a href="/es/preguntas-frecuentes/">preguntas frecuentes completas</a>. Esta página es información general, no una oferta
+				de valores ni asesoría legal o de impuestos. Consulte con su contador y su abogado.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="formulario">
+		<div class="container">
+			<BOVForm
+				lang="es"
+				heading="Explore las opciones NNN y DST"
+				subheading="Cuéntenos sus metas y su calendario, y le explicaremos qué le conviene y lo conectaremos con el especialista adecuado, en español."
+			/>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.page-hero {
+		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.page-hero h1 {
+		color: #fff;
+	}
+
+	.page-hero p {
+		color: #d7e0ea;
+		max-width: 700px;
+		font-size: 1.05rem;
+		line-height: 1.7;
+	}
+
+	.page-hero .btn-gold {
+		background: var(--gold);
+		color: var(--navy-dark);
+		border-color: var(--gold);
+	}
+
+	.page-hero .btn-gold:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+	}
+
+	.help-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 2rem;
+		margin-top: 2rem;
+	}
+
+	.help-card {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.75rem;
+	}
+
+	.help-card h3 {
+		font-size: 1.2rem;
+		margin-bottom: 0.5rem;
+	}
+
+	.narrow {
+		max-width: 720px;
+	}
+
+	.faq-list {
+		display: grid;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.faq-item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		padding: 1.15rem 1.5rem;
+	}
+
+	.faq-item summary {
+		font-weight: 600;
+		cursor: pointer;
+		color: var(--navy-dark);
+	}
+
+	.faq-item p {
+		margin-top: 0.75rem;
+		margin-bottom: 0;
+	}
+
+	.faq-cta {
+		margin-top: 1.5rem;
+		font-size: 0.9rem;
+	}
+</style>
+
+<style>
+	.basics-links {
+		margin-top: 1.5rem;
+	}
+</style>

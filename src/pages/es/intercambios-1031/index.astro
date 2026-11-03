@@ -5,7 +5,7 @@ import ExchangeTimeline from '../../../components/ExchangeTimeline.astro';
 import { closings } from '../../../data/closings';
 import { site } from '../../../data/site';
 import { formatPrice } from '../../../lib/format';
-import { ES } from '../../../data/esSlugs';
+import { ES, PAGES_ES } from '../../../data/esSlugs';
 
 const en = `${site.url}/1031-exchanges/`;
 const es = `${site.url}/es/intercambios-1031/`;
@@ -62,8 +62,8 @@ const routes = [
 	{
 		title: 'Fideicomisos Estatutarios de Delaware (DST)',
 		body: 'Un DST le permite comprar una participación fraccionada en una propiedad más grande con administración profesional, como inversionista pasivo, y las participaciones en un DST pueden calificar como propiedad de reemplazo en un intercambio. Le presentamos a corredores especializados en ellos.',
-		href: '/triple-net-dst/',
-		cta: 'Conozca las opciones NNN y DST (en inglés)',
+		href: PAGES_ES.tripleNet,
+		cta: 'Conozca las opciones NNN y DST',
 	},
 ];
 
@@ -304,7 +304,7 @@ const faqSchema = {
 	<section class="section section-alt">
 		<div class="container links-row">
 			<a href={`/es/insights/${ES.intercambio}/`} class="btn btn-outline">¿Qué es un intercambio 1031? Lea la guía completa</a>
-			<a href="/triple-net-dst/" class="btn btn-outline">¿Cambiar a una inversión pasiva NNN o DST? (en inglés)</a>
+			<a href={PAGES_ES.tripleNet} class="btn btn-outline">¿Cambiar a una inversión pasiva NNN o DST?</a>
 			<a href={`/es/insights/${ES.vender}/`} class="btn btn-outline">¿No está seguro de vender? Empiece aquí</a>
 		</div>
 	</section>

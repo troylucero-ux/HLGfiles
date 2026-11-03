@@ -29,13 +29,13 @@ const services = [
 		title: 'Intercambios 1031',
 		body: 'Estrategia y ejecución para dueños que pasan su capital de un edificio multifamiliar a otro, incluso a propiedades de reemplazo en otros mercados o fuera de California.',
 		href: PAGES_ES.intercambios,
-		more: 'Más información',
+		more: 'Más sobre intercambios 1031',
 	},
 	{
 		title: 'Ventas de fideicomisos y herencias',
 		body: 'Orientación tranquila e informada para fideicomisarios, albaceas y familias que venden un edificio de apartamentos heredado.',
 		href: PAGES_ES.fideicomisos,
-		more: 'Más información',
+		more: 'Más sobre fideicomisos y herencias',
 	},
 	{
 		title: 'Terrenos para desarrollo',
@@ -48,7 +48,8 @@ const services = [
 	{
 		title: 'Triple net (NNN) y DST',
 		body: 'Presentaciones a corredores de NNN y profesionales de DST de confianza para dueños que hacen un intercambio hacia una inversión pasiva, sin administración.',
-		href: '/triple-net-dst/',
+		href: PAGES_ES.tripleNet,
+		more: 'Más sobre triple net y DST',
 	},
 ];
 
@@ -120,6 +121,8 @@ const webPageSchema = {
 			<div class="who-we-are__photo">
 				<img
 					src="/images/bio/josh-kaplan-troy-lucero-together.webp"
+					srcset="/images/bio/josh-kaplan-troy-lucero-together-480.webp 480w, /images/bio/josh-kaplan-troy-lucero-together.webp 860w"
+					sizes="(max-width: 800px) 90vw, 440px"
 					alt="Josh Kaplan y Troy Lucero, cofundadores de Highlight Multifamily Group"
 					width="860"
 					height="860"
@@ -141,7 +144,7 @@ const webPageSchema = {
 							<p>{s.body}</p>
 							{s.href && (
 								<p class="service-card__more">
-									<a href={s.href}>{s.more ?? 'Más información (en inglés)'}</a>
+									<a href={s.href}>{s.more}</a>
 								</p>
 							)}
 						</div>

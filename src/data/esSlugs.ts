@@ -27,10 +27,11 @@ export const ES = {
 	ulaConservar: 'medida-ula-conservar-o-vender-edificio-de-apartamentos-los-angeles',
 };
 
-// Spanish versions of the two service pages (English: /1031-exchanges/ and /trust-and-estate-sales/).
+// Spanish versions of the service pages (English: /1031-exchanges/, /trust-and-estate-sales/ and /triple-net-dst/).
 export const PAGES_ES = {
 	intercambios: '/es/intercambios-1031/',
 	fideicomisos: '/es/ventas-de-fideicomisos-y-herencias/',
+	tripleNet: '/es/triple-net-dst/',
 };
 
 // Link target for the Spanish valuation form.

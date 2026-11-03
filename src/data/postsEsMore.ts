@@ -71,7 +71,7 @@ export const postsEsMore: PostEs[] = [
 			{
 				heading: '6. ¿Qué opciones tiene además de vender?',
 				paragraphs: [
-					`Vender no es todo o nada. Según su situación, podría conservar el edificio y contratar una mejor administración, refinanciar, o vender y diferir su impuesto sobre las ganancias de capital con un [intercambio 1031](/es/intercambios-1031/). Los dueños que quieren dejar de administrar propiedades pero conservar el ingreso muchas veces consideran las inversiones [triple net (NNN) y DST](/triple-net-dst/) (en inglés), que cubrimos en nuestro artículo sobre [cómo intercambiar hacia propiedades triple net](${p('intercambio')}). Si usted está manejando un edificio después del fallecimiento de un dueño, nuestra página de [ventas de fideicomisos y herencias](/es/ventas-de-fideicomisos-y-herencias/) explica ese proceso.`,
+					`Vender no es todo o nada. Según su situación, podría conservar el edificio y contratar una mejor administración, refinanciar, o vender y diferir su impuesto sobre las ganancias de capital con un [intercambio 1031](/es/intercambios-1031/). Los dueños que quieren dejar de administrar propiedades pero conservar el ingreso muchas veces consideran las inversiones [triple net (NNN) y DST](/es/triple-net-dst/), que cubrimos en nuestro artículo sobre [cómo intercambiar hacia propiedades triple net](${p('intercambio')}). Si usted está manejando un edificio después del fallecimiento de un dueño, nuestra página de [ventas de fideicomisos y herencias](/es/ventas-de-fideicomisos-y-herencias/) explica ese proceso.`,
 				],
 			},
 			{
