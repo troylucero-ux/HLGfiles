@@ -40,12 +40,13 @@ const articleSchema = {
 	headline: post.title,
 	description: post.description,
 	datePublished: post.date,
+	...(post.image ? { image: `${site.url}${post.image.src}` } : {}),
 	author: { '@type': 'Organization', name: site.name },
 	publisher: { '@type': 'Organization', name: site.name },
 };
 ---
 
-<BaseLayout lang="es" title={post.seoTitle ?? post.title} description={post.description}>
+<BaseLayout lang="es" title={post.seoTitle ?? post.title} description={post.description} image={post.image?.src}>
 	<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} slot="head" />
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 	<link rel="alternate" hreflang="es" href={esUrl} slot="head" />
@@ -59,6 +60,7 @@ const articleSchema = {
 			<h1>{post.title}</h1>
 			<p class="post-detail__date">{formatTrimestre(post.date)}</p>
 			<LanguageSwitch to="en" href={`/insights/${post.enSlug}/`} />
+			{post.image && <img class="post-detail__image" src={post.image.src} alt={post.image.alt} width={post.image.width} height={post.image.height} loading="eager" />}
 
 			<div class="post-detail__body">
 				{
@@ -111,6 +113,14 @@ const articleSchema = {
 <style>
 	.post-detail {
 		max-width: 760px;
+	}
+
+	.post-detail__image {
+		width: 100%;
+		height: auto;
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		margin: 0 0 2rem;
 	}
 
 	.post-detail__date {

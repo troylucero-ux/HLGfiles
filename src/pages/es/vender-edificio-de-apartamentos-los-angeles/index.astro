@@ -4,7 +4,7 @@ import BOVForm from '../../../components/BOVForm.astro';
 import { site, team } from '../../../data/site';
 import { postsEs } from '../../../data/postsEs';
 
-const guides = postsEs;
+const guides = postsEs.slice(0, 6);
 
 const troy = team.find((m) => m.slug === 'troy-lucero')!;
 const en = `${site.url}/spanish-speaking-apartment-broker-los-angeles/`;

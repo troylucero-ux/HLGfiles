@@ -169,7 +169,7 @@ const webPageSchema = {
 			<h2>Lo que los dueños de edificios en Los Ángeles necesitan saber</h2>
 			<div class="article-grid">
 				{
-					postsEs.map((post) => (
+					postsEs.slice(0, 6).map((post) => (
 						<a href={`/es/insights/${post.slug}/`} class="article-card">
 							<span class="article-card__date">{formatTrimestre(post.date)}</span>
 							<h3>{post.title}</h3>

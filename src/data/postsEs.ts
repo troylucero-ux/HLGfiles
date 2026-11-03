@@ -1,6 +1,10 @@
 // Spanish versions of selected Insights articles. Each one mirrors an English article in src/data/posts.ts
 // (`enSlug`), so edit the two together whenever a fact changes. Text supports [link text](/path/) links, the
 // same as the English posts. Links to pages that only exist in English say "(en inglés)" right after the link.
+import { ES, BOV } from './esSlugs';
+import { postsEsMore } from './postsEsMore';
+import { postsEsMore2 } from './postsEsMore2';
+
 export type PostEs = {
 	slug: string;
 	enSlug: string;
@@ -8,28 +12,22 @@ export type PostEs = {
 	seoTitle?: string; // shorter <title> tag (60 characters or fewer)
 	description: string; // also the meta description, ~155 characters
 	date: string; // ISO date
+	image?: { src: string; alt: string; width: number; height: number }; // Spanish graphic, shown under the date and used for social sharing
 	sections: { heading: string; paragraphs: string[] }[];
 	faqs: { q: string; a: string }[];
 	related: string[]; // Spanish slugs
 };
 
-const S = {
-	paso: 'como-vender-un-edificio-de-apartamentos-en-los-angeles-paso-a-paso',
-	impuestos: 'ganancias-de-capital-recuperacion-de-depreciacion-vender-edificio-los-angeles',
-	inquilinos: 'vender-edificio-con-inquilinos-control-de-rentas-los-angeles',
-	ula: 'medida-ula-2026-umbrales-vender-edificio-de-apartamentos-los-angeles',
-};
-const BOV = '/es/vender-edificio-de-apartamentos-los-angeles/#formulario';
-
-export const postsEs: PostEs[] = [
+const postsEsCore: PostEs[] = [
 	{
-		slug: S.paso,
+		slug: ES.paso,
 		enSlug: 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step',
 		title: 'Cómo vender un edificio de apartamentos en Los Ángeles: el proceso paso a paso',
 		seoTitle: 'Cómo Vender un Edificio de Apartamentos en Los Ángeles',
 		description: 'Los pasos para vender un edificio de apartamentos en Los Ángeles, del precio y los documentos a las ofertas, el escrow y el cierre, con los tiempos típicos.',
 		date: '2026-11-03',
-		related: [S.impuestos, S.inquilinos, S.ula],
+		image: { src: '/images/insights/es/como-vender-paso-a-paso.webp', alt: 'Gráfica: ocho pasos para vender un edificio, de la decisión al cierre. Prepárese con sus metas, el valor, el corredor y los documentos. Promueva el edificio y revise las ofertas. Cierre con el escrow y la revisión del comprador.', width: 1200, height: 900 },
+		related: [ES.impuestos, ES.inquilinos, ES.ula],
 		sections: [
 			{
 				heading: '¿Cuánto tiempo toma?',
@@ -40,19 +38,19 @@ export const postsEs: PostEs[] = [
 			{
 				heading: 'Paso 1: Decida qué quiere de la venta',
 				paragraphs: [
-					'Empiece por su meta: el precio más alto, una fecha de cierre específica, un intercambio 1031 sin problemas, una venta discreta o una salida limpia. Su meta determina el precio, el mercadeo y el calendario. Si todavía está decidiendo si vender o no, nuestro artículo con [siete preguntas para hacerse primero](/insights/should-i-sell-my-la-apartment-building/) (en inglés) es un buen punto de partida.',
+					`Empiece por su meta: el precio más alto, una fecha de cierre específica, un intercambio 1031 sin problemas, una venta discreta o una salida limpia. Su meta determina el precio, el mercadeo y el calendario. Si todavía está decidiendo si vender o no, nuestro artículo con [siete preguntas para hacerse primero](/es/insights/${ES.vender}/) es un buen punto de partida.`,
 				],
 			},
 			{
 				heading: 'Paso 2: Averigüe cuánto vale el edificio',
 				paragraphs: [
-					'Consiga un número realista antes de comprometerse con nada. Empiece con nuestra [calculadora gratuita de valor de propiedad](/property-value/) (en inglés) para obtener un rango rápido, y luego pida una opinión de valor (Broker Opinion of Value), que toma en cuenta sus rentas reales, el estado del edificio y las ventas comparables. Explicamos en qué se diferencia de un avalúo formal en nuestro artículo sobre la [opinión de valor frente al avalúo](/insights/broker-opinion-of-value-vs-appraisal-apartment-building/) (en inglés). Un precio acorde al mercado atrae más ofertas, y mejores, que uno demasiado alto que después hay que bajar.',
+					`Consiga un número realista antes de comprometerse con nada. Empiece con nuestra [calculadora gratuita de valor de propiedad](/property-value/) (en inglés) para obtener un rango rápido, y luego pida una opinión de valor (Broker Opinion of Value), que toma en cuenta sus rentas reales, el estado del edificio y las ventas comparables. Explicamos en qué se diferencia de un avalúo formal en nuestro artículo sobre la [opinión de valor frente al avalúo](/es/insights/${ES.bov}/). Un precio acorde al mercado atrae más ofertas, y mejores, que uno demasiado alto que después hay que bajar.`,
 				],
 			},
 			{
 				heading: 'Paso 3: Elija un corredor y firme el contrato de listado',
 				paragraphs: [
-					'El corredor que contrate dirige todo el proceso, así que elíjalo con cuidado. Nuestra guía sobre [cómo elegir un corredor de edificios multifamiliares](/insights/how-to-choose-a-multifamily-broker-in-los-angeles/) (en inglés) explica qué revisar. El contrato de listado establece cuánto tiempo dura, la comisión y qué pasa si el edificio se vende a un comprador que usted ya conocía. Léalo con calma y negocie los términos antes de firmar.',
+					`El corredor que contrate dirige todo el proceso, así que elíjalo con cuidado. Nuestra guía sobre [cómo elegir un corredor de edificios multifamiliares](/es/insights/${ES.corredor}/) explica qué revisar. El contrato de listado establece cuánto tiempo dura, la comisión y qué pasa si el edificio se vende a un comprador que usted ya conocía. Léalo con calma y negocie los términos antes de firmar.`,
 				],
 			},
 			{
@@ -83,7 +81,7 @@ export const postsEs: PostEs[] = [
 			{
 				heading: 'Paso 8: El cierre',
 				paragraphs: [
-					`En las últimas semanas, el comprador elimina sus condiciones y paga la compra, y el escrow registra la escritura y le envía su dinero neto. Planee los costos de la venta, que incluyen la comisión del corredor, los impuestos de transferencia y, para edificios dentro de la Ciudad de Los Ángeles con un precio superior a $5.4 millones, la [Medida ULA](/es/insights/${S.ula}/). Si va a hacer un intercambio 1031, recuerde el reloj: tiene [45 días para identificar y 180 días para cerrar](/1031-exchanges/) (en inglés) la propiedad de reemplazo, así que tenga ese plan listo antes de anunciar el edificio. El calendario también puede afectar sus impuestos, como explicamos en nuestro artículo sobre [vender antes de fin de año](/insights/selling-la-apartment-building-before-year-end/) (en inglés).`,
+					`En las últimas semanas, el comprador elimina sus condiciones y paga la compra, y el escrow registra la escritura y le envía su dinero neto. Planee los costos de la venta, que incluyen la comisión del corredor, los impuestos de transferencia y, para edificios dentro de la Ciudad de Los Ángeles con un precio superior a $5.4 millones, la [Medida ULA](/es/insights/${ES.ula}/). Si va a hacer un intercambio 1031, recuerde el reloj: tiene [45 días para identificar y 180 días para cerrar](/1031-exchanges/) (en inglés) la propiedad de reemplazo, así que tenga ese plan listo antes de anunciar el edificio. El calendario también puede afectar sus impuestos, como explicamos en nuestro artículo sobre [vender antes de fin de año](/es/insights/${ES.findeano}/).`,
 				],
 			},
 			{
@@ -127,13 +125,14 @@ export const postsEs: PostEs[] = [
 		],
 	},
 	{
-		slug: S.inquilinos,
+		slug: ES.inquilinos,
 		enSlug: 'selling-la-apartment-building-with-tenants-rent-control',
 		title: 'Vender un edificio de apartamentos en Los Ángeles con inquilinos bajo control de rentas',
 		seoTitle: 'Vender un Edificio con Control de Rentas en Los Ángeles',
 		description: 'Cómo el control de rentas y los inquilinos de muchos años afectan el precio, los compradores y el calendario al vender un edificio en Los Ángeles.',
 		date: '2026-11-03',
-		related: [S.paso, S.impuestos, S.ula],
+		image: { src: '/images/insights/es/vender-con-inquilinos.webp', alt: 'Gráfica: sí se puede vender un edificio con inquilinos bajo control de rentas. Los contratos pasan al nuevo dueño, el control de rentas sigue vigente y los compradores valoran la brecha entre la renta actual y la de mercado.', width: 1200, height: 900 },
+		related: [ES.paso, ES.impuestos, ES.ula],
 		sections: [
 			{
 				heading: '¿Se puede vender un edificio con inquilinos adentro?',
@@ -145,7 +144,7 @@ export const postsEs: PostEs[] = [
 			{
 				heading: 'Qué reglas de renta aplican a su edificio',
 				paragraphs: [
-					'En Los Ángeles, los edificios de apartamentos con certificado de ocupación emitido antes del 1 de octubre de 1978 generalmente están cubiertos por la Ordenanza de Estabilización de Rentas (RSO) de la Ciudad, que limita los aumentos anuales y agrega protecciones contra el desalojo. Los edificios más nuevos normalmente caen bajo el límite estatal de la AB 1482. Nuestro artículo sobre el [límite de rentas de la AB 1482 en 2026](/insights/ab-1482-rent-cap-2026/) (en inglés) explica las cifras actuales.',
+					`En Los Ángeles, los edificios de apartamentos con certificado de ocupación emitido antes del 1 de octubre de 1978 generalmente están cubiertos por la Ordenanza de Estabilización de Rentas (RSO) de la Ciudad, que limita los aumentos anuales y agrega protecciones contra el desalojo. Los edificios más nuevos normalmente caen bajo el límite estatal de la AB 1482. Nuestro artículo sobre el [límite de rentas de la AB 1482 en 2026](/es/insights/${ES.ab1482}/) explica las cifras actuales.`,
 					'Las reglas que aplican a su propiedad afectan sus ingresos, sus gastos y la forma en que los compradores calculan la operación, así que es lo primero que confirmamos.',
 				],
 			},
@@ -182,14 +181,14 @@ export const postsEs: PostEs[] = [
 			{
 				heading: 'La Medida ULA y otros costos de vender',
 				paragraphs: [
-					`Las reglas de renta son solo una parte del panorama. Para edificios con un precio cercano a $5.4 millones o $10.9 millones dentro de la Ciudad de Los Ángeles, el impuesto de transferencia de la Medida ULA puede cambiar lo que usted recibe neto, como explicamos en nuestra [guía de la Medida ULA](/es/insights/${S.ula}/). Y si todavía está decidiendo si vender, empiece con nuestra lista de [siete preguntas para hacerse primero](/insights/should-i-sell-my-la-apartment-building/) (en inglés).`,
+					`Las reglas de renta son solo una parte del panorama. Para edificios con un precio cercano a $5.4 millones o $10.9 millones dentro de la Ciudad de Los Ángeles, el impuesto de transferencia de la Medida ULA puede cambiar lo que usted recibe neto, como explicamos en nuestra [guía de la Medida ULA](/es/insights/${ES.ula}/). Y si todavía está decidiendo si vender, empiece con nuestra lista de [siete preguntas para hacerse primero](/es/insights/${ES.vender}/).`,
 				],
 			},
 			{
 				heading: 'Cómo elegir un corredor para vender un edificio con control de rentas',
 				paragraphs: [
 					'Un edificio con control de rentas se valora según sus rentas actuales, su loss to lease y sus inquilinos, así que el corredor que contrate necesita experiencia real con esos detalles. Pregunte si ha vendido recientemente edificios similares con rentas estabilizadas en su vecindario, cómo presentaría su lista de rentas y el potencial a los compradores, y a qué compradores acudiría, ya que algunos inversionistas se especializan en edificios con inquilinos de muchos años y rentas por debajo del mercado.',
-					`Nuestra guía sobre [cómo elegir un corredor multifamiliar](/insights/how-to-choose-a-multifamily-broker-in-los-angeles/) (en inglés) enumera siete cosas que revisar antes de firmar, y nuestra [guía paso a paso para vender](/es/insights/${S.paso}/) muestra cómo corre el proceso, del precio al cierre.`,
+					`Nuestra guía sobre [cómo elegir un corredor multifamiliar](/es/insights/${ES.corredor}/) enumera siete cosas que revisar antes de firmar, y nuestra [guía paso a paso para vender](/es/insights/${ES.paso}/) muestra cómo corre el proceso, del precio al cierre.`,
 				],
 			},
 			{
@@ -211,7 +210,7 @@ export const postsEs: PostEs[] = [
 			},
 			{
 				q: '¿Cómo sé si mi edificio tiene control de rentas en Los Ángeles?',
-				a: 'Los edificios de apartamentos en Los Ángeles con certificado de ocupación emitido antes del 1 de octubre de 1978 generalmente están cubiertos por la Ordenanza de Estabilización de Rentas (RSO) de la Ciudad, que limita los aumentos anuales y agrega protecciones contra el desalojo. Los edificios más nuevos normalmente caen bajo el límite estatal de la AB 1482. Vea nuestro artículo sobre el [límite de rentas de la AB 1482 en 2026](/insights/ab-1482-rent-cap-2026/) (en inglés).',
+				a: `Los edificios de apartamentos en Los Ángeles con certificado de ocupación emitido antes del 1 de octubre de 1978 generalmente están cubiertos por la Ordenanza de Estabilización de Rentas (RSO) de la Ciudad, que limita los aumentos anuales y agrega protecciones contra el desalojo. Los edificios más nuevos normalmente caen bajo el límite estatal de la AB 1482. Vea nuestro artículo sobre el [límite de rentas de la AB 1482 en 2026](/es/insights/${ES.ab1482}/).`,
 			},
 			{
 				q: 'Mis inquilinos pagan poca renta. ¿Cómo afecta eso el precio por el que puedo vender mi edificio?',
@@ -232,13 +231,14 @@ export const postsEs: PostEs[] = [
 		],
 	},
 	{
-		slug: S.impuestos,
+		slug: ES.impuestos,
 		enSlug: 'capital-gains-depreciation-recapture-selling-la-apartment-building',
 		title: 'Ganancias de capital y recuperación de la depreciación al vender un edificio de apartamentos en Los Ángeles',
 		seoTitle: 'Ganancias de Capital al Vender un Edificio en Los Ángeles',
 		description: 'Cómo funcionan el impuesto federal y el de California sobre las ganancias de capital y la recuperación de la depreciación, y cómo un intercambio 1031 los difiere.',
 		date: '2026-11-03',
-		related: [S.ula, S.paso, S.inquilinos],
+		image: { src: '/images/insights/es/ganancias-de-capital.webp', alt: 'Gráfica: el impuesto federal sobre las ganancias de capital es de 0%, 15% o 20%, la recuperación de la depreciación se grava hasta con 25%, y California grava la ganancia como ingreso ordinario.', width: 1200, height: 900 },
+		related: [ES.ula, ES.paso, ES.inquilinos],
 		sections: [
 			{
 				heading: 'Por qué la factura de impuestos sorprende a muchos dueños',
@@ -276,8 +276,8 @@ export const postsEs: PostEs[] = [
 				heading: 'Formas en que los dueños manejan el impuesto',
 				paragraphs: [
 					'Hay maneras legítimas de reducir, diferir o programar el impuesto, y la correcta depende de su situación. Algunas de las más comunes son las siguientes.',
-					'Un intercambio 1031. Si reinvierte el dinero en una propiedad de inversión del mismo tipo (like-kind), puede diferir tanto el impuesto sobre las ganancias de capital como la recuperación de la depreciación. Las reglas son estrictas, e incluyen 45 días para identificar una propiedad de reemplazo y 180 días para cerrar. Lea nuestra [guía de intercambios 1031](/1031-exchanges/) (en inglés) y nuestro artículo sobre [intercambiar hacia propiedades triple net](/insights/1031-exchange-into-triple-net-properties/) (en inglés).',
-					'El momento de la venta. Cerrar en diciembre o enero pone la ganancia en un año fiscal distinto, lo que puede importar para su ingreso total. Vea nuestro artículo sobre [el momento de la venta antes de fin de año](/insights/selling-la-apartment-building-before-year-end/) (en inglés).',
+					`Un intercambio 1031. Si reinvierte el dinero en una propiedad de inversión del mismo tipo (like-kind), puede diferir tanto el impuesto sobre las ganancias de capital como la recuperación de la depreciación. Las reglas son estrictas, e incluyen 45 días para identificar una propiedad de reemplazo y 180 días para cerrar. Lea nuestra [guía de intercambios 1031](/1031-exchanges/) (en inglés) y nuestro artículo sobre [intercambiar hacia propiedades triple net](/es/insights/${ES.intercambio}/).`,
+					`El momento de la venta. Cerrar en diciembre o enero pone la ganancia en un año fiscal distinto, lo que puede importar para su ingreso total. Vea nuestro artículo sobre [el momento de la venta antes de fin de año](/es/insights/${ES.findeano}/).`,
 					'Planeación patrimonial. La propiedad heredada al fallecer generalmente recibe una nueva base ajustada al valor de ese momento (stepped-up basis), lo que puede eliminar gran parte de la ganancia para los herederos. Si usted está manejando un edificio después del fallecimiento de un dueño, vea nuestra página de [ventas de fideicomisos y herencias](/trust-and-estate-sales/) (en inglés).',
 					'Registros. Conserve la documentación de las mejoras de capital que ha hecho a lo largo de los años, porque se suman a su base y reducen su ganancia.',
 				],
@@ -285,7 +285,7 @@ export const postsEs: PostEs[] = [
 			{
 				heading: 'No olvide los demás costos de vender',
 				paragraphs: [
-					`El impuesto sobre la renta es solo una parte de lo que sale de una venta. Si su edificio tiene un precio cercano a $5.4 millones o $10.9 millones dentro de la Ciudad de Los Ángeles, el impuesto de transferencia de la Medida ULA puede importar igual de mucho, como explicamos en nuestra [guía de la Medida ULA](/es/insights/${S.ula}/). Y si todavía está decidiendo si vender tiene sentido, nuestras [siete preguntas para hacerse primero](/insights/should-i-sell-my-la-apartment-building/) (en inglés) son un buen punto de partida.`,
+					`El impuesto sobre la renta es solo una parte de lo que sale de una venta. Si su edificio tiene un precio cercano a $5.4 millones o $10.9 millones dentro de la Ciudad de Los Ángeles, el impuesto de transferencia de la Medida ULA puede importar igual de mucho, como explicamos en nuestra [guía de la Medida ULA](/es/insights/${ES.ula}/). Y si todavía está decidiendo si vender tiene sentido, nuestras [siete preguntas para hacerse primero](/es/insights/${ES.vender}/) son un buen punto de partida.`,
 				],
 			},
 			{
@@ -334,13 +334,14 @@ export const postsEs: PostEs[] = [
 		],
 	},
 	{
-		slug: S.ula,
+		slug: ES.ula,
 		enSlug: 'measure-ula-2026-thresholds-selling-la-apartment-building',
 		title: '¿Vende cerca de un umbral de la Medida ULA? Por qué importan el precio y el momento',
 		seoTitle: 'Medida ULA 2026: Umbrales y lo que Pagan los Vendedores',
 		description: 'Los umbrales de la Medida ULA subieron a $5.4M y $10.9M. Vea cómo un precio apenas arriba de la línea reduce lo que usted recibe, y qué puede hacer.',
 		date: '2026-11-03',
-		related: [S.impuestos, S.paso, S.inquilinos],
+		image: { src: '/images/insights/es/medida-ula-umbrales.webp', alt: 'Gráfica: un edificio que se vende en $5,400,000 no paga el impuesto de la Medida ULA, pero a $5,400,001 se aplica el 4% a todo el precio, unos $216,000.', width: 1200, height: 900 },
+		related: [ES.impuestos, ES.paso, ES.inquilinos],
 		sections: [
 			{
 				heading: 'Qué cambió el 1 de julio de 2026',
@@ -390,7 +391,7 @@ export const postsEs: PostEs[] = [
 					'Si su edificio podría quedar cerca de $5.4 millones o $10.9 millones, el momento de revisar las cuentas es antes de fijar un precio. Pruebe nuestra [calculadora de la Medida ULA](/measure-ula-calculator/) (en inglés) para ver sus impuestos de transferencia y lo que recibiría neto a cualquier precio, empiece con nuestra [calculadora gratuita de valor](/property-value/) (en inglés) para obtener un rango rápido, y luego pida una [opinión de valor](' +
 						BOV +
 						') gratis, y le mostraremos lo que recibiría con distintos precios y fechas de cierre. Si está decidiendo si vender o no, lea nuestra guía sobre [conservar o vender bajo la Medida ULA](/insights/measure-ula-hold-or-sell-la-apartment-building/) (en inglés).',
-					'¿Planea para fin de año? Nuestro artículo sobre [el momento de vender antes del 31 de diciembre](/insights/selling-la-apartment-building-before-year-end/) (en inglés) cubre cómo las fechas de cierre afectan sus impuestos.',
+					`¿Planea para fin de año? Nuestro artículo sobre [el momento de vender antes del 31 de diciembre](/es/insights/${ES.findeano}/) cubre cómo las fechas de cierre afectan sus impuestos.`,
 					'Este artículo es información general, no asesoría legal ni de impuestos. Confirme con su contador o abogado de impuestos cómo aplica la Medida ULA a su venta.',
 				],
 			},
@@ -431,6 +432,8 @@ export const postsEs: PostEs[] = [
 		],
 	},
 ];
+
+export const postsEs: PostEs[] = [...postsEsCore, ...postsEsMore, ...postsEsMore2];
 
 // English slug -> Spanish slug, so an English article can point to its Spanish version.
 export const esSlugFor: Record<string, string> = Object.fromEntries(postsEs.map((p) => [p.enSlug, p.slug]));

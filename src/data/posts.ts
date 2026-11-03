@@ -343,7 +343,7 @@ const allPosts: Post[] = [
 				heading: 'What Is Your Building Worth?',
 				paragraphs: [
 					'For a quick range, try our [free property value calculator](/property-value/), which uses real 2026 sales in your neighborhood and splits rent-stabilized buildings from newer ones. For a number you can plan around, request a free [Broker Opinion of Value](/contact/?intent=bov) and we will build it from your actual rent roll, expenses, and condition. If you are still deciding whether to sell, start with our [seven questions to ask first](/insights/should-i-sell-my-la-apartment-building/).',
-					'Sales figures are medians or ranges from closed LA County multifamily transactions in 2026 through September, and only appear where enough sales reported the figure. This article is general information, not an appraisal or investment advice.',
+					'Sales figures are medians or ranges from closed LA County multifamily transactions in 2026 through October, and only appear where enough sales reported the figure. This article is general information, not an appraisal or investment advice.',
 				],
 			},
 		],
