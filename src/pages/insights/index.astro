@@ -1,15 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { posts } from '../../data/posts';
+import { posts, postFaqs } from '../../data/posts';
 import { formatQuarter } from '../../lib/format';
 import { topics, topicsFor } from '../../lib/postTopics';
 
-// Every card carries its topics and a lowercase search string (title, description, and section headings). The page filters
+// Every card carries its topics and a lowercase search string (title, URL words, description, section headings, and FAQ questions). The page filters
 // them in the browser, so all articles stay in the HTML for search engines.
 const cards = posts.map((post) => {
 	const titleText = `${post.slug.replace(/-/g, ' ')} ${post.title}`;
 	const allText = `${titleText} ${post.description}`;
-	const search = [post.title, post.description, ...post.sections.map((sec) => sec.heading)].join(' ').toLowerCase();
+	const search = [post.slug.replace(/-/g, ' '), post.title, post.description, ...post.sections.map((sec) => sec.heading), ...(postFaqs[post.slug] ?? []).map((faq) => faq.q)]
+		.join(' ')
+		.toLowerCase();
 	return { post, topicIds: topicsFor(titleText, allText), search };
 });
 const topicChips = topics
