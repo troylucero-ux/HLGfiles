@@ -125,7 +125,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 			},
 			{
 				q: '¿Puedo evitar la Medida ULA con un intercambio 1031?',
-				a: 'No. Un intercambio 1031 puede diferir su impuesto sobre las ganancias de capital, pero no exime una venta de la Medida ULA, y los intercambios no están entre las exenciones que enumera la Ciudad. Si está evaluando si vender o no, vea [conservar o vender bajo la Medida ULA](/insights/measure-ula-hold-or-sell-la-apartment-building/) (en inglés).',
+				a: `No. Un intercambio 1031 puede diferir su impuesto sobre las ganancias de capital, pero no exime una venta de la Medida ULA, y los intercambios no están entre las exenciones que enumera la Ciudad. Si está evaluando si vender o no, vea [conservar o vender bajo la Medida ULA](/es/insights/${ES.ulaConservar}/).`,
 			},
 			{
 				q: '¿La Medida ULA aplica en West Hollywood, Santa Mónica o Beverly Hills?',
@@ -196,7 +196,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 		items: [
 			{
 				q: '¿Qué es la SB 721 y aplica a mi edificio?',
-				a: 'La SB 721 exige que los dueños de edificios con tres o más unidades multifamiliares hagan inspeccionar los elementos exteriores elevados (balcones, terrazas, porches, escaleras y pasillos) por un profesional con licencia. Aplica si esos elementos están a más de seis pies del suelo y dependen sobre todo de la madera para su soporte. La primera inspección vencía el 1 de enero de 2026. Vea nuestra [guía de la SB 721](/insights/sb-721-balcony-inspection-los-angeles-apartment-owners/) (en inglés).',
+				a: `La SB 721 exige que los dueños de edificios con tres o más unidades multifamiliares hagan inspeccionar los elementos exteriores elevados (balcones, terrazas, porches, escaleras y pasillos) por un profesional con licencia. Aplica si esos elementos están a más de seis pies del suelo y dependen sobre todo de la madera para su soporte. La primera inspección vencía el 1 de enero de 2026. Vea nuestra [guía de la SB 721](/es/insights/${ES.sb721}/).`,
 			},
 			{
 				q: '¿Qué exige la AB 628 de California sobre estufas y refrigeradores?',

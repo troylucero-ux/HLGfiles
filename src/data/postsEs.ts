@@ -4,6 +4,7 @@
 import { ES, BOV } from './esSlugs';
 import { postsEsMore } from './postsEsMore';
 import { postsEsMore2 } from './postsEsMore2';
+import { postsEsMore3 } from './postsEsMore3';
 
 export type PostEs = {
 	slug: string;
@@ -390,7 +391,7 @@ const postsEsCore: PostEs[] = [
 				paragraphs: [
 					'Si su edificio podría quedar cerca de $5.4 millones o $10.9 millones, el momento de revisar las cuentas es antes de fijar un precio. Pruebe nuestra [calculadora de la Medida ULA](/measure-ula-calculator/) (en inglés) para ver sus impuestos de transferencia y lo que recibiría neto a cualquier precio, empiece con nuestra [calculadora gratuita de valor](/property-value/) (en inglés) para obtener un rango rápido, y luego pida una [opinión de valor](' +
 						BOV +
-						') gratis, y le mostraremos lo que recibiría con distintos precios y fechas de cierre. Si está decidiendo si vender o no, lea nuestra guía sobre [conservar o vender bajo la Medida ULA](/insights/measure-ula-hold-or-sell-la-apartment-building/) (en inglés).',
+						`) gratis, y le mostraremos lo que recibiría con distintos precios y fechas de cierre. Si está decidiendo si vender o no, lea nuestra guía sobre [conservar o vender bajo la Medida ULA](/es/insights/${ES.ulaConservar}/).`,
 					`¿Planea para fin de año? Nuestro artículo sobre [el momento de vender antes del 31 de diciembre](/es/insights/${ES.findeano}/) cubre cómo las fechas de cierre afectan sus impuestos.`,
 					'Este artículo es información general, no asesoría legal ni de impuestos. Confirme con su contador o abogado de impuestos cómo aplica la Medida ULA a su venta.',
 				],
@@ -433,7 +434,7 @@ const postsEsCore: PostEs[] = [
 	},
 ];
 
-export const postsEs: PostEs[] = [...postsEsCore, ...postsEsMore, ...postsEsMore2];
+export const postsEs: PostEs[] = [...postsEsCore, ...postsEsMore, ...postsEsMore2, ...postsEsMore3];
 
 // English slug -> Spanish slug, so an English article can point to its Spanish version.
 export const esSlugFor: Record<string, string> = Object.fromEntries(postsEs.map((p) => [p.enSlug, p.slug]));

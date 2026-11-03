@@ -14,6 +14,8 @@ export const ES = {
 	heredado: 'heredo-un-edificio-de-apartamentos-en-los-angeles-que-hacer',
 	findeano: 'vender-edificio-de-apartamentos-antes-de-fin-de-ano',
 	fourplex: 'vender-un-fourplex-o-edificio-pequeno-en-los-angeles',
+	sb721: 'inspeccion-de-balcones-sb-721-edificios-de-apartamentos-los-angeles',
+	ulaConservar: 'medida-ula-conservar-o-vender-edificio-de-apartamentos-los-angeles',
 };
 
 // Link target for the Spanish valuation form.
