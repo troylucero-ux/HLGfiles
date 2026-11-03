@@ -59,6 +59,7 @@ export const postsEsMore3: PostEs[] = [
 			},
 			{
 				heading: 'Si el inspector encuentra un problema',
+				visual: 'sb721Pasos',
 				paragraphs: [
 					'El plazo depende de qué tan grave sea el problema. Si el inspector dice que un elemento es una amenaza inmediata, es una emergencia. Usted tiene que actuar de inmediato, y mantener a las personas fuera del balcón o de la escalera hasta terminar las reparaciones cuenta como cumplimiento. Después, el inspector tiene que confirmar las reparaciones de emergencia e informar a la agencia local de cumplimiento. Un informe que recomienda reparaciones inmediatas también tiene que llegar a la agencia local dentro de los 15 días siguientes a que se complete el informe.',
 					'Para los problemas que no son una amenaza inmediata, tiene que solicitar un permiso de reparación dentro de los 120 días siguientes a recibir el informe. Una vez aprobado el permiso, tiene 120 días para terminar el trabajo, a menos que la agencia local le conceda más tiempo. Las reparaciones tienen que hacerlas un contratista con licencia, seguir las recomendaciones del inspector y las especificaciones del fabricante, cumplir con el Código de Normas de Construcción de California y satisfacer los requisitos locales.',
@@ -181,6 +182,7 @@ export const postsEsMore3: PostEs[] = [
 			},
 			{
 				heading: 'Cuánto cuesta el impuesto a distintos precios',
+				visual: 'ulaPrecios',
 				paragraphs: [
 					'En $5,400,000, el impuesto ULA es cero. En $5,400,001, es 4% del precio completo, unos $216,000.',
 					'En $6,000,000, el impuesto ULA es de $240,000. El impuesto de transferencia regular de la Ciudad, de 0.45%, suma $27,000, y el impuesto del condado de Los Ángeles, de $1.10 por cada $1,000, suma $6,600, para un total de $273,600 en impuestos de transferencia, o 4.56% del precio.',
@@ -190,6 +192,7 @@ export const postsEsMore3: PostEs[] = [
 			},
 			{
 				heading: 'El impuesto en términos de ingreso',
+				visual: 'ula87',
 				paragraphs: [
 					'Una forma útil de juzgar el impuesto es compararlo con lo que produce el edificio. Suponga que un edificio se vende en $6,000,000 con una tasa de capitalización de 5.5%. Su ingreso operativo neto es de unos $330,000 al año. El impuesto ULA de $240,000 equivale a unos 8.7 meses de ese ingreso, pagados una sola vez, el día que usted vende.',
 					'Ese enfoque no le dice si debe vender. Le dice cuánto cuesta la salida, para que pueda ponerlo en la balanza junto con lo demás: el ingreso que sigue ganando si conserva el edificio, las reparaciones y el trabajo de cumplimiento que vienen, y lo que piensa hacer con el dinero de la venta.',

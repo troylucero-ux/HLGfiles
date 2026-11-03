@@ -1,0 +1,552 @@
+---
+// Draws one explanatory graphic for a Spanish Insights article. The data lives in src/data/esVisuals.ts and an
+// article section points to it by id. Types: table, steps, formula, bars, columns, split, and the 1031 timeline.
+import ExchangeTimeline from './ExchangeTimeline.astro';
+import { visuals } from '../data/esVisuals';
+
+interface Props {
+	id: string;
+}
+
+const { id } = Astro.props;
+const v = visuals[id];
+if (!v) throw new Error(`Unknown article visual: ${id}`);
+---
+
+{v.type === 'timeline1031' && <ExchangeTimeline lang="es" />}
+
+{
+	v.type === 'table' && (
+		<figure class="viz">
+			<figcaption class="viz__title">{v.title}</figcaption>
+			<div class="viz__scroll">
+				<table class="viz__table">
+					<thead>
+						<tr>
+							{v.headers.map((h) => (
+								<th scope="col">{h}</th>
+							))}
+						</tr>
+					</thead>
+					<tbody>
+						{v.rows.map((r) => (
+							<tr class={r.highlight ? 'is-highlight' : ''}>
+								<th scope="row">
+									{r.cells[0]}
+									{r.sub && <span class="viz__sub">{r.sub}</span>}
+								</th>
+								{r.cells.slice(1).map((c) => (
+									<td>{c}</td>
+								))}
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			{v.note && <p class="viz__note">{v.note}</p>}
+		</figure>
+	)
+}
+
+{
+	v.type === 'steps' && (
+		<figure class="viz">
+			<figcaption class="viz__title">{v.title}</figcaption>
+			<ol class="viz__steps">
+				{v.steps.map((s, i) => (
+					<li>
+						<span class={`viz__badge${v.numbered === false ? ' viz__badge--sign' : ''}`}>{s.badge ?? i + 1}</span>
+						<strong>{s.label}</strong>
+						{s.desc && <span class="viz__desc">{s.desc}</span>}
+					</li>
+				))}
+			</ol>
+			{v.note && <p class="viz__note">{v.note}</p>}
+		</figure>
+	)
+}
+
+{
+	v.type === 'formula' && (
+		<figure class="viz">
+			<figcaption class="viz__title">{v.title}</figcaption>
+			<div class="viz__formula">
+				{v.parts.map((p, i) => (
+					<>
+						<div class={`viz__part${p.accent ? ' is-accent' : ''}`}>
+							<span class="viz__value">{p.value}</span>
+							<span class="viz__label">{p.label}</span>
+						</div>
+						{v.ops[i] && (
+							<span class="viz__op" aria-hidden="true">
+								{v.ops[i]}
+							</span>
+						)}
+					</>
+				))}
+			</div>
+			{v.note && <p class="viz__note">{v.note}</p>}
+		</figure>
+	)
+}
+
+{
+	v.type === 'bars' && (
+		<figure class="viz">
+			<figcaption class="viz__title">{v.title}</figcaption>
+			<div class="viz__bars">
+				{v.rows.map((r) => (
+					<div class="viz__barrow">
+						<span class="viz__barlabel">{r.label}</span>
+						<div class="viz__track" role="img" aria-label={`${r.label}: ${r.total}. ${r.segments.map((s) => `${s.label} ${s.pct}%`).join(', ')}`}>
+							{r.segments.map((s) => (
+								<span class={`viz__seg viz__seg--${s.tone}`} style={`width: ${(s.pct / v.max) * 100}%`} />
+							))}
+						</div>
+						<span class="viz__bartotal">{r.total}</span>
+					</div>
+				))}
+			</div>
+			<ul class="viz__legend">
+				{v.legend.map((l) => (
+					<li>
+						<span class={`viz__swatch viz__seg--${l.tone}`} />
+						{l.label}
+					</li>
+				))}
+			</ul>
+			{v.note && <p class="viz__note">{v.note}</p>}
+		</figure>
+	)
+}
+
+{
+	v.type === 'columns' && (
+		<figure class="viz">
+			<figcaption class="viz__title">{v.title}</figcaption>
+			<div class="viz__cols" style={`--cols: ${v.columns.length}`}>
+				{v.columns.map((c) => (
+					<div class={`viz__col viz__col--${c.tone}`}>
+						<h3>{c.heading}</h3>
+						<ul>
+							{c.items.map((it) => (
+								<li>{it}</li>
+							))}
+						</ul>
+					</div>
+				))}
+			</div>
+			{v.note && <p class="viz__note">{v.note}</p>}
+		</figure>
+	)
+}
+
+{
+	v.type === 'split' && (
+		<figure class="viz">
+			<figcaption class="viz__title">{v.title}</figcaption>
+			{v.intro && <p class="viz__intro">{v.intro}</p>}
+			<div class="viz__split" role="img" aria-label={v.segments.map((s) => `${s.amount}: ${s.label}`).join('. ')}>
+				{v.segments.map((s) => (
+					<span class={`viz__seg viz__seg--${s.tone}`} style={`flex-basis: ${s.pct}%`}>
+						{s.amount}
+					</span>
+				))}
+			</div>
+			<ul class="viz__splitlegend">
+				{v.segments.map((s) => (
+					<li>
+						<span class={`viz__swatch viz__seg--${s.tone}`} />
+						<div>
+							<strong>
+								{s.amount}: {s.label}.
+							</strong>{' '}
+							<span>{s.desc}</span>
+						</div>
+					</li>
+				))}
+			</ul>
+			{v.note && <p class="viz__note">{v.note}</p>}
+		</figure>
+	)
+}
+
+<style>
+	.viz {
+		margin: 2rem 0;
+		padding: 1.5rem 1.5rem 1.35rem;
+		background: var(--paper-alt);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		font-size: 0.95rem;
+		line-height: 1.5;
+	}
+
+	.viz__title {
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		color: var(--navy-dark);
+		margin-bottom: 1.1rem;
+	}
+
+	.viz__intro {
+		margin: 0 0 1rem;
+	}
+
+	.viz__note {
+		margin: 1rem 0 0;
+		font-size: 0.82rem;
+		color: var(--ink-light);
+	}
+
+	/* Tables */
+	.viz__scroll {
+		overflow-x: auto;
+	}
+
+	.viz__table {
+		width: 100%;
+		min-width: 520px;
+		border-collapse: collapse;
+		background: var(--paper);
+	}
+
+	.viz__table thead th {
+		text-align: left;
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		font-weight: 600;
+		padding: 0.7rem 0.9rem;
+	}
+
+	.viz__table tbody th,
+	.viz__table tbody td {
+		padding: 0.7rem 0.9rem;
+		border-bottom: 1px solid var(--border);
+		text-align: left;
+		vertical-align: top;
+		font-weight: 400;
+	}
+
+	.viz__table tbody th {
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.viz__table tbody tr:last-child th,
+	.viz__table tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.viz__table tr.is-highlight th,
+	.viz__table tr.is-highlight td {
+		background: rgba(182, 148, 74, 0.14);
+	}
+
+	.viz__sub {
+		display: block;
+		font-size: 0.74rem;
+		font-weight: 400;
+		color: var(--ink-light);
+	}
+
+	/* Steps */
+	.viz__steps {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		gap: 0.75rem;
+	}
+
+	.viz__steps li {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--navy);
+		border-radius: 2px;
+		padding: 0.85rem 0.9rem;
+	}
+
+	.viz__steps strong {
+		color: var(--navy-dark);
+		line-height: 1.3;
+	}
+
+	.viz__desc {
+		font-size: 0.82rem;
+		color: var(--ink-light);
+		line-height: 1.4;
+	}
+
+	.viz__badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		border-radius: 50%;
+		background: var(--navy);
+		color: #fff;
+		font-size: 0.85rem;
+		font-weight: 700;
+	}
+
+	.viz__badge--sign {
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-size: 1rem;
+	}
+
+	/* Formula */
+	.viz__formula {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: stretch;
+		justify-content: center;
+		gap: 0.6rem;
+	}
+
+	.viz__part {
+		flex: 1 1 170px;
+		max-width: 260px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 0.35rem;
+		text-align: center;
+		background: var(--paper);
+		border: 2px solid var(--navy);
+		border-radius: 8px;
+		padding: 0.9rem 0.8rem;
+	}
+
+	.viz__part.is-accent {
+		background: var(--navy);
+		color: #fff;
+	}
+
+	.viz__value {
+		font-family: var(--font-serif);
+		font-size: 1.45rem;
+		font-weight: 600;
+		line-height: 1.15;
+	}
+
+	.viz__part.is-accent .viz__value {
+		color: #fff;
+	}
+
+	.viz__label {
+		font-size: 0.8rem;
+		line-height: 1.35;
+		color: var(--ink-light);
+	}
+
+	.viz__part.is-accent .viz__label {
+		color: #dbe5f2;
+	}
+
+	.viz__op {
+		align-self: center;
+		font-size: 1.6rem;
+		font-weight: 700;
+		color: var(--gold-dark);
+	}
+
+	/* Bars and split bar */
+	.viz__bars {
+		display: grid;
+		gap: 0.8rem;
+	}
+
+	.viz__barrow {
+		display: grid;
+		grid-template-columns: 110px 1fr 150px;
+		align-items: center;
+		gap: 0.75rem;
+	}
+
+	.viz__barlabel {
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+
+	.viz__bartotal {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--navy-dark);
+		text-align: right;
+	}
+
+	.viz__track {
+		display: flex;
+		height: 1.6rem;
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.viz__seg--navy {
+		background: var(--navy);
+		color: #fff;
+	}
+
+	.viz__seg--gold {
+		background: var(--gold);
+		color: var(--navy-dark);
+	}
+
+	.viz__seg--light {
+		background: #c8d4e4;
+		color: var(--navy-dark);
+	}
+
+	.viz__legend {
+		list-style: none;
+		margin: 1rem 0 0;
+		padding: 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.25rem;
+		font-size: 0.82rem;
+	}
+
+	.viz__legend li {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.viz__swatch {
+		flex: none;
+		width: 0.9rem;
+		height: 0.9rem;
+		border-radius: 2px;
+		margin-top: 0.2rem;
+	}
+
+	.viz__split {
+		display: flex;
+		border-radius: 4px;
+		overflow: hidden;
+		margin-bottom: 1rem;
+	}
+
+	.viz__split .viz__seg--navy,
+	.viz__split .viz__seg--gold,
+	.viz__split .viz__seg--light {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 3rem;
+		padding: 0 0.4rem;
+		font-weight: 700;
+		font-size: 0.9rem;
+		text-align: center;
+	}
+
+	.viz__splitlegend {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.6rem;
+	}
+
+	.viz__splitlegend li {
+		display: flex;
+		gap: 0.6rem;
+		align-items: flex-start;
+	}
+
+	/* Columns */
+	.viz__cols {
+		display: grid;
+		grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+		gap: 0.9rem;
+	}
+
+	.viz__col {
+		background: var(--paper);
+		border: 2px solid var(--navy);
+		border-radius: 6px;
+		overflow: hidden;
+	}
+
+	.viz__col--gold {
+		border-color: var(--gold);
+	}
+
+	.viz__col h3 {
+		margin: 0;
+		padding: 0.65rem 0.9rem;
+		font-size: 0.92rem;
+		background: var(--navy);
+		color: #fff;
+	}
+
+	.viz__col--gold h3 {
+		background: var(--gold);
+		color: var(--navy-dark);
+	}
+
+	.viz__col ul {
+		list-style: none;
+		margin: 0;
+		padding: 0.8rem 0.9rem 0.9rem;
+		display: grid;
+		gap: 0.55rem;
+	}
+
+	.viz__col li {
+		position: relative;
+		padding-left: 1.2rem;
+		font-size: 0.9rem;
+		line-height: 1.4;
+	}
+
+	.viz__col li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.35rem;
+		width: 0.55rem;
+		height: 0.3rem;
+		border-left: 2px solid var(--gold-dark);
+		border-bottom: 2px solid var(--gold-dark);
+		transform: rotate(-45deg);
+	}
+
+	@media (max-width: 640px) {
+		.viz {
+			padding: 1.1rem 1rem;
+		}
+
+		.viz__barrow {
+			grid-template-columns: 1fr;
+			gap: 0.3rem;
+		}
+
+		.viz__bartotal {
+			text-align: left;
+		}
+
+		.viz__cols {
+			grid-template-columns: 1fr;
+		}
+
+		.viz__op {
+			flex-basis: 100%;
+			text-align: center;
+			line-height: 1;
+		}
+	}
+</style>

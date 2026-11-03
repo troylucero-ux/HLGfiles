@@ -39,6 +39,7 @@ export const postsEsMore5: PostEs[] = [
 			},
 			{
 				heading: 'Qué cambia la SB 1365',
+				visual: 'sb1365Tabla',
 				paragraphs: [
 					'Contratos de cualquier duración. Bajo la ley anterior, “vivienda” significaba una vivienda de renta con un contrato inicial de no más de un año. La SB 1365 la define como cualquier vivienda de renta, sin importar la duración del contrato inicial. Un contrato largo ya no pondrá una unidad fuera del límite.',
 					'Las excepciones se vuelven defensas. La ley anterior eximía ciertos aumentos. La nueva ley los convierte en defensas afirmativas, lo que significa que un propietario acusado de violar el límite tiene que probar los hechos que colocan el aumento dentro de la defensa.',
@@ -143,6 +144,7 @@ export const postsEsMore5: PostEs[] = [
 			},
 			{
 				heading: '¿Hay una ley que exija aire acondicionado en cada unidad?',
+				visual: 'aireTabla',
 				paragraphs: [
 					'No. La buscamos, porque los dueños siguen oyendo que existe. Hay tres cosas distintas que se mezclan, y ninguna es una orden de instalar aire acondicionado.',
 					'Primero, la SB 655 de California, firmada en 2025, agregó la Sección 17914 al Código de Salud y Seguridad. Declara que es política del estado que todas las viviendas puedan alcanzar y mantener una temperatura interior máxima segura, y dice a las agencias estatales que consideren esa política, incluso cuando escriban reglamentos a partir del 1 de enero de 2027. No impone una obligación a un propietario, y la ley dice que no amplía ninguna obligación del estado. Piénsela como una señal de hacia dónde va la regulación estatal. Los propios hallazgos del proyecto de ley señalan que las normas de construcción de California ya fijan una temperatura interior mínima de 68°F pero no tienen un máximo.',
@@ -280,6 +282,7 @@ export const postsEsMore5: PostEs[] = [
 			},
 			{
 				heading: 'Qué hace un corredor en la venta de un edificio',
+				visual: 'sinCorredorTabla',
 				paragraphs: [
 					`Un corredor que vende edificios de apartamentos hace mucho más que poner un anuncio. Calcula el valor con base en sus rentas reales y en ventas comparables, prepara el memorando de oferta (offering memorandum), las fotos y el video, llama directamente a inversionistas y a otros corredores, filtra a los compradores, compara las ofertas por lo que usted recibiría neto, negocia el contrato y acompaña la venta durante el escrow y la revisión del comprador. Nuestra [guía paso a paso para vender](${p('paso')}) muestra las ocho etapas.`,
 					'Si usted decide vender solo, tendrá que hacer cada una de esas cosas, o contratar a otros para hacerlas.',
@@ -386,6 +389,7 @@ export const postsEsMore5: PostEs[] = [
 			},
 			{
 				heading: '2. Los impuestos de transferencia',
+				visual: 'ulaPrecios',
 				paragraphs: [
 					'En la Ciudad de Los Ángeles, el impuesto de transferencia regular de la Ciudad es de 0.45% del precio, y el impuesto del condado de Los Ángeles es de $1.10 por cada $1,000. Con un precio de $3,000,000, eso suma $13,500 de la Ciudad y $3,300 del condado: $16,800 en total, o 0.56% del precio.',
 					'Encima de eso está la Medida ULA, que aplica solo dentro de la Ciudad de Los Ángeles y se cobra sobre todo el precio de venta: 0% en $5.4 millones o menos, 4% por encima de $5.4 millones y por debajo de $10.9 millones, y 5.5% en $10.9 millones o más, para los cierres después del 30 de junio de 2026. Con un precio de $6,000,000, el impuesto ULA es de $240,000, y con los impuestos regulares de la Ciudad ($27,000) y del condado ($6,600), los impuestos de transferencia suman $273,600, o 4.56% del precio. Con $12,000,000, suman $727,200, o 6.06%.',
@@ -414,6 +418,7 @@ export const postsEsMore5: PostEs[] = [
 			},
 			{
 				heading: 'Cómo calcular lo que recibiría',
+				visual: 'costosPasos',
 				paragraphs: [
 					'Una forma sencilla de ordenarlo: parta del precio de venta, reste el pago de su préstamo, la comisión, los impuestos de transferencia (incluida la Medida ULA si aplica), los honorarios de escrow y de título y los demás costos de cierre. Eso es lo que llega del escrow. Después, aparte lo que deberá de impuestos sobre la renta en su declaración, con ayuda de su contador.',
 					`Nuestra [calculadora de la Medida ULA](/measure-ula-calculator/) (en inglés) muestra la parte del impuesto de transferencia a su precio, y una [opinión de valor](${BOV}) puede mostrar lo que recibiría a distintos precios y fechas de cierre.`,
@@ -472,6 +477,7 @@ export const postsEsMore5: PostEs[] = [
 		sections: [
 			{
 				heading: 'Una decisión de familia, y también de impuestos',
+				visual: 'hijosTabla',
 				paragraphs: [
 					'Muchos dueños que compraron su edificio hace décadas se hacen la misma pregunta: ¿se lo dejo a mis hijos, o lo vendo mientras puedo? No hay una respuesta correcta, solo la que le conviene a su familia. Pero los impuestos cambian mucho según el camino que elija, y conviene conocerlos antes de decidir.',
 					'Este artículo explica las diferencias principales, con los datos que ya publicamos en nuestras guías. Es información general, y la decisión final debe tomarla con un abogado de herencias y un contador.',
@@ -573,6 +579,7 @@ export const postsEsMore5: PostEs[] = [
 		sections: [
 			{
 				heading: 'La respuesta corta: sus inquilinos se quedan',
+				visual: 'inquilinosColumnas',
 				paragraphs: [
 					'Si usted vende un edificio de apartamentos con inquilinos, una venta no termina por sí sola el contrato de ningún inquilino. Los contratos de renta y las reglas de renta que aplican al edificio se quedan con el edificio, así que el nuevo dueño ocupa la posición del dueño actual. La mayoría de los edificios de apartamentos en Los Ángeles se venden con los inquilinos en su lugar, y muchos compradores buscan específicamente edificios ocupados con ingresos estables.',
 					'Para la mayoría de los inquilinos, lo que cambia es a quién le pagan la renta. Lo que no cambia es lo que más les importa: su contrato y su renta.',

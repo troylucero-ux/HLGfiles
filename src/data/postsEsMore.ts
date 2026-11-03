@@ -32,6 +32,7 @@ export const postsEsMore: PostEs[] = [
 		sections: [
 			{
 				heading: 'No hay una sola respuesta correcta',
+				visual: 'sieteQ',
 				paragraphs: [
 					'Decidir si se vende un edificio de apartamentos es una de las decisiones financieras más grandes que toma un dueño, y la respuesta correcta depende tanto de sus metas como del mercado. A algunos dueños les conviene más conservar el edificio. A otros les conviene vender ahora, o vender con un intercambio 1031. Las siete preguntas siguientes son las que repasamos con los dueños antes de anunciar cualquier propiedad.',
 				],
@@ -140,6 +141,7 @@ export const postsEsMore: PostEs[] = [
 			},
 			{
 				heading: 'Por qué los edificios de apartamentos necesitan un especialista',
+				visual: 'sieteCosas',
 				paragraphs: [
 					'Vender un edificio de apartamentos es un trabajo distinto a vender una casa o un centro comercial. El comprador es un inversionista, así que el precio depende del ingreso, los gastos y el riesgo. En Los Ángeles, el control de rentas, la edad del edificio y los impuestos locales pueden mover el número por cientos de miles de dólares. Un corredor que trabaja sobre todo con otros tipos de propiedad estaría aprendiendo esas reglas con la venta de usted.',
 					'También afecta quién ve su edificio. Los compradores de apartamentos trabajan con corredores que ya conocen, y las mejores ofertas muchas veces vienen de inversionistas que siguen el mercado de cerca.',
@@ -208,6 +210,7 @@ export const postsEsMore: PostEs[] = [
 			},
 			{
 				heading: 'Señales de alerta',
+				visual: 'alertas',
 				paragraphs: [
 					'Desconfíe de un precio muy por encima de todas las demás opiniones y sin ventas comparables que lo respalden. Tenga cuidado con la presión para firmar rápido, las respuestas vagas sobre la trayectoria del propio corredor, un contrato de listado largo y sin salida, y la resistencia a dar referencias.',
 					'También puede verificar que un corredor tenga licencia en la [búsqueda de licencias del Departamento de Bienes Raíces de California](https://www2.dre.ca.gov/PublicASP/pplinfo.asp) (en inglés).',
@@ -274,6 +277,7 @@ export const postsEsMore: PostEs[] = [
 			},
 			{
 				heading: '1. Ingreso operativo neto: el centro del valor',
+				visual: 'formulaValor',
 				paragraphs: [
 					'El ingreso operativo neto es la renta cobrada del edificio y otros ingresos, menos el costo de operarlo. No incluye el pago de su hipoteca, la depreciación ni los impuestos sobre la renta. Como el comprador está pagando por ese flujo de ingresos, el NOI determina el precio más que cualquier otro número.',
 					`Dos cosas hacen tropezar a los dueños. Primero, los compradores usan gastos realistas, no solo lo que usted paga hoy. Volverán a calcular los impuestos a la propiedad, porque California reevalúa un edificio cuando se vende, y nuestros memorandos de oferta normalmente suponen alrededor de 1.2% del precio de venta. Segundo, los problemas ocultos de gastos salen a la luz en la revisión del comprador, y por eso recomendamos a los dueños vigilar sus recibos, como explicamos en nuestro artículo sobre [cómo revisar los recibos de servicios](/es/insights/${ES.servicios}/).`,
@@ -302,6 +306,7 @@ export const postsEsMore: PostEs[] = [
 			},
 			{
 				heading: '5. Ingreso actual frente a ingreso proyectado (pro forma)',
+				visual: 'pfTabla',
 				paragraphs: [
 					'Los compradores miran dos conjuntos de números: lo que el edificio produce hoy (ingreso actual) y lo que podría producir con rentas de mercado (pro forma). La diferencia entre ambos se llama loss to lease (la brecha entre la renta actual y la de mercado), y ahí ocurre buena parte de la negociación.',
 					`En 3815 Don Tomaso, las rentas actuales están alrededor de 47% por debajo del mercado, una brecha de $4,904 al mes. Llegar a las rentas de mercado con la rotación normal subiría el NOI de $79,148 a $129,826 y la tasa de capitalización de 6.33% a 10.39%. Los compradores pagarán por ese potencial, pero solo en parte, porque con control de rentas no pueden aprovecharlo hasta que las unidades se desocupen. Explicamos cómo en nuestra guía sobre [vender con inquilinos bajo control de rentas](${p('inquilinos')}).`,
@@ -414,6 +419,7 @@ export const postsEsMore: PostEs[] = [
 			},
 			{
 				heading: 'Las diferencias principales',
+				visual: 'bovTabla',
 				paragraphs: [
 					'Quién lo prepara. Un corredor prepara una opinión de valor. Un valuador con licencia prepara un avalúo.',
 					'Para qué existe. Una opinión de valor le ayuda a fijar el precio y a promover una venta. Un avalúo respalda un préstamo u otra necesidad formal.',
@@ -500,6 +506,7 @@ export const postsEsMore: PostEs[] = [
 			},
 			{
 				heading: 'El nuevo máximo, vigente desde el 1 de agosto de 2026',
+				visual: 'ab1482Tabla',
 				paragraphs: [
 					'Para los aumentos que entren en vigor a partir del 1 de agosto de 2026, el cambio del CPI de la región Los Ángeles-Long Beach-Anaheim fue de 3.7%, lo que fija el aumento máximo permitido en 8.7%, el cambio del CPI más 5%. Es más que el límite del año anterior, de 8.0% (3.0% del CPI más 5%).',
 				],

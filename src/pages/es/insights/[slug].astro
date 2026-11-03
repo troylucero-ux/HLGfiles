@@ -4,6 +4,7 @@ import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BOVForm from '../../../components/BOVForm.astro';
 import ArticleFaq from '../../../components/ArticleFaq.astro';
 import LanguageSwitch from '../../../components/LanguageSwitch.astro';
+import ArticleVisual from '../../../components/ArticleVisual.astro';
 import { postsEs, formatTrimestre } from '../../../data/postsEs';
 import { site } from '../../../data/site';
 import { toParts, stripLinks } from '../../../lib/inlineLinks';
@@ -70,6 +71,7 @@ const articleSchema = {
 							{s.paragraphs.map((p) => (
 								<p>{toParts(p).map((part) => (part.href ? (part.href.startsWith('http') ? <a href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a> : <a href={part.href}>{part.text}</a>) : part.text))}</p>
 							))}
+							{s.visual && <ArticleVisual id={s.visual} />}
 						</>
 					))
 				}

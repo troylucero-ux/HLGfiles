@@ -54,6 +54,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				heading: 'Cómo se compara con la AB 1482',
+				visual: 'rentaComparacion',
 				paragraphs: [
 					`Para los edificios más nuevos fuera de la RSO, el límite estatal de rentas es el menor entre 10% y 5% más el cambio del CPI regional. Para los aumentos que entren en vigor a partir del 1 de agosto de 2026, es de 8.7%. Nuestra [guía de la AB 1482](${p('ab1482')}) explica cómo se calcula.`,
 					'La diferencia es grande. Con una renta de $2,000, un aumento de 3% son $60 al mes, y uno de 8.7% son $174. En un año, son unos $720 frente a $2,088 por unidad, y por eso los dos tipos de edificios se valoran de forma distinta.',
@@ -61,6 +62,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				heading: 'Qué significa para el valor',
+				visual: 'formulaRso',
 				paragraphs: [
 					'Los compradores calculan con las rentas actuales y con el límite legal de qué tan rápido pueden crecer. Un techo más bajo frena el crecimiento de las rentas en un edificio RSO, y los compradores dan solo crédito parcial por el potencial que no pueden aprovechar hasta que las unidades se desocupen. Vea nuestro artículo sobre las [tasas de capitalización y precios por vecindario](/insights/la-apartment-cap-rates-and-prices-by-neighborhood-2026/) (en inglés).',
 					'A manera de ilustración, tome un edificio de 10 unidades con rentas de $2,000. Un aumento de 3% suma $7,200 al año en renta. Con una tasa de capitalización de 6%, ese ingreso vale unos $120,000 para un comprador, y como los gastos no suben con la renta, la mayor parte llega al ingreso operativo neto. Es un ejemplo, no una cotización para su edificio, pero muestra por qué un aumento permitido que no se ha usado tiene valor.',
@@ -141,6 +143,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				heading: 'Cómo un intercambio 1031 hace el cambio con impuestos diferidos',
+				visual: 'timeline1031',
 				paragraphs: [
 					'Según el código fiscal actual, las propiedades multifamiliares y las comerciales califican entre sí como de tipo similar (“like-kind”), y eso es lo que hace posible un intercambio de apartamentos a NNN. Cuando la propiedad que usted vende cierra el escrow, empiezan a correr los dos plazos: 45 días para identificar y 180 días para cerrar. Los dos son límites firmes que fija el IRS, no pautas. Empezamos a buscar opciones de reemplazo antes de que cierre su venta, precisamente para proteger ese plazo en lugar de correr contra él.',
 				],
@@ -220,6 +223,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				heading: 'Sus primeros 30 días',
+				visual: 'primeros30',
 				paragraphs: [
 					'El edificio sigue funcionando mientras los trámites se ponen al día. La renta vence, surgen reparaciones, y las cuentas y los impuestos continúan. Estos pasos protegen el edificio, a los inquilinos y a la familia.',
 					'Confirme el seguro. Verifique que el seguro del edificio esté vigente, y avise a la aseguradora del fallecimiento del dueño. Un hueco en la cobertura de un edificio ocupado es un riesgo que nadie quiere.',
@@ -231,6 +235,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				heading: 'Fideicomiso o probate: ¿quién puede vender?',
+				visual: 'fideicomisoProbate',
 				paragraphs: [
 					'Si el edificio estaba en un fideicomiso en vida (living trust), el fideicomisario sucesor generalmente tiene la autoridad para vender, siguiendo los términos del fideicomiso. Una venta de un fideicomiso normalmente no necesita la aprobación de una corte.',
 					'Si el edificio no estaba en un fideicomiso, generalmente pasa por probate. Un edificio de apartamentos vale muchas veces el límite de California para herencias pequeñas, que es de unos $200,000, así que no aplica el proceso simplificado para herencias pequeñas. La corte nombra a un albacea o administrador, y esa persona, no los herederos directamente, maneja la venta.',
@@ -346,6 +351,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				heading: 'Cuánto tarda normalmente una venta de apartamentos en Los Ángeles',
+				visual: 'findeanoPasos',
 				paragraphs: [
 					'Una venta típica de un edificio de apartamentos en Los Ángeles toma de 60 a 90 días desde que se anuncia hasta el cierre: unas semanas de mercadeo y luego de 30 a 45 días de escrow. Cada venta es diferente, y el precio, el financiamiento del comprador y la revisión del comprador pueden mover la fecha, pero ese rango es un número útil para planear.',
 					'Si cuenta hacia atrás desde ahí, el panorama de fin de año se aclara. Si anuncia ahora, un cierre el 31 de diciembre es realista. Si espera hasta noviembre, es probable que cierre en 2027.',
@@ -353,6 +359,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				heading: 'Cierre en diciembre o cierre en enero',
+				visual: 'findeanoCols',
 				paragraphs: [
 					'Ninguno es mejor automáticamente. Un cierre en diciembre pone la ganancia en su declaración de 2026. Un cierre en enero aplaza esa factura de impuestos un año completo. Cuál le conviene depende de sus ingresos de este año y del próximo, de sus otras deducciones y planes, y de adónde quiere que vaya el dinero, una conversación que debe tener con su contador antes de anunciar el edificio, no después de estar en contrato.',
 				],
@@ -432,6 +439,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				heading: 'Cómo difiere el financiamiento',
+				visual: 'fourplexTabla',
 				paragraphs: [
 					'En general, los edificios de hasta cuatro unidades pueden financiarse con hipotecas residenciales, mientras que los edificios de cinco unidades o más necesitan préstamos comerciales. Un préstamo residencial depende mucho de los ingresos y el crédito del comprador, y el ingreso de la propiedad pesa menos. Un préstamo comercial examina con cuidado el ingreso operativo neto y la tasa de capitalización del edificio.',
 					'Esa diferencia cambia quién puede comprar su edificio y cómo lo tratará el avalúo del prestamista, así que conviene saber de qué lado de la línea está su edificio.',

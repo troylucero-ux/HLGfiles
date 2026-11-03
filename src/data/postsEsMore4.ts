@@ -56,6 +56,7 @@ export const postsEsMore4: PostEs[] = [
 			},
 			{
 				heading: 'La contrapartida',
+				visual: 'opcionesTabla',
 				paragraphs: [
 					'El riesgo principal de una venta fuera del mercado es que usted nunca sabrá cuánto dejó sobre la mesa. Si solo unos pocos compradores ven el edificio, la mejor oferta puede ser menor que la que habría producido un mercado más amplio. El riesgo principal de una venta anunciada es la exposición: más gente se entera, los inquilinos pueden enterarse, y un edificio que se queda en el mercado puede empezar a verse estancado.',
 				],
@@ -148,6 +149,7 @@ export const postsEsMore4: PostEs[] = [
 			},
 			{
 				heading: 'Cómo $8,000 de agua se convierten en $114,000 de valor perdido',
+				visual: 'fugaFormula',
 				paragraphs: [
 					'$8,000 o $4,000 al año no suenan a mucho dinero por sí solos. Pero un edificio de apartamentos no se valora por sus gastos de forma aislada: se valora por su ingreso operativo neto, capitalizado a una tasa de capitalización de mercado. Con una tasa aproximada de 7%, esos $8,000 extra al año de gasto de agua equivalen a unos $114,000 de valor suprimido de la propiedad. El sobrecosto de $4,000 equivale a unos $57,000.',
 					'Eso es lo que toma por sorpresa a la mayoría de los dueños. Una fuga que parece un dolor de cabeza de mantenimiento en realidad es un problema de valor, y con las tasas de capitalización a las que se venden los edificios de apartamentos, un sobrecosto mensual relativamente pequeño tiene un efecto desproporcionado, casi exponencial, en lo que la propiedad vale al final.',
@@ -263,6 +265,7 @@ export const postsEsMore4: PostEs[] = [
 			},
 			{
 				heading: 'Por qué importa cuando vende',
+				visual: 'ab628Pasos',
 				paragraphs: [
 					'La inspección del comprador y los recorridos por las unidades revelarán aparatos que faltan, viejos o que son del inquilino. Si varias unidades los tienen, un comprador puede pedir un crédito en el precio o incluir el costo en su oferta. Adelantarse cuesta menos que negociarlo en el escrow.',
 					`Antes de anunciar: recorra las unidades y anote cada estufa y cada refrigerador, con quién es el dueño y su antigüedad. Revise si hay retiros del mercado. Reemplace lo que esté descompuesto. Para los refrigeradores de los inquilinos, documente el lenguaje del contrato que exige la ley cada vez que se firme o se renueve un contrato. Guarde los registros con los expedientes de los contratos para tenerlos listos para los compradores. Nuestra [guía paso a paso para vender](${p('paso')}) enumera los demás documentos que piden los compradores.`,

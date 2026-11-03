@@ -16,7 +16,7 @@ export type PostEs = {
 	description: string; // also the meta description, ~155 characters
 	date: string; // ISO date
 	image?: { src: string; alt: string; width: number; height: number }; // Spanish graphic, shown under the date and used for social sharing
-	sections: { heading: string; paragraphs: string[] }[];
+	sections: { heading: string; paragraphs: string[]; visual?: string }[]; // `visual` is an id from src/data/esVisuals.ts, drawn after the section text
 	faqs: { q: string; a: string }[];
 	related: string[]; // Spanish slugs
 };
@@ -34,6 +34,7 @@ const postsEsCore: PostEs[] = [
 		sections: [
 			{
 				heading: '¿Cuánto tiempo toma?',
+				visual: 'pasos8',
 				paragraphs: [
 					'Una venta típica de un edificio de apartamentos en Los Ángeles toma de 60 a 90 días desde que se anuncia hasta el cierre: unas semanas de mercadeo y luego de 30 a 45 días de escrow (el período en que un tercero neutral maneja el dinero y los documentos hasta cerrar la venta). La preparación antes de anunciar el edificio se suma a ese tiempo, y vale la pena. Cada venta es diferente, pero los pasos siguientes son los mismos en casi todas.',
 				],
@@ -166,6 +167,7 @@ const postsEsCore: PostEs[] = [
 			},
 			{
 				heading: 'Cómo prepararse para vender con inquilinos en el lugar',
+				visual: 'checklistInquilinos',
 				paragraphs: [
 					'Unos cuantos pasos hacen el proceso más fácil y protegen su precio.',
 					'Prepare una lista de rentas exacta. Los compradores revisarán cada renta, cada fecha de inicio de contrato y cada unidad contra sus registros y los contratos, y los errores le restan credibilidad.',
@@ -264,6 +266,7 @@ const postsEsCore: PostEs[] = [
 			},
 			{
 				heading: 'Recuperación de la depreciación (depreciation recapture)',
+				visual: 'recuperacion',
 				paragraphs: [
 					'La propiedad residencial de renta generalmente se deprecia a lo largo de 27.5 años, lo que le da al dueño una deducción cada año que la conserva. Cuando vende, la parte de su ganancia que proviene de esa depreciación no se grava con las tasas normales de ganancias de capital. El IRS la trata como ganancia no recuperada de la sección 1250 (unrecaptured section 1250 gain), con una tasa federal máxima de 25%. El IRS generalmente la calcula con la depreciación que usted tenía derecho a deducir, la haya reclamado o no, así que un dueño no puede evitarla dejando de tomar las deducciones.',
 					'En palabras sencillas: las deducciones por depreciación redujeron sus impuestos mientras fue dueño del edificio, y cuando vende, el IRS recupera parte de ese beneficio. La cantidad de depreciación que usted dedujo se convierte en la primera porción de su ganancia y se grava hasta con 25%; cualquier aumento de precio más allá de eso se grava con las tasas normales de ganancias de capital.',
@@ -277,6 +280,7 @@ const postsEsCore: PostEs[] = [
 			},
 			{
 				heading: 'Formas en que los dueños manejan el impuesto',
+				visual: 'formasImpuesto',
 				paragraphs: [
 					'Hay maneras legítimas de reducir, diferir o programar el impuesto, y la correcta depende de su situación. Algunas de las más comunes son las siguientes.',
 					`Un intercambio 1031. Si reinvierte el dinero en una propiedad de inversión del mismo tipo (like-kind), puede diferir tanto el impuesto sobre las ganancias de capital como la recuperación de la depreciación. Las reglas son estrictas, e incluyen 45 días para identificar una propiedad de reemplazo y 180 días para cerrar. Lea nuestra [guía de intercambios 1031](/es/intercambios-1031/) y nuestro artículo sobre [intercambiar hacia propiedades triple net](/es/insights/${ES.intercambio}/).`,
@@ -355,6 +359,7 @@ const postsEsCore: PostEs[] = [
 			},
 			{
 				heading: 'Por qué un precio apenas arriba de la línea cuesta tanto',
+				visual: 'ulaTabla',
 				paragraphs: [
 					'El detalle clave es que el impuesto no es marginal. El impuesto ULA se aplica a todo el precio de venta, no solo a la parte que pasa del umbral. Un edificio que se vende en $5,400,000 no debe impuesto ULA. Un edificio que se vende en $5,400,001 debe 4% del precio completo, unos $216,000.',
 				],
