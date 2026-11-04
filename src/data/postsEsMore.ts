@@ -173,7 +173,7 @@ export const postsEsMore: PostEs[] = [
 				heading: '4. Un plan para llegar a los compradores',
 				paragraphs: [
 					'Pregunte al corredor cómo encontrará compradores, y no solo si anunciará el edificio. Una buena respuesta incluye una base de datos de inversionistas activos, relaciones con otros corredores, un memorando de oferta exacto, una jornada de puertas abiertas y, en algunos casos, una estrategia fuera del mercado abierto (off-market).',
-					'Dos ejemplos de nuestro propio trabajo muestran cómo planes distintos le quedan a edificios distintos. En 1513 Arlington Ave, una jornada de puertas abiertas para corredores y compradores atrajo ofertas de 12 compradores, como describimos en el [caso de estudio](/case-studies/1513-arlington-ave-arlington-heights-apartments/) (en inglés). En 236 S Bonnie Brae St, una venta confidencial fuera del mercado a un comprador recurrente de confianza funcionó mejor para un edificio grande que se promovió con discreción, como se describe en ese [caso de estudio](/case-studies/236-s-bonnie-brae-st-westlake-apartments/) (en inglés).',
+					'Dos ejemplos de nuestro propio trabajo muestran cómo distintos planes se ajustan a distintos edificios. En 1513 Arlington Ave, una jornada de puertas abiertas para corredores y compradores atrajo ofertas de 12 compradores, como describimos en el [caso de estudio](/case-studies/1513-arlington-ave-arlington-heights-apartments/) (en inglés). En 236 S Bonnie Brae St, una venta confidencial fuera del mercado a un comprador recurrente de confianza funcionó mejor para un edificio grande que se promovió con discreción, como se describe en ese [caso de estudio](/case-studies/236-s-bonnie-brae-st-westlake-apartments/) (en inglés).',
 				],
 			},
 			{

@@ -6,15 +6,16 @@ interface Props {
 }
 
 const { to, href } = Astro.props;
+// The sentence is always Spanish (it is written for Spanish readers); the button is in the language it opens.
 const text =
 	to === 'es'
 		? { message: 'Este artículo también está disponible en español.', cta: 'Leer en español' }
-		: { message: 'This article is also available in English.', cta: 'Read in English' };
+		: { message: 'Este artículo también está disponible en inglés.', cta: 'Read in English' };
 ---
 
-<aside class="lang-switch" lang={to}>
-	<p>{text.message}</p>
-	<a href={href} hreflang={to} class="btn btn-outline">{text.cta} &rarr;</a>
+<aside class="lang-switch">
+	<p lang="es">{text.message}</p>
+	<a href={href} hreflang={to} lang={to} class="btn btn-outline">{text.cta} &rarr;</a>
 </aside>
 
 <style>

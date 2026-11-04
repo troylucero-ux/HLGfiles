@@ -34,7 +34,7 @@ export const postsEsMore5: PostEs[] = [
 				heading: 'Cómo funciona el límite de rentas en una emergencia',
 				paragraphs: [
 					'La sección 396 del Código Penal de California es la ley estatal contra el abuso de precios. Cuando el presidente o el gobernador proclaman un estado de emergencia, o un condado, una ciudad o una ciudad y condado declaran una emergencia local, es ilegal subir el precio de la renta de una vivienda más de 10% para un inquilino actual o futuro. El límite dura 30 días después de la proclamación o declaración, o el período más largo que dure la prórroga de la proclamación, y los funcionarios locales pueden prorrogarlo en tramos de hasta 30 días.',
-					'Una violación es un delito menor (misdemeanor), castigable con hasta un año en la cárcel del condado, una multa de hasta $10,000, o ambas. También se trata como una práctica comercial ilegal, lo que abre la puerta a recursos civiles además de la sanción penal. La SB 1365 modifica la sección 396 y no cambia esas sanciones.',
+					'Una violación es un delito menor (misdemeanor), punible con hasta un año en la cárcel del condado, una multa de hasta $10,000, o ambas. También se trata como una práctica comercial ilegal, lo que abre la puerta a recursos civiles además de la sanción penal. La SB 1365 modifica la sección 396 y no cambia esas sanciones.',
 				],
 			},
 			{
@@ -189,7 +189,7 @@ export const postsEsMore5: PostEs[] = [
 			{
 				heading: 'Permisos y a quién contratar',
 				paragraphs: [
-					'Reemplazar un panel o agregar circuitos en la Ciudad de Los Ángeles generalmente requiere un permiso eléctrico del Departamento de Construcción y Seguridad de Los Ángeles (LADBS), y instalar un mini-split puede requerir también un permiso mecánico. El LADBS publica una solicitud de permiso eléctrico que cubre el trabajo en apartamentos y condominios. Confirme los permisos de su proyecto específico con el LADBS o con su contratista antes de que empiece el trabajo.',
+					'Reemplazar un panel o agregar circuitos en la Ciudad de Los Ángeles generalmente requiere un permiso eléctrico del Departamento de Construcción y Seguridad de Los Ángeles (LADBS), e instalar un mini-split puede requerir también un permiso mecánico. El LADBS publica una solicitud de permiso eléctrico que cubre el trabajo en apartamentos y condominios. Confirme los permisos de su proyecto específico con el LADBS o con su contratista antes de que empiece el trabajo.',
 					'Contrate a un electricista con licencia para hacer una evaluación por escrito, que incluya un cálculo de carga, en lugar de adivinar. Pida la marca y la antigüedad del panel, el tamaño del servicio principal y de los paneles de las unidades, el número de espacios libres para interruptores, el estado del cableado y una lista con precios de lo que costaría poner un circuito de enfriamiento dedicado en cada unidad.',
 					'Si hay que agrandar el servicio principal del edificio, intervendrá la compañía de servicios, y eso puede agregar tiempo de espera. Pregunte con anticipación.',
 				],

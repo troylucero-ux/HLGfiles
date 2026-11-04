@@ -270,7 +270,7 @@ export const postsEsMore2: PostEs[] = [
 			{
 				heading: 'Cómo vendemos edificios heredados',
 				paragraphs: [
-					'Los edificios que llegan por una herencia muchas veces son más viejos, con mantenimiento pendiente y rentas que no se han movido en años. Eso es común, y no impide una venta. Fijamos el precio de estos edificios con honestidad, a partir de la lista de rentas y las ventas comparables, y los presentamos a compradores que saben lo que están asumiendo, para que a la familia no se le pida arreglar primero décadas de decisiones pospuestas.',
+					'Los edificios que llegan por una herencia muchas veces son más viejos, con mantenimiento pendiente y rentas que no se han movido en años. Eso es común, y no impide una venta. Fijamos el precio de estos edificios con honestidad, a partir de la lista de rentas y las ventas comparables, y los presentamos a compradores que saben lo que están asumiendo, para que no se le pida a la familia arreglar décadas de decisiones pospuestas antes de vender.',
 					`Trabajamos con el fideicomisario o el albacea, el abogado y el contador para que la venta encaje con el calendario legal. Una venta típica de un edificio de apartamentos en Los Ángeles toma de 60 a 90 días desde que se anuncia hasta el cierre, y una venta que necesita confirmación de la corte agrega un paso. Nuestra [guía paso a paso para vender](${p('paso')}) muestra cada etapa.`,
 				],
 			},

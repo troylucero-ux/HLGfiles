@@ -240,7 +240,7 @@ const postsEsCore: PostEs[] = [
 		enSlug: 'capital-gains-depreciation-recapture-selling-la-apartment-building',
 		title: 'Ganancias de capital y recuperación de la depreciación al vender un edificio de apartamentos en Los Ángeles',
 		seoTitle: 'Ganancias de Capital al Vender un Edificio en Los Ángeles',
-		description: 'Cómo funcionan los impuestos federal y de California sobre ganancias de capital y recuperación de la depreciación, y cómo un intercambio 1031 los difiere.',
+		description: 'Cómo funcionan los impuestos federales y de California sobre ganancias de capital y recuperación de la depreciación, y cómo un intercambio 1031 los difiere.',
 		date: '2026-11-03',
 		image: { src: '/images/insights/es/ganancias-de-capital.webp', alt: 'Gráfica: el impuesto federal sobre las ganancias de capital es de 0%, 15% o 20%, la recuperación de la depreciación se grava hasta con 25%, y California grava la ganancia como ingreso ordinario.', width: 1200, height: 900 },
 		related: [ES.ula, ES.paso, ES.inquilinos],
