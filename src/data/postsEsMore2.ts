@@ -41,7 +41,7 @@ export const postsEsMore2: PostEs[] = [
 					'El Concejo Municipal aprobó la ordenanza el 12 de diciembre de 2025, y la alcaldesa Bass la firmó el 23 de diciembre. La Apartment Association of Greater Los Angeles resume así sus puntos principales.',
 					'Una fórmula nueva. El aumento anual permitido se calculará con el 90% del Índice de Precios al Consumidor de todos los artículos, en lugar del 100%, con un techo de 4%, en lugar de 8%, y un piso de 1%, en lugar de 3%.',
 					'Sin adicional por servicios. Se eliminó el 1% adicional que antes se permitía a los dueños que pagan el gas o la electricidad de los inquilinos. El Departamento de Vivienda indica que a partir del 2 de febrero de 2026, un propietario ya no puede incluir ningún aumento porcentual adicional por servicios.',
-					'Sin 10% automático por dependientes adicionales. Se eliminó el aumento separado de 10% que se permitía cuando se agregaba un dependiente adicional a un arrendamiento.',
+					'Sin 10% automático por dependientes adicionales. Se eliminó el aumento separado de 10% que se permitía cuando se agregaba un dependiente adicional al contrato de renta.',
 					'Montos de reubicación. Los montos de asistencia para reubicación se ajustarán cada año con el 100% del CPI.',
 				],
 			},
@@ -145,14 +145,14 @@ export const postsEsMore2: PostEs[] = [
 				heading: 'Cómo un intercambio 1031 hace el cambio con impuestos diferidos',
 				visual: 'timeline1031',
 				paragraphs: [
-					'Según el código fiscal actual, las propiedades multifamiliares y las comerciales califican entre sí como de tipo similar (“like-kind”), y eso es lo que hace posible un intercambio de apartamentos a NNN. Cuando la propiedad que usted vende cierra el escrow, empiezan a correr los dos plazos: 45 días para identificar y 180 días para cerrar. Los dos son límites firmes que fija el IRS, no pautas. Empezamos a buscar opciones de reemplazo antes de que cierre su venta, precisamente para proteger ese plazo en lugar de correr contra él.',
+					'Según el código fiscal actual, las propiedades multifamiliares y las comerciales califican entre sí como de tipo similar (“like-kind”), y eso es lo que hace posible un intercambio de apartamentos a NNN. Cuando la propiedad que usted vende cierra el escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta), empiezan a correr los dos plazos: 45 días para identificar y 180 días para cerrar. Los dos son límites firmes que fija el IRS, no pautas. Empezamos a buscar opciones de reemplazo antes de que cierre su venta, precisamente para proteger ese plazo en lugar de correr contra él.',
 				],
 			},
 			{
 				heading: 'Por qué específicamente las propiedades triple net (NNN)',
 				paragraphs: [
-					'En un contrato de arrendamiento triple net, el inquilino, no el dueño, es responsable de los impuestos a la propiedad, el seguro y el mantenimiento. Para un dueño acostumbrado a recibir llamadas de mantenimiento y a coordinar reparaciones en un edificio de apartamentos, esa estructura es todo el atractivo: llega la renta y no hay un techo que arreglar.',
-					'Las propiedades NNN también suelen estar arrendadas a un solo inquilino comercial con un contrato a largo plazo, lo que significa que desaparece la administración diaria de inquilinos que viene con decenas de unidades residenciales. Y como las oportunidades NNN existen en todo el país, un intercambio desde un edificio de apartamentos de Los Ángeles también es una forma natural de diversificar geográficamente y salirse por completo de la exposición al control de rentas específico de California.',
+					'En un contrato de renta triple net, el inquilino, no el dueño, es responsable de los impuestos a la propiedad, el seguro y el mantenimiento. Para un dueño acostumbrado a recibir llamadas de mantenimiento y a coordinar reparaciones en un edificio de apartamentos, esa estructura es todo el atractivo: llega la renta y no hay un techo que arreglar.',
+					'Las propiedades NNN también suelen estar rentadas a un solo inquilino comercial con un contrato a largo plazo, lo que significa que desaparece la administración diaria de inquilinos que viene con decenas de unidades residenciales. Y como las oportunidades NNN existen en todo el país, un intercambio desde un edificio de apartamentos de Los Ángeles también es una forma natural de diversificar geográficamente y salirse por completo de la exposición al control de rentas específico de California.',
 				],
 			},
 			{
@@ -185,7 +185,7 @@ export const postsEsMore2: PostEs[] = [
 			},
 			{
 				q: '¿Qué es una propiedad triple net (NNN)?',
-				a: 'Es una propiedad en la que el inquilino, no el dueño, es responsable de los impuestos a la propiedad, el seguro y el mantenimiento. Suelen estar arrendadas a un solo inquilino comercial con un contrato a largo plazo, así que desaparece la administración diaria de inquilinos.',
+				a: 'Es una propiedad en la que el inquilino, no el dueño, es responsable de los impuestos a la propiedad, el seguro y el mantenimiento. Suelen estar rentadas a un solo inquilino comercial con un contrato a largo plazo, así que desaparece la administración diaria de inquilinos.',
 			},
 			{
 				q: '¿Puedo cambiar un edificio de apartamentos por una propiedad comercial?',
@@ -249,7 +249,7 @@ export const postsEsMore2: PostEs[] = [
 					`A la mayoría de los herederos les preocupa el impuesto sobre las ganancias de capital. La respuesta usual es mejor de lo que temen. Según las reglas del IRS, la base de una propiedad heredada generalmente es su valor justo de mercado en la fecha del fallecimiento del dueño, o en una fecha de valuación alternativa si el albacea la elige. Eso reinicia el punto de partida para calcular la ganancia, así que un edificio vendido poco después del fallecimiento normalmente produce poca o ninguna ganancia sujeta a impuestos, y el historial de depreciación del dueño anterior generalmente no se transmite. Nuestra guía sobre [ganancias de capital y recuperación de la depreciación](${p('impuestos')}) explica las piezas.`,
 					`Por eso el valor en la fecha del fallecimiento es importante. Un avalúo formal es la forma habitual de respaldarlo, y una opinión de valor del corredor no es un avalúo. Explicamos la diferencia en nuestro artículo sobre [opinión de valor frente a avalúo](${p('bov')}).`,
 					'El impuesto federal sobre herencias es un impuesto distinto, sobre la herencia y no sobre el heredero, y aplica solo a herencias grandes. Para quienes fallezcan en 2026, la exención federal es de $15 millones por persona. California no tiene su propio impuesto sobre herencias.',
-					`Si la herencia vende el edificio, aplican los impuestos de transferencia habituales de la venta, incluida la Medida ULA por encima de $5.4 millones dentro de la Ciudad de Los Ángeles. Pregunte al oficial de escrow si aplica alguna exención a su situación, y vea nuestra [guía de la Medida ULA](${p('ula')}) para saber cómo funcionan los umbrales.`,
+					`Si la herencia vende el edificio, aplican los impuestos de transferencia habituales de la venta, incluida la Medida ULA por encima de $5.4 millones dentro de la Ciudad de Los Ángeles. Pregunte al oficial de escrow (la persona neutral que guarda el dinero y los documentos hasta cerrar la venta) si aplica alguna exención a su situación, y vea nuestra [guía de la Medida ULA](${p('ula')}) para saber cómo funcionan los umbrales.`,
 				],
 			},
 			{
@@ -353,7 +353,7 @@ export const postsEsMore2: PostEs[] = [
 				heading: 'Cuánto tarda normalmente una venta de apartamentos en Los Ángeles',
 				visual: 'findeanoPasos',
 				paragraphs: [
-					'Una venta típica de un edificio de apartamentos en Los Ángeles toma de 60 a 90 días desde que se anuncia hasta el cierre: unas semanas de mercadeo y luego de 30 a 45 días de escrow. Cada venta es diferente, y el precio, el financiamiento del comprador y la revisión del comprador pueden mover la fecha, pero ese rango es un número útil para planear.',
+					'Una venta típica de un edificio de apartamentos en Los Ángeles toma de 60 a 90 días desde que se anuncia hasta el cierre: unas semanas de mercadeo y luego de 30 a 45 días de escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta). Cada venta es diferente, y el precio, el financiamiento del comprador y la revisión del comprador pueden mover la fecha, pero ese rango es un número útil para planear.',
 					'Si cuenta hacia atrás desde ahí, el panorama de fin de año se aclara. Si anuncia ahora, un cierre el 31 de diciembre es realista. Si espera hasta noviembre, es probable que cierre en 2027.',
 				],
 			},

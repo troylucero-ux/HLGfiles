@@ -413,7 +413,7 @@ export const postsEsMore: PostEs[] = [
 			{
 				heading: 'Qué es un avalúo',
 				paragraphs: [
-					'Un avalúo es una opinión formal y escrita sobre el valor de mercado de una propiedad, preparada por un valuador con licencia o certificación que sigue normas profesionales. Los prestamistas exigen uno antes de otorgar un préstamo, así que el prestamista del comprador pedirá un avalúo de su edificio durante el escrow. El valuador trabaja para el prestamista, no para usted.',
+					'Un avalúo es una opinión formal y escrita sobre el valor de mercado de una propiedad, preparada por un valuador con licencia o certificación que sigue normas profesionales. Los prestamistas exigen uno antes de otorgar un préstamo, así que el prestamista del comprador pedirá un avalúo de su edificio durante el escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta). El valuador trabaja para el prestamista, no para usted.',
 					'Los dueños también usan avalúos en situaciones que requieren una valuación formal, como una herencia, la compra de la parte de un socio o una disputa.',
 				],
 			},

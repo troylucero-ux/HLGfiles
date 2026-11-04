@@ -233,14 +233,14 @@ export const postsEsMore4: PostEs[] = [
 			{
 				heading: 'Qué contratos están cubiertos',
 				paragraphs: [
-					'Los nuevos requisitos aplican solo a un contrato de renta firmado, modificado o prorrogado a partir del 1 de enero de 2026. Un contrato nuevo firmado este año está cubierto. Una renovación o un contrato modificado también. La ley habla de contratos y no dice cómo trata a un arrendamiento de mes a mes que simplemente continúa, así que pregunte a su abogado cómo manejar esas unidades. Lo más seguro es planear que todas las unidades cumplan con la norma.',
+					'Los nuevos requisitos aplican solo a un contrato de renta firmado, modificado o prorrogado a partir del 1 de enero de 2026. Un contrato nuevo firmado este año está cubierto. Una renovación o un contrato modificado también. La ley habla de contratos y no dice cómo trata a un contrato de renta de mes a mes que simplemente continúa, así que pregunte a su abogado cómo manejar esas unidades. Lo más seguro es planear que todas las unidades cumplan con la norma.',
 				],
 			},
 			{
 				heading: 'La opción del refrigerador que pone el inquilino',
 				paragraphs: [
 					'En los edificios más antiguos, muchas veces hay inquilinos que traen su propio refrigerador. La ley lo permite, con condiciones. El propietario y el inquilino tienen que acordarlo cuando se firma el contrato, y el contrato tiene que incluir una declaración sustancialmente en esta forma: que bajo la ley estatal el propietario está obligado a dar un refrigerador en buen estado de funcionamiento, y que al marcar la casilla el inquilino reconoce que pidió traer el suyo y que es responsable de mantenerlo en buen estado de funcionamiento.',
-					'El contrato también tiene que decir que el inquilino puede avisar por escrito, con 30 días de anticipación, que ya no quiere conservar su propio refrigerador, y que al terminar los 30 días el propietario instalará uno en buen estado de funcionamiento. Un propietario no puede condicionar el arrendamiento a que el inquilino ponga un refrigerador, y no es responsable de mantener el que el inquilino ponga.',
+					'El contrato también tiene que decir que el inquilino puede avisar por escrito, con 30 días de anticipación, que ya no quiere conservar su propio refrigerador, y que al terminar los 30 días el propietario instalará uno en buen estado de funcionamiento. Un propietario no puede condicionar el contrato de renta a que el inquilino ponga un refrigerador, y no es responsable de mantener el que el inquilino ponga.',
 					'La ley no ofrece un arreglo equivalente para las estufas, así que planee poner usted la estufa.',
 				],
 			},
@@ -267,7 +267,7 @@ export const postsEsMore4: PostEs[] = [
 				heading: 'Por qué importa cuando vende',
 				visual: 'ab628Pasos',
 				paragraphs: [
-					'La inspección del comprador y los recorridos por las unidades revelarán aparatos que faltan, viejos o que son del inquilino. Si varias unidades los tienen, un comprador puede pedir un crédito en el precio o incluir el costo en su oferta. Adelantarse cuesta menos que negociarlo en el escrow.',
+					'La inspección del comprador y los recorridos por las unidades revelarán aparatos que faltan, viejos o que son del inquilino. Si varias unidades los tienen, un comprador puede pedir un crédito en el precio o incluir el costo en su oferta. Adelantarse cuesta menos que negociarlo en el escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta).',
 					`Antes de anunciar: recorra las unidades y anote cada estufa y cada refrigerador, con quién es el dueño y su antigüedad. Revise si hay retiros del mercado. Reemplace lo que esté descompuesto. Para los refrigeradores de los inquilinos, documente el lenguaje del contrato que exige la ley cada vez que se firme o se renueve un contrato. Guarde los registros con los expedientes de los contratos para tenerlos listos para los compradores. Nuestra [guía paso a paso para vender](${p('paso')}) enumera los demás documentos que piden los compradores.`,
 					`La AB 628 es parte de una serie de reglas recientes de habitabilidad que afectan a los edificios antiguos, junto con las [inspecciones de balcones de la SB 721](${p('sb721')}) y las [reglas de aire acondicionado y los paneles eléctricos](/es/insights/${ES.aire}/). Los compradores calculan el costo combinado, así que una imagen clara de lo que está hecho y de lo que falta ayuda a su venta.`,
 				],
@@ -294,7 +294,7 @@ export const postsEsMore4: PostEs[] = [
 			},
 			{
 				q: '¿Mi inquilino puede poner su propio refrigerador?',
-				a: 'Sí, pero solo bajo las reglas escritas en el contrato: ambas partes lo acuerdan al firmar, el contrato incluye la declaración que exige la ley, y el inquilino puede avisar con 30 días de anticipación que ya no quiere conservar el suyo, y entonces el propietario instala uno. Un propietario no puede condicionar el arrendamiento a que el inquilino ponga un refrigerador. Para las estufas no hay una opción parecida.',
+				a: 'Sí, pero solo bajo las reglas escritas en el contrato: ambas partes lo acuerdan al firmar, el contrato incluye la declaración que exige la ley, y el inquilino puede avisar con 30 días de anticipación que ya no quiere conservar el suyo, y entonces el propietario instala uno. Un propietario no puede condicionar el contrato de renta a que el inquilino ponga un refrigerador. Para las estufas no hay una opción parecida.',
 			},
 			{
 				q: '¿Qué pasa si una estufa o un refrigerador fue retirado del mercado (recall)?',

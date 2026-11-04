@@ -284,7 +284,7 @@ export const postsEsMore5: PostEs[] = [
 				heading: 'Qué hace un corredor en la venta de un edificio',
 				visual: 'sinCorredorTabla',
 				paragraphs: [
-					`Un corredor que vende edificios de apartamentos hace mucho más que poner un anuncio. Calcula el valor con base en sus rentas reales y en ventas comparables, prepara el memorando de oferta (offering memorandum), las fotos y el video, llama directamente a inversionistas y a otros corredores, filtra a los compradores, compara las ofertas por lo que usted recibiría neto, negocia el contrato y acompaña la venta durante el escrow y la revisión del comprador. Nuestra [guía paso a paso para vender](${p('paso')}) muestra las ocho etapas.`,
+					`Un corredor que vende edificios de apartamentos hace mucho más que poner un anuncio. Calcula el valor con base en sus rentas reales y en ventas comparables, prepara el memorando de oferta (offering memorandum), las fotos y el video, llama directamente a inversionistas y a otros corredores, filtra a los compradores, compara las ofertas por lo que usted recibiría neto, negocia el contrato y acompaña la venta durante el escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta) y la revisión del comprador. Nuestra [guía paso a paso para vender](${p('paso')}) muestra las ocho etapas.`,
 					'Si usted decide vender solo, tendrá que hacer cada una de esas cosas, o contratar a otros para hacerlas.',
 				],
 			},
@@ -378,7 +378,7 @@ export const postsEsMore5: PostEs[] = [
 				heading: 'El precio de venta no es lo que usted recibe',
 				paragraphs: [
 					'Cuando un dueño pregunta cuánto cuesta vender, casi siempre piensa en la comisión. Pero la comisión es solo una de varias piezas, y muchas veces no es la más grande. Entender todas las piezas antes de anunciar el edificio le permite saber cuánto recibiría realmente, y decidir con cifras reales.',
-					'Este artículo reúne los costos principales de una venta en Los Ángeles. Las cifras de impuestos de transferencia son exactas para los casos que mostramos, pero su situación es distinta, así que use esto como una guía y confirme todo con su contador y su oficial de escrow.',
+					'Este artículo reúne los costos principales de una venta en Los Ángeles. Las cifras de impuestos de transferencia son exactas para los casos que mostramos, pero su situación es distinta, así que use esto como una guía y confirme todo con su contador y su oficial de escrow (la persona neutral que guarda el dinero y los documentos hasta cerrar la venta).',
 				],
 			},
 			{
@@ -513,7 +513,7 @@ export const postsEsMore5: PostEs[] = [
 				],
 			},
 			{
-				heading: 'La herencia y el probate',
+				heading: 'La herencia y la sucesión (probate)',
 				paragraphs: [
 					'Si el edificio está en un fideicomiso en vida (living trust), el fideicomisario sucesor generalmente puede vender según los términos del fideicomiso, sin probate. Si no está en un fideicomiso, generalmente pasa por probate, porque un edificio de apartamentos vale mucho más que el límite de California para herencias pequeñas, de unos $200,000, y la corte nombra a un albacea o administrador que maneja la venta.',
 					`Eso afecta a sus hijos en la práctica: un fideicomiso puede ahorrarles tiempo y trámites. Hable con un abogado de herencias sobre cuál estructura le conviene. Vea también nuestra guía sobre [qué hacer al heredar un edificio](${p('heredado')}) y nuestra página de [ventas de fideicomisos y herencias](${PAGES_ES.fideicomisos}).`,
@@ -595,7 +595,7 @@ export const postsEsMore5: PostEs[] = [
 			{
 				heading: 'Qué pasa con los depósitos de seguridad',
 				paragraphs: [
-					'Los depósitos de seguridad pasan al comprador. Por eso conviene tener un registro claro de cada depósito, junto con el contrato de cada inquilino. Un comprador lo revisará durante el escrow, igual que revisa cada renta, la fecha de inicio de cada contrato y cada unidad contra sus registros.',
+					'Los depósitos de seguridad pasan al comprador. Por eso conviene tener un registro claro de cada depósito, junto con el contrato de cada inquilino. Un comprador lo revisará durante el escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta), igual que revisa cada renta, la fecha de inicio de cada contrato y cada unidad contra sus registros.',
 				],
 			},
 			{

@@ -38,7 +38,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 		items: [
 			{
 				q: '¿Cuánto tarda vender un edificio de apartamentos en Los Ángeles?',
-				a: 'La mayoría de nuestros listados entran en contrato dentro de 1 a 4 semanas de mercadeo, y el escrow cierra de 30 a 60 días después, según el financiamiento y la revisión del comprador. Las ventas fuera del mercado abierto (off-market) pueden ser más rápidas.',
+				a: 'La mayoría de nuestros listados entran en contrato dentro de 1 a 4 semanas de mercadeo, y el escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta) cierra de 30 a 60 días después, según el financiamiento y la revisión del comprador. Las ventas fuera del mercado abierto (off-market) pueden ser más rápidas.',
 			},
 			{
 				q: '¿Necesito arreglar la propiedad antes de vender?',
@@ -178,7 +178,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 				a: `Proteja primero el edificio y a los inquilinos: confirme que el seguro esté vigente, mantenga las rentas en una cuenta de la herencia o del fideicomiso, diga a los inquilinos a quién pagar y reúna los documentos. Luego hable con un abogado de sucesiones o fideicomisos y con un contador antes de decidir si conserva o vende. Vea nuestra guía sobre [edificios de apartamentos heredados](${p('heredado')}).`,
 			},
 			{
-				q: '¿Tengo que pasar por probate para vender un edificio heredado?',
+				q: '¿Tengo que pasar por un proceso de sucesión (probate) para vender un edificio heredado?',
 				a: 'Depende de cómo era propietario del edificio. Si estaba en un fideicomiso en vida, el fideicomisario sucesor generalmente puede vender según los términos del fideicomiso, sin probate. Si no, generalmente pasa por probate, porque un edificio de apartamentos vale mucho más que el límite de California para herencias pequeñas.',
 			},
 			{
@@ -200,7 +200,7 @@ export const faqCategoriesEs: FaqCategoryEs[] = [
 			},
 			{
 				q: '¿Qué exige la AB 628 de California sobre estufas y refrigeradores?',
-				a: `Para los contratos de renta firmados, modificados o prorrogados a partir del 1 de enero de 2026, una unidad de renta debe tener una estufa y un refrigerador en buen estado de funcionamiento. Un inquilino puede acordar en el contrato poner su propio refrigerador, pero no como condición del arrendamiento. Algunos tipos de vivienda, como las unidades de ocupación de una sola habitación, están exentos. Vea nuestra [guía de la AB 628](/es/insights/${ES.ab628}/).`,
+				a: `Para los contratos de renta firmados, modificados o prorrogados a partir del 1 de enero de 2026, una unidad de renta debe tener una estufa y un refrigerador en buen estado de funcionamiento. Un inquilino puede acordar en el contrato poner su propio refrigerador, pero no como condición del contrato de renta. Algunos tipos de vivienda, como las unidades de ocupación de una sola habitación, están exentos. Vea nuestra [guía de la AB 628](/es/insights/${ES.ab628}/).`,
 			},
 			{
 				q: '¿Tengo que dar aire acondicionado en mis apartamentos?',

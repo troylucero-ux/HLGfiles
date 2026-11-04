@@ -302,7 +302,7 @@ export const visuals: Record<string, Visual> = {
 				],
 			},
 			{
-				heading: 'No estaba en un fideicomiso (probate)',
+				heading: 'No estaba en un fideicomiso (sucesión o probate)',
 				tone: 'gold',
 				items: [
 					'La corte nombra a un albacea o administrador',

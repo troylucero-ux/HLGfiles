@@ -29,7 +29,7 @@ const postsEsCore: PostEs[] = [
 		seoTitle: 'Cómo Vender un Edificio de Apartamentos en Los Ángeles',
 		description: 'Los pasos para vender un edificio de apartamentos en Los Ángeles, del precio y los documentos a las ofertas, el escrow y el cierre, con los tiempos típicos.',
 		date: '2026-11-03',
-		image: { src: '/images/insights/es/como-vender-paso-a-paso.webp', alt: 'Gráfica: ocho pasos para vender un edificio, de la decisión al cierre. Prepárese con sus metas, el valor, el corredor y los documentos. Promueva el edificio y revise las ofertas. Cierre con el escrow y la revisión del comprador.', width: 1200, height: 900 },
+		image: { src: '/images/insights/es/como-vender-paso-a-paso.webp', alt: 'Gráfica: ocho pasos para vender un edificio, de la decisión al cierre. Prepárese con sus metas, el valor, el corredor y los documentos. Promueva el edificio y revise las ofertas. Cierre con el escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta) y la revisión del comprador.', width: 1200, height: 900 },
 		related: [ES.impuestos, ES.inquilinos, ES.ula],
 		sections: [
 			{
@@ -173,7 +173,7 @@ const postsEsCore: PostEs[] = [
 					'Prepare una lista de rentas exacta. Los compradores revisarán cada renta, cada fecha de inicio de contrato y cada unidad contra sus registros y los contratos, y los errores le restan credibilidad.',
 					'Reúna los expedientes de los contratos. Tenga listo el contrato de cada inquilino, cualquier anexo y los avisos, junto con un registro claro de los depósitos de seguridad, ya que los depósitos pasan al comprador.',
 					'Confirme que cumple con la Ciudad. Asegúrese de que su registro de la RSO y sus cuotas estén al día, porque el abogado del comprador lo preguntará.',
-					'Espere solicitudes de estoppel. Los compradores muchas veces piden a los inquilinos que confirmen por escrito los términos de su renta durante el escrow, y los expedientes en orden hacen que esto sea rápido.',
+					'Espere solicitudes de estoppel. Los compradores muchas veces piden a los inquilinos que confirmen por escrito los términos de su renta durante el escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta), y los expedientes en orden hacen que esto sea rápido.',
 					'Mantenga sus prácticas de renta normales. Siga cumpliendo las reglas habituales para las reparaciones y para dar a los inquilinos un aviso por escrito adecuado antes de entrar a una unidad, incluso para las visitas de los compradores.',
 				],
 			},
