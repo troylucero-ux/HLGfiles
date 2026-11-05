@@ -104,6 +104,13 @@ const faqSchema = {
 					</p>
 				</form>
 
+				<div id="ula-loading" class="ula-loading" hidden role="status" aria-live="polite">
+					<span class="eyebrow">Working on it</span>
+					<p class="ula-loading__step" id="ula-loading-step">Checking your sale price</p>
+					<div class="ula-loading__bar" aria-hidden="true"><span id="ula-loading-bar"></span></div>
+					<ul class="ula-loading__done" id="ula-loading-done" aria-hidden="true"></ul>
+				</div>
+
 				<div id="ula-result" class="ula-result" hidden aria-live="polite">
 					<span class="eyebrow">Estimated Transfer Taxes</span>
 					<p class="ula-result__big" id="ula-total-tax"></p>
@@ -240,7 +247,7 @@ const faqSchema = {
 		});
 	}
 
-	function render() {
+	function render(animate = false) {
 		const price = digits(priceInput.value);
 		const where = document.getElementById('ula-where').value;
 		const costsPct = Math.max(0, Number(document.getElementById('ula-costs').value) || 0) / 100;
@@ -335,20 +342,115 @@ const faqSchema = {
 			wb.append(tr);
 		}
 
+		// Steps shown while "working". They describe what the calculator actually does for the chosen place.
+		const steps =
+			where === 'la'
+				? [
+						'Checking your sale price',
+						'Applying the City of Los Angeles and LA County transfer taxes',
+						'Testing the Measure ULA thresholds near your price',
+						'Calculating what you would keep',
+					]
+				: where === 'sm'
+					? [
+							'Checking your sale price',
+							'Applying the Santa Monica and LA County transfer taxes',
+							'Testing the Measure GS thresholds near your price',
+							'Calculating what you would keep',
+						]
+					: ['Checking your sale price', 'Applying the LA County transfer tax', 'Calculating what you would keep'];
+		showResultAfterLoading(steps, animate ? tax : null);
+	}
+
+	// A short "working" sequence, then the result with the tax figure counting up. Skipped for visitors who ask
+	// their device for reduced motion, and for people who arrive from an article link (they did not click Calculate).
+	const loading = document.getElementById('ula-loading');
+	const loadingStep = document.getElementById('ula-loading-step');
+	const loadingBar = document.getElementById('ula-loading-bar');
+	const loadingDone = document.getElementById('ula-loading-done');
+	const submitBtn = form?.querySelector('button[type="submit"]');
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const STEP_MS = 610; // 4 steps x 610 ms + 250 ms closing pause = about 2.7 seconds
+	const COUNT_MS = 1300;
+
+	function revealResult(finalTax) {
+		const bigEl = document.getElementById('ula-total-tax');
+		const finalText = bigEl.textContent;
+		// Start the count-up from zero before the card is shown, so the final number never flashes first.
+		if (finalTax != null && !reduceMotion) bigEl.textContent = '$0';
 		result.hidden = false;
-		result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		result.classList.remove('ula-result--in');
+		void result.offsetWidth;
+		result.classList.add('ula-result--in');
+		result.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+		if (submitBtn) {
+			submitBtn.disabled = false;
+			submitBtn.textContent = 'Calculate My Net Proceeds';
+		}
+		form.dataset.busy = '0';
+		if (finalTax == null || reduceMotion) return;
+		const start = performance.now();
+		function tick(now) {
+			const t = Math.min(1, (now - start) / COUNT_MS);
+			bigEl.textContent = t >= 1 ? finalText : money(finalTax * (1 - Math.pow(1 - t, 3)));
+			if (t < 1) requestAnimationFrame(tick);
+		}
+		requestAnimationFrame(tick);
+		// Safety net: if the browser pauses animation frames (hidden tab), still end on the real number.
+		setTimeout(() => {
+			bigEl.textContent = finalText;
+		}, COUNT_MS + 600);
+	}
+
+	function showResultAfterLoading(steps, finalTax) {
+		if (reduceMotion || finalTax == null) {
+			revealResult(null);
+			return;
+		}
+		form.dataset.busy = '1';
+		if (submitBtn) {
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'Calculating...';
+		}
+		result.hidden = true;
+		loadingDone.innerHTML = '';
+		loadingBar.style.width = '0%';
+		loading.hidden = false;
+		loading.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		let i = 0;
+		function next() {
+			if (i > 0) {
+				const li = document.createElement('li');
+				li.textContent = steps[i - 1];
+				loadingDone.appendChild(li);
+			}
+			if (i >= steps.length) {
+				loadingBar.style.width = '100%';
+				setTimeout(() => {
+					loading.hidden = true;
+					revealResult(finalTax);
+				}, 250);
+				return;
+			}
+			loadingStep.textContent = steps[i] + '...';
+			loadingBar.style.width = `${Math.round(((i + 0.6) / steps.length) * 100)}%`;
+			i += 1;
+			setTimeout(next, STEP_MS);
+		}
+		next();
 	}
 
 	form?.addEventListener('submit', (e) => {
 		e.preventDefault();
-		render();
+		if (form.dataset.busy === '1') return;
+		render(true);
 	});
 
 	// A link from an article can pass a price, as in /measure-ula-calculator/?price=5500000
 	const fromLink = new URLSearchParams(window.location.search).get('price');
 	if (fromLink && digits(fromLink) >= 100000) {
 		priceInput.value = digits(fromLink).toLocaleString('en-US');
-		render();
+		render(false);
 	}
 </script>
 
@@ -439,6 +541,83 @@ const faqSchema = {
 		color: var(--ink-light);
 		margin-top: 1rem;
 		line-height: 1.5;
+	}
+
+	.ula-loading {
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.ula-loading__step {
+		font-family: var(--font-serif, Georgia, serif);
+		font-size: 1.25rem;
+		color: var(--navy-dark);
+		margin: 0.25rem 0 0.9rem;
+		min-height: 1.6em;
+	}
+
+	.ula-loading__bar {
+		height: 6px;
+		background: var(--border);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.ula-loading__bar span {
+		display: block;
+		height: 100%;
+		width: 0;
+		background: var(--gold);
+		transition: width 0.6s ease;
+	}
+
+	.ula-loading__done {
+		list-style: none;
+		margin: 1rem 0 0;
+		padding: 0;
+		font-size: 0.9rem;
+		color: var(--ink-soft);
+	}
+
+	.ula-loading__done :global(li) {
+		padding-left: 1.4rem;
+		position: relative;
+		margin-bottom: 0.25rem;
+		animation: ula-fade 0.3s ease both;
+	}
+
+	.ula-loading__done :global(li)::before {
+		content: '\2713';
+		position: absolute;
+		left: 0;
+		color: var(--gold);
+		font-weight: 700;
+	}
+
+	.ula-result--in {
+		animation: ula-fade 0.5s ease both;
+	}
+
+	@keyframes ula-fade {
+		from {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.ula-loading__bar span {
+			transition: none;
+		}
+		.ula-loading__done :global(li),
+		.ula-result--in {
+			animation: none;
+		}
 	}
 
 	.ula-result {
