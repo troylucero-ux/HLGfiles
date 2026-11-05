@@ -72,6 +72,13 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 					</p>
 				</form>
 
+				<div id="valuation-loading" class="calc-loading" hidden role="status" aria-live="polite">
+					<span class="eyebrow">Working on it</span>
+					<p class="calc-loading__step" id="loading-step">Checking your address</p>
+					<div class="calc-loading__bar" aria-hidden="true"><span id="loading-bar"></span></div>
+					<ul class="calc-loading__done" id="loading-done" aria-hidden="true"></ul>
+				</div>
+
 				<div id="valuation-result" class="calc-result" hidden>
 					<span class="eyebrow" id="result-eyebrow">Estimated Value</span>
 					<p class="calc-result__range" id="result-range"></p>
@@ -136,8 +143,90 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 		return 'unknown';
 	}
 
+	// A short "working" sequence, then the result with the range counting up. Skipped for visitors who
+	// ask their device for reduced motion.
+	const loading = document.getElementById('valuation-loading');
+	const loadingStep = document.getElementById('loading-step');
+	const loadingBar = document.getElementById('loading-bar');
+	const loadingDone = document.getElementById('loading-done');
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const STEP_MS = 610; // 4 steps x 610 ms + 250 ms closing pause = about 2.7 seconds
+	const COUNT_MS = 1300;
+
+	function revealResult(range) {
+		const rangeEl = document.getElementById('result-range');
+		const finalText = rangeEl.textContent;
+		// Start the count-up from zero before the card is shown, so the final number never flashes first.
+		if (range && !reduceMotion) rangeEl.textContent = '$0 - $0';
+		result.hidden = false;
+		result.classList.remove('calc-result--in');
+		void result.offsetWidth;
+		result.classList.add('calc-result--in');
+		result.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+		const submitBtn = form.querySelector('button[type="submit"]');
+		if (submitBtn) {
+			submitBtn.disabled = false;
+			submitBtn.textContent = 'See My Estimated Value';
+		}
+		form.dataset.busy = '0';
+		if (!range || reduceMotion) return;
+		const start = performance.now();
+		function tick(now) {
+			const t = Math.min(1, (now - start) / COUNT_MS);
+			const eased = 1 - Math.pow(1 - t, 3);
+			rangeEl.textContent =
+				t >= 1 ? finalText : `${formatDollar(range.valueLow * eased)} - ${formatDollar(range.valueHigh * eased)}`;
+			if (t < 1) requestAnimationFrame(tick);
+		}
+		requestAnimationFrame(tick);
+		// Safety net: if the browser pauses animation frames (hidden tab), still end on the real number.
+		setTimeout(() => {
+			rangeEl.textContent = finalText;
+		}, COUNT_MS + 600);
+	}
+
+	function showResultAfterLoading(steps, range) {
+		if (reduceMotion) {
+			revealResult(null);
+			return;
+		}
+		form.dataset.busy = '1';
+		const submitBtn = form.querySelector('button[type="submit"]');
+		if (submitBtn) {
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'Calculating...';
+		}
+		result.hidden = true;
+		loadingDone.innerHTML = '';
+		loadingBar.style.width = '0%';
+		loading.hidden = false;
+		loading.scrollIntoView({ behavior: 'smooth', block: 'center' });
+		let i = 0;
+		function next() {
+			if (i > 0) {
+				const li = document.createElement('li');
+				li.textContent = steps[i - 1];
+				loadingDone.appendChild(li);
+			}
+			if (i >= steps.length) {
+				loadingBar.style.width = '100%';
+				setTimeout(() => {
+					loading.hidden = true;
+					revealResult(range);
+				}, 250);
+				return;
+			}
+			loadingStep.textContent = steps[i] + '...';
+			loadingBar.style.width = `${Math.round(((i + 0.6) / steps.length) * 100)}%`;
+			i += 1;
+			setTimeout(next, STEP_MS);
+		}
+		next();
+	}
+
 	form?.addEventListener('submit', (e) => {
 		e.preventDefault();
+		if (form.dataset.busy === '1') return;
 		const data = Object.fromEntries(new FormData(form).entries());
 		const address = String(data.address ?? '').trim();
 		const submarketSlug = String(data.submarket ?? '');
@@ -213,8 +302,16 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 			document.getElementById('result-precise').textContent = 'For a value you can rely on, request a free Broker Opinion of Value from a broker below.';
 		}
 
-		result.hidden = false;
-		result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		// Steps shown while "working". They describe what the calculator actually does with the visitor's inputs.
+		const steps = capRate
+			? [
+					'Checking your address',
+					`Reviewing ${capRate.compCount.toLocaleString('en-US')} ${areaName} sales from 2026`,
+					'Estimating your net operating income',
+					'Calculating your value range',
+				]
+			: ['Checking your address', `Looking for recent ${areaName ?? 'neighborhood'} sales`, 'Checking whether there is enough data'];
+		showResultAfterLoading(steps, capRate ? { valueLow, valueHigh } : null);
 
 		// Prefill the BOV form below so a visitor who wants a precise number doesn't have to retype it.
 		const bovAddress = document.querySelector('.js-bov-form input[name="address"]');
@@ -340,6 +437,83 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 		color: var(--ink-light);
 		margin-top: 1rem;
 		line-height: 1.5;
+	}
+
+	.calc-loading {
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.calc-loading__step {
+		font-family: var(--font-serif, Georgia, serif);
+		font-size: 1.25rem;
+		color: var(--navy-dark);
+		margin: 0.25rem 0 0.9rem;
+		min-height: 1.6em;
+	}
+
+	.calc-loading__bar {
+		height: 6px;
+		background: var(--border);
+		border-radius: 3px;
+		overflow: hidden;
+	}
+
+	.calc-loading__bar span {
+		display: block;
+		height: 100%;
+		width: 0;
+		background: var(--gold);
+		transition: width 0.6s ease;
+	}
+
+	.calc-loading__done {
+		list-style: none;
+		margin: 1rem 0 0;
+		padding: 0;
+		font-size: 0.9rem;
+		color: var(--ink-soft);
+	}
+
+	.calc-loading__done :global(li) {
+		padding-left: 1.4rem;
+		position: relative;
+		margin-bottom: 0.25rem;
+		animation: calc-fade 0.3s ease both;
+	}
+
+	.calc-loading__done :global(li)::before {
+		content: '\2713';
+		position: absolute;
+		left: 0;
+		color: var(--gold);
+		font-weight: 700;
+	}
+
+	.calc-result--in {
+		animation: calc-fade 0.5s ease both;
+	}
+
+	@keyframes calc-fade {
+		from {
+			opacity: 0;
+			transform: translateY(6px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.calc-loading__bar span {
+			transition: none;
+		}
+		.calc-loading__done :global(li),
+		.calc-result--in {
+			animation: none;
+		}
 	}
 
 	.calc-result {
