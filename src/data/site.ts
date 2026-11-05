@@ -28,7 +28,7 @@ export const site = {
 	social: {
 		linkedin: 'https://www.linkedin.com/in/josh-a-kaplan/',
 		instagram: '',
-		facebook: '',
+		facebook: 'https://www.facebook.com/LAMultifamily',
 	},
 };
 
