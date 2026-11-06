@@ -360,6 +360,13 @@ export const submarkets: Submarket[] = [
 		metaDescription:
 			'Sherman Oaks multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA, Ventura Blvd planning, and a free valuation.',
 		laOwnerGuide: true,
+		cardPhoto: {
+			src: '/images/submarkets/sherman-oaks.webp',
+			alt: 'Office buildings at Ventura and Sepulveda Boulevards in Sherman Oaks',
+			caption: 'Ventura Blvd and Sepulveda Blvd, Sherman Oaks',
+			credit: 'Cbl62, CC BY-SA 3.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Citibank_and_City_National_Bank_Buildings,_Ventura_%26_Sepulveda,_Sherman_Oaks.JPG',
+		},
 	},
 	{
 		slug: 'studio-city',
@@ -377,6 +384,13 @@ export const submarkets: Submarket[] = [
 		metaDescription:
 			'Studio City multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA, the Radford Studio Center plan, and a free valuation.',
 		laOwnerGuide: true,
+		cardPhoto: {
+			src: '/images/submarkets/studio-city.webp',
+			alt: 'Storefronts and palm trees along Ventura Boulevard in Studio City',
+			caption: 'Ventura Boulevard shopping district, Studio City',
+			credit: 'Cbl62, CC BY-SA 3.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Studio_City%27s_Ventura_Boulevard_Shopping_District.JPG',
+		},
 	},
 	{
 		slug: 'reseda',
@@ -395,6 +409,13 @@ export const submarkets: Submarket[] = [
 		metaDescription:
 			'Reseda multifamily broker: 2026 apartment prices and cap rates, the G Line busway, the community plan update, LA rent control, and a free valuation.',
 		laOwnerGuide: true,
+		cardPhoto: {
+			src: '/images/submarkets/reseda.webp',
+			alt: 'Reseda Boulevard looking toward the San Gabriel Mountains',
+			caption: 'Reseda Boulevard',
+			credit: 'Cbl62, CC BY-SA 3.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Reseda_Boulevard.JPG',
+		},
 	},
 	// Palms, Mar Vista, Westwood, and Venice (added November 5, 2026). Facts were read from LA Metro, LA City Planning, the
 	// California Coastal Commission, the neighborhood councils, and UCLA Health and the VA. No Walk Scores are shown because
@@ -465,6 +486,13 @@ export const submarkets: Submarket[] = [
 		metaDescription:
 			'Westwood multifamily broker: 2026 apartment prices and cap rates, UCLA-area buildings, the D Line extension, LA rent control, and a free valuation.',
 		laOwnerGuide: true,
+		cardPhoto: {
+			src: '/images/submarkets/westwood.webp',
+			alt: 'The Janss Steps and Royce Hall on the UCLA campus in Westwood',
+			caption: 'Janss Steps and Royce Hall, UCLA, Westwood',
+			credit: 'b r e n t, CC BY 2.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Janss_Steps,_Royce_Hall_in_background,_UCLA.jpg',
+		},
 	},
 	{
 		slug: 'venice',
@@ -487,5 +515,12 @@ export const submarkets: Submarket[] = [
 		metaDescription:
 			'Venice multifamily broker: 2026 apartment prices and cap rates, Coastal Zone and Mello Act rules, LA rent control and Measure ULA, and a free valuation.',
 		laOwnerGuide: true,
+		cardPhoto: {
+			src: '/images/submarkets/venice.webp',
+			alt: 'Ocean Front Walk in Venice, with palm trees and the boardwalk shops',
+			caption: 'Ocean Front Walk, Venice',
+			credit: 'DanielMichaelPerry, CC0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Ocean_Front_Walk_Venice_Beach.jpg',
+		},
 	},
 ];
