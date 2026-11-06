@@ -15,24 +15,16 @@ const { property, propertyName } = Astro.props;
 	<form class="js-om-gate" novalidate>
 		<div class="om-gate__grid">
 			<div>
-				<label for="omg-first">First name</label>
-				<input id="omg-first" name="firstName" type="text" autocomplete="given-name" required />
-			</div>
-			<div>
-				<label for="omg-last">Last name</label>
-				<input id="omg-last" name="lastName" type="text" autocomplete="family-name" required />
+				<label for="omg-name">Name</label>
+				<input id="omg-name" name="name" type="text" autocomplete="name" required />
 			</div>
 			<div>
 				<label for="omg-email">Email</label>
 				<input id="omg-email" name="email" type="email" autocomplete="email" required />
 			</div>
-			<div>
+			<div class="om-gate__wide">
 				<label for="omg-phone">Phone <span class="om-gate__opt">(optional)</span></label>
 				<input id="omg-phone" name="phone" type="tel" autocomplete="tel" />
-			</div>
-			<div class="om-gate__wide">
-				<label for="omg-company">Company <span class="om-gate__opt">(optional)</span></label>
-				<input id="omg-company" name="company" type="text" autocomplete="organization" />
 			</div>
 		</div>
 		<label class="om-gate__consent">

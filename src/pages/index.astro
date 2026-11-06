@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BOVForm from '../components/BOVForm.astro';
+import ListingsBar from '../components/ListingsBar.astro';
 import { site } from '../data/site';
 import { closings } from '../data/closings';
 import { submarkets } from '../data/submarkets';
@@ -74,6 +75,8 @@ const services = [
 	<link slot="head" rel="alternate" hreflang="x-default" href={`${site.url}/`} />
 	<link slot="head" rel="preload" as="image" href="/images/hero/453-s-gramercy-pl-hero.webp" media="(min-width: 701px)" />
 	<link slot="head" rel="preload" as="image" href="/images/hero/453-s-gramercy-pl-hero-mobile.webp" media="(max-width: 700px)" />
+
+	<ListingsBar />
 
 	<section class="hero">
 		<div class="hero__bg" aria-hidden="true"></div>

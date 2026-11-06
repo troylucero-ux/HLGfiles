@@ -50,7 +50,7 @@ export async function handleOmLead(request: Request, env: Env): Promise<Response
 	// The gate form has no message box; the original form requires one.
 	const message = str(body.message, 2000) || (gated ? `Requested the offering memorandum for ${propertyName}.` : '');
 
-	if (!name || !/^\S+@\S+\.\S+$/.test(email) || !message || body.privacyConsent !== true || (gated && !(firstName && lastName))) {
+	if (!name || !/^\S+@\S+\.\S+$/.test(email) || !message || body.privacyConsent !== true) {
 		return new Response(JSON.stringify({ error: 'Please fill out the required fields and accept the privacy policy.' }), {
 			status: 400,
 			headers: corsHeaders(),

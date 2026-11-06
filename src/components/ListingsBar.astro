@@ -1,0 +1,172 @@
+---
+// Slim bar that slides in under the site header once the visitor scrolls past the top of the page,
+// pointing at the active listings. The visitor can close it for the rest of the visit.
+import { listings } from '../data/listings';
+
+const active = listings.filter((l) => l.status === 'active').length;
+const message = active === 1 ? '1 apartment building for sale in Los Angeles' : `${active} apartment buildings for sale in Los Angeles`;
+---
+
+{
+	active > 0 && (
+		<div class="lbar-top" id="lbar-top" role="region" aria-label="Active listings" data-trigger=".hero">
+			<div class="container lbar-top__inner">
+				<span class="lbar-top__msg">{message}</span>
+				<a href="/listings/" class="lbar-top__btn">
+					View Active Listings
+				</a>
+				<button type="button" class="lbar-top__close" aria-label="Close this bar">
+					&times;
+				</button>
+			</div>
+		</div>
+	)
+}
+
+<script>
+	const bar = document.getElementById('lbar-top');
+	if (bar) {
+		let dismissed = false;
+		try {
+			dismissed = sessionStorage.getItem('lbar-top-closed') === '1';
+		} catch {
+			/* storage can be blocked; the bar just shows */
+		}
+		if (dismissed) {
+			bar.remove();
+		} else {
+			const header = document.querySelector('header');
+			const trigger = document.querySelector(bar.dataset.trigger || '.hero');
+			const place = () => {
+				const pos = header ? getComputedStyle(header).position : 'static';
+				const stuck = pos === 'sticky' || pos === 'fixed';
+				bar.style.top = stuck && header ? `${header.getBoundingClientRect().height}px` : '0px';
+			};
+			place();
+			window.addEventListener('resize', place);
+			const toggle = (show: boolean) => {
+				place();
+				bar.classList.toggle('lbar-top--show', show);
+			};
+			if (trigger) {
+				// The sticky header covers the top of the viewport, so count the trigger as gone once it
+				// has scrolled up behind the header.
+				const covered = header && getComputedStyle(header).position !== 'static' ? Math.round(header.getBoundingClientRect().height) : 0;
+				new IntersectionObserver(([entry]) => toggle(!entry.isIntersecting && entry.boundingClientRect.top < 0), {
+					threshold: 0,
+					rootMargin: `-${covered}px 0px 0px 0px`,
+				}).observe(trigger);
+			} else {
+				window.addEventListener('scroll', () => toggle(window.scrollY > 500), { passive: true });
+			}
+			bar.querySelector('.lbar-top__close')?.addEventListener('click', () => {
+				bar.classList.remove('lbar-top--show');
+				try {
+					sessionStorage.setItem('lbar-top-closed', '1');
+				} catch {
+					/* ignore */
+				}
+				setTimeout(() => bar.remove(), 300);
+			});
+		}
+	}
+</script>
+
+<style>
+	.lbar-top {
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		z-index: 30;
+		background: var(--navy);
+		color: #fff;
+		transform: translateY(-110%);
+		opacity: 0;
+		visibility: hidden;
+		transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s;
+		box-shadow: 0 3px 12px rgb(0 0 0 / 0.18);
+	}
+
+	.lbar-top--show {
+		transform: none;
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.lbar-top__inner {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1.25rem;
+		min-height: 3rem;
+		padding-block: 0.4rem;
+		position: relative;
+	}
+
+	.lbar-top__msg {
+		font-size: 0.95rem;
+		font-weight: 500;
+	}
+
+	.lbar-top__btn {
+		flex: none;
+		background: #fff;
+		color: var(--navy-dark);
+		font-weight: 700;
+		font-size: 0.82rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		text-decoration: none;
+		padding: 0.5rem 1.1rem;
+		border-radius: 3px;
+		transition: background-color 0.2s ease;
+	}
+
+	.lbar-top__btn:hover {
+		background: var(--gold-light);
+		color: var(--navy-dark);
+	}
+
+	.lbar-top__close {
+		position: absolute;
+		right: 0.25rem;
+		top: 50%;
+		transform: translateY(-50%);
+		background: transparent;
+		border: 0;
+		color: #fff;
+		font-size: 1.6rem;
+		line-height: 1;
+		padding: 0.25rem 0.6rem;
+		cursor: pointer;
+		opacity: 0.8;
+	}
+
+	.lbar-top__close:hover {
+		opacity: 1;
+	}
+
+	@media (max-width: 640px) {
+		.lbar-top__msg {
+			display: none;
+		}
+
+		.lbar-top__inner {
+			justify-content: flex-start;
+			gap: 0.75rem;
+			padding-right: 2.5rem;
+		}
+
+		.lbar-top__btn {
+			flex: 1;
+			text-align: center;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.lbar-top {
+			transition: none;
+		}
+	}
+</style>
