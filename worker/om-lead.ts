@@ -10,6 +10,7 @@
 import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
 import { corsHeaders, type Env } from './env';
 import { omFiles } from './om-files';
+import { listings } from '../src/data/listings';
 
 type OmBody = {
 	name?: string;
@@ -44,8 +45,10 @@ export async function handleOmLead(request: Request, env: Env): Promise<Response
 	const company = str(body.company);
 	const property = str(body.property, 120);
 	const gated = Boolean(property);
+	// The gate form sends the listing slug; show the plain address in the CRM instead.
+	const propertyName = listings.find((l) => l.slug === property)?.name ?? property;
 	// The gate form has no message box; the original form requires one.
-	const message = str(body.message, 2000) || (gated ? `Requested the offering memorandum for ${property}.` : '');
+	const message = str(body.message, 2000) || (gated ? `Requested the offering memorandum for ${propertyName}.` : '');
 
 	if (!name || !/^\S+@\S+\.\S+$/.test(email) || !message || body.privacyConsent !== true || (gated && !(firstName && lastName))) {
 		return new Response(JSON.stringify({ error: 'Please fill out the required fields and accept the privacy policy.' }), {
@@ -59,14 +62,14 @@ export async function handleOmLead(request: Request, env: Env): Promise<Response
 			const person = await createPerson(env, { name, email, phone: phone || undefined });
 			if (person) {
 				await createLead(env, {
-					title: gated ? `OM Download: ${property}, ${name}` : `OM Request: ${name}`,
+					title: gated ? `OM Download: ${propertyName}, ${name}` : `OM Request: ${name}`,
 					personId: person.id,
 					note: [
 						gated ? 'Offering Memorandum downloaded via highlightreg.com listing page.' : 'Offering Memorandum request submitted via highlightreg.com.',
 						`Email: ${email}`,
 						phone ? `Phone: ${phone}` : '',
 						company ? `Company: ${company}` : '',
-						`Property: ${property || '(not stated)'}`,
+						`Property: ${propertyName || '(not stated)'}`,
 						`Message: ${message}`,
 					]
 						.filter(Boolean)
