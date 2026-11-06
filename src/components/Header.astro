@@ -182,7 +182,7 @@ const simpleLinks = [
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 2rem;
+		gap: 1.25rem;
 		padding-block: 1.15rem;
 	}
 
@@ -217,10 +217,11 @@ const simpleLinks = [
 		background: var(--navy);
 	}
 
+	/* One tidy row: the menu collapses to the hamburger below 1360px instead of wrapping onto a second line. */
 	.main-nav__list {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 1.5rem;
+		flex-wrap: nowrap;
+		gap: 1.1rem;
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -234,6 +235,7 @@ const simpleLinks = [
 		text-transform: uppercase;
 		color: var(--navy-dark);
 		cursor: default;
+		white-space: nowrap;
 	}
 
 	.main-nav__list > li > a:hover {
@@ -298,7 +300,7 @@ const simpleLinks = [
 	.site-header__actions {
 		display: flex;
 		align-items: center;
-		gap: 1.25rem;
+		gap: 1rem;
 		flex-shrink: 0;
 	}
 
@@ -330,11 +332,19 @@ const simpleLinks = [
 
 	.site-header__cta {
 		white-space: nowrap;
-		font-size: 0.85rem;
-		padding: 0.6rem 1.1rem;
+		font-size: 0.78rem;
+		letter-spacing: 0.05em;
+		padding: 0.6rem 1rem;
 	}
 
 	@media (max-width: 860px) {
+		.utility-bar__inner {
+			justify-content: center;
+			text-align: center;
+		}
+	}
+
+	@media (max-width: 1359px) {
 		.main-nav__toggle {
 			display: flex;
 		}
@@ -375,11 +385,6 @@ const simpleLinks = [
 
 		.main-nav__submenu a {
 			padding: 0.4rem 0;
-		}
-
-		.utility-bar__inner {
-			justify-content: center;
-			text-align: center;
 		}
 	}
 

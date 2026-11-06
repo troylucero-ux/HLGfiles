@@ -11,8 +11,7 @@ const message = active === 1 ? '1 apartment building for sale in Los Angeles' : 
 	active > 0 && (
 		<div class="lbar-top" id="lbar-top" role="region" aria-label="Active listings" data-trigger=".hero">
 			<div class="container lbar-top__inner">
-				<span class="lbar-top__msg">{message}</span>
-				<a href="/listings/" class="lbar-top__btn">
+				<a href="/listings/" class="lbar-top__btn" aria-label={`View Active Listings (${message})`}>
 					View Active Listings
 				</a>
 				<button type="button" class="lbar-top__close" aria-label="Close this bar">
@@ -97,16 +96,12 @@ const message = active === 1 ? '1 apartment building for sale in Los Angeles' : 
 	.lbar-top__inner {
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		justify-content: flex-end;
 		gap: 1.25rem;
 		min-height: 3rem;
 		padding-block: 0.4rem;
+		padding-right: 3rem;
 		position: relative;
-	}
-
-	.lbar-top__msg {
-		font-size: 0.95rem;
-		font-weight: 500;
 	}
 
 	.lbar-top__btn {
@@ -148,12 +143,7 @@ const message = active === 1 ? '1 apartment building for sale in Los Angeles' : 
 	}
 
 	@media (max-width: 640px) {
-		.lbar-top__msg {
-			display: none;
-		}
-
 		.lbar-top__inner {
-			justify-content: flex-start;
 			gap: 0.75rem;
 			padding-right: 2.5rem;
 		}
