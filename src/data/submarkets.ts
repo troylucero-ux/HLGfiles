@@ -340,4 +340,152 @@ export const submarkets: Submarket[] = [
 			'Van Nuys multifamily broker: 2026 apartment prices and cap rates, the new light rail line, LA rent control and Measure ULA, and a free valuation.',
 		laOwnerGuide: true,
 	},
+	// Sherman Oaks, Studio City, and Reseda (added November 5, 2026). Facts below were read from LA Metro (metro.net and the
+	// June 7, 2026 timetables), LA City Planning (planning.lacity.gov), the neighborhood councils, and Radford Studio Center's own
+	// site. No Walk Scores are shown because none were checked for these areas. Sales figures live in valuationAssumptions.ts.
+	{
+		slug: 'sherman-oaks',
+		name: 'Sherman Oaks',
+		region: 'San Fernando Valley',
+		blurb: 'A Ventura Boulevard Valley neighborhood beside the 101 and 405, where older rent-controlled buildings and newer ones sell side by side.',
+		transit: [
+			'Metro Rapid Line 761: Van Nuys G Line Station, Ventura & Sepulveda in Sherman Oaks, and the E Line at Expo/Sepulveda',
+			'Metro local lines 233 (Van Nuys Blvd), 155 and 240 (Ventura Blvd area)',
+			'No Metro rail station inside Sherman Oaks; the nearest are the B Line’s Universal City/Studio City station and the G Line’s Van Nuys station',
+		],
+		retail: ['Regional commercial centers along Ventura and Sepulveda Boulevards (as City Planning describes the area)', 'The Ventura Boulevard corridor'],
+		employers: ['Entertainment employers in nearby Studio City and Universal City: Radford Studio Center and Universal Studios'],
+		overview:
+			'Sherman Oaks is inside the City of Los Angeles, so LA rent control and Measure ULA apply. Ventura Boulevard parcels fall under the Ventura–Cahuenga Boulevard Corridor Specific Plan, the community plan that governs the area is being updated, and Metro is studying a Sepulveda subway that does not name a Sherman Oaks station. Owners here are pricing a mix of older buildings and newer ones.',
+		metaDescription:
+			'Sherman Oaks multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA, Ventura Blvd planning, and a free valuation.',
+		laOwnerGuide: true,
+	},
+	{
+		slug: 'studio-city',
+		name: 'Studio City',
+		region: 'San Fernando Valley',
+		blurb: 'A small, studio-adjacent Valley neighborhood with a Metro B Line station on Lankershim Boulevard.',
+		transit: [
+			'Metro B Line (Red): Universal City/Studio City Station on Lankershim Blvd',
+			'Metro bus lines 240 (Ventura Blvd), 155, 224 (Hollywood to Sylmar via Lankershim), and 167 (Coldwater Canyon)',
+		],
+		retail: ['Commercial uses along Laurel Canyon Boulevard near Ventura Boulevard (as City Planning describes them)', 'The Ventura Boulevard corridor'],
+		employers: ['Radford Studio Center, a 1.14-million-square-foot campus with 22 stages (per the studio’s own site)', 'Universal Studios in adjacent Universal City'],
+		overview:
+			'Studio City sits between Lankershim Boulevard and Fulton Avenue and includes a stretch of the Los Angeles River. It is inside the City of Los Angeles, so LA rent control and Measure ULA apply. The B Line station, the Ventura–Cahuenga Boulevard Corridor Specific Plan, and the proposed expansion of Radford Studio Center are the local factors owners ask about. Studio City has few apartment sales in a year, so its price figures rest on a small number of deals.',
+		metaDescription:
+			'Studio City multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA, the Radford Studio Center plan, and a free valuation.',
+		laOwnerGuide: true,
+	},
+	{
+		slug: 'reseda',
+		name: 'Reseda',
+		region: 'San Fernando Valley',
+		blurb: 'A West Valley workforce-housing market on the G Line busway, with its community plan now under review.',
+		transit: [
+			'Metro G Line (busway): Reseda Station',
+			'Metro bus lines 240, 150, 152, 162, 166, and 167 along Reseda Blvd, Sherman Way, Roscoe Blvd, and Nordhoff St',
+			'North San Fernando Valley bus rapid transit upgrades (Metro lists the project as in construction)',
+		],
+		retail: ['Reseda Boulevard and Sherman Way, the historic commercial center and designated Reseda Central Business District', 'Reseda Central Business District Community Design Overlay (2005)'],
+		employers: ['CSUN, Pierce College, and UCLA West Valley Medical Center nearby (all shown on Metro’s 2026 Valley map)'],
+		overview:
+			'Reseda is inside the City of Los Angeles, so LA rent control and Measure ULA apply. The G Line busway gives it a direct link to the Valley’s transit network, and the City’s draft community plan names the Reseda Boulevard and Sherman Way area and the G Line station area as targets for new mixed-use housing. Older buildings here trade at far lower prices per unit than on the Westside or in Studio City.',
+		metaDescription:
+			'Reseda multifamily broker: 2026 apartment prices and cap rates, the G Line busway, the community plan update, LA rent control, and a free valuation.',
+		laOwnerGuide: true,
+	},
+	// Palms, Mar Vista, Westwood, and Venice (added November 5, 2026). Facts were read from LA Metro, LA City Planning, the
+	// California Coastal Commission, the neighborhood councils, and UCLA Health and the VA. No Walk Scores are shown because
+	// none were checked for these areas. Sales figures live in valuationAssumptions.ts.
+	{
+		slug: 'palms',
+		name: 'Palms',
+		region: 'Westside LA',
+		blurb: 'A Westside neighborhood with its own E Line station, next to Culver City’s studio and tech employers.',
+		transit: [
+			'Metro E Line (Expo): Palms Station, with Culver City Station the next stop east',
+			'Metro Line 33 along Venice Blvd',
+			'Venice Blvd has a 24-hour dedicated bus lane and protected bike lanes between Inglewood Blvd and National Blvd (completed 2023)',
+		],
+		retail: [
+			'Strip commercial on Pico and Venice Boulevards',
+			'Commercial centers on Motor Avenue, and at National Boulevard and Barrington Avenue (as the City’s community plan describes them)',
+			'Small shopping centers on Sepulveda and National Boulevards',
+		],
+		employers: ['Culver City’s large employers next door, including Sony Pictures Entertainment, Amazon Studios, Apple, and Riot Games (per the city’s 2022 financial report)'],
+		overview:
+			'Palms is inside the City of Los Angeles, so LA rent control and Measure ULA apply. It sits in the Palms–Mar Vista–Del Rey community plan area, where the 1997 plan is being updated, and the Exposition Corridor Transit Neighborhood Plan is one of the City’s specific plans for the area. Palms has one of the larger sets of apartment sales among the Westside neighborhoods in our data.',
+		metaDescription:
+			'Palms multifamily broker: 2026 apartment prices and cap rates, the E Line, LA rent control and Measure ULA, and a free valuation for Westside apartment owners.',
+		laOwnerGuide: true,
+		cardSaleSlug: '3667-mentone-ave-los-angeles-ca-90034',
+	},
+	{
+		slug: 'mar-vista',
+		name: 'Mar Vista',
+		region: 'Westside LA',
+		blurb: 'A residential Westside neighborhood along Venice Boulevard, with a historic tract and no rail station of its own.',
+		transit: [
+			'No Metro rail station in Mar Vista; the E Line’s Palms and Expo/Bundy stations are the closest on that line',
+			'Metro Line 33 along Venice Blvd',
+			'Venice Blvd has a 24-hour dedicated bus lane and protected bike lanes between Inglewood Blvd and National Blvd (completed 2023)',
+		],
+		retail: [
+			'Venice Boulevard: small shopping centers, fast-food and multi-ethnic restaurants (per the City’s community plan)',
+			'The Centinela Avenue community center on Venice Boulevard, with a shopping center, the Mar Vista library, and small retail and antique stores',
+		],
+		employers: ['Culver City’s large employers next door, including Sony Pictures Entertainment, Amazon Studios, and Apple (per the city’s 2022 financial report)'],
+		overview:
+			'Mar Vista is inside the City of Los Angeles, so LA rent control and Measure ULA apply. The Mar Vista Community Council covers the area south of the 10 freeway and west of the 405. The Gregory Ain Mar Vista Tract is a Historic Preservation Overlay Zone, and the Palms–Mar Vista–Del Rey community plan is being updated. Sales here are few, so price figures rest on a small number of deals.',
+		metaDescription:
+			'Mar Vista multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA, the Venice Blvd corridor, and a free valuation.',
+		laOwnerGuide: true,
+		cardSaleSlug: '12770-caswell-avenue-los-angeles-ca-90066',
+	},
+	{
+		slug: 'westwood',
+		name: 'Westwood',
+		region: 'Westside LA',
+		blurb: 'UCLA’s neighborhood, with high prices per unit and a subway extension under construction.',
+		transit: [
+			'Metro E Line: Westwood/Rancho Park Station, south of Wilshire in Rancho Park rather than in Westwood Village',
+			'Metro D Line (Purple) Extension, Section 3: Westwood/UCLA and Westwood/VA Hospital stations under construction (Metro lists no opening date for Sections 2 and 3)',
+			'Metro bus lines 2, 4, 20, 720, and 761 serve Westwood',
+		],
+		retail: [
+			'Westwood Village, a pedestrian-oriented low-rise center between UCLA and Wilshire Boulevard',
+			'Westwood Boulevard south of Wilshire, and Santa Monica and Sepulveda Boulevards',
+			'The Wilshire Boulevard high-rise corridor',
+		],
+		employers: ['UCLA and Ronald Reagan UCLA Medical Center', 'West Los Angeles VA Medical Center', 'The Hammer Museum and Geffen Playhouse'],
+		overview:
+			'Westwood is inside the City of Los Angeles, so LA rent control and Measure ULA apply. The Westwood Community Plan was last updated in 1999 and is not part of the Westside plan update. Several City specific plans and overlays apply, including the Westwood Village Specific Plan, so check which ones cover a parcel before pricing it. Older buildings here sell for far more per unit than in Palms or Mar Vista, at lower cap rates, with few sales behind each number.',
+		metaDescription:
+			'Westwood multifamily broker: 2026 apartment prices and cap rates, UCLA-area buildings, the D Line extension, LA rent control, and a free valuation.',
+		laOwnerGuide: true,
+	},
+	{
+		slug: 'venice',
+		name: 'Venice',
+		region: 'Westside LA',
+		blurb: 'A beach neighborhood where much of the land is in the Coastal Zone, so changes to apartment buildings involve extra City and state review.',
+		transit: [
+			'No Metro rail station in Venice',
+			'Metro Line 33 along Venice Blvd',
+			'Metro’s Countywide BRT study includes a Venice corridor linking Venice Beach to Downtown LA (planning stage; recommendation expected in spring 2027)',
+		],
+		retail: [
+			'Abbot Kinney Boulevard: a pedestrian-oriented area of shops, restaurants, and art galleries (per the City’s community plan)',
+			'Windward Circle and Main Street, near Ocean Front Walk',
+			'Lincoln Boulevard, which the plan calls auto-oriented',
+		],
+		employers: ['Retail, restaurant, and hotel businesses on Abbot Kinney Boulevard, Main Street, and near Ocean Front Walk'],
+		overview:
+			'Venice is inside the City of Los Angeles, so LA rent control and Measure ULA apply. Land west of Lincoln Boulevard is in the Venice Coastal Zone, where demolition, new construction, and changes to a building’s size or density go through the Venice Coastal Zone Specific Plan, the state Mello Act, and in some areas the California Coastal Commission. Venice does not have a certified Local Coastal Program. Apartment sales here are few, so price figures rest on a small number of deals.',
+		metaDescription:
+			'Venice multifamily broker: 2026 apartment prices and cap rates, Coastal Zone and Mello Act rules, LA rent control and Measure ULA, and a free valuation.',
+		laOwnerGuide: true,
+	},
 ];

@@ -421,4 +421,284 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 			},
 		],
 	},
+
+	'sherman-oaks': {
+		eyebrow: 'What’s Local in Sherman Oaks',
+		heading: 'Sherman Oaks Apartment Owners: Ventura Boulevard Rules, a Plan in Draft, and a Subway Study',
+		intro: [
+			'Three things shape how buyers look at a Sherman Oaks building. Parcels along Ventura Boulevard fall under a corridor specific plan that has been in place since 1991. The community plan that governs the neighborhood is being rewritten. And Metro is studying a Sepulveda subway whose named stations do not include Sherman Oaks.',
+			'For an owner, the practical question is whether your parcel is on the corridor and what the draft zoning does to it, before you decide what the land is worth to a buyer.',
+		],
+		facts: [
+			{ value: '1991', label: 'Ventura–Cahuenga Boulevard Corridor Specific Plan took effect' },
+			{ value: 'Draft', label: 'community plan update; the current plan was last updated in 1998' },
+			{ value: 'Jan 2026', label: 'Metro chose a preferred route for the Sepulveda Transit Corridor' },
+		],
+		cards: [
+			{
+				title: 'Find out whether your lot is on the Ventura corridor',
+				body: 'The Ventura–Cahuenga Boulevard Corridor Specific Plan covers more than 4,300 parcels along about 17 miles, including parcels on Ventura Boulevard and on adjacent boulevards such as Sepulveda and Van Nuys. If yours is one of them, extra rules apply to what can be built, so look it up before you price the building.',
+			},
+			{
+				title: 'Price from today’s income, not a future station',
+				body: 'Metro’s Sepulveda Transit Corridor is in the planning phase. The route it selected in January 2026 is underground heavy rail between the Van Nuys Metrolink Station and the E Line’s Expo/Sepulveda Station, and the stations the project names do not include one in Sherman Oaks. Buyers who pay for a subway that is not planned here are paying for something that may never arrive.',
+			},
+			{
+				title: 'Watch the draft zoning along the boulevards',
+				body: 'The City’s draft zoning for this plan area puts the highest densities and building heights mainly along corridors, naming Lankershim, Van Nuys, and Sepulveda Boulevards. It is not adopted, and no hearing date has been set that we found. If your building is on or near one of those streets, ask us what the draft could mean for a buyer’s view of your land.',
+			},
+		],
+		source:
+			'Sources: LA City Planning (Sherman Oaks–Studio City–Toluca Lake–Cahuenga Pass plan area page, Southeast Valley Community Plans Update fact sheet of April 2026, and the Ventura–Cahuenga Boulevard Corridor Specific Plan and fact sheet); LA Metro (Sepulveda Transit Corridor page and June 2026 timetables); Sherman Oaks Neighborhood Council; Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked November 5, 2026.',
+		faqs: [
+			{
+				q: 'Is there a Metro station in Sherman Oaks?',
+				a: 'We did not find a Metro rail or busway station inside Sherman Oaks. The nearest are the B Line’s Universal City/Studio City station and the G Line’s Van Nuys station. Metro Rapid Line 761 connects Sherman Oaks, at Ventura and Sepulveda, to the G Line at Van Nuys and the E Line at Expo/Sepulveda.',
+			},
+			{
+				q: 'Will the Sepulveda Transit Corridor stop in Sherman Oaks?',
+				a: 'Not according to what Metro has published. The project is in its planning phase, and the stations Metro names are Van Nuys Metrolink, G Line/Van Nuys, Wilshire/Westwood, and E Line Expo/Sepulveda. Station locations are still open for public comment, so confirm on Metro’s project page.',
+			},
+		],
+	},
+
+	'studio-city': {
+		eyebrow: 'What’s Local in Studio City',
+		heading: 'Studio City Apartment Owners: A B Line Station, a Studio Expansion Plan, and a Small Market',
+		intro: [
+			'Studio City is a small apartment market with a Metro B Line station on Lankershim Boulevard and one of the Valley’s largest employers next door. Because it has few sales in a year, a single deal can move its price numbers, so we show how many sales each figure rests on.',
+			'Two local plans are worth knowing about: the Ventura–Cahuenga Boulevard Corridor Specific Plan and a proposed expansion of Radford Studio Center.',
+		],
+		facts: [
+			{ value: '22', label: 'sound stages at Radford Studio Center, per the studio' },
+			{ value: `${SALES_STATS['studio-city'].rso.pricePerUnit?.compCount ?? 0}`, label: 'older-building sales behind our 2026 price figure' },
+			{ value: '1', label: 'B Line station: Universal City/Studio City' },
+		],
+		cards: [
+			{
+				title: 'The studio next door is proposing to grow',
+				body: 'The City is reviewing the Radford Studio Center Project, which would create a specific plan for the roughly 55-acre site and allow up to about 1.67 million square feet of new floor area. The Draft EIR came out in January 2025, and we have not confirmed what has happened since. A large production campus is a source of local employment, and a buyer may weigh it, but treat the project as proposed, not approved.',
+			},
+			{
+				title: 'Use the B Line in your marketing, with the minutes',
+				body: 'The Universal City/Studio City station is on Lankershim Boulevard. If your building is within a short walk, say how many minutes, and which bus lines connect: Metro lines 240, 155, 224, and 167 all serve the area.',
+			},
+			{
+				title: 'Check the corridor plan for Ventura and Laurel Canyon',
+				body: 'The Ventura–Cahuenga Boulevard Corridor Specific Plan, in effect since 1991, also governs Studio City parcels along Ventura Boulevard. Confirm whether your parcel is covered before you tell a buyer what can be built.',
+			},
+		],
+		source:
+			'Sources: LA Metro (parking and station list, June 2026 timetables); LA City Planning (plan area page, Radford Studio Center Project EIR page ENV-2023-1348-EIR, Ventura–Cahuenga Boulevard Corridor Specific Plan); Radford Studio Center; Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked November 5, 2026.',
+		faqs: [
+			{
+				q: 'Which Metro station serves Studio City?',
+				a: 'The B Line (Red) Universal City/Studio City Station, on Lankershim Boulevard. Bus lines 240, 155, 224, and 167 also serve the area.',
+			},
+			{
+				q: 'What is the Radford Studio Center Project?',
+				a: 'A proposal reviewed by the City of Los Angeles (case ENV-2023-1348-EIR) to create a specific plan for the Radford Studio Center site, allowing up to about 1.67 million square feet of new floor area. A Draft EIR was released in January 2025. We have not confirmed any later approval, so check the City’s project page for the current status.',
+			},
+		],
+	},
+
+	reseda: {
+		eyebrow: 'What’s Local in Reseda',
+		heading: 'Reseda Apartment Owners: The G Line, a Community Plan Under Review, and Lower Prices per Unit',
+		intro: [
+			'Reseda is one of the more affordable apartment markets in our data, with older buildings selling for a lower price per unit than in most of the Westside or the east Valley. The G Line busway gives it a direct link to the Valley’s transit network.',
+			'The City is rewriting the community plan for Reseda and its neighbors, and its draft names the Reseda Boulevard and Sherman Way area and the G Line station area as places for new mixed-use housing.',
+		],
+		facts: [
+			{ value: money(rso('reseda').pricePerUnit?.median ?? 0), label: `median price per unit, older buildings (${rso('reseda').pricePerUnit?.compCount ?? 0} sales)` },
+			{ value: '6', label: 'Metro bus lines at Reseda Boulevard and nearby corridors' },
+			{ value: 'Nov 22', label: '2026: end of the Draft EIR comment period for the community plan update' },
+		],
+		cards: [
+			{
+				title: 'Read what the draft plan says about your block',
+				body: 'The City’s Southwest Valley Community Plans Update draft names “Downtown Reseda” around Reseda Boulevard and Sherman Way, and the G Line station area, as mixed-use targets. It is labeled adoption pending, so treat any new development potential as proposed. A hearing date had not been announced when we checked.',
+			},
+			{
+				title: 'Better buses are in the works',
+				body: 'Metro’s North San Fernando Valley bus rapid transit project lists work on Reseda Boulevard, Sherman Way, Roscoe Boulevard, and Nordhoff Street, including 10-minute weekday service on key routes. Metro shows it in construction with a 2026 completion estimate, and we have not confirmed it is finished.',
+			},
+			{
+				title: 'Price on cap rate, not on neighbors’ asking prices',
+				body: `Older Reseda buildings sold for a median of ${money(rso('reseda').pricePerUnit?.median ?? 0)} per unit in 2026 on ${rso('reseda').pricePerUnit?.compCount ?? 0} sales. With so few sales, one unusual deal moves the number, so a Broker Opinion of Value built on your building’s actual rents will tell you more than any median.`,
+			},
+		],
+		source:
+			'Sources: LA Metro (parking and station list, June 2026 timetables, North San Fernando Valley Transit Corridor page); LA City Planning (Reseda–West Van Nuys plan area page, Southwest Valley Community Plans Update draft and EIR notice); Reseda Neighborhood Council bylaws; Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked November 5, 2026.',
+		faqs: [
+			{
+				q: 'Which Metro lines serve Reseda?',
+				a: 'The G Line busway has a Reseda Station, and Metro bus lines 240, 150, 152, 162, 166, and 167 serve Reseda Boulevard, Ventura Boulevard, Sherman Way, Roscoe Boulevard, and Nordhoff Street.',
+			},
+			{
+				q: 'Is the Reseda community plan changing?',
+				a: 'Yes. The City is updating the Southwest Valley community plans, which cover Reseda, and its draft is labeled adoption pending. The Draft EIR comment period ran from October 8 to November 22, 2026, and the plan area would be renamed Reseda–West Van Nuys–Lake Balboa. Check the City’s project page for the hearing date and current status.',
+			},
+		],
+	},
+
+	palms: {
+		eyebrow: 'What’s Local in Palms',
+		heading: 'Palms Apartment Owners: An E Line Station, a Plan Update, and a New Transit-Housing Law',
+		intro: [
+			'Palms has its own Metro E Line station, sits next to Culver City’s studio and tech employers, and has one of the larger sets of apartment sales among the Westside neighborhoods in our data. Three official items shape how buyers look at a building here: a specific plan along the Expo line, a community plan update, and a state transit-housing law.',
+		],
+		facts: [
+			{ value: money(rso('palms').pricePerUnit?.median ?? 0), label: `median price per unit, older buildings (${rso('palms').pricePerUnit?.compCount ?? 0} sales)` },
+			{ value: '1997', label: 'year of the current Palms–Mar Vista–Del Rey community plan, now being updated' },
+			{ value: 'Jul 1, 2026', label: 'SB 79 took effect, allowing more housing near eligible transit stops' },
+		],
+		cards: [
+			{
+				title: 'Check the Expo corridor plan',
+				body: 'The Exposition Corridor Transit Neighborhood Plan is a City specific plan that covers the Palms–Mar Vista–Del Rey plan area, along with the West Los Angeles and West Adams–Baldwin Hills–Leimert areas. We have not confirmed which Palms parcels fall inside it, so look up your address with City Planning before you tell a buyer what can be built.',
+			},
+			{
+				title: 'A community plan update is in progress',
+				body: 'The City is updating the Palms–Mar Vista–Del Rey plan together with Venice, West Los Angeles, and Westchester–Playa del Rey. The City released draft land use maps in spring 2024 and revised drafts in fall 2025, with zoning work continuing through 2026 and into early 2027. Plans are not final until the City Council adopts them.',
+			},
+			{
+				title: 'Ask whether SB 79 reaches your lot',
+				body: 'SB 79 took effect July 1, 2026 and allows by-right development standards near eligible transit stops. The City says implementation is separate from the Westside plan update. We have not verified which Palms parcels it covers, so a buyer who is thinking about redevelopment should check the parcel itself.',
+			},
+		],
+		source:
+			'Sources: LA City Planning (Palms–Mar Vista–Del Rey plan area page, Exposition Corridor Transit Neighborhood Plan page, Westside Community Plans Update FAQ); LA Metro (E Line timetable, Venice Blvd Safety and Mobility Project, schedules); City of Culver City financial report (2022); Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked November 5, 2026.',
+		faqs: [
+			{
+				q: 'Which Metro station serves Palms?',
+				a: 'The E Line (Expo) has a station at Palms, and the Culver City station is the next stop east. Metro Line 33 also runs along Venice Boulevard.',
+			},
+			{
+				q: 'Is the Palms community plan changing?',
+				a: 'Yes. The City is updating the Palms–Mar Vista–Del Rey community plan along with three other Westside plans. Drafts have been released, but nothing is final until the City Council adopts it. Check City Planning’s Westside plan page for the current status.',
+			},
+		],
+	},
+
+	'mar-vista': {
+		eyebrow: 'What’s Local in Mar Vista',
+		heading: 'Mar Vista Apartment Owners: A Historic Tract, a Venice Boulevard Corridor, and a Small Sales Pool',
+		intro: [
+			'Mar Vista is a residential neighborhood without a rail station of its own, served by buses along Venice Boulevard. Few apartment buildings sell here in a year, so one unusual sale can move the price figures, and we show how many sales each number rests on.',
+		],
+		facts: [
+			{ value: money(rso('mar-vista').pricePerUnit?.median ?? 0), label: `median price per unit, older buildings (${rso('mar-vista').pricePerUnit?.compCount ?? 0} sales)` },
+			{ value: '0', label: 'Metro rail stations inside Mar Vista' },
+			{ value: '2023', label: 'Venice Blvd bus lane and bike lane project completed' },
+		],
+		cards: [
+			{
+				title: 'See whether you are in the Gregory Ain Mar Vista Tract',
+				body: 'The City lists the Gregory Ain Mar Vista Tract as a Historic Preservation Overlay Zone. If your building is inside it, changes to the exterior can need City review. We have not checked what the rules require of apartment owners, so confirm with City Planning before you promise a buyer a remodel or an addition.',
+			},
+			{
+				title: 'Market the Venice Boulevard buses honestly',
+				body: 'Metro Line 33 runs along Venice Boulevard, and the street has a 24-hour dedicated bus lane and protected bike lanes between Inglewood and National Boulevards. There is no rail station in Mar Vista, so describe the commute as it is, with the line number and the minutes.',
+			},
+			{
+				title: 'Same plan update as Palms',
+				body: 'Mar Vista is in the Palms–Mar Vista–Del Rey plan area, so the Westside Community Plans Update and the Exposition Corridor plan apply to the same area as Palms. Check your parcel before you assume either one changes what a buyer can do.',
+			},
+		],
+		source:
+			'Sources: LA City Planning (Palms–Mar Vista–Del Rey plan area page and community plan text); Mar Vista Community Council (boundary map); LA Metro (schedules, Venice Blvd Safety and Mobility Project); Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked November 5, 2026.',
+		faqs: [
+			{
+				q: 'Is there a Metro station in Mar Vista?',
+				a: 'No. The closest stations on the E Line are Palms and Expo/Bundy, and Metro Line 33 runs along Venice Boulevard.',
+			},
+			{
+				q: 'Which neighborhood council covers Mar Vista?',
+				a: 'The Mar Vista Community Council. Its boundary is south of the 10 freeway and west of the 405 freeway, with the Culver City border to the south. See its map for the exact lines.',
+			},
+		],
+	},
+
+	westwood: {
+		eyebrow: 'What’s Local in Westwood',
+		heading: 'Westwood Apartment Owners: UCLA, a Subway Extension Under Construction, and High Prices per Unit',
+		intro: [
+			'Westwood is priced well above Palms and Mar Vista in our data. Older buildings sell for a median above $400,000 per unit and at cap rates below 5%, on a small number of sales. The neighborhood is anchored by UCLA and the Westwood Village shopping district, and a Metro subway extension is being built into it.',
+		],
+		facts: [
+			{ value: money(rso('westwood').pricePerUnit?.median ?? 0), label: `median price per unit, older buildings (${rso('westwood').pricePerUnit?.compCount ?? 0} sales)` },
+			{ value: '1999', label: 'year the Westwood Community Plan was last updated' },
+			{ value: '2', label: 'D Line Extension stations being built in Westwood: UCLA and VA Hospital' },
+		],
+		cards: [
+			{
+				title: 'The subway is being built, but Metro has no opening date',
+				body: 'Metro’s D Line Extension Section 1 opened in May 2026. Section 3 is in construction in Westwood, including work at the UCLA and VA Hospital stations, and Metro’s project page gives no opening date for Sections 2 and 3. Describe the stations as under construction, not as open.',
+			},
+			{
+				title: 'Check the specific plans on your parcel',
+				body: 'The City lists several plans and overlays for the Westwood plan area, among them the Westwood Community Multi-Family Specific Plan, the North Westwood Village plan, the Westwood Village Specific Plan, and the Wilshire–Westwood Scenic Corridor. We have not reviewed what the multi-family plan requires, so look up your parcel before you quote what can be built.',
+			},
+			{
+				title: 'Use the thin sales pool carefully',
+				body: `Our Westwood figures rest on ${rso('westwood').pricePerUnit?.compCount ?? 0} older-building sales, and the cap rate range on ${rso('westwood').capRate?.compCount ?? 0}. A building with unusual rents or location can sell far from the median, so a Broker Opinion of Value built on your actual numbers is a better guide than the average.`,
+			},
+		],
+		source:
+			'Sources: LA City Planning (Westwood plan area page and community plan text); LA Metro (D Line Extension project page, Sepulveda Transit Corridor page, schedules); UCLA Health; VA West Los Angeles; Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked November 5, 2026.',
+		faqs: [
+			{
+				q: 'Which Metro stations serve Westwood?',
+				a: 'The E Line’s Westwood/Rancho Park station is south of Wilshire in Rancho Park, not in Westwood Village. The D Line Extension is building Westwood/UCLA and Westwood/VA Hospital stations, and Metro lists no opening date for Sections 2 and 3. Bus lines 2, 4, 20, 720, and 761 serve Westwood.',
+			},
+			{
+				q: 'Is Westwood part of the Westside community plan update?',
+				a: 'No. The City’s Westside update covers West Los Angeles, Venice, Palms–Mar Vista–Del Rey, and Westchester–Playa del Rey. The Westwood Community Plan was last updated in 1999, and we did not find an update program for it.',
+			},
+		],
+	},
+
+	venice: {
+		eyebrow: 'What’s Local in Venice',
+		heading: 'Venice Apartment Owners: The Coastal Zone, the Mello Act, and What They Mean for a Sale',
+		intro: [
+			'Much of Venice is in the Coastal Zone, so changes to an apartment building can need City review, and in some places a coastal permit from the California Coastal Commission, on top of the usual rules. That does not stop a sale, but it changes what a buyer can plan to do with the building, so it belongs in the pricing conversation. This is general information, not legal advice; confirm your parcel with City Planning and a land-use attorney.',
+		],
+		facts: [
+			{ value: 'West of Lincoln Blvd', label: 'is the Venice Coastal Zone Specific Plan area' },
+			{ value: 'No', label: 'certified Local Coastal Program for Venice (per City Planning)' },
+			{ value: money(rso('venice').pricePerUnit?.median ?? 0), label: `median price per unit, older buildings (${rso('venice').pricePerUnit?.compCount ?? 0} sales)` },
+		],
+		cards: [
+			{
+				title: 'Find out whether your lot is in the Coastal Zone',
+				body: 'The Venice Coastal Zone Specific Plan covers the part of the Venice plan area west of Lincoln Boulevard, including lots on the west side of Lincoln. Inside it, a demolition, new construction, alteration of a building’s size, or a change in the density or intensity of use is a “Venice Coastal Development Project” that needs the City’s sign-off before permits are issued.',
+			},
+			{
+				title: 'Expect the Mello Act to apply to housing changes',
+				body: 'City Planning applies the state Mello Act when a project in the Coastal Zone converts, demolishes, or develops residential units. In a June 2026 City determination, small new developments of nine or fewer units were treated as exempt from the inclusionary unit requirement. The Specific Plan also looks for replacement affordable units to stay affordable. A buyer planning to redevelop should have a land-use attorney review it.',
+			},
+			{
+				title: 'A coastal permit may be needed in some areas',
+				body: 'In parts of the Coastal Zone the California Coastal Commission also issues a coastal permit. We have not verified which Venice parcels are in that “dual jurisdiction” area. Commission staff, reviewing a 2020 four-unit demolition on the Venice Canals, recommended conditions to offset the loss of housing density, so treat redevelopment value with caution.',
+			},
+		],
+		source:
+			'Sources: LA City Planning (Venice plan area page, Venice Coastal Zone Specific Plan, Venice Local Coastal Program page, Mello Act determination of June 10, 2026); California Coastal Commission staff reports (2020 and 2025); LA Metro (schedules, Countywide BRT Study); Highlight analysis of CoStar sold multifamily comps, January to October 2026. Checked November 5, 2026.',
+		faqs: [
+			{
+				q: 'Does the Coastal Zone stop me from selling my Venice apartment building?',
+				a: 'No. The Coastal Zone rules apply to demolition, new construction, and changes to a building’s size or density, not to a sale of the building as it stands. They matter to price because a buyer who planned to redevelop will need City review and may need a coastal permit.',
+			},
+			{
+				q: 'What is the Mello Act?',
+				a: 'A California law the City applies to projects in the Coastal Zone that convert, demolish, or develop residential units. It protects affordable housing in the coastal area. Talk to a land-use attorney about how it applies to a specific project.',
+			},
+			{
+				q: 'Is there a Metro rail station in Venice?',
+				a: 'No. Metro Line 33 runs along Venice Boulevard, and Metro’s countywide bus rapid transit study includes a Venice corridor linking Venice Beach to Downtown LA. It is in the planning stage, with a recommendation expected in spring 2027.',
+			},
+		],
+	},
 };

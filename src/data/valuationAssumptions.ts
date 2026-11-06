@@ -251,15 +251,102 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: null,
 		},
 	},
+	// Added November 5, 2026 from the same merged export and rules (1,369 sales after the rules). Each group is the sales in the
+	// City of Los Angeles under the CoStar submarket of the same name: Sherman Oaks (includes sales CoStar addresses as Studio City
+	// or Van Nuys inside that submarket), Studio City, Reseda, Palms, Mar Vista, Westwood, and Venice. Older = built before 1978.
+	'sherman-oaks': {
+		rso: {
+			pricePerUnit: { median: 300000, compCount: 8 },
+			pricePerSf: { median: 304, compCount: 8 },
+			capRate: { low: 0.0486, high: 0.0593, compCount: 6 },
+		},
+		post1978: {
+			pricePerUnit: { median: 324316, compCount: 8 },
+			pricePerSf: { median: 323, compCount: 8 },
+			capRate: { low: 0.054, high: 0.0656, compCount: 8 },
+		},
+	},
+	'studio-city': {
+		rso: {
+			pricePerUnit: { median: 316500, compCount: 5 },
+			pricePerSf: { median: 326, compCount: 5 },
+			capRate: { low: 0.0515, high: 0.0628, compCount: 5 },
+		},
+		post1978: {
+			pricePerUnit: { median: 320000, compCount: 2 },
+			pricePerSf: { median: 362, compCount: 2 },
+			capRate: null,
+		},
+	},
+	'reseda': {
+		rso: {
+			pricePerUnit: { median: 172222, compCount: 9 },
+			pricePerSf: { median: 229, compCount: 9 },
+			capRate: { low: 0.0602, high: 0.0698, compCount: 8 },
+		},
+		post1978: {
+			pricePerUnit: { median: 223077, compCount: 1 },
+			pricePerSf: { median: 253, compCount: 1 },
+			capRate: null,
+		},
+	},
+	'palms': {
+		rso: {
+			pricePerUnit: { median: 237778, compCount: 21 },
+			pricePerSf: { median: 279, compCount: 21 },
+			capRate: { low: 0.0539, high: 0.0665, compCount: 15 },
+		},
+		post1978: {
+			pricePerUnit: { median: 319723, compCount: 4 },
+			pricePerSf: { median: 328, compCount: 4 },
+			capRate: null,
+		},
+	},
+	'mar-vista': {
+		rso: {
+			pricePerUnit: { median: 240556, compCount: 8 },
+			pricePerSf: { median: 285, compCount: 8 },
+			capRate: { low: 0.0546, high: 0.0649, compCount: 6 },
+		},
+		post1978: {
+			pricePerUnit: { median: 407143, compCount: 3 },
+			pricePerSf: { median: 408, compCount: 3 },
+			capRate: null,
+		},
+	},
+	'westwood': {
+		rso: {
+			pricePerUnit: { median: 441000, compCount: 9 },
+			pricePerSf: { median: 411, compCount: 9 },
+			capRate: { low: 0.039, high: 0.047, compCount: 5 },
+		},
+		post1978: {
+			pricePerUnit: { median: 411905, compCount: 3 },
+			pricePerSf: { median: 268, compCount: 3 },
+			capRate: null,
+		},
+	},
+	'venice': {
+		rso: {
+			pricePerUnit: { median: 332917, compCount: 8 },
+			pricePerSf: { median: 671, compCount: 8 },
+			capRate: { low: 0.0584, high: 0.059, compCount: 5 },
+		},
+		post1978: {
+			pricePerUnit: null,
+			pricePerSf: null,
+			capRate: null,
+		},
+	},
 };
 
 // Median price per unit for older (built before 1978) buildings inside the West LA group, by area, from the same
 // sales. Shown on the West LA page, which only prints an area when it has at least MIN_PRICE_COMPS_PAGE sales.
 export const WEST_LA_AREAS: { name: string; zips: string; pricePerUnit: { median: number; compCount: number } }[] = [
-	{ name: 'Westwood', zips: '90024', pricePerUnit: { median: 450000, compCount: 7 } },
+	{ name: 'Westwood', zips: '90024', pricePerUnit: { median: 441000, compCount: 9 } },
 	{ name: 'West Los Angeles', zips: '90025 and 90064', pricePerUnit: { median: 303333, compCount: 25 } },
-	{ name: 'Palms', zips: '90034', pricePerUnit: { median: 237500, compCount: 27 } },
-	{ name: 'Mar Vista', zips: '90066', pricePerUnit: { median: 247542, compCount: 10 } },
+	{ name: 'Palms', zips: '90034', pricePerUnit: { median: 237778, compCount: 21 } },
+	{ name: 'Mar Vista', zips: '90066', pricePerUnit: { median: 240556, compCount: 8 } },
 ];
 
 export interface AgeBracket {
