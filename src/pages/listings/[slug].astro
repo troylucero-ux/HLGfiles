@@ -108,7 +108,7 @@ const videoSchema = listing.youtubeId
 	: null;
 ---
 
-<BaseLayout title={seoTitle} description={seoDescription} image={listing.image}>
+<BaseLayout title={seoTitle} description={seoDescription} image={listing.image} hideStickyCta>
 	<script type="application/ld+json" set:html={JSON.stringify(schema)} />
 	{videoSchema && <script type="application/ld+json" set:html={JSON.stringify(videoSchema)} />}
 

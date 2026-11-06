@@ -20,6 +20,7 @@ interface ValuationLeadBody {
 	estimateHigh?: string;
 	compCount?: string;
 	compArea?: string;
+	source?: unknown;
 }
 
 export async function handleValuationLead(request: Request, env: Env): Promise<Response> {
@@ -64,6 +65,7 @@ export async function handleValuationLead(request: Request, env: Env): Promise<R
 					units ? `Units: ${units}` : null,
 					estimateLow && estimateHigh ? `Estimated Range Shown: ${estimateLow} - ${estimateHigh}` : 'No estimate shown (not enough sales data for this neighborhood and building age).',
 					compCount && compArea ? `Based on ${compCount} comps in ${compArea}` : null,
+					...sourceNote(body.source),
 				].filter((line): line is string => Boolean(line));
 
 				await createLead(env, {

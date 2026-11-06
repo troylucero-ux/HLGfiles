@@ -3,6 +3,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Schema from '../components/Schema.astro';
 import ChatWidget from '../components/ChatWidget.astro';
+import StickyCta from '../components/StickyCta.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -11,9 +12,11 @@ interface Props {
 	noindex?: boolean;
 	image?: string;
 	lang?: 'en' | 'es';
+	// Pages that carry their own bottom call-to-action bar (the listing pages) switch the sitewide one off.
+	hideStickyCta?: boolean;
 }
 
-const { title, description, noindex = false, image = '/images/hero/453-s-gramercy-pl-hero.webp', lang = 'en' } = Astro.props;
+const { title, description, noindex = false, image = '/images/hero/453-s-gramercy-pl-hero.webp', lang = 'en', hideStickyCta = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Append the brand name only when the full title still fits in a search result (~60 chars). Long,
 // keyword-rich titles (listings, articles) get truncated by Google if the suffix pushes them over,
@@ -101,12 +104,84 @@ const builtAt = new Date().toISOString();
 			gtag('js', new Date());
 			gtag('config', 'G-P4GNC7QLNX');
 
-			// Phone and email clicks are recorded as events. The page stays open when a tel: or mailto: link is used, so the event is not lost.
+			// ---- Source tracking -------------------------------------------------------------------------------
+			// 1) First touch: where this visit came from (the Facebook post tags, or the referring site), kept for the visit.
+			// 2) Button clicks: which button on which page was used, sent to Google Analytics as `cta_click`.
+			// 3) Forms add hlgSource() to what they send, so each lead in Pipedrive says which post, page and button produced it.
+			// Nothing here changes any web address, and no personal details are ever stored or sent.
+			const FIRST_TOUCH = 'hlg_first_touch';
+			const LAST_CTA = 'hlg_last_cta';
+			const read = (key: string) => {
+				try {
+					return JSON.parse(sessionStorage.getItem(key) || 'null');
+				} catch {
+					return null;
+				}
+			};
+			const write = (key: string, value: unknown) => {
+				try {
+					sessionStorage.setItem(key, JSON.stringify(value));
+				} catch {
+					/* storage can be blocked; tracking just becomes page-only */
+				}
+			};
+			(function captureFirstTouch() {
+				const p = new URLSearchParams(window.location.search);
+				const hasUtm = Boolean(p.get('utm_source'));
+				const stored = read(FIRST_TOUCH);
+				if (stored && !(hasUtm && !stored.utm_source)) return;
+				let referrer = '';
+				try {
+					referrer = document.referrer ? new URL(document.referrer).hostname : '';
+				} catch {
+					/* ignore */
+				}
+				if (referrer === window.location.hostname) referrer = '';
+				write(FIRST_TOUCH, {
+					landing: window.location.pathname,
+					referrer,
+					utm_source: p.get('utm_source') || '',
+					utm_medium: p.get('utm_medium') || '',
+					utm_campaign: p.get('utm_campaign') || '',
+					utm_content: p.get('utm_content') || '',
+				});
+			})();
+			// @ts-expect-error — attached for the forms' scripts; not declared on Window in this project
+			window.hlgSource = () => {
+				const first = read(FIRST_TOUCH) || {};
+				const cta = read(LAST_CTA) || {};
+				return { ...first, page: window.location.pathname, cta: cta.name || '', ctaPage: cta.page || '' };
+			};
+
+			// Names a button for reporting: an explicit data-cta wins; otherwise any link into a lead page is named from where it sits.
+			const LEAD_PAGES = /^\/(es\/)?(contact|property-value|broker-opinion-of-value|1031-exchanges|market-report|listings|vender-edificio)/;
+			const nameFor = (el: HTMLElement): string => {
+				const explicit = el.closest<HTMLElement>('[data-cta]')?.dataset.cta;
+				if (explicit) return explicit;
+				const href = (el as HTMLAnchorElement).getAttribute?.('href') || '';
+				if (!LEAD_PAGES.test(href.split('?')[0])) return '';
+				const zone = el.closest('header')
+					? 'header'
+					: el.closest('footer')
+						? 'footer'
+						: el.closest<HTMLElement>('[data-cta-zone]')?.dataset.ctaZone || 'page';
+				return `${zone}:${href.split('?')[0].replace(/^\//, '').replace(/\/$/, '') || 'home'}`;
+			};
+
 			document.addEventListener('click', (event) => {
-				const link = (event.target as Element | null)?.closest<HTMLAnchorElement>('a[href^="tel:"], a[href^="mailto:"]');
+				const target = event.target as Element | null;
+				const el = target?.closest<HTMLElement>('a, button');
+				if (!el) return;
+				const name = nameFor(el);
+				if (name) {
+					write(LAST_CTA, { name, page: window.location.pathname });
+					gtag('event', 'cta_click', { cta_name: name, page_path: window.location.pathname });
+				}
+				// Phone and email clicks are recorded as events. The page stays open when a tel: or mailto: link is used, so the event is not lost.
+				const link = el.closest<HTMLAnchorElement>('a[href^="tel:"], a[href^="mailto:"]');
 				if (!link) return;
 				const isPhone = link.href.startsWith('tel:');
-				gtag('event', isPhone ? 'click_to_call' : 'click_email', { page_path: window.location.pathname });
+				gtag('event', isPhone ? 'click_to_call' : 'click_email', { page_path: window.location.pathname, cta_name: name || 'unlabeled' });
 			});
 		</script>
 	</head>
@@ -117,6 +192,7 @@ const builtAt = new Date().toISOString();
 			<slot />
 		</main>
 		<Footer />
+		{!hideStickyCta && <StickyCta lang={lang} />}
 		<ChatWidget />
 	</body>
 </html>

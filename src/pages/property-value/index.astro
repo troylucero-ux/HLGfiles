@@ -345,6 +345,7 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 				estimateHigh: capRate ? formatDollar(valueHigh) : undefined,
 				compCount: capRate ? String(capRate.compCount) : undefined,
 				compArea: capRate ? `${areaName} (${ageGroupLabels[ageGroup].short})` : undefined,
+				source: (window as unknown as { hlgSource?: () => unknown }).hlgSource?.(),
 			}),
 		}).catch(() => {});
 	});

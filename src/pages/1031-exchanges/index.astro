@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BOVForm from '../../components/BOVForm.astro';
+import ExchangeConsultForm from '../../components/ExchangeConsultForm.astro';
 import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
 import { caseStudies } from '../../data/caseStudies';
 import { closings } from '../../data/closings';
@@ -154,7 +154,7 @@ const faqSchema = {
 				Selling an apartment building and want to defer capital gains? We've guided LA multifamily owners through 1031 exchanges into replacement
 				properties across California and out of state. Every selling client of ours who wanted to complete a 1031 exchange has done so.
 			</p>
-			<a href="/contact/?intent=bov" class="btn btn-gold">Start Your Exchange Strategy</a>
+			<a href="#exchange-consult" class="btn btn-gold" data-cta="1031-hero-start">Start Your Exchange Strategy</a>
 			<p class="lang-link"><a href="/es/intercambios-1031/" hreflang="es" lang="es">Esta página en español &rarr;</a></p>
 		</div>
 	</section>
@@ -321,7 +321,7 @@ const faqSchema = {
 
 	<section class="section">
 		<div class="container">
-			<BOVForm heading="Exploring a 1031 Exchange?" subheading="Get a free, confidential Broker Opinion of Value and exchange strategy conversation." />
+			<ExchangeConsultForm />
 		</div>
 	</section>
 </BaseLayout>

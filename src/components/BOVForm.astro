@@ -111,6 +111,7 @@ const text = {
 			const endpoint = form.dataset.endpoint!;
 			const data = Object.fromEntries(new FormData(form).entries());
 			data.privacyConsent = (form.querySelector('input[name="privacyConsent"]') as HTMLInputElement)?.checked as unknown as string;
+			(data as Record<string, unknown>).source = (window as unknown as { hlgSource?: () => unknown }).hlgSource?.();
 
 			// Check the property address before sending. If it cannot be found, ask the visitor to look again once. A second
 			// click on Submit with the same address sends it as typed, so a real but unlisted building is never blocked.

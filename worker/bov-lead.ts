@@ -5,12 +5,13 @@
 import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
 import { corsHeaders, type Env } from './env';
 import { checkAddress, describeAddressCheck, type AddressCheck } from './address';
+import { sourceNote } from './source';
 
 export async function handleBovLead(request: Request, env: Env): Promise<Response> {
 	if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders() });
 	if (request.method !== 'POST') return new Response('Method Not Allowed', { status: 405, headers: corsHeaders() });
 
-	let body: { name?: string; email?: string; phone?: string; address?: string; monthlyGrossRents?: string; privacyConsent?: boolean; addressSource?: string; language?: string };
+	let body: { name?: string; email?: string; phone?: string; address?: string; monthlyGrossRents?: string; privacyConsent?: boolean; addressSource?: string; language?: string; source?: unknown };
 	try {
 		body = await request.json();
 	} catch {
@@ -55,6 +56,7 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 				];
 				if (monthlyGrossRents) noteLines.push(`Monthly Gross Rents: ${monthlyGrossRents}`);
 				if (spanish) noteLines.push('Preferred language: Spanish (respond in Spanish).');
+				noteLines.push(...sourceNote(body.source));
 
 				await createLead(env, {
 					title: `${spanish ? '[ESPAÑOL] ' : ''}${addressCheck.status === 'not_found' ? '[CHECK ADDRESS] ' : ''}BOV Request — ${name} — ${address}`,

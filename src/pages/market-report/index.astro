@@ -1,0 +1,536 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { MARKET_REPORT_OCT_2026 as R } from '../../data/marketReportOct2026';
+import { TREASURY, COSTAR_OCT_2026 as C } from '../../data/marketReportOct2026Context';
+import { site } from '../../data/site';
+
+// The newest report. When next month's data is generated (node scripts/market-update.mjs), point this import
+// at the new data file and update `period`, `articleHref` and the dates below.
+const period = 'October 2026';
+const articleHref = '/insights/la-apartment-market-report-october-2026/';
+const updated = 'October 30, 2026';
+
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+const fmt = (iso: string) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const older = R.headline.older;
+const newer = R.headline.newer;
+
+// ---- Chart geometry (plain SVG, one series per chart) ----
+const W = 640;
+const H = 250;
+const padL = 40;
+const padR = 12;
+const padT = 22;
+const padB = 30;
+const plotW = W - padL - padR;
+const plotH = H - padT - padB;
+
+const months = R.months;
+const maxVol = Math.max(...months.map((m) => m.volumeMillions));
+const barW = (plotW / months.length) * 0.62;
+const bars = months.map((m, i) => {
+	const slot = plotW / months.length;
+	const h = (m.volumeMillions / maxVol) * plotH;
+	return { label: monthNames[m.month - 1], v: m.volumeMillions, x: padL + slot * i + (slot - barW) / 2, y: padT + plotH - h, h, cx: padL + slot * i + slot / 2 };
+});
+
+const caps = months.map((m) => m.olderCapRateMedian);
+const capMin = Math.floor((Math.min(...caps) - 0.1) * 10) / 10;
+const capMax = Math.ceil((Math.max(...caps) + 0.1) * 10) / 10;
+const pts = months.map((m, i) => {
+	const slot = plotW / months.length;
+	return { label: monthNames[m.month - 1], v: m.olderCapRateMedian, x: padL + slot * i + slot / 2, y: padT + plotH - ((m.olderCapRateMedian - capMin) / (capMax - capMin)) * plotH };
+});
+const line = pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+const capTicks = [capMin, (capMin + capMax) / 2, capMax];
+
+const tiles = [
+	{ n: `${money(older.pricePerUnit)}`, l: 'median price per unit, older buildings (built before 1978)' },
+	{ n: `${older.capRateMedian.toFixed(2)}%`, l: 'median cap rate, older buildings' },
+	{ n: `${R.asking.medianPct}%`, l: 'of asking price: the median sale price, for sales with a known asking price' },
+	{ n: `${TREASURY.close}%`, l: `10-year Treasury at the end of the period (${TREASURY.asOf.slice(5).replace('-', '/')})` },
+];
+
+const faqs = [
+	{ q: 'Where does this data come from?', a: `The sales figures come from a CoStar sales export of Los Angeles County apartment sales from ${fmt(R.firstSale)} through ${fmt(R.lastSale)}. Counts leave out sales with approximate or allocated prices, portfolio sales of 100 units or more, and repeated records. Treasury yields come from the U.S. Department of the Treasury, and the vacancy and rent figures are paraphrased from CoStar's Los Angeles multifamily report.` },
+	{ q: 'What is "older"?', a: 'Older buildings were built before 1978. Many of them fall under rent control where it applies, such as the City of Los Angeles Rent Stabilization Ordinance. They make up most of the sales in the county, which is why we lead with them.' },
+	{ q: 'How often is this updated?', a: 'We refresh it each month with the newest sales data and publish a full written report.' },
+	{ q: 'Is this a valuation of my building?', a: 'No. These are market-wide medians. Your building’s value depends on its own rents, expenses, condition, and location. A free Broker Opinion of Value applies this kind of data to your building.' },
+];
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+	title="LA Apartment Market Report: Prices and Cap Rates"
+	description="Los Angeles apartment market report, updated monthly: median price per unit, cap rates, sale prices versus asking, and the 10-year Treasury."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+	<section class="mr-hero">
+		<div class="container">
+			<span class="eyebrow">Market Report</span>
+			<h1>Los Angeles Apartment Market Report</h1>
+			<p>
+				Prices, cap rates, and how buyers are bidding, from {R.firstSale.slice(0, 4)} sales through {updated}. Free to read, updated every month.
+			</p>
+			<div class="mr-hero__cta">
+				<a href="/broker-opinion-of-value/" class="btn btn-light" data-cta="market-report-hero-bov">Get a Free Opinion of Value</a>
+				<a href={articleHref} class="btn btn-outline-light" data-cta="market-report-hero-article">Read the Full {period} Report</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<ul class="tiles" role="list">
+				{
+					tiles.map((t) => (
+						<li>
+							<span class="tiles__n">{t.n}</span>
+							<span class="tiles__l">{t.l}</span>
+						</li>
+					))
+				}
+			</ul>
+			<p class="fine">
+				Based on {older.sales.toLocaleString('en-US')} sales of older buildings and {newer.sales.toLocaleString('en-US')} sales of newer buildings in Los Angeles County,{' '}
+				{fmt(R.firstSale)} to {fmt(R.lastSale)}. Median price per unit for newer buildings: {money(newer.pricePerUnit)}; median cap rate: {newer.capRateMedian.toFixed(2)}%.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container">
+			<span class="eyebrow">By Month</span>
+			<h2>What Sold: Monthly Sales Volume</h2>
+			<p class="chart-note">Dollar volume of apartment sales in Los Angeles County, in millions of dollars. The last month is partial if the report ends before month-end.</p>
+			<figure class="chart">
+				<svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Bar chart of monthly apartment sales volume in millions of dollars, ${bars[0].label} to ${bars[bars.length - 1].label}`}>
+					<line x1={padL} y1={padT + plotH} x2={W - padR} y2={padT + plotH} class="axis" />
+					{
+						bars.map((b) => (
+							<g>
+								<title>{`${b.label}: $${b.v.toLocaleString('en-US')} million`}</title>
+								<rect x={b.x} y={b.y} width={barW} height={b.h} rx="3" class="bar" />
+								<text x={b.cx} y={b.y - 6} text-anchor="middle" class="val">{b.v}</text>
+								<text x={b.cx} y={H - 10} text-anchor="middle" class="tick">{b.label}</text>
+							</g>
+						))
+					}
+				</svg>
+			</figure>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">Cap Rates</span>
+			<h2>Median Cap Rate, Older Buildings, by Month</h2>
+			<p class="chart-note">Cap rates held in a narrow band while the 10-year Treasury moved. A cap rate is a year's net income divided by the price.</p>
+			<figure class="chart">
+				<svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Line chart of the monthly median cap rate for older buildings, between ${capMin}% and ${capMax}%`}>
+					{
+						capTicks.map((t) => {
+							const y = padT + plotH - ((t - capMin) / (capMax - capMin)) * plotH;
+							return (
+								<g>
+									<line x1={padL} y1={y} x2={W - padR} y2={y} class="grid" />
+									<text x={padL - 6} y={y + 4} text-anchor="end" class="tick">{t.toFixed(1)}%</text>
+								</g>
+							);
+						})
+					}
+					<polyline points={line} class="line" />
+					{
+						pts.map((p) => (
+							<g>
+								<title>{`${p.label}: ${p.v}%`}</title>
+								<circle cx={p.x} cy={p.y} r="4.5" class="dot" />
+								<text x={p.x} y={p.y - 10} text-anchor="middle" class="val">{p.v.toFixed(2)}</text>
+								<text x={p.x} y={H - 10} text-anchor="middle" class="tick">{p.label}</text>
+							</g>
+						))
+					}
+				</svg>
+			</figure>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container two-col">
+			<div>
+				<span class="eyebrow">By Quarter</span>
+				<h2>Older Buildings, Quarter by Quarter</h2>
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr><th>Quarter</th><th>Sales</th><th>Median $/unit</th><th>Median cap rate</th></tr>
+						</thead>
+						<tbody>
+							{
+								R.quarters.map((q) => (
+									<tr>
+										<td>Q{q.quarter}{q.quarter === 4 ? ' (partial)' : ''}</td>
+										<td>{q.olderSales}</td>
+										<td>{money(q.olderPricePerUnit)}</td>
+										<td>{q.olderCapRateMedian.toFixed(2)}%</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div>
+				<span class="eyebrow">By Building Size</span>
+				<h2>Older Buildings by Number of Units</h2>
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr><th>Size</th><th>Sales</th><th>Median $/unit</th><th>Median cap rate</th></tr>
+						</thead>
+						<tbody>
+							{
+								R.sizes.map((s) => (
+									<tr>
+										<td>{s.label}</td>
+										<td>{s.olderSales}</td>
+										<td>{money(s.olderPricePerUnit)}</td>
+										<td>{s.olderCapRateMedian.toFixed(2)}%</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container two-col">
+			<div>
+				<span class="eyebrow">Price vs. Asking</span>
+				<h2>How Far Below Asking Buildings Sold</h2>
+				<ul class="facts">
+					<li><strong>{R.asking.medianPct}%</strong> of the asking price was the median sale price (about {money(R.asking.medianDollarsBelow)} below asking).</li>
+					<li><strong>{R.asking.atOrAbovePct}%</strong> sold at or above asking.</li>
+					<li><strong>{R.asking.within5Pct}%</strong> sold within 5% below asking, <strong>{R.asking.five10Pct}%</strong> sold 5% to 10% below, and <strong>{R.asking.over10Pct}%</strong> sold more than 10% below.</li>
+				</ul>
+				<p class="fine">Based on {R.asking.sales.toLocaleString('en-US')} sales with a recorded asking price.</p>
+			</div>
+			<div>
+				<span class="eyebrow">By Price Range</span>
+				<h2>Where the Sales Happened</h2>
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr><th>Sale price</th><th>Sales</th><th>Share</th></tr>
+						</thead>
+						<tbody>
+							{
+								R.bands.map((b) => (
+									<tr>
+										<td>{b.label}</td>
+										<td>{b.sales}</td>
+										<td>{b.sharePct}%</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+				<p class="fine">Median sale price: {money(R.medianSalePrice)}. The $5.4 million line is where the City of Los Angeles transfer tax steps up; try the <a href="/measure-ula-calculator/">Measure ULA calculator</a>.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Market Context</span>
+			<h2>Rates, Vacancy, and Rents</h2>
+			<p>
+				The 10-year Treasury closed the period at {TREASURY.close}%, down from {TREASURY.septemberClose}% a month earlier and up from a {TREASURY.februaryLow}% low in
+				February. Lenders generally price apartment loans as a spread over Treasury yields, so the 10-year influences what buyers can afford to pay.
+			</p>
+			<p>
+				According to CoStar's report of {C.reportDate} (paraphrased), Los Angeles County apartment vacancy was {C.vacancy}%, compared with {C.nationalVacancy}% nationally,
+				and asking rents rose just {C.askingRentGrowth12Mo}% over 12 months. Newer, higher-priced buildings carry more of the vacancy than older ones.
+			</p>
+			<p><a href={articleHref}>Read our full {period} report for the analysis behind these numbers &rarr;</a></p>
+		</div>
+	</section>
+
+	<section class="cta-band">
+		<div class="container cta-band__inner">
+			<div>
+				<h2>What Does This Mean for Your Building?</h2>
+				<p>These are market-wide medians. A free Broker Opinion of Value applies them to your building's real rents and expenses.</p>
+			</div>
+			<a href="/broker-opinion-of-value/" class="btn btn-light" data-cta="market-report-band-bov">Get Your Free Opinion of Value</a>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Questions</span>
+			<h2>About This Report</h2>
+			<div class="faq__list">
+				{
+					faqs.map((f) => (
+						<details class="faq__item">
+							<summary>{f.q}</summary>
+							<p>{f.a}</p>
+						</details>
+					))
+				}
+			</div>
+			<p class="fine">
+				This report is general market information, not legal, tax, or investment advice. Questions? Call {site.phone}.
+			</p>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.mr-hero {
+		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.mr-hero h1 {
+		color: #fff;
+	}
+
+	.mr-hero p {
+		color: #d7e0ea;
+		max-width: 700px;
+		font-size: 1.08rem;
+	}
+
+	.mr-hero :global(.eyebrow) {
+		color: var(--gold-light);
+	}
+
+	.mr-hero__cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.btn-light {
+		background: #fff;
+		color: var(--navy-dark);
+		border-color: #fff;
+	}
+
+	.btn-light:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+		color: var(--navy-dark);
+	}
+
+	.btn-outline-light {
+		background: transparent;
+		color: #fff;
+		border-color: rgb(255 255 255 / 0.85);
+	}
+
+	.btn-outline-light:hover {
+		background: rgb(255 255 255 / 0.14);
+		color: #fff;
+	}
+
+	.tiles {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+		gap: 1rem;
+	}
+
+	.tiles li {
+		background: var(--navy-tint);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: 1.1rem 1.25rem 1.25rem;
+	}
+
+	.tiles__n {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: clamp(1.8rem, 3vw, 2.4rem);
+		line-height: 1.05;
+		color: var(--navy-dark);
+	}
+
+	.tiles__l {
+		display: block;
+		margin-top: 0.5rem;
+		font-size: 0.85rem;
+		line-height: 1.4;
+		color: var(--ink);
+	}
+
+	.fine {
+		font-size: 0.8rem;
+		color: var(--ink-light);
+		margin-top: 1rem;
+		line-height: 1.5;
+	}
+
+	.chart-note {
+		color: var(--ink-light);
+		max-width: 720px;
+	}
+
+	.chart {
+		margin: 1.25rem 0 0;
+		max-width: 760px;
+	}
+
+	.chart svg {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.chart .axis,
+	.chart .grid {
+		stroke: var(--border);
+		stroke-width: 1;
+	}
+
+	.chart .bar {
+		fill: var(--navy);
+	}
+
+	.chart .bar:hover {
+		fill: var(--gold-dark);
+	}
+
+	.chart .line {
+		fill: none;
+		stroke: var(--navy);
+		stroke-width: 2.5;
+		stroke-linejoin: round;
+	}
+
+	.chart .dot {
+		fill: var(--paper);
+		stroke: var(--navy);
+		stroke-width: 2.5;
+	}
+
+	.chart .tick {
+		font-size: 11px;
+		fill: var(--ink-light);
+	}
+
+	.chart .val {
+		font-size: 11px;
+		font-weight: 600;
+		fill: var(--ink);
+	}
+
+	.two-col {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: clamp(1.5rem, 4vw, 3rem);
+	}
+
+	.table-wrap {
+		overflow-x: auto;
+		margin-top: 1rem;
+	}
+
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+	}
+
+	th,
+	td {
+		text-align: left;
+		padding: 0.6rem 0.7rem;
+		border-bottom: 1px solid var(--border);
+		white-space: nowrap;
+	}
+
+	th {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--ink-light);
+	}
+
+	.facts {
+		padding-left: 1.2rem;
+		line-height: 1.7;
+	}
+
+	.narrow {
+		max-width: 820px;
+	}
+
+	.cta-band {
+		background: var(--navy-dark);
+		color: #fff;
+		padding-block: 2.5rem;
+	}
+
+	.cta-band h2 {
+		color: #fff;
+		margin: 0 0 0.25rem;
+	}
+
+	.cta-band p {
+		margin: 0;
+		color: #d7e0ea;
+	}
+
+	.cta-band__inner {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.faq__item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		margin-bottom: 0.75rem;
+		padding: 0 1.25rem;
+	}
+
+	.faq__item summary {
+		cursor: pointer;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+		padding-block: 1rem;
+	}
+
+	.faq__item p {
+		margin: 0 0 1rem;
+		line-height: 1.7;
+	}
+
+	@media (max-width: 760px) {
+		.two-col {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

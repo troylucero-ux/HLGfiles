@@ -62,6 +62,7 @@ const { property, propertyName } = Astro.props;
 			const data = Object.fromEntries(new FormData(form).entries()) as Record<string, unknown>;
 			data.privacyConsent = (form.querySelector('input[name="privacyConsent"]') as HTMLInputElement).checked;
 			data.property = box.dataset.property;
+			data.source = (window as unknown as { hlgSource?: () => unknown }).hlgSource?.();
 
 			button.disabled = true;
 			status.style.color = '';

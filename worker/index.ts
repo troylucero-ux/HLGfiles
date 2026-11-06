@@ -1,6 +1,7 @@
 import { handleChat } from './chat';
 import { handleBovLead } from './bov-lead';
 import { handleOmLead } from './om-lead';
+import { handleExchangeLead } from './exchange-lead';
 import { handleValuationLead } from './valuation-lead';
 import { handleNewsletter } from './newsletter';
 import { handleVerifyAddress } from './verify-address';
@@ -14,6 +15,7 @@ export default {
 		if (url.pathname === '/api/chat') return handleChat(request, env);
 		if (url.pathname === '/api/bov-lead') return handleBovLead(request, env);
 		if (url.pathname === '/api/om-lead') return handleOmLead(request, env);
+		if (url.pathname === '/api/1031-lead') return handleExchangeLead(request, env);
 		if (url.pathname === '/api/valuation-lead') return handleValuationLead(request, env);
 		if (url.pathname === '/api/newsletter') return handleNewsletter(request, env);
 		if (url.pathname === '/api/verify-address') return handleVerifyAddress(request);

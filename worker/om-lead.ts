@@ -10,6 +10,7 @@
 import { createLead, createPerson, pipedriveConfigured } from './pipedrive';
 import { corsHeaders, type Env } from './env';
 import { omFiles } from './om-files';
+import { sourceNote } from './source';
 import { listings } from '../src/data/listings';
 
 type OmBody = {
@@ -22,6 +23,7 @@ type OmBody = {
 	message?: string;
 	property?: string;
 	privacyConsent?: boolean;
+	source?: unknown;
 };
 
 const str = (v: unknown, max = 200): string => (typeof v === 'string' ? v.trim().slice(0, max) : '');
@@ -71,6 +73,7 @@ export async function handleOmLead(request: Request, env: Env): Promise<Response
 						company ? `Company: ${company}` : '',
 						`Property: ${propertyName || '(not stated)'}`,
 						`Message: ${message}`,
+						...sourceNote(body.source),
 					]
 						.filter(Boolean)
 						.join('\n'),

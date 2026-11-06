@@ -1,0 +1,331 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import { site } from '../../data/site';
+
+const steps = [
+	{
+		title: 'Tell us about the building',
+		body: 'Send the address through the form below or call us. If you know the number of units and the rents, include them. If not, the address alone is enough to begin.',
+	},
+	{
+		title: 'Share the numbers you have',
+		body: 'We ask for the rent roll and your recent income and expenses. Send what you have; we can start from the unit mix and rents and fill in the rest as we go.',
+	},
+	{
+		title: 'We look at the building itself',
+		body: 'Condition, unit mix, parking, and deferred maintenance all move a buyer’s price. Where it helps, we see the building with you so the opinion reflects what is actually there.',
+	},
+	{
+		title: 'We build the opinion',
+		body: 'We study your real income and expenses, recent comparable sales, and how buyers are pricing buildings like yours right now, including the effect of rent control and the City’s transfer tax.',
+	},
+	{
+		title: 'We walk you through it',
+		body: 'You get a price range and the reasoning behind it, in plain English. We cover how your rents, tenants, and timeline affect the number, and what selling now compared with waiting could mean for you.',
+	},
+];
+
+const asks = [
+	'A rent roll: each unit, its rent, and when each tenant moved in',
+	'Your last 12 months of income and expenses',
+	'The latest property tax bill',
+	'Recent utility bills (water, gas, electric, trash)',
+	'Known repairs and big-ticket work: roof, plumbing, electrical, seismic or balcony work',
+	'Basics about the building: year built, number of units, unit mix, parking',
+];
+
+const gets = [
+	'A price range for your building, with the reasons behind it',
+	'The comparable sales and cap rates that support the range',
+	'How your rents, tenants, and timeline move the number',
+	'The transfer-tax picture, including where Measure ULA thresholds fall',
+	'A clear view of selling now compared with waiting',
+	'Next steps, only if you decide you want them',
+];
+
+const faqs = [
+	{
+		q: 'Does a Broker Opinion of Value cost anything?',
+		a: 'No. Our Broker Opinion of Value is free and confidential. It is built on your building’s actual rents, condition, and unit mix, and on recent comparable sales.',
+	},
+	{
+		q: 'Is a Broker Opinion of Value the same as an appraisal?',
+		a: 'No. A Broker Opinion of Value is a broker’s professional opinion of where your building would likely sell. An appraisal is a formal valuation by a licensed appraiser, usually ordered by a buyer’s lender. Most sellers need the opinion first and do not need to order an appraisal to list a building.',
+	},
+	{
+		q: 'What if I do not have a rent roll or income statement?',
+		a: 'Start with what you know. The free property value calculator gives a quick range from the address, the year built, and your monthly rents, and we can build from there as you gather the rest.',
+	},
+	{
+		q: 'How accurate is it?',
+		a: 'It is an opinion grounded in real income and recent sales, not a guarantee of what a buyer will pay. The actual price depends on the market on the day you sell, which is why we explain the reasoning and the range, not just a single number.',
+	},
+	{
+		q: 'Do I have to do anything after I get it?',
+		a: 'No. There is no pressure. Some owners use it to decide whether and when to sell, some to plan a 1031 exchange or an estate, and some just to know where they stand.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+---
+
+<BaseLayout
+	title="Broker Opinion of Value for LA Apartment Buildings"
+	description="How our free Broker Opinion of Value works for Los Angeles apartment owners: the five steps, what we need from you, and what you get."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+	<section class="bov-hero">
+		<div class="container">
+			<span class="eyebrow">Broker Opinion of Value</span>
+			<h1>What Is Your Los Angeles Apartment Building Worth?</h1>
+			<p>
+				Our Broker Opinion of Value gives you a realistic price range, built on your building's real rents and expenses and on what comparable buildings have actually
+				sold for. It is free, confidential, and there is no pressure to do anything with it.
+			</p>
+			<div class="bov-hero__cta">
+				<a href="#bov-form" class="btn btn-light" data-cta="bov-page-hero-request">Get Your Free Opinion of Value</a>
+				<a href="/property-value/" class="btn btn-outline-light" data-cta="bov-page-hero-calculator">Try the Free Value Calculator</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container">
+			<span class="eyebrow">How It Works</span>
+			<h2>Five Steps From Address to Answer</h2>
+			<ol class="steps">
+				{
+					steps.map((s, i) => (
+						<li class="step">
+							<span class="step__num">{i + 1}</span>
+							<div>
+								<h3>{s.title}</h3>
+								<p>{s.body}</p>
+							</div>
+						</li>
+					))
+				}
+			</ol>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container two-col">
+			<div>
+				<span class="eyebrow">What We Ask From You</span>
+				<h2>The Numbers That Matter</h2>
+				<ul class="checks">
+					{asks.map((a) => <li>{a}</li>)}
+				</ul>
+				<p class="note">Do not worry if you are missing some of this. Send what you have and we will work from there.</p>
+			</div>
+			<div>
+				<span class="eyebrow">What You Get</span>
+				<h2>An Answer You Can Plan Around</h2>
+				<ul class="checks">
+					{gets.map((g) => <li>{g}</li>)}
+				</ul>
+				<p class="note">
+					A Broker Opinion of Value is not an appraisal. <a href="/insights/broker-opinion-of-value-vs-appraisal-apartment-building/">Read how the two differ</a>.
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container narrow">
+			<span class="eyebrow">Questions</span>
+			<h2>Broker Opinion of Value FAQs</h2>
+			<div class="faq__list">
+				{
+					faqs.map((f) => (
+						<details class="faq__item">
+							<summary>{f.q}</summary>
+							<p>{f.a}</p>
+						</details>
+					))
+				}
+			</div>
+			<p class="more">
+				Prefer to start on your own? Use the <a href="/property-value/">free property value calculator</a>, see where Measure ULA applies with the
+				<a href="/measure-ula-calculator/">transfer tax calculator</a>, or read <a href="/insights/how-to-value-an-apartment-building-in-los-angeles/">how buyers value an LA apartment building</a>.
+				Se habla español: <a href="/es/vender-edificio-de-apartamentos-los-angeles/" lang="es">vea nuestra página en español</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="bov-form">
+		<div class="container">
+			<BOVForm heading="Request Your Free Broker Opinion of Value" subheading={`Tell us where the building is. We will take it from there. Prefer to talk? Call ${site.phone}.`} />
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.bov-hero {
+		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 7vw, 5rem);
+	}
+
+	.bov-hero h1 {
+		color: #fff;
+		max-width: 800px;
+	}
+
+	.bov-hero p {
+		color: #d7e0ea;
+		max-width: 720px;
+		font-size: 1.08rem;
+	}
+
+	.bov-hero__cta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 1.5rem;
+	}
+
+	.bov-hero :global(.eyebrow) {
+		color: var(--gold-light);
+	}
+
+	.btn-light {
+		background: #fff;
+		color: var(--navy-dark);
+		border-color: #fff;
+	}
+
+	.btn-light:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+		color: var(--navy-dark);
+	}
+
+	.btn-outline-light {
+		background: transparent;
+		color: #fff;
+		border-color: rgb(255 255 255 / 0.85);
+	}
+
+	.btn-outline-light:hover {
+		background: rgb(255 255 255 / 0.14);
+		color: #fff;
+	}
+
+	.steps {
+		list-style: none;
+		padding: 0;
+		margin: 2rem 0 0;
+		display: grid;
+		gap: 1.5rem;
+		max-width: 780px;
+	}
+
+	.step {
+		display: flex;
+		gap: 1.25rem;
+	}
+
+	.step__num {
+		flex-shrink: 0;
+		width: 42px;
+		height: 42px;
+		border-radius: 2px;
+		background: var(--navy-tint);
+		color: var(--navy-dark);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+	}
+
+	.step h3 {
+		margin: 0 0 0.25rem;
+	}
+
+	.step p {
+		margin: 0;
+		line-height: 1.65;
+	}
+
+	.two-col {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: clamp(1.5rem, 4vw, 3.5rem);
+	}
+
+	.checks {
+		list-style: none;
+		padding: 0;
+		margin: 1rem 0 0;
+	}
+
+	.checks li {
+		position: relative;
+		padding: 0.55rem 0 0.55rem 1.7rem;
+		border-bottom: 1px solid var(--border);
+		line-height: 1.55;
+	}
+
+	.checks li::before {
+		content: '';
+		position: absolute;
+		left: 0.15rem;
+		top: 1.05rem;
+		width: 0.6rem;
+		height: 0.35rem;
+		border-left: 2px solid var(--gold-dark);
+		border-bottom: 2px solid var(--gold-dark);
+		transform: rotate(-45deg);
+	}
+
+	.note {
+		font-size: 0.9rem;
+		color: var(--ink-light);
+		margin-top: 1rem;
+	}
+
+	.narrow {
+		max-width: 820px;
+	}
+
+	.faq__item {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-radius: 2px;
+		margin-bottom: 0.75rem;
+		padding: 0 1.25rem;
+	}
+
+	.faq__item summary {
+		cursor: pointer;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+		padding-block: 1rem;
+	}
+
+	.faq__item p {
+		margin: 0 0 1rem;
+		line-height: 1.7;
+	}
+
+	.more {
+		margin-top: 1.5rem;
+		line-height: 1.7;
+	}
+
+	@media (max-width: 760px) {
+		.two-col {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

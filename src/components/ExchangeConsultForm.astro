@@ -1,0 +1,200 @@
+---
+// Short 1031 exchange consult request. The three questions tell us how urgent the exchange is before we call.
+// Posts to /api/1031-lead (worker/exchange-lead.ts), which creates a Pipedrive lead.
+interface Props {
+	heading?: string;
+	subheading?: string;
+}
+
+const { heading = 'Talk Through Your 1031 Exchange', subheading = 'Tell us where you are and we will call you to plan the exchange. Free and confidential.' } = Astro.props;
+---
+
+<section class="xc" id="exchange-consult">
+	<h2>{heading}</h2>
+	<p class="xc__sub">{subheading}</p>
+	<form class="js-xc-form" novalidate>
+		<div class="xc__grid">
+			<div>
+				<label for="xc-name">Name</label>
+				<input id="xc-name" name="name" type="text" autocomplete="name" required />
+			</div>
+			<div>
+				<label for="xc-email">Email</label>
+				<input id="xc-email" name="email" type="email" autocomplete="email" required />
+			</div>
+			<div class="xc__wide">
+				<label for="xc-phone">Phone <span class="xc__opt">(optional)</span></label>
+				<input id="xc-phone" name="phone" type="tel" autocomplete="tel" />
+			</div>
+			<div>
+				<label for="xc-stage">Where are you in the sale?</label>
+				<select id="xc-stage" name="stage" required>
+					<option value="">Select one</option>
+					<option>Just exploring</option>
+					<option>Preparing to list</option>
+					<option>Listed or in escrow</option>
+					<option>Sale closed (the 45 days are running)</option>
+				</select>
+			</div>
+			<div>
+				<label for="xc-interest">What might you buy?</label>
+				<select id="xc-interest" name="interest" required>
+					<option value="">Select one</option>
+					<option>Apartments</option>
+					<option>Triple-net (NNN) property</option>
+					<option>Delaware Statutory Trust (DST)</option>
+					<option>Not sure yet</option>
+				</select>
+			</div>
+			<div class="xc__wide">
+				<label for="xc-timing">When do you expect to close the sale?</label>
+				<select id="xc-timing" name="timing" required>
+					<option value="">Select one</option>
+					<option>Within 60 days</option>
+					<option>In 2 to 6 months</option>
+					<option>In 6 to 12 months</option>
+					<option>Not sure yet</option>
+				</select>
+			</div>
+		</div>
+		<label class="xc__consent">
+			<input type="checkbox" name="privacyConsent" required />
+			<span>I agree to the <a href="/privacy-policy/">Privacy Policy</a> and to be contacted about my exchange. You can unsubscribe at any time.</span>
+		</label>
+		<button type="submit" class="btn btn-gold">Request My Exchange Call</button>
+		<p class="xc__status" role="status" hidden></p>
+	</form>
+</section>
+
+<script>
+	document.querySelectorAll<HTMLFormElement>('.js-xc-form').forEach((form) => {
+		const status = form.querySelector<HTMLParagraphElement>('.xc__status')!;
+		const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			status.hidden = false;
+			if (!form.checkValidity()) {
+				status.style.color = '#b3261e';
+				status.textContent = 'Please complete the required fields and accept the privacy policy.';
+				form.reportValidity();
+				return;
+			}
+			const data = Object.fromEntries(new FormData(form).entries()) as Record<string, unknown>;
+			data.privacyConsent = (form.querySelector('input[name="privacyConsent"]') as HTMLInputElement).checked;
+			data.source = (window as unknown as { hlgSource?: () => unknown }).hlgSource?.();
+			button.disabled = true;
+			status.style.color = '';
+			status.textContent = 'Sending...';
+			try {
+				const res = await fetch('/api/1031-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+				const result = await res.json();
+				if (res.ok) {
+					status.style.color = 'var(--success)';
+					status.textContent = "Thank you. We'll call you shortly to plan your exchange.";
+					// Counts as a lead in Google Analytics. Only the page and the form's purpose are sent, never the visitor's details.
+					(window as unknown as { gtag?: (...a: unknown[]) => void }).gtag?.('event', 'generate_lead', {
+						form_name: 'consult_1031',
+						page_path: window.location.pathname,
+					});
+					form.reset();
+				} else {
+					status.style.color = '#b3261e';
+					status.textContent = result.error ?? 'Something went wrong. Please try again.';
+				}
+			} catch {
+				status.style.color = '#b3261e';
+				status.textContent = 'Something went wrong. Please try again or call us directly.';
+			} finally {
+				button.disabled = false;
+			}
+		});
+	});
+</script>
+
+<style>
+	.xc {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: clamp(1.5rem, 4vw, 2.5rem);
+		scroll-margin-top: 8rem;
+	}
+
+	.xc h2 {
+		margin-top: 0;
+		font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+	}
+
+	.xc__sub {
+		color: var(--ink-light);
+	}
+
+	.xc__grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.9rem;
+		margin-bottom: 1.1rem;
+	}
+
+	.xc__wide {
+		grid-column: 1 / -1;
+	}
+
+	.xc label {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 600;
+		margin-bottom: 0.25rem;
+	}
+
+	.xc__opt {
+		font-weight: 400;
+		color: var(--ink-light);
+	}
+
+	.xc input[type='text'],
+	.xc input[type='email'],
+	.xc input[type='tel'],
+	.xc select {
+		width: 100%;
+		padding: 0.7rem 0.85rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-size: 1rem;
+		font-family: var(--font-sans);
+		background: var(--paper);
+	}
+
+	.xc input:focus,
+	.xc select:focus {
+		outline: none;
+		border-color: var(--gold);
+	}
+
+	.xc .xc__consent {
+		display: flex;
+		gap: 0.5rem;
+		align-items: flex-start;
+		font-size: 0.78rem;
+		font-weight: 400;
+		color: var(--ink-light);
+		margin-bottom: 1.1rem;
+	}
+
+	.xc__consent input {
+		margin-top: 0.2rem;
+	}
+
+	.xc__status {
+		margin-top: 0.75rem;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	@media (max-width: 640px) {
+		.xc__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
