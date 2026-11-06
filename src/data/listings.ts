@@ -155,8 +155,6 @@ export const listings: Listing[] = [
 			{ file: 'aerial', caption: 'Aerial' },
 			{ file: 'aerial-avenue', caption: 'Aerial: the avenue' },
 			{ file: 'aerial-neighborhood', caption: 'Aerial: the neighborhood' },
-			{ file: 'kitchen', caption: 'Kitchen' },
-			{ file: 'interior', caption: 'Interior' },
 		],
 		yearBuilt: 1954,
 		zoning: 'LARD1.5',

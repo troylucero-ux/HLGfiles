@@ -969,18 +969,24 @@ const videoSchema = listing.youtubeId
 	.lview__photo {
 		flex: 1;
 		min-width: 0;
-		height: 100%;
 		padding: 0;
 		border: 0;
 		background: none;
 		cursor: e-resize;
-		display: grid;
-		place-items: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
+	/* Fit the whole photo on screen: cap the height by the viewport minus the bar, caption and thumbnails
+	   (a percentage height does not resolve inside this flex layout, which let wide screens crop the photo). */
 	.lview__photo img {
+		display: block;
+		width: auto;
+		height: auto;
 		max-width: 100%;
-		max-height: 100%;
+		max-height: calc(100vh - 15.5rem);
+		max-height: calc(100dvh - 15.5rem);
 		object-fit: contain;
 		border-radius: 2px;
 	}
