@@ -26,6 +26,16 @@ export default {
 			return Response.redirect(new URL(redirectTarget, url).toString(), 301);
 		}
 
+		// Offering Memorandum PDFs are only meant to be reached through the listing-page gate: keep them
+		// out of search results and caches.
+		if (url.pathname.startsWith('/om/')) {
+			const res = await env.ASSETS.fetch(request);
+			const gatedRes = new Response(res.body, res);
+			gatedRes.headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive');
+			gatedRes.headers.set('Cache-Control', 'private, no-store');
+			return gatedRes;
+		}
+
 		// Everything else (pages, CSS, images, sitemap, etc.) is served from the Astro build via
 		// the [assets] binding configured in wrangler.toml.
 		return env.ASSETS.fetch(request);

@@ -25,6 +25,26 @@ export type Listing = {
 	pricePerSqft?: number;
 	highlights?: string[];
 	youtubeId?: string; // the video ID from a youtube.com/watch?v=<id> URL, not the full URL
+	// Extra photos for the gallery section: `file` is the base name inside
+	// /images/listings/<slug>/gallery/ (full size <file>.webp and <file>-thumb.webp).
+	gallery?: { file: string; caption: string }[];
+	// True once the OM PDF is uploaded and listed in worker/om-files.ts. The page then shows the
+	// instant-download form; otherwise it falls back to the "request the OM" link.
+	omGate?: boolean;
+	// Short, factual location notes (only facts already stated in the listing highlights).
+	nearby?: string[];
+	// Neighborhood name for the location section heading.
+	neighborhood?: string;
+	// "Within a walk" profile built from OpenStreetMap data (counts are approximate; distances are
+	// straight-line, converted to minutes at 3 mph). Re-run the lookup if the data goes stale.
+	walk?: {
+		asOf: string; // e.g. 'November 2026'
+		dining: number; // restaurants, cafes, bars and fast food within 0.5 mile
+		grocery: number; // grocery, convenience and produce stores within 0.6 mile
+		parks: number; // parks, gardens and playgrounds within 0.6 mile
+		bus: number; // bus stops within 0.25 mile
+		closest: { label: string; kind: 'grocery' | 'park' | 'transit'; minutes: number }[];
+	};
 };
 
 export const listings: Listing[] = [
@@ -44,6 +64,39 @@ export const listings: Listing[] = [
 		description:
 			'Sixteen-unit Koreatown investment near 3rd Street and Vermont Avenue, built in 1989 and exempt from the LA Rent Stabilization Ordinance. Eight one-bedroom and eight two-bedroom units average 737 SF in an 11,792 SF building on a 9,015 SF lot, with gated parking, on-site laundry, and EV charging. Two units are vacant and rent-ready, and in-place rents sit about 12.6% below market.',
 		image: '/images/listings/311-s-new-hampshire-ave-los-angeles-ca-90020/311-s-new-hampshire-ave-los-angeles-ca.webp',
+		neighborhood: 'Koreatown',
+		walk: {
+			asOf: 'November 2026',
+			dining: 95,
+			grocery: 24,
+			parks: 14,
+			bus: 13,
+			closest: [
+				{ label: 'Ralphs', kind: 'grocery', minutes: 3 },
+				{ label: 'Vons', kind: 'grocery', minutes: 3 },
+				{ label: 'Bimini Slough Ecology Park', kind: 'park', minutes: 4 },
+				{ label: 'Shatto Recreation Center', kind: 'park', minutes: 4 },
+				{ label: 'Wilshire/Vermont Metro station (B and D Lines)', kind: 'transit', minutes: 9 },
+			],
+		},
+		omGate: true,
+		nearby: [
+			'3rd Street and Vermont Avenue',
+			'Wilshire Boulevard corridor, minutes away',
+			'Metro B and D Line station at Wilshire/Vermont',
+			'Downtown Los Angeles',
+		],
+		gallery: [
+			{ file: 'exterior-front', caption: 'Exterior' },
+			{ file: 'exterior-street', caption: 'Street view' },
+			{ file: 'kitchen', caption: 'Kitchen' },
+			{ file: 'living-area', caption: 'Living area' },
+			{ file: 'kitchen-2', caption: 'Kitchen' },
+			{ file: 'bathroom', caption: 'Bathroom' },
+			{ file: 'ev-charging', caption: 'EV charging' },
+			{ file: 'parking', caption: 'Gated parking' },
+			{ file: 'koreatown-night', caption: 'Koreatown' },
+		],
 		yearBuilt: 1989,
 		capRate: 7.14,
 		grm: 8.75,
@@ -79,6 +132,32 @@ export const listings: Listing[] = [
 		description:
 			'Four-unit, all one-bedroom investment in Baldwin Hills, built in 1954 on an 8,024 SF hillside lot. Three of the four units deliver vacant, so a new owner can renovate and lease at market rents, or an owner-occupier can live in one unit and rent the others.',
 		image: '/images/listings/4143-don-tomaso-dr-los-angeles-ca-90008/4143-don-tomaso-dr-los-angeles-ca.webp',
+		neighborhood: 'Baldwin Hills',
+		omGate: true,
+		walk: {
+			asOf: 'November 2026',
+			dining: 0,
+			grocery: 1,
+			parks: 1,
+			bus: 3,
+			closest: [
+				{ label: 'Right Choice Caribbean Market', kind: 'grocery', minutes: 13 },
+				{ label: 'Monteith Park', kind: 'park', minutes: 13 },
+				{ label: 'Martin Luther King Jr. Metro station (K Line)', kind: 'transit', minutes: 14 },
+			],
+		},
+		nearby: ['Baldwin Hills Crenshaw Plaza', 'Metro K Line', 'Kenneth Hahn State Recreation Area', 'Culver City and the I-10'],
+		gallery: [
+			{ file: 'front-exterior', caption: 'Front exterior' },
+			{ file: 'street-approach', caption: 'Street approach' },
+			{ file: 'upper-building', caption: 'Upper level' },
+			{ file: 'hillside-approach', caption: 'Hillside approach' },
+			{ file: 'aerial', caption: 'Aerial' },
+			{ file: 'aerial-avenue', caption: 'Aerial: the avenue' },
+			{ file: 'aerial-neighborhood', caption: 'Aerial: the neighborhood' },
+			{ file: 'kitchen', caption: 'Kitchen' },
+			{ file: 'interior', caption: 'Interior' },
+		],
 		yearBuilt: 1954,
 		zoning: 'LARD1.5',
 		pricePerUnit: 262500,
@@ -112,6 +191,34 @@ export const listings: Listing[] = [
 		description:
 			'Rare five-unit Silver Lake investment one parcel north of Sunset Blvd and steps from Sunset Junction: a freestanding two-bedroom house plus four one-bedroom units in two 1920s duplexes, on a 6,250 SF lot. All five units are occupied, in-place rents sit roughly 33% below market, and the single-family home offers an owner-occupier path.',
 		image: '/images/listings/1118-1120-sanborn-ave-los-angeles-ca-90029/1118-1120-sanborn-ave-los-angeles-ca.webp',
+		neighborhood: 'Silver Lake',
+		omGate: true,
+		walk: {
+			asOf: 'November 2026',
+			dining: 49,
+			grocery: 6,
+			parks: 9,
+			bus: 7,
+			closest: [
+				{ label: 'Erewhon', kind: 'grocery', minutes: 4 },
+				{ label: 'Yummy.com Neighborhood Market', kind: 'grocery', minutes: 6 },
+				{ label: 'Manzanita Street Community Garden', kind: 'park', minutes: 2 },
+				{ label: 'Madison Avenue Park', kind: 'park', minutes: 12 },
+				{ label: 'Vermont/Santa Monica Metro station (B Line)', kind: 'transit', minutes: 15 },
+			],
+		},
+		nearby: ['One parcel north of Sunset Blvd', 'Sunset Junction coffee and dining scene', 'Upwards of 20 restaurants and bars within two blocks'],
+		gallery: [
+			{ file: 'front-house', caption: 'Front house' },
+			{ file: 'courtyard-walkway', caption: 'Courtyard walkway' },
+			{ file: 'stairs-to-duplexes', caption: 'Stairs to the duplexes' },
+			{ file: 'entry-steps', caption: 'Entry steps' },
+			{ file: 'aerial', caption: 'Aerial' },
+			{ file: 'rear-building', caption: 'Rear building' },
+			{ file: 'rebuilt-deck', caption: 'Rebuilt deck' },
+			{ file: 'living-room', caption: 'Living room' },
+			{ file: 'kitchen', caption: 'Kitchen' },
+		],
 		capRate: 6.2,
 		grm: 12.21,
 		zoning: 'LARD2',
@@ -146,6 +253,33 @@ export const listings: Listing[] = [
 		description:
 			'Seven-unit, all two-bedroom apartment investment in Koreatown, built in 1987 on a 7,748 SF lot. Exempt from the Los Angeles Rent Stabilization Ordinance and governed instead by the more favorable statewide AB 1482 cap. Two units deliver vacant and available to lease at market today, with roughly 10% additional rental upside after lease-up.',
 		image: '/images/listings/927-s-berendo-st-los-angeles-ca-90006/927-s-berendo-st-los-angeles-ca.webp',
+		neighborhood: 'Koreatown',
+		omGate: true,
+		walk: {
+			asOf: 'November 2026',
+			dining: 53,
+			grocery: 14,
+			parks: 11,
+			bus: 21,
+			closest: [
+				{ label: 'El Super', kind: 'grocery', minutes: 4 },
+				{ label: 'Hannam Chain Supermarket', kind: 'grocery', minutes: 5 },
+				{ label: 'Mariposa-Nabi Community Garden', kind: 'park', minutes: 7 },
+				{ label: 'Wilshire/Vermont Metro station (B and D Lines)', kind: 'transit', minutes: 12 },
+			],
+		},
+		nearby: ['Wilshire Boulevard corridor, minutes away', 'Metro D Line', 'Downtown Los Angeles', 'USC and Exposition Park employment base'],
+		gallery: [
+			{ file: 'front-exterior', caption: 'Front exterior' },
+			{ file: 'parking', caption: 'Parking' },
+			{ file: 'courtyard-side', caption: 'Courtyard side' },
+			{ file: 'exterior-stairs', caption: 'Exterior stairs' },
+			{ file: 'aerial', caption: 'Aerial' },
+			{ file: 'aerial-skyline', caption: 'Aerial: skyline' },
+			{ file: 'living-area', caption: 'Living area' },
+			{ file: 'kitchen', caption: 'Kitchen' },
+			{ file: 'bedroom', caption: 'Bedroom' },
+		],
 		yearBuilt: 1987,
 		capRate: 6.71,
 		grm: 9.61,
@@ -179,6 +313,30 @@ export const listings: Listing[] = [
 		description:
 			'Rare 7-unit investment in the Virgil Village section of East Hollywood, combining a freestanding five-bedroom single-family residence (built 1946) with an all one-bedroom, six-unit apartment building (built 1960) on a single 9,299 SF lot. Two units deliver vacant with a third possible, offering roughly 57% rental upside after lease-up, plus ADU potential in a separate, currently unrented basement unit.',
 		image: '/images/listings/4412-4414-lockwood-ave-los-angeles-ca-90029/4412-4414-lockwood-ave-los-angeles-ca.webp',
+		neighborhood: 'East Hollywood (Virgil Village)',
+		// In escrow (non-contingent, closing soon): no OM download; the OM PDF is deliberately not published.
+		walk: {
+			asOf: 'November 2026',
+			dining: 46,
+			grocery: 13,
+			parks: 18,
+			bus: 13,
+			closest: [
+				{ label: 'American Ranch and Seafood Market', kind: 'grocery', minutes: 4 },
+				{ label: 'Virgil Farm Market', kind: 'grocery', minutes: 4 },
+				{ label: 'Madison Avenue Park', kind: 'park', minutes: 7 },
+				{ label: 'Vermont/Santa Monica Metro station (B Line)', kind: 'transit', minutes: 4 },
+			],
+		},
+		nearby: ['Dining, retail and entertainment on Vermont Ave and Virgil Ave', 'Four blocks from Sunset Junction in Silver Lake'],
+		gallery: [
+			{ file: 'aerial', caption: 'Aerial' },
+			{ file: 'front-exterior', caption: 'Front exterior' },
+			{ file: 'rear-building', caption: 'Rear building' },
+			{ file: 'building-side', caption: 'Building side' },
+			{ file: 'parking', caption: 'Parking' },
+			{ file: 'front-gate', caption: 'Front gate' },
+		],
 		capRate: 6.04,
 		grm: 9.9,
 		zoning: 'LARD1.5',
@@ -210,6 +368,33 @@ export const listings: Listing[] = [
 		description:
 			'Price reduced. Condo-quality four-unit investment in North Hollywood, built in 2021 across two buildings on a 5,000 SF lot. All four homes are large three-bedroom plans averaging 1,504 SF, currently exempt from the LA Rent Stabilization Ordinance and statewide AB 1482. One unit delivers vacant, and in-place rents sit roughly $900 per month below market.',
 		image: '/images/listings/5631-whitnall-hwy-los-angeles-ca-91601/5631-whitnall-hwy-los-angeles-ca.webp',
+		neighborhood: 'North Hollywood',
+		omGate: true,
+		walk: {
+			asOf: 'November 2026',
+			dining: 9,
+			grocery: 3,
+			parks: 4,
+			bus: 5,
+			closest: [
+				{ label: '7-Eleven', kind: 'grocery', minutes: 5 },
+				{ label: 'Smart & Final', kind: 'grocery', minutes: 9 },
+				{ label: 'Whitnall Highway Park North', kind: 'park', minutes: 6 },
+				{ label: 'North Hollywood Metro station (B and G Lines)', kind: 'transit', minutes: 22 },
+			],
+		},
+		nearby: ['NoHo Arts District', 'Metro B and G Line station', 'Burbank studio employment base'],
+		gallery: [
+			{ file: 'front-exterior', caption: 'Front exterior' },
+			{ file: 'street-corner', caption: 'Street corner' },
+			{ file: 'living-area', caption: 'Living area' },
+			{ file: 'living-area-2', caption: 'Living area' },
+			{ file: 'kitchen', caption: 'Kitchen' },
+			{ file: 'stairs-and-living', caption: 'Stairs and living area' },
+			{ file: 'in-unit-laundry', caption: 'In-unit laundry' },
+			{ file: 'garages', caption: 'Garages' },
+			{ file: 'noho-metro-station', caption: 'NoHo Metro station' },
+		],
 		yearBuilt: 2021,
 		capRate: 5.8,
 		grm: 13.5,
@@ -222,7 +407,7 @@ export const listings: Listing[] = [
 			'Owner-occupier ready: the vacant unit provides the perfect scenario for a new owner to occupy while receiving steady income from the remaining units.',
 			'Rental upside: in-place rents of $14,800 per month sit roughly $900 below market.',
 			'Low operating burden: estimated expenses of $38,719, or $9,680 per unit, produce a 21.8% expense ratio on in-place income.',
-			'Prime North Hollywood location, walkable to the NoHo Arts District and the Metro B and G Line station, with direct access to the Burbank studio employment base.',
+			'North Hollywood location near the NoHo Arts District and the Metro B and G Line station, with direct access to the Burbank studio employment base.',
 		],
 	},
 	{
@@ -242,6 +427,33 @@ export const listings: Listing[] = [
 		description:
 			'Nine-unit value-add opportunity in Echo Park, built in 1925 across three structures on a 6,904 SF lot just south of Temple St. Two units deliver vacant with roughly 36% rental upside after lease-up; tenants pay trash, landlord pays water.',
 		image: '/images/listings/333-n-union-ave-los-angeles-ca-90026/333-n-union-ave-los-angeles-ca.avif',
+		neighborhood: 'Echo Park',
+		omGate: true,
+		walk: {
+			asOf: 'November 2026',
+			dining: 9,
+			grocery: 1,
+			parks: 14,
+			bus: 15,
+			closest: [
+				{ label: 'Crystal Market', kind: 'grocery', minutes: 6 },
+				{ label: 'Echo Park', kind: 'park', minutes: 5 },
+				{ label: 'Echo Park Recreation Center', kind: 'park', minutes: 5 },
+				{ label: 'Westlake/MacArthur Park Metro station', kind: 'transit', minutes: 21 },
+			],
+		},
+		nearby: ['Dining and retail on Temple St', 'Quick access to the 101 and 110 freeways'],
+		gallery: [
+			{ file: 'front-building', caption: 'Front building' },
+			{ file: 'rear-building', caption: 'Rear building' },
+			{ file: 'shared-yard', caption: 'Shared yard' },
+			{ file: 'garden', caption: 'Garden' },
+			{ file: 'bungalow', caption: 'Freestanding bungalow' },
+			{ file: 'aerial', caption: 'Aerial' },
+			{ file: 'aerial-skyline', caption: 'Aerial: skyline' },
+			{ file: 'renovated-unit', caption: 'Renovated unit' },
+			{ file: 'kitchenette', caption: 'Kitchenette' },
+		],
 		yearBuilt: 1925,
 		capRate: 8.03,
 		grm: 7.7,
@@ -275,6 +487,30 @@ export const listings: Listing[] = [
 		description:
 			'Price reduced. Six-unit value-add opportunity in Baldwin Hills, built in 1954 on a 10,866 SF hillside lot with sweeping views toward Downtown LA. In-place rents sit roughly 47% below market, offering a clear path to increased income through turnover.',
 		image: '/images/listings/3815-don-tomaso-dr-los-angeles-ca-90008/3815-don-tomaso-dr-los-angeles-ca.webp',
+		neighborhood: 'Baldwin Hills',
+		omGate: true,
+		walk: {
+			asOf: 'November 2026',
+			dining: 5,
+			grocery: 3,
+			parks: 2,
+			bus: 9,
+			closest: [
+				{ label: 'Right Choice Caribbean Market', kind: 'grocery', minutes: 8 },
+				{ label: 'Albertsons', kind: 'grocery', minutes: 12 },
+				{ label: 'Monteith Park', kind: 'park', minutes: 13 },
+				{ label: 'Martin Luther King Jr. Metro station (K Line)', kind: 'transit', minutes: 9 },
+			],
+		},
+		nearby: ['Crenshaw Boulevard retail and dining', 'Metro K Line', 'Kenneth Hahn State Recreation Area'],
+		gallery: [
+			{ file: 'courtyard', caption: 'Courtyard' },
+			{ file: 'upper-walkway', caption: 'Upper walkway' },
+			{ file: 'courtyard-2', caption: 'Courtyard' },
+			{ file: 'upper-level-view', caption: 'View from the upper level' },
+			{ file: 'courtyard-from-above', caption: 'Courtyard from above' },
+			{ file: 'patio', caption: 'Patio' },
+		],
 		yearBuilt: 1954,
 		capRate: 6.33,
 		grm: 9.95,

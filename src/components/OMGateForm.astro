@@ -1,0 +1,196 @@
+---
+// Instant-download gate for a listing's Offering Memorandum. The Worker (/api/om-lead) records the
+// lead in Pipedrive and answers with the PDF address, which this form then shows as a download button.
+interface Props {
+	property: string; // listing slug, matched against worker/om-files.ts
+	propertyName: string;
+}
+
+const { property, propertyName } = Astro.props;
+---
+
+<section class="om-gate" id="offering-memorandum" data-property={property}>
+	<h2>Get the Offering Memorandum</h2>
+	<p class="om-gate__sub">Enter your details to download the full Offering Memorandum for {propertyName}.</p>
+	<form class="js-om-gate" novalidate>
+		<div class="om-gate__grid">
+			<div>
+				<label for="omg-first">First name</label>
+				<input id="omg-first" name="firstName" type="text" autocomplete="given-name" required />
+			</div>
+			<div>
+				<label for="omg-last">Last name</label>
+				<input id="omg-last" name="lastName" type="text" autocomplete="family-name" required />
+			</div>
+			<div>
+				<label for="omg-email">Email</label>
+				<input id="omg-email" name="email" type="email" autocomplete="email" required />
+			</div>
+			<div>
+				<label for="omg-phone">Phone <span class="om-gate__opt">(optional)</span></label>
+				<input id="omg-phone" name="phone" type="tel" autocomplete="tel" />
+			</div>
+			<div class="om-gate__wide">
+				<label for="omg-company">Company <span class="om-gate__opt">(optional)</span></label>
+				<input id="omg-company" name="company" type="text" autocomplete="organization" />
+			</div>
+		</div>
+		<label class="om-gate__consent">
+			<input type="checkbox" name="privacyConsent" required />
+			<span>
+				I agree to the <a href="/privacy-policy/">Privacy Policy</a> and to be contacted about this property. You can unsubscribe at any time.
+			</span>
+		</label>
+		<button type="submit" class="btn btn-gold">Download Offering Memorandum</button>
+		<p class="om-gate__status" role="status" hidden></p>
+	</form>
+	<div class="om-gate__done" hidden>
+		<p><strong>Thank you.</strong> Your Offering Memorandum is ready.</p>
+		<a class="btn btn-gold js-om-link" href="#" target="_blank" rel="noopener">Open the Offering Memorandum (PDF)</a>
+	</div>
+</section>
+
+<script>
+	document.querySelectorAll<HTMLElement>('.om-gate').forEach((box) => {
+		const form = box.querySelector<HTMLFormElement>('.js-om-gate')!;
+		const status = box.querySelector<HTMLParagraphElement>('.om-gate__status')!;
+		const done = box.querySelector<HTMLElement>('.om-gate__done')!;
+		const link = box.querySelector<HTMLAnchorElement>('.js-om-link')!;
+		const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			status.hidden = false;
+			status.style.color = '#b3261e';
+			if (!form.checkValidity()) {
+				status.textContent = 'Please fill in your name and email and accept the privacy policy.';
+				form.reportValidity();
+				return;
+			}
+			const data = Object.fromEntries(new FormData(form).entries()) as Record<string, unknown>;
+			data.privacyConsent = (form.querySelector('input[name="privacyConsent"]') as HTMLInputElement).checked;
+			data.property = box.dataset.property;
+
+			button.disabled = true;
+			status.style.color = '';
+			status.textContent = 'Sending...';
+			try {
+				const res = await fetch('/api/om-lead', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+				});
+				const result = await res.json();
+				if (res.ok && result.omUrl) {
+					link.href = result.omUrl;
+					form.hidden = true;
+					done.hidden = false;
+					link.focus();
+				} else if (res.ok) {
+					status.style.color = 'var(--success)';
+					status.textContent = "Thank you. We'll email the Offering Memorandum shortly.";
+					form.reset();
+				} else {
+					status.style.color = '#b3261e';
+					status.textContent = result.error ?? 'Something went wrong. Please try again.';
+				}
+			} catch {
+				status.style.color = '#b3261e';
+				status.textContent = 'Something went wrong. Please try again or call us directly.';
+			} finally {
+				button.disabled = false;
+			}
+		});
+	});
+</script>
+
+<style>
+	.om-gate {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		border-radius: 2px;
+		padding: clamp(1.5rem, 4vw, 2.5rem);
+		scroll-margin-top: 10rem;
+	}
+
+	.om-gate h2 {
+		margin-top: 0;
+		font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+	}
+
+	.om-gate__sub {
+		color: var(--ink-light);
+	}
+
+	.om-gate__grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.9rem;
+		margin-bottom: 1.1rem;
+	}
+
+	.om-gate__wide {
+		grid-column: 1 / -1;
+	}
+
+	.om-gate label {
+		display: block;
+		font-size: 0.8rem;
+		font-weight: 600;
+		margin-bottom: 0.25rem;
+	}
+
+	.om-gate__opt {
+		font-weight: 400;
+		color: var(--ink-light);
+	}
+
+	.om-gate input[type='text'],
+	.om-gate input[type='email'],
+	.om-gate input[type='tel'] {
+		width: 100%;
+		padding: 0.7rem 0.85rem;
+		border: 1px solid var(--border);
+		border-radius: 1px;
+		font-size: 1rem;
+		font-family: var(--font-sans);
+		background: var(--paper);
+	}
+
+	.om-gate input:focus {
+		outline: none;
+		border-color: var(--gold);
+	}
+
+	.om-gate .om-gate__consent {
+		display: flex;
+		gap: 0.5rem;
+		align-items: flex-start;
+		font-size: 0.78rem;
+		font-weight: 400;
+		color: var(--ink-light);
+		margin-bottom: 1.1rem;
+	}
+
+	.om-gate__consent input {
+		margin-top: 0.2rem;
+	}
+
+	.om-gate__status {
+		margin-top: 0.75rem;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	.om-gate__done p {
+		margin-top: 0;
+		font-size: 1.05rem;
+	}
+
+	@media (max-width: 640px) {
+		.om-gate__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
