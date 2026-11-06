@@ -4,9 +4,9 @@ export const site = {
 	url: 'https://highlightreg.com',
 	officeAddress: '16820 Ventura Boulevard, Encino, CA 91436',
 	officeDRE: '01811831',
-	phone: '310.405.1890',
-	// The number behind the "Call" buttons (sticky bar, listing pages, forms' call prompts): Troy's line. site.phone (Josh's) stays in the structured data.
-	callPhone: '310.339.5477',
+	// The company's main number: every Call button, the structured data Google reads, and the call prompts use this.
+	// Josh's own line stays on his team card below.
+	phone: '310.339.5477',
 	// Google Maps Platform API key (Places API (New) enabled), used client-side for address suggestions
 	// on the BOV form. This is NOT a secret — Google Maps browser keys are visible in page source by
 	// design; you secure it in the Google Cloud Console by restricting it to this site's domain(s)

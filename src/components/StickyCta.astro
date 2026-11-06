@@ -9,7 +9,7 @@ interface Props {
 
 const { lang = 'en' } = Astro.props;
 const es = lang === 'es';
-const tel = `tel:+1${site.callPhone.replace(/\D/g, '')}`;
+const tel = `tel:+1${site.phone.replace(/\D/g, '')}`;
 const valuationHref = es ? '/es/vender-edificio-de-apartamentos-los-angeles/' : '/property-value/';
 ---
 
@@ -17,7 +17,7 @@ const valuationHref = es ? '/es/vender-edificio-de-apartamentos-los-angeles/' : 
 	<div class="scta__inner">
 		<span class="scta__msg">{es ? '¿Piensa vender su edificio?' : 'Thinking of selling your building?'}</span>
 		<a class="scta__call" href={tel} data-cta="sticky-bar-call">
-			{es ? 'Llamar' : 'Call'} <span class="scta__num">{site.callPhone}</span>
+			{es ? 'Llamar' : 'Call'} <span class="scta__num">{site.phone}</span>
 		</a>
 		<a class="scta__val" href={valuationHref} data-cta="sticky-bar-free-valuation">
 			{es ? 'Valoración Gratis' : 'Free Valuation'}
