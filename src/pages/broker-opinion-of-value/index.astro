@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
-import { site } from '../../data/site';
 
 const steps = [
 	{
@@ -162,7 +161,7 @@ const faqSchema = {
 
 	<section class="section section-alt" id="bov-form">
 		<div class="container">
-			<BOVForm heading="Request Your Free Broker Opinion of Value" subheading={`Tell us where the building is. We will take it from there. Prefer to talk? Call ${site.phone}.`} />
+			<BOVForm heading="Request Your Free Broker Opinion of Value" subheading="Tell us where the building is. We will take it from there." />
 		</div>
 	</section>
 </BaseLayout>

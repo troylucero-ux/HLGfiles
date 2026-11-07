@@ -19,7 +19,11 @@ const text = {
 		address: 'Property Address',
 		rents: 'Monthly Gross Rents (optional)',
 		language: 'Preferred language',
-		submit: 'Submit',
+		submit: 'Request My Free Opinion',
+		badge: 'Free Broker Opinion of Value',
+		perks: ['Free and confidential', 'Built on your building’s real rents and recent sales', 'No pressure, just data'],
+		call: 'Prefer to talk? Call',
+		ph: { name: 'Your name', email: 'you@example.com', phone: '(310) 555-0123', address: '123 Main St, Los Angeles, CA', rents: 'For example, 18,000' },
 		checking: 'Checking the address...',
 		notFound:
 			"We couldn't confirm that address. Please check the street number and street name, and include the city and ZIP code (for example, 123 Main St, Los Angeles, CA 90001). If it is correct, click Submit again to send it as typed.",
@@ -34,7 +38,11 @@ const text = {
 		address: 'Dirección de la propiedad',
 		rents: 'Renta bruta mensual (opcional)',
 		language: 'Idioma preferido',
-		submit: 'Enviar',
+		submit: 'Solicitar mi opinión gratis',
+		badge: 'Opinión de valor gratuita',
+		perks: ['Gratis y confidencial', 'Basada en las rentas reales de su edificio y ventas recientes', 'Sin presión, solo datos'],
+		call: '¿Prefiere hablar? Llame al',
+		ph: { name: 'Su nombre', email: 'usted@ejemplo.com', phone: '(310) 555-0123', address: '123 Main St, Los Angeles, CA', rents: 'Por ejemplo, 18,000' },
 		checking: 'Verificando la dirección...',
 		notFound:
 			'No pudimos confirmar esa dirección. Por favor revise el número y el nombre de la calle, e incluya la ciudad y el código postal (por ejemplo, 123 Main St, Los Angeles, CA 90001). Si es correcta, haga clic en Enviar otra vez para mandarla tal como la escribió.',
@@ -46,8 +54,18 @@ const text = {
 ---
 
 <div class="bov-form">
-	<h2>{heading}</h2>
-	<p class="bov-form__sub">{subheading}</p>
+	<div class="bov-form__intro">
+		<span class="bov-form__badge">{text.badge}</span>
+		<h2>{heading}</h2>
+		<p class="bov-form__sub">{subheading}</p>
+		<ul class="bov-form__perks" role="list">
+			{text.perks.map((p) => <li>{p}</li>)}
+		</ul>
+		<p class="bov-form__call">
+			{text.call}{' '}
+			<a href={`tel:+1${site.phone.replace(/\D/g, '')}`}>{site.phone}</a>
+		</p>
+	</div>
 	<form
 		class="js-bov-form"
 		data-endpoint="/api/bov-lead"
@@ -59,18 +77,28 @@ const text = {
 	>
 		{lang === 'es' && <input type="hidden" name="language" value="Spanish" />}
 		<div class="bov-form__row">
-			<label for="bov-name" class="visually-hidden">{text.name}</label>
-			<input id="bov-name" name="name" type="text" placeholder={text.name} required />
-			<label for="bov-email" class="visually-hidden">{text.email}</label>
-			<input id="bov-email" name="email" type="email" placeholder={text.email} required />
-			<label for="bov-phone" class="visually-hidden">{text.phone}</label>
-			<input id="bov-phone" name="phone" type="tel" placeholder={text.phone} required />
+			<div class="bov-field">
+				<label for="bov-name">{text.name}</label>
+				<input id="bov-name" name="name" type="text" placeholder={text.ph.name} autocomplete="name" required />
+			</div>
+			<div class="bov-field">
+				<label for="bov-email">{text.email}</label>
+				<input id="bov-email" name="email" type="email" placeholder={text.ph.email} autocomplete="email" required />
+			</div>
+			<div class="bov-field">
+				<label for="bov-phone">{text.phone}</label>
+				<input id="bov-phone" name="phone" type="tel" placeholder={text.ph.phone} autocomplete="tel" required />
+			</div>
 		</div>
 		<div class="bov-form__row bov-form__row--property">
-			<label for="bov-address" class="visually-hidden">{text.address}</label>
-			<input id="bov-address" name="address" type="text" placeholder={text.address} autocomplete="off" required />
-			<label for="bov-rents" class="visually-hidden">{text.rents}</label>
-			<input id="bov-rents" name="monthlyGrossRents" type="text" inputmode="numeric" placeholder={text.rents} />
+			<div class="bov-field">
+				<label for="bov-address">{text.address}</label>
+				<input id="bov-address" name="address" type="text" placeholder={text.ph.address} autocomplete="off" required />
+			</div>
+			<div class="bov-field">
+				<label for="bov-rents">{text.rents}</label>
+				<input id="bov-rents" name="monthlyGrossRents" type="text" inputmode="numeric" placeholder={text.ph.rents} />
+			</div>
 		</div>
 		{
 			showLanguage && lang === 'en' && (
@@ -97,7 +125,7 @@ const text = {
 				)
 			}
 		</label>
-		<button type="submit" class="btn btn-gold">{text.submit}</button>
+		<button type="submit" class="bov-form__submit">{text.submit}</button>
 		<p class="bov-form__status" role="status" hidden></p>
 	</form>
 </div>
@@ -357,7 +385,8 @@ const text = {
 		list-style: none;
 		background: #fff;
 		border: 1px solid var(--border);
-		border-radius: 2px;
+		border-radius: 10px;
+		overflow: hidden;
 		box-shadow: 0 14px 30px -16px rgba(12, 46, 80, 0.4);
 	}
 
@@ -383,90 +412,251 @@ const text = {
 	}
 
 	.bov-form {
-		background: var(--paper);
+		display: grid;
+		grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.6fr);
+		background: #fff;
 		border: 1px solid var(--border);
-		border-top: 3px solid var(--gold);
-		border-radius: 2px;
-		padding: clamp(2rem, 4vw, 3rem);
+		border-radius: 16px;
+		overflow: hidden;
+		box-shadow: 0 24px 60px -28px rgb(12 46 80 / 0.38), 0 2px 6px rgb(12 46 80 / 0.05);
 	}
 
-	.bov-form h2 {
-		font-size: clamp(1.5rem, 2.6vw, 1.9rem);
+	/* Left panel */
+	.bov-form__intro {
+		position: relative;
+		color: #d7e0ea;
+		background: radial-gradient(120% 120% at 0% 0%, #1c5b99 0%, var(--navy) 45%, var(--navy-dark) 100%);
+		padding: clamp(1.75rem, 3.5vw, 2.75rem);
+		overflow: hidden;
+	}
+
+	.bov-form__intro::after {
+		content: '';
+		position: absolute;
+		right: -90px;
+		bottom: -90px;
+		width: 260px;
+		height: 260px;
+		border-radius: 50%;
+		border: 36px solid rgb(255 255 255 / 0.05);
+		pointer-events: none;
+	}
+
+	.bov-form__badge {
+		display: inline-block;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--gold-light);
+		border: 1px solid rgb(255 255 255 / 0.25);
+		border-radius: 999px;
+		padding: 0.3rem 0.8rem;
+		margin-bottom: 1.1rem;
+	}
+
+	.bov-form__intro h2 {
+		color: #fff;
+		font-size: clamp(1.5rem, 2.6vw, 2rem);
+		line-height: 1.2;
+		margin: 0 0 0.75rem;
 	}
 
 	.bov-form__sub {
-		color: var(--ink-light);
+		color: #d7e0ea;
+		line-height: 1.6;
+		margin: 0 0 1.5rem;
+	}
+
+	.bov-form__perks {
+		list-style: none;
+		margin: 0 0 1.5rem;
+		padding: 0;
+		display: grid;
+		gap: 0.7rem;
+	}
+
+	.bov-form__perks li {
+		position: relative;
+		padding-left: 1.7rem;
+		font-size: 0.92rem;
+		line-height: 1.45;
+		color: #fff;
+	}
+
+	.bov-form__perks li::before {
+		content: '';
+		position: absolute;
+		left: 0.1rem;
+		top: 0.28rem;
+		width: 0.7rem;
+		height: 0.4rem;
+		border-left: 2px solid var(--gold-light);
+		border-bottom: 2px solid var(--gold-light);
+		transform: rotate(-45deg);
+	}
+
+	.bov-form__call {
+		position: relative;
+		margin: 0;
+		font-size: 0.9rem;
+		color: #d7e0ea;
+	}
+
+	.bov-form__call a {
+		color: #fff;
+		font-weight: 700;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	/* Right panel */
+	.bov-form form {
+		padding: clamp(1.5rem, 3.5vw, 2.5rem);
 	}
 
 	.bov-form__row {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		gap: 0.75rem;
-		margin-bottom: 1.25rem;
+		grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+		gap: 1rem;
+		margin-bottom: 1.1rem;
 	}
 
 	.bov-form__row--property {
 		grid-template-columns: 2fr 1fr;
 	}
 
+	.bov-field label {
+		display: block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		color: var(--navy-dark);
+		margin-bottom: 0.4rem;
+	}
+
 	.bov-form input[type='text'],
 	.bov-form input[type='email'],
 	.bov-form input[type='tel'] {
 		width: 100%;
-		padding: 0.75rem 0.9rem;
-		border: 1px solid var(--border);
-		border-radius: 1px;
-		font-size: 0.95rem;
+		padding: 0.85rem 1rem;
+		border: 1px solid #cfd8e3;
+		border-radius: 10px;
+		font-size: 0.98rem;
 		font-family: var(--font-sans);
-		background: var(--paper);
+		color: var(--ink);
+		background: #fbfcfe;
+		transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+	}
+
+	.bov-form input[type='text']:hover,
+	.bov-form input[type='email']:hover,
+	.bov-form input[type='tel']:hover {
+		border-color: #a9b8ca;
 	}
 
 	.bov-form input:focus {
 		outline: none;
-		border-color: var(--gold);
+		border-color: var(--navy);
+		background: #fff;
+		box-shadow: 0 0 0 4px rgb(20 70 122 / 0.14);
+	}
+
+	.bov-form input::placeholder {
+		color: #8b98a8;
 	}
 
 	.bov-form__language {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
-		margin-bottom: 1.25rem;
+		margin-bottom: 1.1rem;
 		font-size: 0.9rem;
 		color: var(--ink-light);
 	}
 
 	.bov-form__language select {
 		padding: 0.6rem 0.8rem;
-		border: 1px solid var(--border);
-		border-radius: 1px;
+		border: 1px solid #cfd8e3;
+		border-radius: 10px;
 		font-size: 0.95rem;
 		font-family: var(--font-sans);
-		background: var(--paper);
+		background: #fbfcfe;
 		color: var(--ink);
 	}
 
 	.bov-form__consent {
 		display: flex;
-		gap: 0.5rem;
+		gap: 0.6rem;
 		align-items: flex-start;
-		font-size: 0.75rem;
+		font-size: 0.78rem;
+		line-height: 1.5;
 		color: var(--ink-light);
-		margin-bottom: 1.25rem;
+		margin: 0.25rem 0 1.25rem;
 	}
 
 	.bov-form__consent input {
 		margin-top: 0.2rem;
+		accent-color: var(--navy);
+	}
+
+	.bov-form__submit {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 14rem;
+		font-family: var(--font-sans);
+		font-size: 0.88rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: #fff;
+		background: linear-gradient(180deg, #1b5a9a 0%, var(--navy) 100%);
+		border: 0;
+		border-radius: 10px;
+		padding: 1rem 2rem;
+		cursor: pointer;
+		box-shadow: 0 10px 22px -10px rgb(20 70 122 / 0.7);
+		transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+	}
+
+	.bov-form__submit:hover {
+		transform: translateY(-1px);
+		filter: brightness(1.08);
+		box-shadow: 0 14px 26px -10px rgb(20 70 122 / 0.75);
+	}
+
+	.bov-form__submit:disabled {
+		opacity: 0.75;
+		cursor: progress;
+		transform: none;
 	}
 
 	.bov-form__status {
-		margin-top: 0.75rem;
+		margin-top: 0.85rem;
 		font-weight: 600;
 		font-size: 0.9rem;
 	}
 
-	@media (max-width: 640px) {
-		.bov-form__row {
+	@media (max-width: 900px) {
+		.bov-form {
 			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.bov-form__row,
+		.bov-form__row--property {
+			grid-template-columns: 1fr;
+		}
+
+		.bov-form__submit {
+			width: 100%;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.bov-form__submit {
+			transition: none;
 		}
 	}
 
