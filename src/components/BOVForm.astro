@@ -19,14 +19,14 @@ const text = {
 		address: 'Property Address',
 		rents: 'Monthly Gross Rents (optional)',
 		language: 'Preferred language',
-		submit: 'Request My Free Opinion',
+		submit: 'Get My Free Valuation',
 		badge: 'Free Broker Opinion of Value',
 		perks: ['Free and confidential', 'Built on your building’s real rents and recent sales', 'No pressure, just data'],
 		call: 'Prefer to talk? Call',
 		ph: { name: 'Your name', email: 'you@example.com', phone: '(310) 555-0123', address: '123 Main St, Los Angeles, CA', rents: 'For example, 18,000' },
 		checking: 'Checking the address...',
 		notFound:
-			"We couldn't confirm that address. Please check the street number and street name, and include the city and ZIP code (for example, 123 Main St, Los Angeles, CA 90001). If it is correct, click Submit again to send it as typed.",
+			"We couldn't confirm that address. Please check the street number and street name, and include the city and ZIP code (for example, 123 Main St, Los Angeles, CA 90001). If it is correct, click the button again to send it as typed.",
 		thanks: "Thanks! We'll be in touch shortly.",
 		failed: 'Something went wrong. Please try again or contact us directly.',
 		error: 'Something went wrong. Please try again.',
@@ -38,14 +38,14 @@ const text = {
 		address: 'Dirección de la propiedad',
 		rents: 'Renta bruta mensual (opcional)',
 		language: 'Idioma preferido',
-		submit: 'Solicitar mi opinión gratis',
+		submit: 'Obtener mi valuación gratis',
 		badge: 'Opinión de valor gratuita',
 		perks: ['Gratis y confidencial', 'Basada en las rentas reales de su edificio y ventas recientes', 'Sin presión, solo datos'],
 		call: '¿Prefiere hablar? Llame al',
 		ph: { name: 'Su nombre', email: 'usted@ejemplo.com', phone: '(310) 555-0123', address: '123 Main St, Los Angeles, CA', rents: 'Por ejemplo, 18,000' },
 		checking: 'Verificando la dirección...',
 		notFound:
-			'No pudimos confirmar esa dirección. Por favor revise el número y el nombre de la calle, e incluya la ciudad y el código postal (por ejemplo, 123 Main St, Los Angeles, CA 90001). Si es correcta, haga clic en Enviar otra vez para mandarla tal como la escribió.',
+			'No pudimos confirmar esa dirección. Por favor revise el número y el nombre de la calle, e incluya la ciudad y el código postal (por ejemplo, 123 Main St, Los Angeles, CA 90001). Si es correcta, haga clic en el botón otra vez para mandarla tal como la escribió.',
 		thanks: '¡Gracias! Nos pondremos en contacto con usted pronto.',
 		failed: 'Algo salió mal. Por favor inténtelo de nuevo o comuníquese con nosotros directamente.',
 		error: 'Algo salió mal. Por favor inténtelo de nuevo.',
@@ -142,7 +142,7 @@ const text = {
 			(data as Record<string, unknown>).source = (window as unknown as { hlgSource?: () => unknown }).hlgSource?.();
 
 			// Check the property address before sending. If it cannot be found, ask the visitor to look again once. A second
-			// click on Submit with the same address sends it as typed, so a real but unlisted building is never blocked.
+			// click on the button with the same address sends it as typed, so a real but unlisted building is never blocked.
 			const typedAddress = String(data.address ?? '').trim();
 			const fromGoogle = form.dataset.googleAddress === typedAddress && typedAddress !== '';
 			if (fromGoogle) data.addressSource = 'google';
@@ -166,7 +166,7 @@ const text = {
 						status.style.color = '#8a5a00';
 						status.textContent =
 							form.dataset.msgNotfound ??
-							"We couldn't confirm that address. Please check the street number and street name, and include the city and ZIP code (for example, 123 Main St, Los Angeles, CA 90001). If it is correct, click Submit again to send it as typed.";
+							"We couldn't confirm that address. Please check the street number and street name, and include the city and ZIP code (for example, 123 Main St, Los Angeles, CA 90001). If it is correct, click the button again to send it as typed.";
 					}
 					if (button) button.disabled = false;
 					return;
