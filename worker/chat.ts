@@ -8,6 +8,28 @@ type ChatMessage = { role: 'user' | 'assistant'; content: string };
 const MAX_MESSAGES = 20;
 const MAX_MESSAGE_LENGTH = 2000;
 
+// Best-effort abuse guard: at most RATE_LIMIT replies per visitor (by IP) per hour. The counts live in this Worker
+// instance's memory, so a restart or a second data center resets them; the monthly spending cap set in the Anthropic
+// console is the hard backstop.
+const RATE_LIMIT = 20;
+const RATE_WINDOW_MS = 60 * 60 * 1000;
+const hits = new Map<string, number[]>();
+
+function overLimit(ip: string): boolean {
+	const now = Date.now();
+	const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+	if (recent.length >= RATE_LIMIT) {
+		hits.set(ip, recent);
+		return true;
+	}
+	recent.push(now);
+	hits.set(ip, recent);
+	if (hits.size > 5000) {
+		for (const [key, times] of hits) if (times.every((t) => now - t >= RATE_WINDOW_MS)) hits.delete(key);
+	}
+	return false;
+}
+
 function buildSystemPrompt(): string {
 	const submarketList = submarkets.map((s) => `- ${s.name} (${s.region}): ${s.blurb}`).join('\n');
 	const teamList = team.map((t) => `- ${t.name}, ${t.title} — ${t.phone}, ${t.email}`).join('\n');
@@ -32,7 +54,7 @@ Office: ${site.brokerage}, ${site.officeAddress}, Office DRE #${site.officeDRE}
 
 Your role:
 - Answer natural-language questions about our services, submarkets, and the selling process in a warm, professional, non-fluffy tone — no em dashes, no hype, just straightforward answers grounded in the facts above.
-- If asked about specific closed sales, case studies, or current listings, point the visitor to the relevant page (/closings/, /case-studies/, /listings/, /submarkets/) rather than inventing numbers you don't have.
+- If asked about specific closed sales, case studies, or current listings, point the visitor to the relevant page (/closed-sales/, /case-studies/, /listings/, /submarkets/) rather than inventing numbers you don't have.
 - If someone seems ready to sell, is asking about pricing/valuation, or asks to talk to a person, proactively invite them to request a free Broker Opinion of Value at /contact/?intent=bov, or to contact Josh or Troy directly using the phone/email above.
 - For trust, estate, or probate situations, use a calmer, more patient tone and acknowledge the emotional weight before getting into process details.
 - Do not provide legal, tax, or financial advice. For 1031 exchange or tax questions, give general process information and recommend they confirm specifics with their CPA, attorney, or qualified intermediary.
@@ -46,6 +68,13 @@ export async function handleChat(request: Request, env: Env): Promise<Response> 
 
 	if (!env.ANTHROPIC_API_KEY) {
 		return new Response(JSON.stringify({ error: 'Chat is not configured.' }), { status: 500, headers: corsHeaders() });
+	}
+
+	if (overLimit(request.headers.get('CF-Connecting-IP') ?? 'unknown')) {
+		return new Response(
+			JSON.stringify({ error: `You've reached the chat limit for now. Please call us at ${site.phone} or request a free valuation on this site.` }),
+			{ status: 429, headers: corsHeaders() },
+		);
 	}
 
 	let body: { messages?: ChatMessage[] };
@@ -73,10 +102,10 @@ export async function handleChat(request: Request, env: Env): Promise<Response> 
 
 	try {
 		const response = await client.messages.create({
-			model: 'claude-opus-5',
+			model: 'claude-sonnet-5-5',
 			max_tokens: 1024,
 			system: buildSystemPrompt(),
-			output_config: { effort: 'medium' },
+			output_config: { effort: 'low' },
 			messages,
 		});
 
