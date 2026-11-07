@@ -128,7 +128,7 @@ export const listings: Listing[] = [
 		askingPrice: 1050000,
 		status: 'active',
 		type: 'apartment',
-		submarket: null,
+		submarket: 'south-la',
 		description:
 			'Four-unit, all one-bedroom investment in Baldwin Hills, built in 1954 on an 8,024 SF hillside lot. Three of the four units deliver vacant, so a new owner can renovate and lease at market rents, or an owner-occupier can live in one unit and rent the others.',
 		image: '/images/listings/4143-don-tomaso-dr-los-angeles-ca-90008/4143-don-tomaso-dr-los-angeles-ca.webp',
@@ -481,7 +481,7 @@ export const listings: Listing[] = [
 		askingPrice: 1250000,
 		status: 'active',
 		type: 'apartment',
-		submarket: null,
+		submarket: 'south-la',
 		description:
 			'Price reduced. Six-unit value-add opportunity in Baldwin Hills, built in 1954 on a 10,866 SF hillside lot with sweeping views toward Downtown LA. In-place rents sit roughly 47% below market, offering a clear path to increased income through turnover.',
 		image: '/images/listings/3815-don-tomaso-dr-los-angeles-ca-90008/3815-don-tomaso-dr-los-angeles-ca.webp',

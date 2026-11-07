@@ -5,6 +5,7 @@ import BOVForm from '../../components/BOVForm.astro';
 import OMGateForm from '../../components/OMGateForm.astro';
 import YouTubeFacade from '../../components/YouTubeFacade.astro';
 import { listings } from '../../data/listings';
+import { submarkets } from '../../data/submarkets';
 import { site, team } from '../../data/site';
 import { youtubeMeta } from '../../data/youtubeMeta';
 import { formatPrice, formatPriceFull } from '../../lib/format';
@@ -79,6 +80,8 @@ const nearbyIcon = (t: string) =>
 						? 'building'
 						: 'pin';
 const kindIcon = (k: string) => (k === 'grocery' ? 'cart' : k === 'park' ? 'tree' : 'train');
+
+const submarketName = listing.submarket ? (submarkets.find((s) => s.slug === listing.submarket)?.name ?? listing.submarket.replace(/-/g, ' ')) : null;
 
 const listingTeam = team.filter((t) => ['josh-kaplan', 'troy-lucero'].includes(t.slug));
 const mapAddress = `${listing.name}, ${listing.city}, ${listing.state} ${listing.zip}`;
@@ -336,7 +339,7 @@ const videoSchema = listing.youtubeId
 				{
 					listing.submarket && (
 						<a href={`/submarkets/${listing.submarket}/`} class="llocation__link">
-							Explore the {listing.submarket.replace(/-/g, ' ')} submarket <span aria-hidden="true">&rarr;</span>
+							Explore the {submarketName} submarket <span aria-hidden="true">&rarr;</span>
 						</a>
 					)
 				}
