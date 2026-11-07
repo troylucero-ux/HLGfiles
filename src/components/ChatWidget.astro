@@ -228,6 +228,29 @@
 
 	closeBtn?.addEventListener('click', closePanel);
 
+	// Shows an assistant reply as plain text (never HTML) but makes page paths, phone numbers and emails tappable,
+	// and keeps the paragraph breaks.
+	const LINKABLE =
+		/(?<![\w/])(\/(?:closed-sales|case-studies|listings|submarkets|contact|property-value|measure-ula-calculator|market-report|faqs|1031-exchanges|broker-opinion-of-value|trust-and-estate-sales|land-for-development|about|insights|testimonials)[a-z0-9\-\/]*(?:\?[a-z0-9=&_-]+)?)|(\b\d{3}[.-]\d{3}[.-]\d{4}\b)|([\w.+-]+@[\w-]+\.[a-z]{2,})/gi;
+
+	function renderReply(el: HTMLElement, text: string) {
+		el.textContent = '';
+		el.style.whiteSpace = 'pre-wrap';
+		let last = 0;
+		for (const m of text.matchAll(LINKABLE)) {
+			const start = m.index ?? 0;
+			el.append(text.slice(last, start));
+			const a = document.createElement('a');
+			a.textContent = m[0];
+			a.href = m[1] ? m[1] : m[2] ? `tel:+1${m[2].replace(/\D/g, '')}` : `mailto:${m[3]}`;
+			a.style.color = 'var(--navy)';
+			a.style.textDecoration = 'underline';
+			el.append(a);
+			last = start + m[0].length;
+		}
+		el.append(text.slice(last));
+	}
+
 	function appendMessage(role: Role | 'error', text: string) {
 		const el = document.createElement('div');
 		el.className = `chat-message chat-message--${role}`;
@@ -264,7 +287,8 @@
 				return;
 			}
 
-			thinkingEl.textContent = data.reply;
+			renderReply(thinkingEl, data.reply);
+			messagesEl.scrollTop = messagesEl.scrollHeight;
 			history.push({ role: 'assistant', content: data.reply });
 		} catch {
 			thinkingEl.remove();
