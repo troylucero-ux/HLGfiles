@@ -168,7 +168,7 @@ const webPageSchema = {
 		</div>
 	</section>
 
-	<section class="section">
+	<section class="section who-section">
 		<div class="container who-we-are">
 			<div>
 				<span class="eyebrow">Quiénes somos</span>
@@ -416,6 +416,11 @@ const webPageSchema = {
 		letter-spacing: 0.04em;
 		text-transform: uppercase;
 		opacity: 0.85;
+	}
+
+	/* The photo starts 42px to the side before it slides in; clip that so it never causes a sideways scroll. */
+	.who-section {
+		overflow-x: clip;
 	}
 
 	.who-we-are {

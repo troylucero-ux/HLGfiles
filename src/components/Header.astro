@@ -1,7 +1,97 @@
 ---
 import { site } from '../data/site';
+import { BOV, PAGES_ES } from '../data/esSlugs';
 
-const navGroups = [
+interface Props {
+	lang?: 'en' | 'es';
+}
+const { lang = 'en' } = Astro.props;
+const es = lang === 'es';
+
+// The English page that matches the Spanish page the visitor is on, for the language switch. Anything else goes to the English homepage.
+const englishCounterpart: Record<string, string> = {
+	'/es/': '/',
+	'/es/intercambios-1031/': '/1031-exchanges/',
+	'/es/ventas-de-fideicomisos-y-herencias/': '/trust-and-estate-sales/',
+	'/es/triple-net-dst/': '/triple-net-dst/',
+	'/es/preguntas-frecuentes/': '/faqs/',
+	'/es/insights/': '/insights/',
+};
+const englishHref = englishCounterpart[Astro.url.pathname] ?? '/';
+
+// Spanish menu: Spanish pages where they exist; the rest link to the English page and say so.
+const navGroupsEs = [
+	{
+		label: 'Servicios',
+		links: [
+			{ href: BOV, label: 'Opinión de valor gratis' },
+			{ href: '/es/vender-edificio-de-apartamentos-los-angeles/', label: 'Vender su edificio' },
+			{ href: PAGES_ES.intercambios, label: 'Intercambios 1031' },
+			{ href: PAGES_ES.fideicomisos, label: 'Fideicomisos y herencias' },
+			{ href: PAGES_ES.tripleNet, label: 'Triple net (NNN) y DST' },
+		],
+	},
+	{
+		label: 'Propiedades',
+		links: [
+			{ href: '/closed-sales/', label: 'Ventas cerradas (en inglés)' },
+			{ href: '/listings/', label: 'Propiedades en venta (en inglés)' },
+			{ href: '/land-for-development/', label: 'Terrenos para desarrollo (en inglés)' },
+		],
+	},
+	{
+		label: 'Nosotros',
+		links: [
+			{ href: '/about/', label: 'Nuestro equipo (en inglés)' },
+			{ href: '/testimonials/', label: 'Testimonios (en inglés)' },
+			{ href: '/case-studies/', label: 'Casos de éxito (en inglés)' },
+		],
+	},
+];
+
+const simpleLinksEs = [
+	{ href: '/es/insights/', label: 'Artículos' },
+	{ href: '/es/preguntas-frecuentes/', label: 'Preguntas frecuentes' },
+	{ href: '/es/#formulario', label: 'Contacto' },
+];
+
+const text = es
+	? {
+			utility: 'Reciba análisis del mercado multifamiliar de Los Ángeles en su correo.',
+			emailLabel: 'Correo electrónico',
+			emailPlaceholder: 'Correo electrónico',
+			subscribe: 'Suscribirse',
+			logoHref: '/es/',
+			menu: 'Menú',
+			navLabel: 'Principal',
+			social: 'Redes sociales',
+			switchLabel: 'English',
+			switchLang: 'en',
+			switchHref: englishHref,
+			cta: '¿Cuánto vale mi propiedad?',
+			ctaHref: BOV,
+			ok: '¡Suscrito!',
+			fail: 'Algo salió mal. Revise su correo e intente de nuevo.',
+		}
+	: {
+			utility: 'Get LA multifamily market insights in your inbox.',
+			emailLabel: 'Email address',
+			emailPlaceholder: 'Email address',
+			subscribe: 'Subscribe',
+			logoHref: '/',
+			menu: 'Menu',
+			navLabel: 'Primary',
+			social: 'Social media',
+			switchLabel: 'Español',
+			switchLang: 'es',
+			switchHref: '/es/',
+			cta: "What's My Property Worth?",
+			ctaHref: '/property-value/',
+			ok: 'Subscribed!',
+			fail: 'Something went wrong.',
+		};
+
+const navGroups = es ? navGroupsEs : [
 	{
 		label: 'About',
 		links: [
@@ -36,37 +126,39 @@ const navGroups = [
 	},
 ];
 
-const simpleLinks = [
-	{ href: '/insights/', label: 'Insights' },
-	{ href: '/faqs/', label: 'FAQs' },
-	{ href: '/contact/', label: 'Contact' },
-];
+const simpleLinks = es
+	? simpleLinksEs
+	: [
+			{ href: '/insights/', label: 'Insights' },
+			{ href: '/faqs/', label: 'FAQs' },
+			{ href: '/contact/', label: 'Contact' },
+		];
 ---
 
 <div class="utility-bar">
 	<div class="container utility-bar__inner">
-		<p class="utility-bar__text">Get LA multifamily market insights in your inbox.</p>
+		<p class="utility-bar__text">{text.utility}</p>
 		<form class="utility-bar__form" id="newsletter-form">
-			<label for="newsletter-email" class="visually-hidden">Email address</label>
-			<input id="newsletter-email" type="email" name="email" placeholder="Email address" required />
-			<button type="submit" class="btn btn-gold utility-bar__btn">Subscribe</button>
-			<span id="newsletter-status" role="status"></span>
+			<label for="newsletter-email" class="visually-hidden">{text.emailLabel}</label>
+			<input id="newsletter-email" type="email" name="email" placeholder={text.emailPlaceholder} required />
+			<button type="submit" class="btn btn-gold utility-bar__btn">{text.subscribe}</button>
+			<span id="newsletter-status" role="status" data-ok={text.ok} data-fail={text.fail}></span>
 		</form>
 	</div>
 </div>
 
 <header class="site-header">
 	<div class="container site-header__inner">
-		<a href="/" class="site-header__logo">
+		<a href={text.logoHref} class="site-header__logo">
 			<picture>
 				<source media="(min-width: 1240px)" srcset="/images/brand/hlg-eu-logo-light.svg" width="189" height="48" />
 				<img src="/images/brand/hlg-logo-light.svg" alt="Highlight Multifamily Group, Equity Union Commercial" width="81" height="48" />
 			</picture>
 		</a>
 
-		<nav class="main-nav" aria-label="Primary">
+		<nav class={es ? 'main-nav main-nav--es' : 'main-nav'} aria-label={text.navLabel}>
 			<button class="main-nav__toggle" id="nav-toggle" aria-expanded="false" aria-controls="main-nav-list">
-				<span class="visually-hidden">Menu</span>
+				<span class="visually-hidden">{text.menu}</span>
 				<span class="main-nav__toggle-bar"></span>
 				<span class="main-nav__toggle-bar"></span>
 				<span class="main-nav__toggle-bar"></span>
@@ -97,8 +189,8 @@ const simpleLinks = [
 		</nav>
 
 		<div class="site-header__actions">
-			<a href="/es/" class="site-header__lang" hreflang="es" lang="es">Español</a>
-			<ul class="social-icons" aria-label="Social media">
+			<a href={text.switchHref} class="site-header__lang" hreflang={text.switchLang} lang={text.switchLang}>{text.switchLabel}</a>
+			<ul class="social-icons" aria-label={text.social}>
 				{site.social.linkedin && (
 					<li>
 						<a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
@@ -121,7 +213,7 @@ const simpleLinks = [
 					</li>
 				)}
 			</ul>
-			<a href="/property-value/" class="btn btn-navy site-header__cta">What's My Property Worth?</a>
+			<a href={text.ctaHref} class="btn btn-navy site-header__cta">{text.cta}</a>
 		</div>
 	</div>
 </header>
@@ -254,6 +346,11 @@ const simpleLinks = [
 	.main-nav__group:focus-within .main-nav__submenu {
 		opacity: 1;
 		pointer-events: auto;
+	}
+
+	/* Spanish labels are longer, so the dropdowns are wider and "(en inglés)" stays on one line. */
+	.main-nav--es .main-nav__submenu {
+		min-width: 300px;
 	}
 
 	.main-nav__submenu {
@@ -453,10 +550,10 @@ const simpleLinks = [
 				body: JSON.stringify({ email: emailInput.value }),
 			});
 			const result = await res.json();
-			if (status) status.textContent = res.ok ? 'Subscribed!' : (result.error ?? 'Something went wrong.');
+			if (status) status.textContent = res.ok ? (status.dataset.ok ?? 'Subscribed!') : status.dataset.fail && document.documentElement.lang === 'es' ? status.dataset.fail : (result.error ?? status.dataset.fail ?? 'Something went wrong.');
 			if (res.ok) newsletterForm.reset();
 		} catch {
-			if (status) status.textContent = 'Something went wrong.';
+			if (status) status.textContent = status.dataset.fail ?? 'Something went wrong.';
 		} finally {
 			if (button) button.disabled = false;
 		}

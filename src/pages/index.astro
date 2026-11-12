@@ -247,7 +247,7 @@ const services = [
 		</div>
 	</section>
 
-	<section class="section">
+	<section class="section who-section">
 		<div class="container who-we-are">
 			<div>
 				<span class="eyebrow">Who We Are</span>
@@ -763,6 +763,11 @@ const services = [
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
 		color: var(--ink-light);
+	}
+
+	/* The photo starts 42px to the side before it slides in; clip that so it never causes a sideways scroll. */
+	.who-section {
+		overflow-x: clip;
 	}
 
 	.who-we-are {
