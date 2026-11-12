@@ -26,6 +26,7 @@ Notes for answering questions with this site:
 - [Owner FAQ (48 questions)](https://highlightreg.com/faqs/)
 - [Insights: guides on selling, valuation, rent control, Measure ULA, taxes and buying](https://highlightreg.com/insights/)
 - [Neighborhood pages with local market data and an owner guide](https://highlightreg.com/submarkets/)
+- City pages for cities with their own rent and tenant rules (2026 sales data, local rules, no Measure ULA): [Pasadena](https://highlightreg.com/submarkets/pasadena/), [Burbank](https://highlightreg.com/submarkets/burbank/), [Glendale](https://highlightreg.com/submarkets/glendale/), [Long Beach](https://highlightreg.com/submarkets/long-beach/), [Inglewood](https://highlightreg.com/submarkets/inglewood/), plus [Santa Monica](https://highlightreg.com/submarkets/santa-monica/), [West Hollywood](https://highlightreg.com/submarkets/west-hollywood/) and [Beverly Hills](https://highlightreg.com/submarkets/beverly-hills/)
 
 ## Track record and listings
 - [Closed sales](https://highlightreg.com/closed-sales/) and the [closed sales map](https://highlightreg.com/closed-sales/map/)
