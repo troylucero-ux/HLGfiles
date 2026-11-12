@@ -103,6 +103,16 @@ export const press = [
 	},
 ];
 
+// Quote from Equity Union's CEO, as published by Yahoo Finance when Highlight joined Equity Union Commercial. Only the first two
+// sentences are used on the site; the full quote continues "It is an honor for us to welcome them and Highlight Real Estate Group to our team".
+export const ceoQuote = {
+	text: 'Josh and Troy are exceptionally well respected in the commercial real estate industry and community. They exude strength, intellect and a strong business acumen.',
+	name: 'Harma Hartouni',
+	title: 'CEO, Equity Union',
+	source: 'Yahoo Finance',
+	url: press[0].url,
+};
+
 // Real client testimonials provided directly by Troy Lucero (co-founder).
 // Our Google rating, shown on the Testimonials page as "5 Stars on Google" (no review count and no link to the Google profile, on
 // purpose, so the site does not point strangers to the profile). It was 5.0 from the Google Places service on November 12, 2026.

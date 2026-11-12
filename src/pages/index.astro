@@ -5,7 +5,7 @@ import ListingsBar from '../components/ListingsBar.astro';
 import { site } from '../data/site';
 import { closings } from '../data/closings';
 import { submarkets } from '../data/submarkets';
-import { testimonials, press } from '../data/site';
+import { testimonials, press, ceoQuote } from '../data/site';
 import fs from 'node:fs';
 import { formatPrice } from '../lib/format';
 import { MARKET_REPORT_OCT_2026 as MU } from '../data/marketReportOct2026';
@@ -406,6 +406,15 @@ const services = [
 				<div class="container">
 					<span class="eyebrow">In the News</span>
 					<h2>Our Deals Make Headlines</h2>
+					<figure class="ceo-quote">
+						<blockquote>&ldquo;{ceoQuote.text}&rdquo;</blockquote>
+						<figcaption>
+							<strong>{ceoQuote.name}</strong>, {ceoQuote.title}
+							<span class="ceo-quote__via">
+								as quoted by <a href={ceoQuote.url} target="_blank" rel="noopener noreferrer">{ceoQuote.source}</a>
+							</span>
+						</figcaption>
+					</figure>
 					<div class="press-strip">
 						{press.map((p) => (
 							<a href={p.url} target="_blank" rel="noopener noreferrer" class={`press-logo press-logo--${p.name.toLowerCase().replace(/\s+/g, '-')}`}>
@@ -1124,6 +1133,40 @@ const services = [
 		text-align: center;
 	}
 
+	.ceo-quote {
+		max-width: 46rem;
+		margin: 2rem auto 0;
+		padding-top: 1.75rem;
+		border-top: 1px solid var(--gold);
+	}
+
+	.ceo-quote blockquote {
+		margin: 0 0 1rem;
+		font-family: var(--font-serif);
+		font-size: 1.45rem;
+		font-style: italic;
+		font-weight: 400;
+		line-height: 1.5;
+		color: var(--navy-dark);
+	}
+
+	.ceo-quote figcaption {
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	.ceo-quote figcaption strong {
+		color: var(--navy-dark);
+	}
+
+	.ceo-quote__via {
+		display: block;
+		margin-top: 0.2rem;
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
 	.press-strip {
 		display: flex;
 		flex-wrap: wrap;
@@ -1537,6 +1580,7 @@ const services = [
 			'.submarket-more',
 			'.insight-grid > *',
 			'.testimonial-grid > *',
+			'.ceo-quote',
 			'.press-strip',
 			'.strategy-grid > *',
 			'main .section > .container > .eyebrow',
