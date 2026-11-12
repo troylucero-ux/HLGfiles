@@ -15,6 +15,8 @@ import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
 import { listings } from '../../data/listings';
 import { posts } from '../../data/posts';
+import CityGuide from '../../components/CityGuide.astro';
+import { cityGuides } from '../../data/cityGuides';
 import { formatPrice, formatPriceFull } from '../../lib/format';
 import { SALES_STATS, AGE_GROUP_LABELS, VALUATION_DATA_AS_OF, MIN_PRICE_COMPS_PAGE, MIN_CAP_RATE_COMPS, type AgeGroup } from '../../data/valuationAssumptions';
 
@@ -32,6 +34,8 @@ const relatedListings = listings.filter((l) => l.submarket === sm.slug && l.stat
 const isSantaMonica = sm.city === 'santa-monica';
 const isWestHollywood = sm.city === 'west-hollywood';
 const isBeverlyHills = sm.city === 'beverly-hills';
+// Pasadena, Burbank, Glendale, Long Beach, and Inglewood share one data-driven guide (src/data/cityGuides.ts).
+const cityGuide = cityGuides[sm.slug];
 // Separate cities: the LA Rent Stabilization Ordinance and Measure ULA don't apply there.
 const isOwnCity = Boolean(sm.city);
 
@@ -55,7 +59,9 @@ const salesGroups = (['rso', 'post1978'] as AgeGroup[]).map((group) => {
 	const cap = stats?.capRate && stats.capRate.compCount >= MIN_CAP_RATE_COMPS ? stats.capRate : null;
 	const noPriceNote = `Fewer than ${MIN_PRICE_COMPS_PAGE} ${sm.name} sales in this category`;
 	return {
-		title: isWestHollywood
+		title: cityGuide
+			? cityGuide.ageLabels[group]
+			: isWestHollywood
 			? { rso: 'Built Before 1979 (WeHo Rent Control)', post1978: 'Built 1979 or Later' }[group]
 				: isBeverlyHills
 					? { rso: 'Built Before 1978', post1978: 'Built 1978 or Later' }[group]
@@ -116,7 +122,9 @@ faqs.push({
 
 faqs.push({
 	q: `Does rent control apply to apartment buildings in ${shortName}?`,
-	a: isWestHollywood
+	a: cityGuide
+		? cityGuide.rentFaq
+		: isWestHollywood
 		? 'Yes, under West Hollywood’s own Rent Stabilization Ordinance, not the City of Los Angeles rules. Buildings with a certificate of occupancy issued before July 1, 1979 are generally rent-controlled: rent can rise once a year by the city’s Annual General Adjustment, and tenants can only be evicted for reasons the ordinance allows. Newer buildings have no city rent cap but are still covered by West Hollywood’s eviction protections. Confirm your building’s status with the city or an attorney before you price or sell.'
 			: isBeverlyHills
 				? 'Yes, under Beverly Hills’ own Rent Stabilization Ordinance, not the City of Los Angeles rules. It is split into two chapters: Chapter 5 for older units where the tenant’s initial rent was $600 or less, and Chapter 6 for all other covered units. Each has its own yearly increase, set by the city. Units the ordinance does not cover may still fall under the statewide AB 1482 cap. Confirm your building’s status with the City of Beverly Hills before you price or sell.'
@@ -250,6 +258,8 @@ if (sm.slug === 'mid-wilshire') {
 // Neighborhood-specific questions (from src/data/neighborhoodLocal.ts), for neighborhoods that have a local section.
 const local = neighborhoodLocal[sm.slug];
 if (local?.faqs) faqs.push(...local.faqs);
+// City-specific questions (its own rent rules, Measure ULA not applying, registry or relocation rules).
+if (cityGuide) faqs.push(...cityGuide.faqs);
 
 if (closedHere.length > 0) {
 	const top = closedHere.slice(0, 3);
@@ -302,8 +312,13 @@ const nearbyMap: Record<string, string[]> = {
 	'west-hollywood': ['mid-wilshire', 'santa-monica', 'brentwood', 'east-hollywood', 'beverly-hills'],
 	'beverly-hills': ['west-hollywood', 'mid-wilshire', 'west-la'],
 	'west-la': ['brentwood', 'santa-monica', 'beverly-hills'],
-	'north-hollywood': ['van-nuys'],
+	'north-hollywood': ['van-nuys', 'burbank'],
 	'van-nuys': ['north-hollywood'],
+	pasadena: ['glendale', 'burbank'],
+	burbank: ['glendale', 'north-hollywood', 'pasadena'],
+	glendale: ['burbank', 'pasadena', 'east-hollywood'],
+	'long-beach': ['inglewood', 'south-la'],
+	inglewood: ['south-la', 'long-beach', 'west-la'],
 };
 // Seller guides linked from every neighborhood page. Measure ULA and the LA rent control rules apply
 // to the City of Los Angeles only, so Santa Monica and West Hollywood (separate cities) get the general ones.
@@ -393,7 +408,9 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 			<span class="eyebrow">2026 Sales Data</span>
 			<h2>{sm.name} Multifamily Sales So Far This Year</h2>
 			<p class="sales-data__intro">
-				{isWestHollywood
+				{cityGuide
+					? cityGuide.salesIntro
+					: isWestHollywood
 					? "Buildings first occupied before July 1, 1979 fall under West Hollywood's own rent control law and trade differently than newer buildings, so we break them out separately."
 					: isSantaMonica
 						? "Buildings built before 1978 are generally under rent control and trade differently than newer buildings, so we break them out separately."
@@ -425,6 +442,7 @@ const nearby = (nearbyMap[sm.slug] ?? []).map((slug) => submarkets.find((x) => x
 
 	{isWestHollywood && <WestHollywoodGuide />}
 	{isBeverlyHills && <BeverlyHillsGuide />}
+	{cityGuide && <CityGuide guide={cityGuide} />}
 	{
 		isSantaMonica && (
 			<SantaMonicaGuide>

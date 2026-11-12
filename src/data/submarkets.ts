@@ -18,7 +18,7 @@ export type Submarket = {
 	overview: string;
 	// Separate cities with their own rent control and transfer taxes. Omitted means the City of Los
 	// Angeles, where the LA Rent Stabilization Ordinance and Measure ULA apply.
-	city?: 'santa-monica' | 'west-hollywood' | 'beverly-hills';
+	city?: 'santa-monica' | 'west-hollywood' | 'beverly-hills' | 'pasadena' | 'burbank' | 'glendale' | 'long-beach' | 'inglewood';
 	metaDescription?: string;
 	// Shows the City of LA owner's guide (rent control, Measure ULA by building size, pre-listing moves).
 	laOwnerGuide?: boolean;
@@ -522,5 +522,132 @@ export const submarkets: Submarket[] = [
 			credit: 'DanielMichaelPerry, CC0',
 			creditUrl: 'https://commons.wikimedia.org/wiki/File:Ocean_Front_Walk_Venice_Beach.jpg',
 		},
+	},
+	// Added November 12, 2026: five separate cities outside the City of Los Angeles (so no LA Rent Stabilization Ordinance and no Measure ULA).
+	// Their rules, sources, and FAQs live in src/data/cityGuides.ts. Photos are from Wikimedia Commons (credit lines show under the cards on /submarkets/).
+	{
+		slug: 'pasadena',
+		cardPhoto: {
+			src: '/images/submarkets/pasadena.webp',
+			alt: 'Pasadena City Hall, a domed Beaux-Arts building with a tall central tower',
+			caption: 'Pasadena City Hall',
+			credit: 'Oleknutlee, public domain',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Pasadena_City_Hall_2.jpg',
+		},
+		name: 'Pasadena',
+		region: 'San Gabriel Valley',
+		blurb: 'Its own city with voter-approved rent stabilization for buildings built before 1995, a yearly rental registry, and no city transfer tax or Measure ULA.',
+		transit: [
+			'Metro A Line light rail: six Pasadena stations (Sierra Madre Villa, Allen, Lake, Memorial Park, Del Mar, and Fillmore)',
+			'Pasadena ARTS and Metro bus service',
+			'Close to the 210 and 134 freeways',
+		],
+		retail: ['Old Pasadena and the Colorado Blvd corridor', 'South Lake Avenue shopping district', 'The Playhouse District and Paseo Colorado'],
+		employers: [
+			'Caltech',
+			'Huntington Hospital',
+			'Pasadena City College and Art Center College of Design',
+			'Jet Propulsion Laboratory (adjacent, in La Cañada Flintridge) and the City of Pasadena',
+		],
+		overview:
+			'Pasadena is its own city, with its own voter-approved rent stabilization for buildings built before February 1, 1995, a yearly rental registry and fee, and no city transfer tax or Measure ULA. Its older apartment buildings sit near Old Pasadena, Lake Avenue, Caltech,, and a six-station Metro A Line corridor.',
+		city: 'pasadena',
+		metaDescription: 'Pasadena multifamily broker: 2026 apartment prices and cap rates, Pasadena rent stabilization and registry explained, no ULA, and a free valuation.',
+	},
+	{
+		slug: 'burbank',
+		cardPhoto: {
+			src: '/images/submarkets/burbank.webp',
+			alt: 'The Warner Bros. Studios water tower in Burbank against a blue sky',
+			caption: 'Warner Bros. Studios water tower, Burbank',
+			credit: 'Chris Yarzab, CC BY 2.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Warner_Bros._Studios_Water_Tower_2020.jpg',
+		},
+		name: 'Burbank',
+		region: 'San Fernando Valley',
+		blurb: 'Its own city with its own tenant protection ordinance, the state rent cap instead of local rent control, and no city transfer tax or Measure ULA.',
+		transit: [
+			'Metrolink and Amtrak service at the Hollywood Burbank Airport train stations',
+			'Burbank Bus and Metro bus service',
+			'Close to the 5 and 134 freeways',
+		],
+		retail: ['Downtown Burbank and San Fernando Blvd', 'Burbank Town Center', 'Magnolia Park'],
+		employers: ['The Walt Disney Company and Warner Bros. (Burbank studios)', 'Hollywood Burbank Airport', 'Providence Saint Joseph Medical Center', 'The City of Burbank and Burbank Unified School District'],
+		overview:
+			'Burbank is its own city, with no local rent cap (the state AB 1482 cap applies), its own Tenant Protection Ordinance, and no city transfer tax or Measure ULA. Apartment buildings here sit close to the studios, Downtown Burbank, and the airport, and they sell at higher prices per unit than most of the San Fernando Valley.',
+		city: 'burbank',
+		metaDescription: 'Burbank multifamily broker: 2026 apartment prices and cap rates, the Burbank Tenant Protection Ordinance explained, no ULA, and a free valuation.',
+	},
+	{
+		slug: 'glendale',
+		cardPhoto: {
+			src: '/images/submarkets/glendale.webp',
+			alt: 'The Alex Theatre marquee and tower on Brand Boulevard in Glendale',
+			caption: 'Alex Theatre, Brand Boulevard, Glendale',
+			credit: 'Tony the Marine, CC BY-SA 3.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Glendale,_Ca.-Alex_Theatre-1925-1.jpg',
+		},
+		name: 'Glendale',
+		region: 'Verdugo Valley',
+		blurb: 'Its own city with a Rental Rights Program (just cause and relocation help) instead of rent control, and no city transfer tax or Measure ULA.',
+		transit: [
+			'Glendale Transportation Center with Metrolink and Amtrak service',
+			'Beeline bus service and Metro bus lines',
+			'Close to the 5, 134, and 2 freeways',
+		],
+		retail: ['The Americana at Brand', 'Glendale Galleria', 'Brand Boulevard and Downtown Glendale'],
+		employers: ['DreamWorks Animation and Walt Disney Imagineering', 'Adventist Health Glendale and Glendale Memorial Hospital', 'Glendale Community College', 'The City of Glendale and Glendale Unified School District'],
+		overview:
+			'Glendale is its own city. It has no local rent cap (the state AB 1482 cap applies) but does run its own Rental Rights Program, with just cause eviction rules and relocation help, and it has no city transfer tax or Measure ULA. Its apartment buildings sit between Downtown Glendale, Brand Boulevard, and the Verdugo foothills.',
+		city: 'glendale',
+		metaDescription: 'Glendale multifamily broker: 2026 apartment prices and cap rates, the Glendale Rental Rights Program explained, no ULA, and a free valuation.',
+	},
+	{
+		slug: 'long-beach',
+		cardPhoto: {
+			src: '/images/submarkets/long-beach.webp',
+			alt: 'The Long Beach skyline across the water at dusk',
+			caption: 'Long Beach skyline at dusk',
+			credit: 'JD Lasica, CC BY 2.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Long-Beach-skyline-at-dusk_(21611595655).jpg',
+		},
+		name: 'Long Beach',
+		region: 'Long Beach and South Bay',
+		blurb: 'The busiest apartment sales market in our data outside the City of LA, with a local just cause ordinance, no local rent cap, and no city transfer tax or Measure ULA.',
+		transit: [
+			'Metro A Line light rail, with its southern end in Downtown Long Beach',
+			'Long Beach Transit bus network',
+			'Long Beach Airport and the 405, 710, and 91 freeways',
+		],
+		retail: ['Downtown Long Beach, The Pike, and Shoreline Village', 'Belmont Shore and Second Street', 'Fourth Street Retro Row'],
+		employers: ['The Port of Long Beach', 'California State University, Long Beach', 'MemorialCare Long Beach Medical Center', 'Long Beach City College and Long Beach Unified School District'],
+		overview:
+			'Long Beach is its own city and, in our 2026 data, its busiest apartment sales market outside the City of Los Angeles. It has no local rent cap (the state AB 1482 cap applies), its own just cause and relocation ordinance, and no city transfer tax or Measure ULA. Most of the buildings that sold in 2026 were built before 1978, which is where much of the pricing story starts.',
+		city: 'long-beach',
+		metaDescription: 'Long Beach multifamily broker: 2026 apartment prices and cap rates, the Long Beach just cause ordinance explained, no ULA, and a free valuation.',
+	},
+	{
+		slug: 'inglewood',
+		cardPhoto: {
+			src: '/images/submarkets/inglewood.webp',
+			alt: 'The Intuit Dome arena in Inglewood lit in blue at night',
+			caption: 'Intuit Dome, Inglewood',
+			credit: 'Haruhi8, CC BY 4.0',
+			creditUrl: 'https://commons.wikimedia.org/wiki/File:Intuit_Dome_Fa%C3%A7ade.jpg',
+		},
+		name: 'Inglewood',
+		region: 'South Bay and Westside',
+		blurb: 'Its own city with its own rent stabilization program, a yearly registry, and no city transfer tax or Measure ULA, next to SoFi Stadium, the Intuit Dome, and LAX.',
+		transit: [
+			'Metro K Line (Crenshaw/LAX): Downtown Inglewood and Fairview Heights stations',
+			'Metro and Inglewood bus service',
+			'Close to the 405 and 105 freeways and LAX',
+		],
+		retail: ['Downtown Inglewood and Market Street', 'The Hollywood Park district around SoFi Stadium', 'The Crenshaw and Century corridors'],
+		employers: ['SoFi Stadium, the Intuit Dome, and the Kia Forum', 'Centinela Hospital Medical Center', 'LAX and aviation-related employers (adjacent)', 'The City of Inglewood and Inglewood Unified School District'],
+		overview:
+			'Inglewood is its own city, with its own rent stabilization program and yearly rental registry, and no city transfer tax or Measure ULA. It sits beside LAX and the SoFi Stadium and Intuit Dome district, has a Metro K Line station downtown, and trades at some of the highest cap rates of the five cities in this group.',
+		city: 'inglewood',
+		metaDescription: 'Inglewood multifamily broker: 2026 apartment prices and cap rates, Inglewood rent stabilization and registry explained, no ULA, and a free valuation.',
 	},
 ];

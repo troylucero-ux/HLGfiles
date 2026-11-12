@@ -338,6 +338,70 @@ export const SALES_STATS: Record<string, Record<AgeGroup, GroupStats>> = {
 			capRate: null,
 		},
 	},
+	// Added November 12, 2026 from the same merged export and rules (1,369 sales after the rules). Each group is the sales
+	// CoStar lists under that city as the Property City (so Pasadena does not include South Pasadena or Altadena): Pasadena,
+	// Burbank, Glendale, Long Beach, and Inglewood. These are separate cities, so the LA Rent Stabilization Ordinance and Measure ULA do not
+	// apply; "older" is still built before 1978 so the figures line up with the other pages. The export holds buildings of 5 or more units.
+	'pasadena': {
+		rso: {
+			pricePerUnit: { median: 266750, compCount: 28 },
+			pricePerSf: { median: 354, compCount: 28 },
+			capRate: { low: 0.0497, high: 0.0603, compCount: 21 },
+		},
+		post1978: {
+			pricePerUnit: { median: 440000, compCount: 1 },
+			pricePerSf: { median: 364, compCount: 1 },
+			capRate: { low: 0.0522, high: 0.0522, compCount: 1 },
+		},
+	},
+	'burbank': {
+		rso: {
+			pricePerUnit: { median: 326562, compCount: 15 },
+			pricePerSf: { median: 395, compCount: 15 },
+			capRate: { low: 0.0512, high: 0.0607, compCount: 11 },
+		},
+		post1978: {
+			pricePerUnit: { median: 446188, compCount: 6 },
+			pricePerSf: { median: 492, compCount: 6 },
+			capRate: { low: 0.0500, high: 0.0586, compCount: 5 },
+		},
+	},
+	'glendale': {
+		rso: {
+			pricePerUnit: { median: 266167, compCount: 34 },
+			pricePerSf: { median: 334, compCount: 34 },
+			capRate: { low: 0.0493, high: 0.0598, compCount: 24 },
+		},
+		post1978: {
+			pricePerUnit: { median: 410000, compCount: 14 },
+			pricePerSf: { median: 338, compCount: 14 },
+			capRate: { low: 0.0456, high: 0.0580, compCount: 11 },
+		},
+	},
+	'long-beach': {
+		rso: {
+			pricePerUnit: { median: 221167, compCount: 101 },
+			pricePerSf: { median: 334, compCount: 101 },
+			capRate: { low: 0.0536, high: 0.0682, compCount: 74 },
+		},
+		post1978: {
+			pricePerUnit: { median: 287500, compCount: 16 },
+			pricePerSf: { median: 363, compCount: 16 },
+			capRate: { low: 0.0472, high: 0.0632, compCount: 11 },
+		},
+	},
+	'inglewood': {
+		rso: {
+			pricePerUnit: { median: 235417, compCount: 36 },
+			pricePerSf: { median: 269, compCount: 36 },
+			capRate: { low: 0.0597, high: 0.0700, compCount: 25 },
+		},
+		post1978: {
+			pricePerUnit: { median: 270833, compCount: 3 },
+			pricePerSf: { median: 280, compCount: 3 },
+			capRate: { low: 0.0568, high: 0.0630, compCount: 3 },
+		},
+	},
 };
 
 // Median price per unit for older (built before 1978) buildings inside the West LA group, by area, from the same

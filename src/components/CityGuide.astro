@@ -1,0 +1,309 @@
+---
+// Owner's guide shown on the Pasadena, Burbank, Glendale, Long Beach, and Inglewood pages: how that city's own rules
+// differ from the City of Los Angeles. All content, sources, and the date they were checked live in src/data/cityGuides.ts.
+import type { CityGuide } from '../data/cityGuides';
+
+interface Props {
+	guide: CityGuide;
+}
+
+const { guide } = Astro.props;
+
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+// Transfer tax on the same price in the City of LA and in a city with only the county tax ($1.10 per $1,000).
+// City of LA: $4.50 per $1,000 city tax, plus Measure ULA (4% of the whole price above $5.4 million, 5.5% at $10.9 million and up).
+const laTax = (price: number) => {
+	const county = (price / 1000) * 1.1;
+	const city = (price / 1000) * 4.5;
+	const ula = price > 5_400_000 ? price * (price >= 10_900_000 ? 0.055 : 0.04) : 0;
+	return { county, city, ula, total: county + city + ula };
+};
+const scenarios = [3_000_000, 6_000_000, 12_000_000].map((price) => {
+	const la = laTax(price);
+	const here = (price / 1000) * 1.1;
+	return { price, la: la.total, here, diff: la.total - here };
+});
+---
+
+<section class="section cg">
+	<div class="container cg__narrow">
+		<span class="eyebrow">{guide.eyebrow}</span>
+		<h2>{guide.heading}</h2>
+		{guide.intro.map((p) => <p>{p}</p>)}
+	</div>
+
+	<div class="container cg__narrow">
+		<figure class="cg-compare" aria-labelledby={`cg-compare-${guide.slug}`}>
+			<figcaption id={`cg-compare-${guide.slug}`} class="cg__figcap">Same kind of building, two sets of rules</figcaption>
+			<div class="cg-compare__grid" role="table" aria-describedby={`cg-compare-${guide.slug}`}>
+				<div class="cg-compare__row cg-compare__row--head" role="row">
+					<span role="columnheader"></span>
+					<span role="columnheader">City of Los Angeles</span>
+					<span role="columnheader" class="cg-compare__here">{guide.shortName}</span>
+				</div>
+				{
+					guide.compare.map((row) => (
+						<div class="cg-compare__row" role="row">
+							<span role="rowheader">{row.topic}</span>
+							<span role="cell">{row.la}</span>
+							<span role="cell" class="cg-compare__here" data-label={guide.shortName}>{row.city}</span>
+						</div>
+					))
+				}
+			</div>
+		</figure>
+	</div>
+
+	<div class="container cg__narrow">
+		<h3>Transfer taxes on the same sale</h3>
+		<p>
+			{guide.shortName} has no city transfer tax of its own, and Measure ULA applies only inside the City of Los Angeles, so a seller here pays only LA County’s
+			$1.10 per $1,000. In the City of LA the city adds $4.50 per $1,000, and Measure ULA adds 4% of the whole price above $5.4 million (5.5% at $10.9 million and up).
+		</p>
+		<div class="cg-tax" role="table" aria-label={`Transfer tax, City of Los Angeles versus ${guide.shortName}`}>
+			<div class="cg-tax__row cg-tax__row--head" role="row">
+				<span role="columnheader">Sale price</span>
+				<span role="columnheader">City of Los Angeles</span>
+				<span role="columnheader" class="cg-compare__here">{guide.shortName}</span>
+				<span role="columnheader">Difference</span>
+			</div>
+			{
+				scenarios.map((s) => (
+					<div class="cg-tax__row" role="row">
+						<span role="rowheader">{money(s.price)}</span>
+						<span role="cell" data-label="City of Los Angeles">{money(s.la)}</span>
+						<span role="cell" data-label={guide.shortName} class="cg-compare__here">{money(s.here)}</span>
+						<span role="cell" data-label="Difference">{money(s.diff)}</span>
+					</div>
+				))
+			}
+		</div>
+		<p class="cg__small">
+			Combined city, county, and Measure ULA transfer tax, before escrow and other costs. Use our <a href="/measure-ula-calculator/">Measure ULA calculator</a> for your own price.
+		</p>
+	</div>
+
+	{
+		guide.sections.map((s) => (
+			<div class="container cg__narrow">
+				<h3>{s.heading}</h3>
+				{s.paragraphs.map((p) => <p>{p}</p>)}
+				{s.bullets && <ul>{s.bullets.map((b) => <li>{b}</li>)}</ul>}
+			</div>
+		))
+	}
+
+	<div class="container cg__narrow">
+		<p class="cg__contact"><strong>City contact:</strong> {guide.contact}</p>
+		<a href="/contact/?intent=bov" class="btn btn-gold">Get a Free Broker Opinion of Value in {guide.shortName}</a>
+		<details class="cg__sources">
+			<summary>Sources and when we checked them ({guide.checked})</summary>
+			<ul>
+				{guide.sources.map((s) => <li>{s}</li>)}
+			</ul>
+			<p>City rules change. Confirm anything that affects a notice, a registration, or a price with the city before you rely on it; this page is general information, not legal advice.</p>
+		</details>
+	</div>
+</section>
+
+<style>
+	.cg {
+		background: var(--paper);
+	}
+
+	.cg__narrow {
+		max-width: 52rem;
+		margin-bottom: 2rem;
+	}
+
+	.cg h2 {
+		margin: 0.25rem 0 0.9rem;
+	}
+
+	.cg h3 {
+		margin: 0 0 0.6rem;
+		color: var(--navy-dark);
+	}
+
+	.cg p {
+		line-height: 1.7;
+	}
+
+	.cg ul {
+		margin: 0.5rem 0 0;
+		padding-left: 1.25rem;
+		display: grid;
+		gap: 0.45rem;
+		line-height: 1.6;
+	}
+
+	.cg__figcap {
+		font-weight: 700;
+		color: var(--navy-dark);
+		margin-bottom: 0.75rem;
+	}
+
+	.cg__small {
+		font-size: 0.85rem;
+		color: var(--ink-light);
+		margin-top: 0.6rem;
+	}
+
+	/* Rules comparison */
+	.cg-compare {
+		margin: 0;
+	}
+
+	.cg-compare__grid {
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		overflow: hidden;
+		background: #fff;
+	}
+
+	.cg-compare__row {
+		display: grid;
+		grid-template-columns: 0.8fr 1.1fr 1.3fr;
+		gap: 1rem;
+		padding: 0.8rem 1rem;
+		border-top: 1px solid var(--border);
+		font-size: 0.93rem;
+		line-height: 1.5;
+	}
+
+	.cg-compare__row:first-child {
+		border-top: 0;
+	}
+
+	.cg-compare__row--head {
+		background: var(--navy-tint);
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	.cg-compare__row [role='rowheader'] {
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	.cg-compare__here {
+		background: rgb(20 70 122 / 0.05);
+	}
+
+	.cg-compare__row > .cg-compare__here {
+		margin: -0.8rem 0;
+		padding: 0.8rem 0.75rem;
+	}
+
+	/* Transfer tax table */
+	.cg-tax {
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		overflow: hidden;
+		background: #fff;
+		margin-top: 0.75rem;
+	}
+
+	.cg-tax__row {
+		display: grid;
+		grid-template-columns: 1fr 1.2fr 1fr 1fr;
+		gap: 0.75rem;
+		padding: 0.7rem 1rem;
+		border-top: 1px solid var(--border);
+		font-size: 0.95rem;
+	}
+
+	.cg-tax__row:first-child {
+		border-top: 0;
+	}
+
+	.cg-tax__row--head {
+		background: var(--navy-tint);
+		font-weight: 700;
+		color: var(--navy-dark);
+		font-size: 0.85rem;
+	}
+
+	.cg-tax__row [role='rowheader'] {
+		font-weight: 700;
+	}
+
+	.cg-tax__row > .cg-compare__here {
+		margin: -0.7rem 0;
+		padding: 0.7rem 0.6rem;
+	}
+
+	.cg__contact {
+		padding: 0.9rem 1rem;
+		background: var(--paper-alt);
+		border-left: 3px solid var(--gold);
+		border-radius: 4px;
+		margin-bottom: 1.25rem;
+	}
+
+	.cg__sources {
+		margin-top: 1.5rem;
+		font-size: 0.88rem;
+		color: var(--ink-light);
+	}
+
+	.cg__sources summary {
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--navy);
+	}
+
+	@media (max-width: 720px) {
+		.cg-compare__row--head {
+			display: none;
+		}
+
+		.cg-compare__row {
+			grid-template-columns: 1fr;
+			gap: 0.35rem;
+		}
+
+		.cg-compare__row > .cg-compare__here {
+			margin: 0;
+			padding: 0.5rem 0.6rem;
+		}
+
+		.cg-compare__row [role='cell']:not(.cg-compare__here)::before {
+			content: 'City of Los Angeles: ';
+			font-weight: 700;
+			color: var(--navy-dark);
+		}
+
+		.cg-compare__row > .cg-compare__here[data-label]::before {
+			content: attr(data-label) ': ';
+			font-weight: 700;
+			color: var(--navy-dark);
+		}
+
+		.cg-tax__row--head {
+			display: none;
+		}
+
+		.cg-tax__row {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.cg-tax__row [role='rowheader'] {
+			grid-column: 1 / -1;
+		}
+
+		.cg-tax__row [role='cell']::before {
+			content: attr(data-label) ': ';
+			display: block;
+			font-size: 0.75rem;
+			color: var(--ink-light);
+			font-weight: 600;
+		}
+
+		.cg-tax__row > .cg-compare__here {
+			margin: 0;
+			padding: 0.4rem 0.5rem;
+		}
+	}
+</style>
