@@ -6,14 +6,19 @@ import { site } from '../data/site';
 interface Props {
 	property: string; // listing slug, matched against worker/om-files.ts
 	propertyName: string;
+	// The listing page shows the form twice (in the page and in a pop-up opened from the top buttons), so field ids need a prefix and only
+	// one copy may carry the #offering-memorandum anchor. compact trims the left panel for the pop-up.
+	idPrefix?: string;
+	anchor?: boolean;
+	compact?: boolean;
 }
 
-const { property, propertyName } = Astro.props;
+const { property, propertyName, idPrefix = 'omg', anchor = true, compact = false } = Astro.props;
 const phoneHref = `tel:+1${site.phone.replace(/\D/g, '')}`;
 ---
 
 <div class="om-gate-wrap">
-<section class="om-gate" id="offering-memorandum" data-property={property}>
+<section class={compact ? 'om-gate om-gate--compact' : 'om-gate'} id={anchor ? 'offering-memorandum' : undefined} data-property={property}>
 	<div class="om-gate__intro">
 		<span class="om-gate__icon" aria-hidden="true">
 			<svg viewBox="0 0 24 24">
@@ -39,16 +44,16 @@ const phoneHref = `tel:+1${site.phone.replace(/\D/g, '')}`;
 		<form class="js-om-gate" novalidate>
 			<div class="om-gate__grid">
 				<div class="om-gate__field">
-					<label for="omg-name">Name</label>
-					<input id="omg-name" name="name" type="text" placeholder="Your name" autocomplete="name" required />
+					<label for={`${idPrefix}-name`}>Name</label>
+					<input id={`${idPrefix}-name`} name="name" type="text" placeholder="Your name" autocomplete="name" required />
 				</div>
 				<div class="om-gate__field">
-					<label for="omg-email">Email</label>
-					<input id="omg-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+					<label for={`${idPrefix}-email`}>Email</label>
+					<input id={`${idPrefix}-email`} name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
 				</div>
 				<div class="om-gate__field om-gate__wide">
-					<label for="omg-phone">Phone <span class="om-gate__opt">(optional)</span></label>
-					<input id="omg-phone" name="phone" type="tel" placeholder="(310) 555-0123" autocomplete="tel" />
+					<label for={`${idPrefix}-phone`}>Phone <span class="om-gate__opt">(optional)</span></label>
+					<input id={`${idPrefix}-phone`} name="phone" type="tel" placeholder="(310) 555-0123" autocomplete="tel" />
 				</div>
 			</div>
 			<label class="om-gate__consent">
@@ -435,6 +440,35 @@ const phoneHref = `tel:+1${site.phone.replace(/\D/g, '')}`;
 		stroke-width: 2;
 		stroke-linecap: round;
 		stroke-linejoin: round;
+	}
+
+	/* Pop-up version (opened from the buttons at the top of the listing page): heading and sub line only, then the form. */
+	.om-gate--compact .om-gate__icon,
+	.om-gate--compact .om-gate__perks,
+	.om-gate--compact .om-gate__call {
+		display: none;
+	}
+
+	.om-gate--compact .om-gate__intro {
+		padding: 1.25rem 3.5rem 1.25rem 1.5rem;
+	}
+
+	.om-gate--compact .om-gate__badge {
+		margin-bottom: 0.6rem;
+	}
+
+	.om-gate--compact .om-gate__intro h2 {
+		font-size: 1.35rem;
+		margin-bottom: 0.4rem;
+	}
+
+	.om-gate--compact .om-gate__sub {
+		margin: 0;
+		font-size: 0.92rem;
+	}
+
+	.om-gate--compact .om-gate__panel {
+		padding: 1.25rem 1.5rem 1.5rem;
 	}
 
 	/* Stack the two panels whenever the card itself is narrow, not just the screen. */

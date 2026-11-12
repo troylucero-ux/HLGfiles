@@ -153,7 +153,7 @@ const videoSchema = listing.youtubeId
 			</p>
 			<p class="lhero__credit">Presented by Highlight Multifamily Group | {site.brokerage}</p>
 			<div class="lhero__cta">
-				<a href={omLink} class="btn btn-light">{omLabel}</a>
+				<a href={omLink} class="btn btn-light" data-cta="listing-om-hero">{omLabel}</a>
 				<a href="#listing-team" class="btn btn-outline-light">Contact Listing Team</a>
 			</div>
 		</div>
@@ -162,7 +162,7 @@ const videoSchema = listing.youtubeId
 	<div class="ltop" id="ltop">
 		<div class="container ltop__inner">
 			<span class="ltop__addr">{listing.name}, {listing.city}, {listing.state} {listing.zip}</span>
-			<a href={omLink} class="ltop__btn">{omLabel.replace('Offering Memorandum', 'OM')}</a>
+			<a href={omLink} class="ltop__btn" data-cta="listing-om-bar">{omLabel.replace('Offering Memorandum', 'OM')}</a>
 		</div>
 	</div>
 
@@ -481,7 +481,7 @@ const videoSchema = listing.youtubeId
 
 	<div class="lbar" role="region" aria-label="Contact the listing team">
 		<a class="btn btn-outline" href={`tel:+1${site.phone.replace(/\D/g, '')}`}>Call</a>
-		<a class="btn btn-gold" href={omLink}>{hasOmGate ? 'Download OM' : 'Request OM'}</a>
+		<a class="btn btn-gold" href={omLink} data-cta="listing-om-mobile">{hasOmGate ? 'Download OM' : 'Request OM'}</a>
 	</div>
 
 	<dialog class="lview" aria-label="Photo viewer">
@@ -499,7 +499,36 @@ const videoSchema = listing.youtubeId
 		<p class="lview__cap"></p>
 		<div class="lview__strip" role="list"></div>
 	</dialog>
+
+	{
+		hasOmGate && (
+			<dialog class="omm" id="om-dialog" aria-label={omLabel}>
+				<button type="button" class="omm__close" aria-label="Close">&times;</button>
+				<OMGateForm property={listing.slug} propertyName={listing.name} idPrefix="omm" anchor={false} compact />
+			</dialog>
+		)
+	}
 </BaseLayout>
+
+<script>
+	// The Download Offering Memorandum buttons at the top of the page (hero, the bar that slides in on scroll, the phone bottom bar) open the form
+	// in a pop-up, so nobody has to scroll to the bottom of the page. Without JavaScript they still jump to the form at #offering-memorandum.
+	const omDialog = document.getElementById('om-dialog') as HTMLDialogElement | null;
+	if (omDialog && typeof omDialog.showModal === 'function') {
+		document.querySelectorAll<HTMLAnchorElement>('a[href="#offering-memorandum"]').forEach((a) => {
+			a.addEventListener('click', (e) => {
+				e.preventDefault();
+				omDialog.showModal();
+				omDialog.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
+			});
+		});
+		omDialog.querySelector('.omm__close')?.addEventListener('click', () => omDialog.close());
+		// A click on the dark area outside the card closes it.
+		omDialog.addEventListener('click', (e) => {
+			if (e.target === omDialog) omDialog.close();
+		});
+	}
+</script>
 
 <script>
 	// Slim address + "Download OM" bar that slides in under the site header once the hero has scrolled away.
@@ -1592,5 +1621,48 @@ const videoSchema = listing.youtubeId
 		:global(body) {
 			padding-bottom: 4.5rem;
 		}
+	}
+
+	/* Offering Memorandum pop-up */
+	.omm {
+		padding: 0;
+		border: 0;
+		background: transparent;
+		width: min(44rem, calc(100vw - 1.5rem));
+		max-width: none;
+		max-height: calc(100vh - 2rem);
+		overflow: visible;
+		color: inherit;
+	}
+
+	.omm::backdrop {
+		background: rgb(8 28 51 / 0.72);
+		backdrop-filter: blur(2px);
+	}
+
+	.omm__close {
+		position: absolute;
+		top: 0.6rem;
+		right: 0.6rem;
+		z-index: 2;
+		width: 2.4rem;
+		height: 2.4rem;
+		border: 1px solid rgb(255 255 255 / 0.35);
+		border-radius: 50%;
+		background: rgb(255 255 255 / 0.12);
+		color: #fff;
+		font-size: 1.6rem;
+		line-height: 1;
+		cursor: pointer;
+	}
+
+	.omm__close:hover {
+		background: rgb(255 255 255 / 0.25);
+	}
+
+	.omm > :global(.om-gate-wrap) {
+		max-height: calc(100vh - 2rem);
+		overflow: auto;
+		border-radius: 16px;
 	}
 </style>
