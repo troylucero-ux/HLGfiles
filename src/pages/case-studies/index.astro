@@ -1,6 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { caseStudies } from '../../data/caseStudies';
+import { closings } from '../../data/closings';
+
+// A case study without photos of its own shows the photo of the closed sale it describes.
+const photoFor = (cs: (typeof caseStudies)[number]) => cs.images?.[0] ?? closings.find((c) => c.slug === cs.closingSlug)?.images?.[0];
 
 const dealTypeLabels: Record<string, string> = {
 	'1031': '1031 Exchange',
@@ -40,8 +44,8 @@ const dealTypeLabels: Record<string, string> = {
 				{
 					caseStudies.map((cs) => (
 						<a href={`/case-studies/${cs.slug}/`} class="cs-card" data-deal-types={cs.dealType.join(',')}>
-							{cs.images?.[0] && (
-								<img class="cs-card__image" src={cs.images[0]} alt={`${cs.title}, ${cs.location}`} width="400" height="220" loading="lazy" />
+							{photoFor(cs) && (
+								<img class="cs-card__image" src={photoFor(cs)} alt={`${cs.title}, ${cs.location}`} width="400" height="220" loading="lazy" />
 							)}
 							<span class="cs-card__location">{cs.location}</span>
 							<h2>{cs.title}</h2>

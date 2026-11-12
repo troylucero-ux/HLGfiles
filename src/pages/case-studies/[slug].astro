@@ -19,6 +19,8 @@ export function getStaticPaths() {
 const { cs } = Astro.props;
 const closing = cs.closingSlug ? closings.find((c) => c.slug === cs.closingSlug) : null;
 const socialImage = cs.images?.[0] ?? closing?.images?.[0];
+// A case study without photos of its own shows the photo of the closed sale it describes.
+const photos = cs.images && cs.images.length > 0 ? cs.images : closing?.images?.slice(0, 1) ?? [];
 
 const dealTypeLabels: Record<string, string> = {
 	'1031': '1031 Exchange',
@@ -125,9 +127,9 @@ const articleSchema = {
 			</span>
 
 			{
-				cs.images && cs.images.length > 0 && (
-					<div class={`cs-detail__gallery ${cs.images.length > 1 ? 'cs-detail__gallery--multi' : ''}`}>
-						{cs.images.map((src) => (
+				photos.length > 0 && (
+					<div class={`cs-detail__gallery ${photos.length > 1 ? 'cs-detail__gallery--multi' : ''}`}>
+						{photos.map((src) => (
 							<img src={src} alt={`${cs.title}, ${cs.location}`} width="760" height="440" loading="lazy" />
 						))}
 					</div>
