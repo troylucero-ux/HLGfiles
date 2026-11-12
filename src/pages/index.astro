@@ -68,30 +68,60 @@ const insightSlugs = [
 ];
 const latestInsights = insightSlugs.map((slug) => posts.find((p) => p.slug === slug)).filter((p) => p !== undefined);
 
+// Line icons (24x24, drawn with a stroke) for the service cards.
+const serviceIcons: Record<string, string> = {
+	bov: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.6-.8-1.5-1.2-2.5-1.2-1.4 0-2.5.8-2.5 2s1 1.7 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-1.9-.4-2.5-1.2M12 6v2M12 16v2"/>',
+	sales: '<path d="M4 21V7l8-4 8 4v14"/><path d="M3 21h18"/><path d="M9.5 21v-5h5v5"/><path d="M8 10h2M14 10h2M8 13h2M14 13h2"/>',
+	exchange: '<path d="M4 8h14l-3-3"/><path d="M20 16H6l3 3"/>',
+	trust: '<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4"/><path d="M10 12h6M10 15h6M10 18h4"/>',
+	land: '<path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3z"/><path d="M9 4v13M15 7v13"/>',
+	nnn: '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+};
+
+// The Broker Opinion of Value card comes first and is the highlighted one: it is the main thing we want an owner to ask for.
 const services = [
+	{
+		title: 'Broker Opinion of Value',
+		body: 'A free, no-pressure BOV grounded in real closed comps, not guesswork.',
+		href: '/broker-opinion-of-value/',
+		cta: 'Get my free opinion',
+		icon: 'bov',
+		featured: true,
+	},
 	{
 		title: 'Multifamily Sales',
 		body: 'Full-cycle representation for apartment building sellers and buyers across the LA Metro Area, from pricing strategy through close of escrow.',
+		href: '/closed-sales/',
+		cta: 'See our closed sales',
+		icon: 'sales',
 	},
 	{
 		title: '1031 Exchanges',
 		body: 'Exchange strategy and execution for owners moving equity between multifamily assets, including cross-market and out-of-state replacement properties.',
+		href: '/1031-exchanges/',
+		cta: 'Learn more',
+		icon: 'exchange',
 	},
 	{
-		title: 'Trust & Estate / Probate Sales',
+		title: 'Trust & Probate Sales',
 		body: 'Calm, informed guidance for trustees, executors, and families selling inherited apartment property.',
+		href: '/trust-and-estate-sales/',
+		cta: 'Learn more',
+		icon: 'trust',
 	},
 	{
 		title: 'Land for Development',
 		body: 'Positioning and marketing of development sites, backed by zoning analysis and highest-and-best-use underwriting.',
-	},
-	{
-		title: 'Broker Opinion of Value',
-		body: 'A free, no-pressure BOV grounded in real closed comps, not guesswork.',
+		href: '/land-for-development/',
+		cta: 'Learn more',
+		icon: 'land',
 	},
 	{
 		title: 'Triple Net (NNN) & DSTs',
 		body: 'Introductions to trusted NNN brokers and DST professionals for owners exchanging into a passive, zero-management investment.',
+		href: '/triple-net-dst/',
+		cta: 'Learn more',
+		icon: 'nnn',
 	},
 ];
 ---
@@ -241,10 +271,14 @@ const services = [
 			<div class="services-grid">
 				{
 					services.map((s) => (
-						<div class="service-card">
+						<a href={s.href} class={`service-card${s.featured ? ' service-card--featured' : ''}`}>
+							<span class="service-card__icon">
+								<svg viewBox="0 0 24 24" aria-hidden="true" set:html={serviceIcons[s.icon]} />
+							</span>
 							<h3>{s.title}</h3>
 							<p>{s.body}</p>
-						</div>
+							<span class="service-card__cta">{s.cta} &rarr;</span>
+						</a>
 					))
 				}
 			</div>
@@ -743,18 +777,107 @@ const services = [
 
 	.services-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: 2.5rem;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5rem;
 		margin-top: 3rem;
 	}
 
 	.service-card {
-		padding-top: 1.5rem;
-		border-top: 1px solid var(--border);
+		display: flex;
+		flex-direction: column;
+		padding: 1.75rem;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-top: 2px solid var(--gold);
+		color: var(--ink);
+	}
+
+	.service-card:hover {
+		text-decoration: none;
+	}
+
+	.service-card__icon {
+		display: grid;
+		place-items: center;
+		width: 3rem;
+		height: 3rem;
+		margin-bottom: 1.1rem;
+		border-radius: 50%;
+		background: var(--navy-tint);
+		color: var(--gold-dark);
+	}
+
+	.service-card__icon svg {
+		width: 1.55rem;
+		height: 1.55rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.6;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 
 	.service-card h3 {
-		font-size: 1.2rem;
+		font-size: 1.3rem;
+		margin-bottom: 0.5rem;
+		color: var(--navy-dark);
+	}
+
+	.service-card p {
+		flex: 1;
+		margin: 0 0 1.25rem;
+	}
+
+	.service-card__cta {
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--navy);
+	}
+
+	.service-card:hover .service-card__cta {
+		color: var(--gold-dark);
+	}
+
+	.service-card--featured {
+		background: var(--navy-dark);
+		border-color: var(--navy-dark);
+		border-top-color: var(--gold);
+		color: rgba(255, 255, 255, 0.82);
+	}
+
+	.service-card--featured h3 {
+		color: #fff;
+	}
+
+	.service-card--featured .service-card__icon {
+		background: rgba(255, 255, 255, 0.1);
+		color: var(--gold-light);
+	}
+
+	.service-card--featured .service-card__cta {
+		align-self: flex-start;
+		padding: 0.6rem 1rem;
+		background: var(--gold);
+		color: var(--navy-dark);
+	}
+
+	.service-card--featured:hover .service-card__cta {
+		background: var(--gold-light);
+		color: var(--navy-dark);
+	}
+
+	@media (max-width: 900px) {
+		.services-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 600px) {
+		.services-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.sales-grid {
@@ -1448,12 +1571,12 @@ const services = [
 	}
 
 	.service-card {
-		transition: transform 0.25s ease, border-color 0.25s ease;
+		transition: transform 0.25s ease, box-shadow 0.25s ease;
 	}
 
 	.service-card:hover {
 		transform: translateY(-3px);
-		border-color: var(--gold);
+		box-shadow: 0 18px 30px -22px rgba(12, 46, 80, 0.5);
 	}
 
 	/* Scroll reveal: the script adds .reveal only to blocks that start below the fold, so nothing is hidden if it fails. */
