@@ -3,6 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import { site, team } from '../../data/site';
 import { closings } from '../../data/closings';
+import { submarkets } from '../../data/submarkets';
+import fs from 'node:fs';
 import { postsEs, formatTrimestre } from '../../data/postsEs';
 import { formatPrice } from '../../lib/format';
 import { PAGES_ES } from '../../data/esSlugs';
@@ -11,7 +13,23 @@ const troy = team.find((m) => m.slug === 'troy-lucero')!;
 const en = `${site.url}/`;
 const es = `${site.url}/es/`;
 
-const notableSales = closings.filter((c) => c.city === 'Los Angeles').slice(0, 6);
+// The six deals featured on the homepage, highest price first (same list as the English homepage).
+const featuredSaleSlugs = [
+	'131-171-s-burlington-ave-los-angeles-ca-90057',
+	'236-s-bonnie-brae-st-los-angeles-ca-90057',
+	'728-734-s-manhattan-pl-los-angeles-ca-90005',
+	'1136-s-alvarado-st-los-angeles-ca-90006',
+	'11747-mayfield-ave-los-angeles-ca-90049',
+	'453-s-gramercy-pl-los-angeles-ca-90020',
+];
+const notableSales = featuredSaleSlugs
+	.map((slug) => closings.find((c) => c.slug === slug))
+	.filter((c): c is (typeof closings)[number] => Boolean(c))
+	.sort((a, b) => b.price - a.price);
+
+// Small thumbnails for the cards; falls back to the full-size photo if none exists.
+const cardImage = (sale: (typeof closings)[number]) =>
+	fs.existsSync(`public/images/home-cards/${sale.slug}.webp`) ? `/images/home-cards/${sale.slug}.webp` : sale.images?.[0];
 
 const stats = [
 	{ num: site.stats.unitsSold, label: 'Unidades vendidas' },
@@ -20,36 +38,60 @@ const stats = [
 	{ num: site.stats.listToSaleRatio, label: 'Precio de venta como porcentaje del precio pedido' },
 ];
 
+// Line icons (24x24, drawn with a stroke) for the service cards.
+const serviceIcons: Record<string, string> = {
+	bov: '<circle cx="12" cy="12" r="9"/><path d="M14.5 9.2c-.6-.8-1.5-1.2-2.5-1.2-1.4 0-2.5.8-2.5 2s1 1.7 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-1.9-.4-2.5-1.2M12 6v2M12 16v2"/>',
+	sales: '<path d="M4 21V7l8-4 8 4v14"/><path d="M3 21h18"/><path d="M9.5 21v-5h5v5"/><path d="M8 10h2M14 10h2M8 13h2M14 13h2"/>',
+	exchange: '<path d="M4 8h14l-3-3"/><path d="M20 16H6l3 3"/>',
+	trust: '<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4"/><path d="M10 12h6M10 15h6M10 18h4"/>',
+	land: '<path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3z"/><path d="M9 4v13M15 7v13"/>',
+	nnn: '<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+};
+
+// La opinión de valor va primero y destacada: es lo principal que queremos que pida un dueño.
 const services = [
+	{
+		title: 'Opinión de valor (Broker Opinion of Value)',
+		body: 'Una opinión de valor gratis y sin presión, basada en ventas cerradas reales y no en suposiciones.',
+		href: '#formulario',
+		more: 'Pida mi opinión gratis',
+		icon: 'bov',
+		featured: true,
+	},
 	{
 		title: 'Venta de edificios multifamiliares',
 		body: 'Representación completa para vendedores y compradores de edificios de apartamentos en el área metropolitana de Los Ángeles, desde la estrategia de precio hasta el cierre del escrow (el proceso en que un tercero neutral guarda el dinero y los documentos hasta cerrar la venta).',
+		href: '/es/vender-edificio-de-apartamentos-los-angeles/',
+		more: 'Cómo vendemos su edificio',
+		icon: 'sales',
 	},
 	{
 		title: 'Intercambios 1031',
-		body: 'Estrategia y ejecución para dueños que pasan su capital de un edificio multifamiliar a otro, incluso a propiedades de reemplazo en otros mercados o fuera de California.',
+		body: 'Planeamos su intercambio antes de que anuncie la venta, le presentamos a un corredor con experiencia si va a comprar fuera de California, y agregamos a cada contraoferta una opción de extender el escrow por 30 días. Casi todos nuestros clientes de intercambio encuentran su propiedad de reemplazo antes de que cierre su venta.',
 		href: PAGES_ES.intercambios,
 		more: 'Más sobre intercambios 1031',
+		icon: 'exchange',
 	},
 	{
 		title: 'Ventas de fideicomisos y herencias',
 		body: 'Orientación tranquila e informada para fideicomisarios, albaceas y familias que venden un edificio de apartamentos heredado.',
 		href: PAGES_ES.fideicomisos,
 		more: 'Más sobre fideicomisos y herencias',
+		icon: 'trust',
 	},
 	{
 		title: 'Terrenos para desarrollo',
 		body: 'Promoción y mercadeo de terrenos para desarrollo, respaldados por análisis de zonificación y de su mejor uso.',
-	},
-	{
-		title: 'Opinión de valor (Broker Opinion of Value)',
-		body: 'Una opinión de valor gratis y sin presión, basada en ventas cerradas reales y no en suposiciones.',
+		href: '/land-for-development/',
+		more: 'Más información (en inglés)',
+		icon: 'land',
 	},
 	{
 		title: 'Triple net (NNN) y DST',
 		body: 'Presentaciones a corredores de NNN y profesionales de DST de confianza para dueños que hacen un intercambio hacia una inversión pasiva, sin administración.',
 		href: PAGES_ES.tripleNet,
 		more: 'Más sobre triple net y DST',
+		icon: 'nnn',
 	},
 ];
 
@@ -93,7 +135,7 @@ const webPageSchema = {
 			{
 				stats.map((s) => (
 					<div class="stat-bar__item">
-						<span class="stat-bar__num">{s.num}</span>
+						<span class="stat-bar__num" data-count>{s.num}</span>
 						<span class="stat-bar__label">{s.label}</span>
 					</div>
 				))
@@ -122,7 +164,7 @@ const webPageSchema = {
 				<img
 					src="/images/bio/josh-kaplan-troy-lucero-together.webp"
 					srcset="/images/bio/josh-kaplan-troy-lucero-together-480.webp 480w, /images/bio/josh-kaplan-troy-lucero-together.webp 860w"
-					sizes="(max-width: 800px) 90vw, 440px"
+					sizes="(max-width: 800px) 260px, 340px"
 					alt="Josh Kaplan y Troy Lucero, cofundadores de Highlight Multifamily Group"
 					width="860"
 					height="860"
@@ -139,15 +181,14 @@ const webPageSchema = {
 			<div class="services-grid">
 				{
 					services.map((s) => (
-						<div class="service-card">
+						<a href={s.href} class={`service-card${s.featured ? ' service-card--featured' : ''}`}>
+							<span class="service-card__icon">
+								<svg viewBox="0 0 24 24" aria-hidden="true" set:html={serviceIcons[s.icon]} />
+							</span>
 							<h3>{s.title}</h3>
 							<p>{s.body}</p>
-							{s.href && (
-								<p class="service-card__more">
-									<a href={s.href}>{s.more}</a>
-								</p>
-							)}
-						</div>
+							<span class="service-card__cta">{s.more} &rarr;</span>
+						</a>
 					))
 				}
 			</div>
@@ -194,20 +235,38 @@ const webPageSchema = {
 		<div class="container">
 			<span class="eyebrow">Ventas cerradas</span>
 			<h2>Ventas cerradas en Los Ángeles</h2>
-			<ul class="sales-list">
+			<div class="sales-grid">
 				{
-					notableSales.map((sale) => (
-						<li>
-							<a href={`/closed-sales/#${sale.slug}`}>
-								<span class="sales-list__name">{sale.name}</span>
-								<span class="sales-list__meta">
-									{sale.units} unidades · {formatPrice(sale.price)}
+					notableSales.map((sale) => {
+						const hood = submarkets.find((sm) => sm.slug === sale.submarket);
+						return (
+							<a class="sale-card" href={`/closed-sales/${sale.slug}/`}>
+								<span class="sale-card__photo">
+									{cardImage(sale) && (
+										<img
+											src={cardImage(sale)}
+											alt={`${sale.name}, Los Ángeles, ${sale.units ? `edificio de apartamentos de ${sale.units} unidades` : 'terreno para desarrollo'}, vendido por Highlight Multifamily Group`}
+											width="560"
+											height="350"
+											loading="lazy"
+										/>
+									)}
+									<span class="sale-card__tag">Vendido</span>
+									<span class="sale-card__price">{formatPrice(sale.price)}</span>
+								</span>
+								<span class="sale-card__body">
+									<span class="sale-card__location">{hood ? hood.name : `${sale.city}, ${sale.state} ${sale.zip}`}</span>
+									<span class="sale-card__name">{sale.name}</span>
+									<span class="sale-card__meta">
+										{sale.units ? `${sale.units} unidades` : 'Terreno para desarrollo'}
+										{sale.sqft ? ` • ${sale.sqft.toLocaleString('en-US')} pies²` : ''}
+									</span>
 								</span>
 							</a>
-						</li>
-					))
+						);
+					})
 				}
-			</ul>
+			</div>
 			<p class="more-link"><a href="/closed-sales/">Ver todas nuestras ventas cerradas (en inglés)</a></p>
 		</div>
 	</section>
@@ -287,42 +346,162 @@ const webPageSchema = {
 		line-height: 1.75;
 	}
 
+	.who-we-are__photo {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	/* A soft halo behind the cut-out photo gives it depth on the cream page. */
+	.who-we-are__photo::before {
+		content: '';
+		position: absolute;
+		top: 2%;
+		left: 50%;
+		width: 112%;
+		aspect-ratio: 1;
+		transform: translateX(-50%);
+		border-radius: 50%;
+		background: radial-gradient(circle, var(--navy-tint) 0%, rgba(238, 242, 247, 0.55) 45%, rgba(238, 242, 247, 0) 70%);
+	}
+
 	.who-we-are__photo img {
-		display: block;
+		position: relative;
+		z-index: 1;
 		width: 100%;
+		max-width: 340px;
 		height: auto;
-		border-radius: 2px;
+		display: block;
+		filter: drop-shadow(0 20px 28px rgba(12, 46, 80, 0.16));
+		transform: translateY(var(--py, 0px));
+		will-change: transform;
+	}
+
+	.who-we-are__photo::after {
+		content: '';
+		position: relative;
+		z-index: 1;
+		width: 110px;
+		height: 2px;
+		margin-top: 1.5rem;
+		background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
+		transition: transform 0.9s ease 0.6s;
+	}
+
+	/* On the way in: the text slides in from the left, the photo from the right, and the gold line draws out from the middle. */
+	.who-we-are > .reveal {
+		transform: translateX(-42px);
+		transition-duration: 0.9s;
+	}
+
+	.who-we-are > .who-we-are__photo.reveal {
+		transform: translateX(42px);
+	}
+
+	.who-we-are > .reveal.is-in {
+		transform: none;
+	}
+
+	.who-we-are__photo.reveal:not(.is-in)::after {
+		transform: scaleX(0);
 	}
 
 	.services-grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
-		gap: 1.25rem;
-		margin-top: 1.5rem;
+		gap: 1.5rem;
+		margin-top: 2rem;
 	}
 
 	.service-card {
-		background: var(--paper);
+		display: flex;
+		flex-direction: column;
+		padding: 1.75rem;
+		background: #fff;
 		border: 1px solid var(--border);
-		border-top: 3px solid var(--gold);
-		border-radius: 2px;
-		padding: 1.5rem;
+		border-top: 2px solid var(--gold);
+		color: var(--ink);
+		transition: transform 0.25s ease, box-shadow 0.25s ease;
+	}
+
+	.service-card:hover {
+		text-decoration: none;
+		transform: translateY(-3px);
+		box-shadow: 0 18px 30px -22px rgba(12, 46, 80, 0.5);
+	}
+
+	.service-card__icon {
+		display: grid;
+		place-items: center;
+		width: 3rem;
+		height: 3rem;
+		margin-bottom: 1.1rem;
+		border-radius: 50%;
+		background: var(--navy-tint);
+		color: var(--gold-dark);
+	}
+
+	.service-card__icon svg {
+		width: 1.55rem;
+		height: 1.55rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.6;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 
 	.service-card h3 {
-		font-size: 1.15rem;
-		margin: 0 0 0.6rem;
+		font-size: 1.3rem;
+		margin: 0 0 0.5rem;
+		color: var(--navy-dark);
 	}
 
 	.service-card p {
-		margin: 0;
+		flex: 1;
+		margin: 0 0 1.25rem;
 		line-height: 1.65;
 	}
 
-	.service-card .service-card__more {
-		margin-top: 0.75rem;
-		font-weight: 600;
-		font-size: 0.9rem;
+	.service-card__cta {
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--navy);
+	}
+
+	.service-card:hover .service-card__cta {
+		color: var(--gold-dark);
+	}
+
+	.service-card--featured {
+		background: var(--navy-dark);
+		border-color: var(--navy-dark);
+		border-top-color: var(--gold);
+		color: rgba(255, 255, 255, 0.82);
+	}
+
+	.service-card--featured h3 {
+		color: #fff;
+	}
+
+	.service-card--featured .service-card__icon {
+		background: rgba(255, 255, 255, 0.1);
+		color: var(--gold-light);
+	}
+
+	.service-card--featured .service-card__cta {
+		align-self: flex-start;
+		padding: 0.6rem 1rem;
+		background: var(--gold);
+		color: var(--navy-dark);
+	}
+
+	.service-card--featured:hover .service-card__cta {
+		background: var(--gold-light);
+		color: var(--navy-dark);
 	}
 
 	.narrow {
@@ -397,38 +576,119 @@ const webPageSchema = {
 		color: var(--navy);
 	}
 
-	.sales-list {
-		list-style: none;
-		padding: 0;
-		margin: 1.5rem 0 0;
+	.sales-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 0.75rem;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1.5rem;
+		margin-top: 2rem;
 	}
 
-	.sales-list a {
-		display: grid;
-		gap: 0.2rem;
-		background: var(--paper);
+	.sale-card {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		background: #fff;
 		border: 1px solid var(--border);
-		border-radius: 2px;
-		padding: 1rem 1.25rem;
 		color: var(--ink);
+		transition: box-shadow 0.25s ease, transform 0.25s ease;
 	}
 
-	.sales-list a:hover {
-		border-color: var(--gold);
+	.sale-card:hover {
 		text-decoration: none;
+		transform: translateY(-3px);
+		box-shadow: 0 22px 36px -24px rgba(12, 46, 80, 0.5);
 	}
 
-	.sales-list__name {
-		font-weight: 600;
+	.sale-card__photo {
+		position: relative;
+		display: block;
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		background: var(--navy-dark);
+	}
+
+	.sale-card__photo img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.6s ease;
+	}
+
+	.sale-card:hover .sale-card__photo img {
+		transform: scale(1.05);
+	}
+
+	.sale-card__photo::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(10, 28, 52, 0.85) 0%, rgba(10, 28, 52, 0) 55%);
+	}
+
+	.sale-card__tag {
+		position: absolute;
+		top: 0.8rem;
+		left: 0.8rem;
+		z-index: 1;
+		padding: 0.25rem 0.65rem;
+		background: var(--gold);
 		color: var(--navy-dark);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
 	}
 
-	.sales-list__meta {
-		font-size: 0.9rem;
+	.sale-card__price {
+		position: absolute;
+		left: 1rem;
+		bottom: 0.75rem;
+		z-index: 1;
+		font-family: var(--font-serif);
+		font-size: 1.9rem;
+		line-height: 1.1;
+		color: #fff;
+	}
+
+	.sale-card__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		padding: 1.1rem 1.25rem 1.3rem;
+	}
+
+	.sale-card__location {
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		font-weight: 600;
+		color: var(--gold-dark);
+	}
+
+	.sale-card__name {
+		font-family: var(--font-serif);
+		font-weight: 500;
+		color: var(--navy-dark);
+		font-size: 1.25rem;
+		line-height: 1.25;
+	}
+
+	.sale-card__meta {
+		font-size: 0.85rem;
 		color: var(--ink-light);
+	}
+
+	/* Scroll reveal: the script adds .reveal only to blocks that start below the fold, so nothing is hidden if it fails. */
+	.reveal {
+		opacity: 0;
+		transform: translateY(22px);
+		transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+	}
+
+	.reveal.is-in {
+		opacity: 1;
+		transform: none;
 	}
 
 	.more-link {
@@ -442,14 +702,155 @@ const webPageSchema = {
 		}
 
 		.who-we-are,
-		.services-grid,
-		.article-grid,
-		.sales-list {
+		.article-grid {
 			grid-template-columns: 1fr;
+		}
+
+		.services-grid,
+		.sales-grid {
+			grid-template-columns: repeat(2, 1fr);
 		}
 
 		.who-we-are {
 			gap: 2rem;
 		}
+
+		.who-we-are__photo {
+			order: -1;
+		}
+
+		.who-we-are__photo img {
+			max-width: 260px;
+		}
+
+		.who-we-are > .reveal,
+		.who-we-are > .who-we-are__photo.reveal {
+			transform: translateY(22px);
+		}
+	}
+
+	@media (max-width: 560px) {
+		.services-grid,
+		.sales-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 </style>
+
+<script>
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	// Count-up for the headline numbers. The final text stays in the page, so it is correct with scripts off and for crawlers.
+	function countUp(el: HTMLElement) {
+		const original = el.textContent?.trim() ?? '';
+		const match = original.match(/^(\D*)([\d,]*\.?\d+)(.*)$/s);
+		if (!match) return;
+		const [, prefix, numText, suffix] = match;
+		const target = parseFloat(numText.replace(/,/g, ''));
+		if (!isFinite(target)) return;
+		const decimals = (numText.split('.')[1] ?? '').length;
+		const grouped = numText.includes(',');
+		const format = (n: number) =>
+			prefix + n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals, useGrouping: grouped }) + suffix;
+		const duration = 1400;
+		const start = performance.now();
+		const tick = (now: number) => {
+			const t = Math.min(1, (now - start) / duration);
+			const eased = 1 - Math.pow(1 - t, 3);
+			el.textContent = t < 1 ? format(target * eased) : original;
+			if (t < 1) requestAnimationFrame(tick);
+		};
+		requestAnimationFrame(tick);
+	}
+
+	if (!reduceMotion && 'IntersectionObserver' in window) {
+		const countObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						countUp(entry.target as HTMLElement);
+						countObserver.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.6 },
+		);
+		document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => countObserver.observe(el));
+
+		// Fade-and-rise for blocks that start below the fold. Groups are staggered.
+		const groups = [
+			'.stat-bar__grid > *',
+			'.who-we-are > *',
+			'.services-grid > *',
+			'.article-grid > *',
+			'.sales-grid > *',
+			'main .section > .container > .eyebrow',
+			'main .section > .container > h2',
+		];
+		const seen = new Set<Element>();
+		const revealObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) return;
+					const el = entry.target as HTMLElement;
+					el.classList.add('is-in');
+					revealObserver.unobserve(el);
+					// Once it has settled, drop the helper classes so hover effects on the same element work normally.
+					window.setTimeout(() => {
+						el.classList.remove('reveal', 'is-in');
+						el.style.transitionDelay = '';
+					}, 1700);
+				});
+			},
+			{ threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+		);
+		const setUpReveal = () => {
+			const candidates: { el: HTMLElement; i: number }[] = [];
+			groups.forEach((selector) => {
+				document.querySelectorAll<HTMLElement>(selector).forEach((el, i) => {
+					if (!seen.has(el)) {
+						seen.add(el);
+						candidates.push({ el, i });
+					}
+				});
+			});
+			candidates
+				.filter(({ el }) => el.getBoundingClientRect().top >= window.innerHeight)
+				.forEach(({ el, i }) => {
+					el.style.transitionDelay = `${Math.min(i, 5) * 90}ms`;
+					el.classList.add('reveal');
+					revealObserver.observe(el);
+				});
+		};
+		if ('requestIdleCallback' in window) window.requestIdleCallback(setUpReveal, { timeout: 1500 });
+		else window.setTimeout(setUpReveal, 300);
+
+		// The Who We Are photo drifts a little slower than the page while it is on screen.
+		const whoPhoto = document.querySelector<HTMLElement>('.who-we-are__photo img');
+		if (whoPhoto) {
+			let ticking = false;
+			let visible = false;
+			const drift = () => {
+				ticking = false;
+				if (!visible || window.innerWidth <= 800) {
+					whoPhoto.style.removeProperty('--py');
+					return;
+				}
+				const r = whoPhoto.getBoundingClientRect();
+				const progress = Math.max(-1, Math.min(1, (r.top + r.height / 2 - window.innerHeight / 2) / window.innerHeight));
+				whoPhoto.style.setProperty('--py', `${(progress * -26).toFixed(1)}px`);
+			};
+			const onScroll = () => {
+				if (!ticking) {
+					ticking = true;
+					window.requestAnimationFrame(drift);
+				}
+			};
+			new IntersectionObserver((entries) => {
+				visible = entries[0].isIntersecting;
+				onScroll();
+			}).observe(whoPhoto);
+			window.addEventListener('scroll', onScroll, { passive: true });
+		}
+	}
+</script>
