@@ -11,7 +11,19 @@ import { formatPrice } from '../lib/format';
 import { MARKET_REPORT_OCT_2026 as MU } from '../data/marketReportOct2026';
 import { posts } from '../data/posts';
 
-const notableSales = closings.filter((c) => c.city === 'Los Angeles').slice(0, 6);
+// The six deals featured on the homepage, highest price first. Add or swap slugs here (from src/data/closings.ts).
+const featuredSaleSlugs = [
+	'131-171-s-burlington-ave-los-angeles-ca-90057',
+	'236-s-bonnie-brae-st-los-angeles-ca-90057',
+	'728-734-s-manhattan-pl-los-angeles-ca-90005',
+	'1136-s-alvarado-st-los-angeles-ca-90006',
+	'11747-mayfield-ave-los-angeles-ca-90049',
+	'453-s-gramercy-pl-los-angeles-ca-90020',
+];
+const notableSales = featuredSaleSlugs
+	.map((slug) => closings.find((c) => c.slug === slug))
+	.filter((c): c is (typeof closings)[number] => Boolean(c))
+	.sort((a, b) => b.price - a.price);
 
 // Small thumbnails for the homepage cards (the full-size photos are several times heavier). Falls back to the original if no thumbnail exists.
 const cardImage = (sale: (typeof closings)[number]) =>
@@ -291,24 +303,35 @@ const services = [
 			<h2>Closed Transactions in Los Angeles</h2>
 			<div class="sales-grid">
 				{
-					notableSales.map((sale) => (
-						<a
-							class="sale-card"
-							href={`/closed-sales/#${sale.slug}`}
-							style={cardImage(sale) ? `--sale-card-img: url(${cardImage(sale)})` : undefined}
-						>
-							<span class="sale-card__location">
-								{sale.city}, {sale.state} {sale.zip}
-							</span>
-							<span class="sale-card__name">{sale.name}</span>
-							<span class="sale-card__meta">
-								{sale.units ? `${sale.units} Units` : 'Development Site'}
-								{sale.sqft ? ` • ${sale.sqft.toLocaleString()} SF` : ''}
-								{sale.acres ? ` • ${sale.acres} Acres` : ''}
-							</span>
-							<span class="sale-card__price">Sold for {formatPrice(sale.price)}</span>
-						</a>
-					))
+					notableSales.map((sale) => {
+						const hood = submarkets.find((sm) => sm.slug === sale.submarket);
+						return (
+							<a class="sale-card" href={`/closed-sales/${sale.slug}/`}>
+								<span class="sale-card__photo">
+									{cardImage(sale) && (
+										<img
+											src={cardImage(sale)}
+											alt={`${sale.name}, ${sale.city}, ${sale.state}, ${sale.units ? `${sale.units}-unit apartment building` : 'development site'} sold by Highlight Multifamily Group`}
+											width="560"
+											height="350"
+											loading="lazy"
+										/>
+									)}
+									<span class="sale-card__tag">Sold</span>
+									<span class="sale-card__price">{formatPrice(sale.price)}</span>
+								</span>
+								<span class="sale-card__body">
+									<span class="sale-card__location">{hood ? hood.name : `${sale.city}, ${sale.state} ${sale.zip}`}</span>
+									<span class="sale-card__name">{sale.name}</span>
+									<span class="sale-card__meta">
+										{sale.units ? `${sale.units} Units` : 'Development Site'}
+										{sale.sqft ? ` • ${sale.sqft.toLocaleString()} SF` : ''}
+										{sale.acres ? ` • ${sale.acres} Acres` : ''}
+									</span>
+								</span>
+							</a>
+						);
+					})
 				}
 			</div>
 			<a href="/closed-sales/" class="btn btn-navy" style="margin-top: 2rem;">View All Closed Sales</a>
@@ -921,66 +944,100 @@ const services = [
 
 	.sales-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+		grid-template-columns: repeat(3, 1fr);
 		gap: 1.5rem;
 		margin-top: 3rem;
 	}
 
 	.sale-card {
-		position: relative;
-		overflow: hidden;
 		display: flex;
 		flex-direction: column;
-		gap: 0.3rem;
-		background: var(--paper);
+		overflow: hidden;
+		background: #fff;
 		border: 1px solid var(--border);
-		border-radius: 2px;
-		padding: 1.75rem;
 		color: var(--ink);
-		transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-	}
-
-	.sale-card::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		z-index: 0;
-		background-image: linear-gradient(180deg, rgba(255, 253, 250, 0.88), rgba(255, 253, 250, 0.94)), var(--sale-card-img, none);
-		background-size: cover;
-		background-position: center;
-		filter: grayscale(1);
-		transition: opacity 0.2s ease;
-	}
-
-	.sale-card > * {
-		position: relative;
-		z-index: 1;
+		transition: box-shadow 0.25s ease, transform 0.25s ease;
 	}
 
 	.sale-card:hover {
-		border-color: var(--gold);
-		box-shadow: 0 18px 40px -24px rgba(12, 46, 80, 0.35);
-		transform: translateY(-2px);
 		text-decoration: none;
+		transform: translateY(-3px);
+		box-shadow: 0 22px 36px -24px rgba(12, 46, 80, 0.5);
 	}
 
-	.sale-card:hover::before {
-		background-image: linear-gradient(180deg, rgba(255, 253, 250, 0.72), rgba(255, 253, 250, 0.82)), var(--sale-card-img, none);
+	.sale-card__photo {
+		position: relative;
+		display: block;
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		background: var(--navy-dark);
+	}
+
+	.sale-card__photo img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		transition: transform 0.6s ease;
+	}
+
+	.sale-card:hover .sale-card__photo img {
+		transform: scale(1.05);
+	}
+
+	.sale-card__photo::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(10, 28, 52, 0.85) 0%, rgba(10, 28, 52, 0) 55%);
+	}
+
+	.sale-card__tag {
+		position: absolute;
+		top: 0.8rem;
+		left: 0.8rem;
+		z-index: 1;
+		padding: 0.25rem 0.65rem;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+	}
+
+	.sale-card__price {
+		position: absolute;
+		left: 1rem;
+		bottom: 0.75rem;
+		z-index: 1;
+		font-family: var(--font-serif);
+		font-size: 1.9rem;
+		line-height: 1.1;
+		color: #fff;
+	}
+
+	.sale-card__body {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+		padding: 1.1rem 1.25rem 1.3rem;
 	}
 
 	.sale-card__location {
 		font-size: 0.72rem;
 		text-transform: uppercase;
-		letter-spacing: 0.06em;
-		color: var(--ink-light);
+		letter-spacing: 0.08em;
+		font-weight: 600;
+		color: var(--gold-dark);
 	}
 
 	.sale-card__name {
 		font-family: var(--font-serif);
 		font-weight: 500;
 		color: var(--navy-dark);
-		font-size: 1.2rem;
-		margin: 0.15rem 0;
+		font-size: 1.25rem;
+		line-height: 1.25;
 	}
 
 	.sale-card__meta {
@@ -988,11 +1045,16 @@ const services = [
 		color: var(--ink-light);
 	}
 
-	.sale-card__price {
-		margin-top: 0.5rem;
-		font-weight: 600;
-		font-size: 0.9rem;
-		color: var(--success);
+	@media (max-width: 900px) {
+		.sales-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 560px) {
+		.sales-grid {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.submarket-intro {
