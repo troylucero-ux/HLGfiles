@@ -104,6 +104,13 @@ export const press = [
 ];
 
 // Real client testimonials provided directly by Troy Lucero (co-founder).
+// Our Google rating, shown on the Testimonials page as "5 Stars on Google" (no review count and no link to the Google profile, on
+// purpose, so the site does not point strangers to the profile). It was 5.0 from the Google Places service on November 12, 2026.
+// If the rating ever drops below 5, change this and the wording on that page.
+export const googleReviews = {
+	rating: 5,
+};
+
 export const testimonials = [
 	{
 		quote:
@@ -115,7 +122,7 @@ export const testimonials = [
 	{
 		quote:
 			'I have done business with other agencies in the past, but none of them are even comparable. I credit Josh and Troy for helping me pick the perfect time to list my property, and for making the sale a complete success.',
-		attribution: 'Martine, Seller of 6938 Coldwater Canyon Ave',
+		attribution: 'Martine M., Seller of 6938 Coldwater Canyon Ave',
 		caseStudySlug: '6938-coldwater-canyon-ave-north-hollywood-apartments',
 		verified: true,
 		featured: true,
@@ -123,25 +130,25 @@ export const testimonials = [
 	{
 		quote:
 			"I had a 14-unit building in Koreatown that I'd owned for years and finally decided it was time to sell. A friend referred me to Troy Lucero and Josh Kaplan at Highlight Real Estate Group and I'm really glad they did. These guys know the LA multifamily market inside and out. They got me strong offers, walked me through everything, and were always straight with me. Selling a building like this can be stressful but they made it a lot smoother than I expected. If you own apartments in LA and are thinking about selling, give them a call. I'll definitely be going back to them when I'm ready to make my next move.",
-		attribution: 'Steve, Google Review',
+		attribution: 'Steve C., Google Review',
 		verified: true,
 	},
 	{
 		quote:
 			"We just sold our 12-unit apartment building in Los Angeles with Troy and Josh at Highlight Real Estate Group, and honestly, we couldn't be happier with how everything went. Our family had owned this property for over 15 years, so this wasn't just a transaction for us, it was a big moment. We needed people we could actually trust, and Troy and Josh delivered on that completely. They were always easy to get ahold of, walked us through every offer that came and summarized all the key points every time so we actually understood what we were looking at and never made us feel rushed or pressured. You can tell they really know the LA multifamily and investment property market. If you own an apartment building in Los Angeles and are thinking about selling, we'd absolutely point you in their direction. They made a stressful process feel manageable, and that meant a lot to our family.",
-		attribution: 'Gustavo, Google Review',
+		attribution: 'Gustavo M., Google Review',
 		verified: true,
 	},
 	{
 		quote: "I really appreciated Troy and Josh's advice with regard to the LA apartment market. Highly recommend these guys if you want a broker who actually listens.",
-		attribution: 'Jorge, Google Review',
+		attribution: 'Jorge M., Google Review',
 		verified: true,
 		featured: true,
 	},
 	{
 		quote:
 			'Josh Kaplan and Troy Lucero at Highlight Real Estate Group helped us close on a 9-unit apartment building in Arlington Heights, Los Angeles. Highly recommend this team for anyone buying or selling an apartment building in Los Angeles.',
-		attribution: 'Eman, Google Review',
+		attribution: 'Eman D., Google Review',
 		verified: true,
 		featured: true,
 		caseStudySlug: '1513-arlington-ave-arlington-heights-apartments',
@@ -149,7 +156,7 @@ export const testimonials = [
 	{
 		quote:
 			'Troy and Josh did an excellent job representing us in the purchase of two apartment buildings in Santa Monica. Most recently, they helped us acquire a 6 unit property in Santa Monica as well. They were knowledgeable, responsive, and made the entire process smooth and straightforward. I would highly recommend them to anyone looking to purchase an apartment property.',
-		attribution: 'Arsine, Google Review',
+		attribution: 'Arsine P., Google Review',
 		verified: true,
 	},
 ];

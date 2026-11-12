@@ -1,63 +1,441 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { testimonials } from '../../data/site';
+import { testimonials, googleReviews, site } from '../../data/site';
+
+// Each testimonial's attribution reads "Name, Source or description". Split it so the name can be shown large, with its own initial.
+const people = testimonials.map((t) => {
+	const i = t.attribution.indexOf(', ');
+	const name = i > 0 ? t.attribution.slice(0, i) : t.attribution;
+	const rest = i > 0 ? t.attribution.slice(i + 2) : '';
+	return { ...t, name, rest, isGoogle: rest === 'Google Review', initial: name.trim().charAt(0).toUpperCase() };
+});
+
+// The longest-standing featured quote with a case study leads the page; the rest sit in a grid below it.
+const lead = people.find((p) => p.featured && p.caseStudySlug) ?? people[0];
+const others = people.filter((p) => p !== lead);
+
+const phoneHref = `tel:+1${site.phone.replace(/\D/g, '')}`;
+const STAR = 'M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z';
 ---
 
 <BaseLayout
 	title="Client Testimonials | Highlight Multifamily Group"
-	description="Read what LA apartment building owners say about selling with Highlight Multifamily Group, from off-market buyer procurement to fast, smooth closes."
+	description="Rated 5 stars on Google. Read what LA apartment building owners say about selling and buying with Josh Kaplan and Troy Lucero of Highlight Multifamily Group."
 >
-	<section class="page-hero">
+	<section class="t-hero">
+		<div class="container t-hero__inner">
+			<div class="t-hero__text">
+				<span class="eyebrow">Testimonials</span>
+				<h1>What LA Apartment Owners Say About Working With Us</h1>
+				<p>Real feedback from owners who trusted us with their multifamily property, in their own words.</p>
+			</div>
+
+			<div class="t-rating" aria-label={`Rated ${googleReviews.rating} out of 5 stars on Google`}>
+				<span class="t-stars t-stars--hero" aria-hidden="true">
+					{[0, 1, 2, 3, 4].map(() => <svg viewBox="0 0 24 24"><path d={STAR} /></svg>)}
+				</span>
+				<span class="t-rating__count">{googleReviews.rating} Stars on Google</span>
+				<a href="#reviews" class="t-rating__link">See what owners say &darr;</a>
+			</div>
+		</div>
+		<svg class="t-hero__skyline" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true"><path d="M0 90V62l60-6 60 6 80-14 40 8 60-12 80 10 70-8 60 6 90-12 50 6 70-10 60 8 80-6 60 4 90-10 60 8 70-6 60 6 80-8 70 6 60-4 80 8 70-6 60 4 80-8 60 6 70-4v40z" /></svg>
+	</section>
+
+	<section class="section t-body" id="reviews">
 		<div class="container">
-			<span class="eyebrow">Testimonials</span>
-			<h1>What LA Apartment Owners Say About Working With Us</h1>
-			<p>Real feedback from sellers who trusted us with their multifamily property.</p>
+			<figure class="t-lead">
+				<span class="t-lead__mark" aria-hidden="true">&ldquo;</span>
+				<blockquote>{lead.quote}</blockquote>
+				<figcaption class="t-lead__who">
+					<span class="t-avatar t-avatar--lg" aria-hidden="true">{lead.initial}</span>
+					<span class="t-who">
+						<strong>{lead.name}</strong>
+						<span>{lead.rest}</span>
+					</span>
+					{lead.caseStudySlug && <a class="t-case" href={`/case-studies/${lead.caseStudySlug}/`}>Read the case study &rarr;</a>}
+				</figcaption>
+			</figure>
+
+			<div class="t-grid">
+				{
+					others.map((p) => (
+						<figure class="t-card">
+							<div class="t-card__top">
+								{p.isGoogle && (
+									<span class="t-stars t-stars--sm" aria-label="5 out of 5 stars">
+										{[0, 1, 2, 3, 4].map(() => <svg viewBox="0 0 24 24" aria-hidden="true"><path d={STAR} /></svg>)}
+									</span>
+								)}
+								{p.isGoogle && <span class="t-pill">Google Review</span>}
+							</div>
+							<blockquote>{p.quote}</blockquote>
+							<figcaption>
+								<span class="t-avatar" aria-hidden="true">{p.initial}</span>
+								<span class="t-who">
+									<strong>{p.name}</strong>
+									{!p.isGoogle && p.rest && <span>{p.rest}</span>}
+								</span>
+								{p.caseStudySlug && <a class="t-case" href={`/case-studies/${p.caseStudySlug}/`}>Case study &rarr;</a>}
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+
+			<p class="t-note">Quotes marked Google Review were posted by our clients on Google.</p>
 		</div>
 	</section>
 
-	<section class="section">
-		<div class="container testimonial-list">
-			{
-				testimonials.map((t) => (
-					<figure class="testimonial">
-						<blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
-						<figcaption>{t.attribution}</figcaption>
-					</figure>
-				))
-			}
+	<section class="t-cta">
+		<div class="container t-cta__inner">
+			<div>
+				<h2>Thinking About Selling?</h2>
+				<p>Start with a free, confidential Broker Opinion of Value from Josh and Troy. No pressure, just data.</p>
+			</div>
+			<div class="t-cta__actions">
+				<a href="/contact/?intent=bov" class="btn btn-gold" data-cta="testimonials-bov">Get My Free Valuation</a>
+				<a href={phoneHref} class="t-cta__call" data-cta="testimonials-call">Or call {site.phone}</a>
+			</div>
 		</div>
 	</section>
 </BaseLayout>
 
 <style>
-	.page-hero {
-		background: var(--paper-alt);
-		padding-block: 3rem;
-		border-bottom: 1px solid var(--border);
+	/* ---- Hero ---- */
+	.t-hero {
+		position: relative;
+		overflow: hidden;
+		color: #fff;
+		background: radial-gradient(120% 140% at 85% 0%, #1c5b99 0%, var(--navy) 38%, var(--navy-dark) 100%);
+		padding-block: clamp(3rem, 7vw, 4.75rem) clamp(5.5rem, 10vw, 7.5rem);
 	}
 
-	.testimonial-list {
+	.t-hero__inner {
+		position: relative;
+		z-index: 1;
 		display: grid;
-		gap: 1.5rem;
-		max-width: 800px;
+		grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr);
+		gap: clamp(1.5rem, 5vw, 4rem);
+		align-items: center;
 	}
 
-	.testimonial {
-		background: var(--paper-alt);
-		border-left: 4px solid var(--gold);
-		border-radius: 6px;
-		padding: 2rem;
+	.t-hero h1 {
+		color: #fff;
+		margin: 0.4rem 0 0.9rem;
+		font-size: clamp(2rem, 4.6vw, 3.1rem);
+		line-height: 1.12;
+	}
+
+	.t-hero p {
+		color: #d7e0ea;
+		font-size: 1.1rem;
+		max-width: 36rem;
 		margin: 0;
 	}
 
-	.testimonial blockquote {
-		margin: 0 0 1rem;
-		font-size: 1.1rem;
-		font-style: italic;
+	.t-hero .eyebrow {
+		color: var(--gold-light);
 	}
 
-	.testimonial figcaption {
+	.t-hero__skyline {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -1px;
+		width: 100%;
+		height: clamp(40px, 6vw, 80px);
+		fill: var(--paper);
+	}
+
+	/* ---- Rating card ---- */
+	.t-rating {
+		display: grid;
+		justify-items: center;
+		gap: 0.3rem;
+		text-align: center;
+		padding: 1.6rem 1.5rem 1.4rem;
+		background: rgb(255 255 255 / 0.08);
+		border: 1px solid rgb(255 255 255 / 0.22);
+		border-radius: 16px;
+		backdrop-filter: blur(4px);
+	}
+
+	.t-rating__count {
+		font-family: var(--font-serif);
+		font-size: clamp(1.7rem, 3.2vw, 2.1rem);
+		line-height: 1.15;
+		color: #fff;
+		margin-top: 0.15rem;
+	}
+
+	.t-stars--hero svg {
+		width: clamp(1.9rem, 3.4vw, 2.4rem);
+		height: clamp(1.9rem, 3.4vw, 2.4rem);
+	}
+
+	.t-rating__link {
+		margin-top: 0.7rem;
+		color: var(--gold-light);
+		font-weight: 700;
+		font-size: 0.9rem;
+		text-decoration: none;
+		border-bottom: 1px solid var(--gold-light);
+		padding-bottom: 0.1rem;
+	}
+
+	.t-rating__link:hover {
+		color: #fff;
+		border-color: #fff;
+	}
+
+	.t-stars {
+		display: inline-flex;
+		gap: 0.2rem;
+	}
+
+	.t-stars svg {
+		width: 1.45rem;
+		height: 1.45rem;
+		fill: var(--gold-light);
+	}
+
+	.t-stars--sm svg {
+		width: 1rem;
+		height: 1rem;
+		fill: var(--gold);
+	}
+
+	/* ---- Body ---- */
+	.t-body {
+		scroll-margin-top: 5rem;
+		background: var(--paper);
+		padding-top: clamp(1.5rem, 3vw, 2.5rem);
+	}
+
+	.t-lead {
+		position: relative;
+		margin: 0 auto clamp(2rem, 4vw, 3rem);
+		max-width: 52rem;
+		padding: clamp(1.75rem, 4vw, 2.75rem);
+		background: #fff;
+		border: 1px solid var(--border);
+		border-top: 4px solid var(--gold);
+		border-radius: 14px;
+		box-shadow: 0 24px 50px -32px rgb(12 46 80 / 0.45);
+	}
+
+	.t-lead__mark {
+		position: absolute;
+		top: -0.15em;
+		left: 1.25rem;
+		font-family: var(--font-serif);
+		font-size: 6rem;
+		line-height: 1;
+		color: var(--gold);
+		opacity: 0.35;
+		pointer-events: none;
+	}
+
+	.t-lead blockquote {
+		position: relative;
+		margin: 0.5rem 0 1.5rem;
+		font-family: var(--font-serif);
+		font-size: clamp(1.3rem, 2.6vw, 1.75rem);
+		line-height: 1.4;
+		color: var(--navy-dark);
+	}
+
+	.t-lead__who {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.9rem;
+	}
+
+	/* ---- Cards ---- */
+	.t-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 1.5rem;
+		align-items: start;
+	}
+
+	.t-card {
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		padding: 1.5rem 1.6rem;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+	}
+
+	.t-card:hover {
+		transform: translateY(-3px);
+		border-color: #b9c8da;
+		box-shadow: 0 22px 40px -28px rgb(12 46 80 / 0.5);
+	}
+
+	.t-card__top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.75rem;
+		min-height: 1.4rem;
+	}
+
+	.t-pill {
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--navy);
+		background: var(--navy-tint);
+		border-radius: 999px;
+		padding: 0.25rem 0.65rem;
+	}
+
+	.t-card blockquote {
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.65;
+		color: var(--ink);
+	}
+
+	.t-card figcaption {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: auto;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border);
+	}
+
+	/* ---- Shared bits ---- */
+	.t-avatar {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 2.6rem;
+		height: 2.6rem;
+		border-radius: 50%;
+		background: linear-gradient(160deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: var(--gold-light);
+		font-family: var(--font-serif);
+		font-size: 1.2rem;
+	}
+
+	.t-avatar--lg {
+		width: 3.2rem;
+		height: 3.2rem;
+		font-size: 1.45rem;
+	}
+
+	.t-who {
+		display: grid;
+		line-height: 1.3;
+		min-width: 0;
+	}
+
+	.t-who strong {
+		color: var(--navy-dark);
+	}
+
+	.t-who span {
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	.t-case {
+		margin-left: auto;
+		font-size: 0.85rem;
 		font-weight: 700;
 		color: var(--navy);
+		text-decoration: none;
+		border-bottom: 2px solid var(--gold);
+		padding-bottom: 0.1rem;
+	}
+
+	.t-case:hover {
+		color: var(--navy-dark);
+	}
+
+	.t-note {
+		max-width: 52rem;
+		margin: 2rem auto 0;
+		font-size: 0.82rem;
+		color: var(--ink-light);
+		text-align: center;
+		line-height: 1.55;
+	}
+
+	/* ---- Call to action ---- */
+	.t-cta {
+		background: var(--navy-dark);
+		color: #fff;
+		padding-block: clamp(2.25rem, 5vw, 3.25rem);
+	}
+
+	.t-cta__inner {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+	}
+
+	.t-cta h2 {
+		color: #fff;
+		margin: 0 0 0.4rem;
+	}
+
+	.t-cta p {
+		margin: 0;
+		color: #d7e0ea;
+		max-width: 34rem;
+	}
+
+	.t-cta__actions {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 1.25rem;
+	}
+
+	.t-cta__call {
+		color: #fff;
+		font-weight: 700;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	@media (max-width: 860px) {
+		.t-hero__inner {
+			grid-template-columns: 1fr;
+		}
+
+		.t-rating {
+			justify-self: start;
+			width: min(100%, 20rem);
+		}
+	}
+
+	@media (max-width: 720px) {
+		.t-grid {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.t-case {
+			margin-left: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.t-card {
+			transition: none;
+		}
 	}
 </style>
