@@ -20,6 +20,9 @@ export const site = {
 		landSqFtSold: '135,000+', // matches statsPrecise.landSqFt (135,000 SF of land for development), rounded
 		listToSaleRatio: '97.2%',
 		exchangeSuccessRate: '100%',
+		// The year the track-record figures start (Josh Kaplan's multifamily production, which began at a previous firm). Troy said
+		// "2014 or 2015" on Nov 12, 2026; 2015 is used until Josh confirms, because a later year cannot overstate the record.
+		trackRecordSince: '2015',
 	},
 	// Precise figures per the About page / project brief — use these in body copy and schema, not the rounded stat bar.
 	statsPrecise: {

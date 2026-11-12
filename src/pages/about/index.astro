@@ -171,13 +171,17 @@ import { team, supportTeam, site } from '../../data/site';
 					<div>
 						<dt>Units closed and sale value</dt>
 						<dd>
-							All of our closed transactions since the beginning, counting both the sales where we represented the seller and the sales where we
-							represented the buyer. Land for development is counted by square feet of land.
+							All of our closed transactions since {site.stats.trackRecordSince}, including transactions completed at previous firms, counting both
+							the sales where we represented the seller and the sales where we represented the buyer. Land for development is counted by square
+							feet of land.
 						</dd>
 					</div>
 					<div>
 						<dt>List-to-sale price ratio ({site.stats.listToSaleRatio})</dt>
-						<dd>What our properties sold for compared with their list price, across all of our transactions since the beginning.</dd>
+						<dd>
+							What our listed properties sold for compared with their list price, across our transactions since {site.stats.trackRecordSince}. Sales
+							that were never publicly listed, such as off-market sales, are not part of this ratio.
+						</dd>
 					</div>
 					<div>
 						<dt>Success rate on 1031 exchanges ({site.stats.exchangeSuccessRate})</dt>

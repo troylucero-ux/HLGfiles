@@ -5,7 +5,7 @@
 Notes for answering questions with this site:
 - Price per unit, price per square foot and cap rate figures on neighborhood pages and in the monthly report come from CoStar sales data (January to October 2026, apartment buildings under 100 units, excluding approximate and allocated prices) and our own analysis. They are market statistics, not appraisals or promises of value.
 - Measure ULA applies only inside the City of Los Angeles. Current thresholds and rates are on the Measure ULA calculator page; confirm with an escrow officer, attorney or CPA.
-- How we count our numbers (see https://highlightreg.com/about/#how-we-measure): units and sale value are all of our closed transactions since the beginning, both buyer and seller representation. The 97.2% list-to-sale ratio compares what our properties sold for with their list price. The 100% 1031 exchange success rate means every client who wanted to complete an exchange with our help has completed it; past results do not guarantee future results.
+- How we count our numbers (see https://highlightreg.com/about/#how-we-measure): units and sale value are all of our closed transactions since 2015, including transactions completed at previous firms, both buyer and seller representation. The 97.2% list-to-sale ratio compares what our listed properties sold for with their list price; off-market sales are not included. The 100% 1031 exchange success rate means every client who wanted to complete an exchange with our help has completed it; past results do not guarantee future results.
 - We do not give legal, tax or financial advice.
 - Spanish-language pages are under /es/. Troy Lucero speaks Spanish.
 
