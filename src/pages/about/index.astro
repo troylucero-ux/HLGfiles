@@ -164,6 +164,34 @@ import { team, supportTeam, site } from '../../data/site';
 					<span class="stat-row__label">Land for Development Closed</span>
 				</div>
 			</div>
+			<div class="how-we-count" id="how-we-measure">
+				<h3>How We Count Our Numbers</h3>
+				<p class="how-we-count__lead">Our track-record figures come from our own closed transactions. Here is exactly what each one means. (Market statistics, such as prices per unit and cap rates, come from CoStar sales data and are labeled where they appear.)</p>
+				<dl>
+					<div>
+						<dt>Units closed and sale value</dt>
+						<dd>
+							All of our closed transactions since the beginning, counting both the sales where we represented the seller and the sales where we
+							represented the buyer. Land for development is counted by square feet of land.
+						</dd>
+					</div>
+					<div>
+						<dt>List-to-sale price ratio ({site.stats.listToSaleRatio})</dt>
+						<dd>What our properties sold for compared with their list price, across all of our transactions since the beginning.</dd>
+					</div>
+					<div>
+						<dt>Success rate on 1031 exchanges ({site.stats.exchangeSuccessRate})</dt>
+						<dd>
+							Every client who wanted to complete a 1031 exchange with our help, whether we represented them directly or connected them with the
+							right professionals, has completed their exchange. Past results do not guarantee future results.
+						</dd>
+					</div>
+				</dl>
+				<p class="how-we-count__note">
+					We are real estate brokers and do not give tax or legal advice. Confirm the details of any exchange with your qualified intermediary, CPA,
+					or attorney. You can see examples of our work on the <a href="/closed-sales/">Closed Sales</a> and <a href="/case-studies/">Case Studies</a> pages.
+				</p>
+			</div>
 			<div class="brand-lockup">
 				<img src="/images/brand/hlg-eu-logo-light.svg" alt="Highlight Multifamily Group, Equity Union Commercial" width="221" height="56" />
 			</div>
@@ -358,6 +386,51 @@ import { team, supportTeam, site } from '../../data/site';
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		color: var(--ink-light);
+	}
+
+	/* How we count our numbers */
+	.how-we-count {
+		margin-top: 2.75rem;
+		padding: clamp(1.25rem, 3vw, 2rem);
+		background: var(--paper-alt);
+		border: 1px solid var(--border);
+		border-left: 3px solid var(--gold);
+		border-radius: 4px;
+		max-width: 52rem;
+		scroll-margin-top: 8rem;
+	}
+
+	.how-we-count h3 {
+		margin: 0 0 0.4rem;
+	}
+
+	.how-we-count__lead {
+		margin: 0 0 1.1rem;
+		color: var(--ink-soft);
+	}
+
+	.how-we-count dl {
+		margin: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.how-we-count dt {
+		font-weight: 700;
+		color: var(--navy-dark);
+		margin-bottom: 0.15rem;
+	}
+
+	.how-we-count dd {
+		margin: 0;
+		line-height: 1.6;
+	}
+
+	.how-we-count__note {
+		margin: 1.1rem 0 0;
+		font-size: 0.88rem;
+		color: var(--ink-light);
+		line-height: 1.55;
 	}
 
 	.brand-lockup {

@@ -150,6 +150,7 @@ const services = [
 				<span class="stat-bar__label">Success Rate on 1031 Exchanges</span>
 			</div>
 		</div>
+		<p class="stat-bar__note"><a href="/about/#how-we-measure">How we count these numbers</a></p>
 	</section>
 
 	<section class="closing-strip" aria-label="Selected closings">
@@ -583,6 +584,22 @@ const services = [
 		background: var(--paper);
 		border-bottom: 1px solid var(--border);
 		padding-block: 3rem;
+	}
+
+	.stat-bar__note {
+		margin: 1.5rem 0 0;
+		text-align: center;
+		font-size: 0.85rem;
+	}
+
+	.stat-bar__note a {
+		color: var(--ink-light);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	.stat-bar__note a:hover {
+		color: var(--navy);
 	}
 
 	.stat-bar__grid {
