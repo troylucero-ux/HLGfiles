@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BOVForm from '../../components/BOVForm.astro';
-import { site, team } from '../../data/site';
+import { site, team, press, ceoQuote } from '../../data/site';
 import { closings } from '../../data/closings';
 import { submarkets } from '../../data/submarkets';
 import fs from 'node:fs';
@@ -94,6 +94,31 @@ const services = [
 		icon: 'nnn',
 	},
 ];
+
+// Spanish translations of three client testimonials (the originals are in English; see src/data/site.ts) and of the Equity Union CEO's quote.
+const reviewsEs = [
+	{
+		quote:
+			'He hecho negocios con otras agencias en el pasado, pero ninguna se les compara. Le doy el crédito a Josh y a Troy por ayudarme a escoger el momento perfecto para poner mi propiedad en venta y por hacer de la venta un éxito total.',
+		name: 'Martine M.',
+		who: 'Vendedora de 6938 Coldwater Canyon Ave',
+		caseStudySlug: '6938-coldwater-canyon-ave-north-hollywood-apartments',
+	},
+	{
+		quote: 'Agradecí mucho los consejos de Troy y Josh sobre el mercado de apartamentos de Los Ángeles. Se los recomiendo a quien quiera un corredor que de verdad escuche.',
+		name: 'Jorge M.',
+		who: 'Reseña de Google',
+	},
+	{
+		quote:
+			'Josh Kaplan y Troy Lucero, de Highlight Real Estate Group, nos ayudaron a cerrar la compra de un edificio de 9 unidades en Arlington Heights, Los Ángeles. Recomiendo mucho a este equipo para quien quiera comprar o vender un edificio de apartamentos en Los Ángeles.',
+		name: 'Eman D.',
+		who: 'Reseña de Google',
+		caseStudySlug: '1513-arlington-ave-arlington-heights-apartments',
+	},
+];
+const ceoQuoteEs =
+	'Josh y Troy son sumamente respetados en la industria y la comunidad de bienes raíces comerciales. Transmiten fortaleza, inteligencia y una gran agudeza para los negocios.';
 
 const webPageSchema = {
 	'@context': 'https://schema.org',
@@ -268,6 +293,65 @@ const webPageSchema = {
 				}
 			</div>
 			<p class="more-link"><a href="/closed-sales/">Ver todas nuestras ventas cerradas (en inglés)</a></p>
+		</div>
+	</section>
+
+	<section class="section reviews-band">
+		<div class="container">
+			<span class="eyebrow">Lo que dicen los dueños</span>
+			<h2>Dueños de apartamentos en Los Ángeles confían en nosotros</h2>
+			<p class="reviews-badge">
+				<span class="reviews-badge__stars" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+				<span>5 estrellas en Google</span>
+			</p>
+			<div class="testimonial-grid">
+				{
+					reviewsEs.map((t) => (
+						<figure class="testimonial-card">
+							<span class="testimonial-card__mark" aria-hidden="true">&ldquo;</span>
+							<blockquote>{t.quote}</blockquote>
+							<figcaption>
+								<span class="testimonial-card__avatar" aria-hidden="true">{t.name.charAt(0)}</span>
+								<span class="testimonial-card__who">
+									<strong>{t.name}</strong>
+									<span>{t.who}</span>
+									{t.caseStudySlug && <a href={`/case-studies/${t.caseStudySlug}/`}>Lea el caso (en inglés) &rarr;</a>}
+								</span>
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+			<p class="reviews-note">Traducido del inglés. Los testimonios originales están en inglés.</p>
+			<div class="reviews-actions">
+				<a href="#formulario" class="btn reviews-actions__primary">Pida una opinión de valor gratis</a>
+				<a href="/testimonials/" class="btn reviews-actions__secondary">Ver todas las reseñas (en inglés)</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section press-section">
+		<div class="container">
+			<span class="eyebrow">En las noticias</span>
+			<h2>Nuestras ventas son noticia</h2>
+			<figure class="ceo-quote">
+				<blockquote>&ldquo;{ceoQuoteEs}&rdquo;</blockquote>
+				<figcaption>
+					<strong>{ceoQuote.name}</strong>, CEO de Equity Union
+					<span class="ceo-quote__via">
+						según <a href={ceoQuote.url} target="_blank" rel="noopener noreferrer">{ceoQuote.source}</a> (en inglés)
+					</span>
+				</figcaption>
+			</figure>
+			<div class="press-strip">
+				{
+					press.map((p) => (
+						<a href={p.url} target="_blank" rel="noopener noreferrer" class={`press-logo press-logo--${p.name.toLowerCase().replace(/\s+/g, '-')}`}>
+							{p.name}
+						</a>
+					))
+				}
+			</div>
 		</div>
 	</section>
 
@@ -679,6 +763,256 @@ const webPageSchema = {
 		color: var(--ink-light);
 	}
 
+	/* Testimonials band */
+	.reviews-band {
+		background: var(--navy-dark);
+		color: #fff;
+	}
+
+	.reviews-band h2 {
+		color: #fff;
+	}
+
+	.reviews-band .eyebrow {
+		color: var(--gold-light);
+	}
+
+	.reviews-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.7rem;
+		margin: 1.25rem 0 0;
+		padding: 0.5rem 1.1rem;
+		border: 1px solid rgba(217, 196, 145, 0.45);
+		border-radius: 999px;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: #fff;
+	}
+
+	.reviews-badge__stars {
+		color: var(--gold);
+		font-size: 1rem;
+		letter-spacing: 0.15em;
+	}
+
+	.testimonial-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+		margin-top: 2.5rem;
+	}
+
+	.testimonial-card {
+		position: relative;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		padding: 2.75rem 1.75rem 1.5rem;
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid rgba(255, 255, 255, 0.12);
+		border-top: 2px solid var(--gold);
+	}
+
+	.testimonial-card__mark {
+		position: absolute;
+		top: 0.35rem;
+		left: 1.5rem;
+		font-family: var(--font-serif);
+		font-size: 4.5rem;
+		line-height: 1;
+		color: var(--gold);
+		opacity: 0.85;
+	}
+
+	.testimonial-card blockquote {
+		margin: 0 0 1.5rem;
+		flex: 1;
+		font-family: var(--font-serif);
+		font-size: 1.15rem;
+		font-style: italic;
+		font-weight: 400;
+		color: #fff;
+		line-height: 1.55;
+	}
+
+	.testimonial-card figcaption {
+		display: flex;
+		align-items: center;
+		gap: 0.85rem;
+		padding-top: 1.1rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.14);
+	}
+
+	.testimonial-card__avatar {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: 50%;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-family: var(--font-serif);
+		font-size: 1.2rem;
+		font-weight: 600;
+	}
+
+	.testimonial-card__who {
+		display: flex;
+		flex-direction: column;
+		gap: 0.1rem;
+		font-family: var(--font-sans);
+		font-size: 0.8rem;
+		color: rgba(255, 255, 255, 0.75);
+	}
+
+	.testimonial-card__who strong {
+		font-size: 0.95rem;
+		color: #fff;
+	}
+
+	.testimonial-card__who a {
+		margin-top: 0.2rem;
+		color: var(--gold-light);
+		font-weight: 600;
+	}
+
+	.testimonial-card__who a:hover {
+		color: #fff;
+	}
+
+	.reviews-note {
+		margin: 1.5rem 0 0;
+		font-size: 0.78rem;
+		color: rgba(255, 255, 255, 0.6);
+	}
+
+	.reviews-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+
+	.reviews-actions__primary {
+		background: var(--gold);
+		border-color: var(--gold);
+		color: var(--navy-dark);
+	}
+
+	.reviews-actions__primary:hover {
+		background: var(--gold-light);
+		border-color: var(--gold-light);
+		color: var(--navy-dark);
+	}
+
+	.reviews-actions__secondary {
+		background: transparent;
+		border-color: rgba(255, 255, 255, 0.6);
+		color: #fff;
+	}
+
+	.reviews-actions__secondary:hover {
+		background: rgba(255, 255, 255, 0.12);
+		border-color: #fff;
+		color: #fff;
+	}
+
+	/* In the news */
+	.press-section {
+		text-align: center;
+	}
+
+	.ceo-quote {
+		max-width: 46rem;
+		margin: 2rem auto 0;
+		padding-top: 1.75rem;
+		border-top: 1px solid var(--gold);
+	}
+
+	.ceo-quote blockquote {
+		margin: 0 0 1rem;
+		font-family: var(--font-serif);
+		font-size: 1.45rem;
+		font-style: italic;
+		font-weight: 400;
+		line-height: 1.5;
+		color: var(--navy-dark);
+	}
+
+	.ceo-quote figcaption {
+		font-size: 0.85rem;
+		color: var(--ink-light);
+	}
+
+	.ceo-quote figcaption strong {
+		color: var(--navy-dark);
+	}
+
+	.ceo-quote__via {
+		display: block;
+		margin-top: 0.2rem;
+		font-size: 0.75rem;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.press-strip {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 3rem 4rem;
+		margin-top: 2.5rem;
+	}
+
+	.press-logo {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: var(--ink-light);
+		letter-spacing: 0.01em;
+		opacity: 0.75;
+		transition: opacity 0.2s ease, color 0.2s ease;
+	}
+
+	.press-logo:hover {
+		opacity: 1;
+		text-decoration: none;
+	}
+
+	.press-logo--yahoo-finance {
+		font-family: var(--font-sans);
+		font-weight: 800;
+	}
+
+	.press-logo--yahoo-finance:hover {
+		color: #6001d2;
+	}
+
+	.press-logo--traded {
+		font-family: var(--font-serif);
+		font-weight: 600;
+		text-transform: lowercase;
+	}
+
+	.press-logo--traded:hover {
+		color: var(--navy-dark);
+	}
+
+	.press-logo--bisnow {
+		font-family: var(--font-sans);
+		font-weight: 800;
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
+	}
+
+	.press-logo--bisnow:hover {
+		color: #f0501e;
+	}
+
 	/* Scroll reveal: the script adds .reveal only to blocks that start below the fold, so nothing is hidden if it fails. */
 	.reveal {
 		opacity: 0;
@@ -784,6 +1118,9 @@ const webPageSchema = {
 			'.services-grid > *',
 			'.article-grid > *',
 			'.sales-grid > *',
+			'.testimonial-grid > *',
+			'.ceo-quote',
+			'.press-strip',
 			'main .section > .container > .eyebrow',
 			'main .section > .container > h2',
 		];
