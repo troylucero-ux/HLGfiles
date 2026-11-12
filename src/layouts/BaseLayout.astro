@@ -127,9 +127,12 @@ const builtAt = new Date().toISOString();
 			};
 			(function captureFirstTouch() {
 				const p = new URLSearchParams(window.location.search);
-				const hasUtm = Boolean(p.get('utm_source'));
+				// Paid-ad click IDs (Google, Meta, Microsoft) let a lead be matched to the exact ad later.
+				const clickKeys = ['gclid', 'gbraid', 'wbraid', 'fbclid', 'msclkid'];
+				const clickKey = clickKeys.find((k) => p.get(k)) || '';
+				const hasUtm = Boolean(p.get('utm_source')) || Boolean(clickKey);
 				const stored = read(FIRST_TOUCH);
-				if (stored && !(hasUtm && !stored.utm_source)) return;
+				if (stored && !(hasUtm && !stored.utm_source && !stored.click_id)) return;
 				let referrer = '';
 				try {
 					referrer = document.referrer ? new URL(document.referrer).hostname : '';
@@ -144,6 +147,9 @@ const builtAt = new Date().toISOString();
 					utm_medium: p.get('utm_medium') || '',
 					utm_campaign: p.get('utm_campaign') || '',
 					utm_content: p.get('utm_content') || '',
+					utm_term: p.get('utm_term') || '',
+					click_id_type: clickKey,
+					click_id: clickKey ? (p.get(clickKey) || '').slice(0, 200) : '',
 				});
 			})();
 			// @ts-expect-error — attached for the forms' scripts; not declared on Window in this project

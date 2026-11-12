@@ -10,10 +10,27 @@ const { pageType = 'other' } = Astro.props;
 const orgSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'RealEstateAgent',
+	'@id': `${site.url}/#organization`,
 	name: site.name,
 	url: site.url,
 	image: `${site.url}/images/brand/hlg-logo-light.png`,
 	telephone: site.phone,
+	description:
+		'Los Angeles multifamily investment sales team advising apartment building owners on sales, 1031 exchanges, trust and estate sales, and land for development.',
+	identifier: { '@type': 'PropertyValue', propertyID: 'California DRE license', value: site.officeDRE },
+	knowsAbout: ['Multifamily investment sales', 'Apartment building valuation', 'Los Angeles rent stabilization', 'Measure ULA transfer tax', '1031 exchanges', 'Trust and estate property sales'],
+	knowsLanguage: ['English', 'Spanish'],
+	hasOfferCatalog: {
+		'@type': 'OfferCatalog',
+		name: 'Multifamily brokerage services',
+		itemListElement: [
+			{ '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Apartment building sales (seller and buyer representation)', url: `${site.url}/` } },
+			{ '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Broker opinion of value', url: `${site.url}/broker-opinion-of-value/` } },
+			{ '@type': 'Offer', itemOffered: { '@type': 'Service', name: '1031 exchange advisory', url: `${site.url}/1031-exchanges/` } },
+			{ '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Trust and estate sales', url: `${site.url}/trust-and-estate-sales/` } },
+			{ '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Land for development sales', url: `${site.url}/land-for-development/` } },
+		],
+	},
 	address: {
 		'@type': 'PostalAddress',
 		streetAddress: '16820 Ventura Boulevard',
@@ -22,13 +39,24 @@ const orgSchema = {
 		postalCode: '91436',
 		addressCountry: 'US',
 	},
-	areaServed: {
-		'@type': 'City',
-		name: 'Los Angeles',
-	},
+	areaServed: [
+		{ '@type': 'City', name: 'Los Angeles' },
+		{ '@type': 'AdministrativeArea', name: 'Los Angeles County' },
+	],
 	employee: team.map((member) => ({
 		'@type': 'Person',
+		'@id': `${site.url}/${member.slug}/#person`,
 		name: member.name,
+		url: `${site.url}/${member.slug}/`,
+		...(member.dre
+			? {
+					hasCredential: {
+						'@type': 'EducationalOccupationalCredential',
+						credentialCategory: 'license',
+						name: `California real estate license, DRE #${member.dre}`,
+					},
+				}
+			: {}),
 		jobTitle: `${member.title}, ${member.department}`,
 		telephone: member.phone,
 		email: member.email,

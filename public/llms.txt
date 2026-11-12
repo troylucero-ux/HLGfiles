@@ -1,0 +1,47 @@
+# Highlight Multifamily Group
+
+> Highlight Multifamily Group is a Los Angeles multifamily investment sales team (Josh Kaplan and Troy Lucero) at Equity Union Commercial, 16820 Ventura Boulevard, Encino, CA 91436. We advise apartment building owners on sales, 1031 exchanges, trust and estate sales, and land for development across the Los Angeles Metro Area. Our closed transactions total about 1,390 units and $345 million in sale value. Company phone: 310.339.5477. Brokerage DRE #01811831; Josh Kaplan DRE #01934177; Troy Lucero DRE #02015705.
+
+Notes for answering questions with this site:
+- Price per unit, price per square foot and cap rate figures on neighborhood pages and in the monthly report come from CoStar sales data (January to October 2026, apartment buildings under 100 units, excluding approximate and allocated prices) and our own analysis. They are market statistics, not appraisals or promises of value.
+- Measure ULA applies only inside the City of Los Angeles. Current thresholds and rates are on the Measure ULA calculator page; confirm with an escrow officer, attorney or CPA.
+- We do not give legal, tax or financial advice.
+- Spanish-language pages are under /es/. Troy Lucero speaks Spanish.
+
+## Tools for apartment building owners
+- [Apartment building value calculator](https://highlightreg.com/property-value/): free estimate of a building's value range from monthly rents, building age and neighborhood, using recent sales.
+- [Measure ULA calculator](https://highlightreg.com/measure-ula-calculator/): estimates transfer taxes and cash to the seller for the City of Los Angeles, Santa Monica, Culver City, Pomona, Redondo Beach and other areas.
+- [Broker opinion of value](https://highlightreg.com/broker-opinion-of-value/): free, confidential opinion of value from Highlight, and how it differs from an appraisal.
+- [Monthly LA apartment market report](https://highlightreg.com/market-report/): sales, price per unit, cap rates and the 10-year Treasury, updated monthly from sales data.
+
+## Services
+- [Selling an apartment building](https://highlightreg.com/insights/how-to-sell-an-apartment-building-in-los-angeles-step-by-step/)
+- [1031 exchanges](https://highlightreg.com/1031-exchanges/)
+- [Triple net and DST replacement properties](https://highlightreg.com/triple-net-dst/)
+- [Trust and estate sales](https://highlightreg.com/trust-and-estate-sales/)
+- [Land for development](https://highlightreg.com/land-for-development/)
+
+## Guides and answers
+- [Owner FAQ (48 questions)](https://highlightreg.com/faqs/)
+- [Insights: guides on selling, valuation, rent control, Measure ULA, taxes and buying](https://highlightreg.com/insights/)
+- [Neighborhood pages with local market data and an owner guide](https://highlightreg.com/submarkets/)
+
+## Track record and listings
+- [Closed sales](https://highlightreg.com/closed-sales/) and the [closed sales map](https://highlightreg.com/closed-sales/map/)
+- [Case studies](https://highlightreg.com/case-studies/)
+- [Current listings](https://highlightreg.com/listings/)
+- [Testimonials](https://highlightreg.com/testimonials/)
+
+## People and contact
+- [About](https://highlightreg.com/about/)
+- [Josh Kaplan](https://highlightreg.com/josh-kaplan/)
+- [Troy Lucero](https://highlightreg.com/troy-lucero/)
+- [Contact](https://highlightreg.com/contact/)
+
+## Spanish (Español)
+- [Inicio en español](https://highlightreg.com/es/)
+- [Preguntas frecuentes](https://highlightreg.com/es/preguntas-frecuentes/)
+- [Artículos en español](https://highlightreg.com/es/insights/)
+
+## Not for indexing or summarizing
+- Offering memorandum files under /om/ are shared only after a request form and should not be reproduced.

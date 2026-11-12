@@ -113,6 +113,14 @@ const phoneHref = `tel:+1${site.phone.replace(/\D/g, '')}`;
 					body: JSON.stringify(data),
 				});
 				const result = await res.json();
+				if (res.ok) {
+					// Counts as a lead in Google Analytics. Only the page and the property are sent, never the visitor's details.
+					(window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'generate_lead', {
+						form_name: 'om_download',
+						page_path: window.location.pathname,
+						property: String(box.dataset.property ?? ''),
+					});
+				}
 				if (res.ok && result.omUrl) {
 					link.href = result.omUrl;
 					form.hidden = true;

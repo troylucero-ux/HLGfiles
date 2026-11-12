@@ -400,6 +400,15 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 		}
 		if (bovRent) bovRent.value = data.monthlyGrossRents;
 
+		// Counts as a lead in Google Analytics (and for ads). Only the page and the neighborhood group are sent, never the address or rents.
+		if (typeof window.gtag === 'function') {
+			window.gtag('event', 'generate_lead', {
+				form_name: 'value_calculator',
+				page_path: window.location.pathname,
+				area: areaName || 'Other / Not Listed',
+			});
+		}
+
 		// Log every submission to Pipedrive, even if the visitor never requests a full BOV, so it
 		// can be followed up on directly. Fire-and-forget: never blocks or fails the visitor's result.
 		fetch('/api/valuation-lead', {

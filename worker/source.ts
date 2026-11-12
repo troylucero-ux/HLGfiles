@@ -16,11 +16,21 @@ export function sourceNote(src: unknown): string[] {
 	const referrer = clean(s.referrer, 80);
 	if (utmSource) {
 		lines.push(`Lead source: ${utmSource}${utmMedium ? ` / ${utmMedium}` : ''}${campaign ? ` / campaign ${campaign}` : ''}${content ? ` / post ${content}` : ''}`);
+	} else if (clean(s.click_id_type, 20)) {
+		const t = clean(s.click_id_type, 20);
+		lines.push(`Lead source: paid ad (${t === 'fbclid' ? 'Meta' : t === 'msclkid' ? 'Microsoft' : 'Google'})`);
 	} else if (referrer) {
 		lines.push(`Lead source: referred by ${referrer}`);
 	} else {
 		lines.push('Lead source: direct or unknown');
 	}
+
+	// Paid-ad details: the ad keyword (utm_term) and the ad platform's click ID, so a lead can be matched to the exact ad.
+	const term = clean(s.utm_term, 100);
+	if (term) lines.push(`Ad keyword: ${term}`);
+	const clickId = clean(s.click_id, 200);
+	const clickType = clean(s.click_id_type, 20);
+	if (clickId && clickType) lines.push(`Ad click ID (${clickType}): ${clickId}`);
 
 	const landing = clean(s.landing);
 	if (landing) lines.push(`First page visited: ${landing}`);
