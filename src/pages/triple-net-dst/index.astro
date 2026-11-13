@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BOVForm from '../../components/BOVForm.astro';
+import ExchangeConsultForm from '../../components/ExchangeConsultForm.astro';
 import { site } from '../../data/site';
+import { closings } from '../../data/closings';
+import { formatPrice } from '../../lib/format';
 
 const helpItems = [
 	{
@@ -14,6 +16,188 @@ const helpItems = [
 	},
 ];
 
+// ---- Side-by-side comparison of the three ways an owner can hold real estate after a sale ----
+const compare = [
+	{
+		label: 'Who handles the work',
+		apt: 'You, or a property manager you hire: tenants, repairs, turnover, compliance.',
+		nnn: 'The tenant handles most day-to-day upkeep. You manage the lease and any landlord duties it leaves with you.',
+		dst: 'The sponsor’s professional manager. You are a passive investor.',
+	},
+	{
+		label: 'Your control',
+		apt: 'Full: you set policy, choose when to sell or refinance.',
+		nnn: 'Full: you choose the property, and you can sell or refinance it.',
+		dst: 'None: the sponsor makes the decisions, including when to sell.',
+	},
+	{
+		label: 'Tenants',
+		apt: 'Many residential tenants.',
+		nnn: 'Usually one commercial tenant, sometimes a few.',
+		dst: 'Depends on the property: one tenant for a net-lease DST, many for an apartment DST.',
+	},
+	{
+		label: 'Where the income comes from',
+		apt: 'Monthly rents, with increases limited by rent control where it applies.',
+		nnn: 'A long-term lease, usually with scheduled rent increases.',
+		dst: 'Distributions from the property’s cash flow. They are not guaranteed.',
+	},
+	{
+		label: 'Who can invest',
+		apt: 'Anyone.',
+		nnn: 'Anyone.',
+		dst: 'Accredited investors only.',
+	},
+	{
+		label: 'Size of the investment',
+		apt: 'The price of the building.',
+		nnn: 'The price of the property, which can be one large purchase.',
+		dst: 'Often starts around $100,000, and you can split your money across several DSTs. Minimums vary.',
+	},
+	{
+		label: 'Debt',
+		apt: 'Your existing loan, or a new one.',
+		nnn: 'You can buy all cash or take a new loan.',
+		dst: 'Any debt sits inside the trust, and investors generally do not sign for it personally.',
+	},
+	{
+		label: 'Liquidity',
+		apt: 'You can sell on the open market.',
+		nnn: 'You can sell on the open market, to a buyer pool that is different from the apartment buyers.',
+		dst: 'Limited. Interests are generally held until the sponsor sells, often within 5 to 10 years.',
+	},
+	{
+		label: 'Costs',
+		apt: 'Management, repairs, insurance, taxes.',
+		nnn: 'A brokerage fee at purchase. The lease shifts most operating costs to the tenant.',
+		dst: 'Upfront and ongoing sponsor fees, which the offering documents describe.',
+	},
+	{
+		label: 'Works for a 1031 exchange',
+		apt: 'Yes.',
+		nnn: 'Yes.',
+		dst: 'Yes, when structured to match IRS Revenue Ruling 2004-86.',
+	},
+];
+
+const leaseTypes = [
+	{ type: 'Gross (full service)', tenant: 'Rent only.', landlord: 'Property taxes, insurance, and all maintenance.' },
+	{ type: 'Single net (N)', tenant: 'Rent plus property taxes.', landlord: 'Insurance and maintenance.' },
+	{ type: 'Double net (NN)', tenant: 'Rent plus property taxes and insurance.', landlord: 'Maintenance, usually including the roof and structure.' },
+	{ type: 'Triple net (NNN)', tenant: 'Rent plus property taxes, insurance, and maintenance.', landlord: 'Often still the roof and structure, depending on the lease.' },
+	{ type: 'Absolute net', tenant: 'Everything, including the roof and structure.', landlord: 'Almost nothing. The rent is paid whatever happens to the building.' },
+];
+
+// ---- Worked example 1: debt replacement, with the same math the planner below uses ----
+const ex1 = (() => {
+	const price = 4_000_000;
+	const costs = price * 0.03;
+	const netPrice = price - costs;
+	const payoff = 1_200_000;
+	const equity = netPrice - payoff;
+	return { price, costs, netPrice, payoff, equity };
+})();
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+const ex1Scenarios = [
+	{
+		name: 'All-cash NNN purchase',
+		detail: `Buy a ${money(ex1.equity)} property with your equity and no loan.`,
+		result: `Falls ${money(ex1.netPrice - ex1.equity)} short of the ${money(ex1.netPrice)} needed. The shortfall is the mortgage you paid off, which can be taxable.`,
+		ok: false,
+	},
+	{
+		name: 'One NNN purchase with a loan',
+		detail: `Buy a ${money(ex1.netPrice)} property with ${money(ex1.equity)} down and a ${money(ex1.payoff)} loan (${Math.round((ex1.payoff / ex1.netPrice) * 100)}% of the price).`,
+		result: 'Meets both tests: equal value and all equity reinvested.',
+		ok: true,
+	},
+	{
+		name: 'Two NNN properties',
+		detail: `Buy a $2,000,000 property all cash, and a ${money(ex1.netPrice - 2_000_000)} property with ${money(ex1.equity - 2_000_000)} down and a ${money(ex1.payoff)} loan.`,
+		result: 'Also meets both tests, and splits the money across two tenants. The loan on the second property is a high share of its price.',
+		ok: true,
+	},
+	{
+		name: 'A leveraged DST',
+		detail: `Put ${money(ex1.equity)} into a DST whose property carries its own debt.`,
+		result: 'The trust’s debt can count toward replacing yours, with no loan signed by you. Whether it is enough depends on the offering, so confirm with your intermediary and CPA.',
+		ok: true,
+	},
+];
+
+// ---- Worked example 2: two rent-increase structures on the same lease ----
+const projectRent = (price: number, capPct: number, years: number, annualPct: number, stepPct: number) => {
+	const base = price * (capPct / 100);
+	const annual: number[] = [];
+	const stepped: number[] = [];
+	for (let y = 0; y < years; y++) {
+		annual.push(base * Math.pow(1 + annualPct / 100, y));
+		stepped.push(base * Math.pow(1 + stepPct / 100, Math.floor(y / 5)));
+	}
+	return { annual, stepped };
+};
+const ex2 = projectRent(3_000_000, 6, 15, 1.5, 10);
+const sum = (a: number[]) => a.reduce((s, n) => s + n, 0);
+const ex2Years = [1, 5, 6, 10, 11, 15];
+
+// ---- Real exchanges from our own closed sales ----
+const clientExamples = [
+	{
+		slug: '1136-s-alvarado-st-los-angeles-ca-90006',
+		story: 'Our selling client sold this 24-unit Pico-Union building and used a 1031 exchange to move the proceeds into two triple-net properties, one in Florida and one in Georgia. The tax on the gain was fully deferred.',
+		href: '/insights/1031-exchange-into-triple-net-properties/',
+		cta: 'Read how it worked',
+	},
+	{
+		slug: '707-crenshaw-blvd-los-angeles-ca-90005',
+		story: 'Our selling client exchanged out of this 10-unit Koreatown building into triple-net properties.',
+		href: '/1031-exchanges/',
+		cta: 'See how we run an exchange',
+	},
+]
+	.map((e) => ({ ...e, sale: closings.find((c) => c.slug === e.slug) }))
+	.filter((e) => e.sale);
+
+const nnnChecklist = [
+	{ t: 'Tenant credit', d: 'Is the tenant a public company, a large franchisee, or one person? Is there a corporate or personal guarantee? The rent is only as safe as the tenant paying it.' },
+	{ t: 'Time left on the lease', d: 'A lease with 15 years remaining is a different investment from one with 3. Ask about renewal options and what happens at the end.' },
+	{ t: 'Rent increases', d: 'Fixed steps, annual percentages, or tied to inflation. See the projector below for how much this changes the total.' },
+	{ t: 'What you still have to fix', d: 'Many NNN leases leave the roof and structure with the landlord. Ask for the roof’s age and condition.' },
+	{ t: 'Property taxes after the sale', d: 'In California, a sale usually resets the assessed value. The tenant pays the tax in a NNN lease, so check how the lease handles a higher bill.' },
+	{ t: 'How important the location is to the tenant', d: 'Does the store make money? Can the tenant stop operating but keep paying rent, or walk away? Is the site one the tenant would want to keep?' },
+	{ t: 'Value if the tenant leaves', d: 'What is the land worth, and could another business use the building? This is your fallback.' },
+	{ t: 'Environmental and physical condition', d: 'Gas stations, dry cleaners, and older buildings need extra care. Get inspections, title, and a survey.' },
+];
+
+const dstChecklist = [
+	{ t: 'The sponsor', d: 'How many DSTs have they run, and how many have been sold and closed out? Ask how those turned out for investors.' },
+	{ t: 'The offering document', d: 'The private placement memorandum (PPM) lists the risks, the fees, and the plan. Read the risk section first.' },
+	{ t: 'Fees', d: 'Ask for every fee in dollars and percentages: upfront costs, ongoing management, and the fee when the property sells.' },
+	{ t: 'Debt', d: 'How much does the trust borrow, at what rate, and when does the loan come due compared with the planned hold? A loan that matures early can force a sale.' },
+	{ t: 'The property', d: 'Type, location, occupancy, leases coming up for renewal, and any big repairs ahead.' },
+	{ t: 'Distributions', d: 'Are they covered by the property’s income, or by reserves? Past distributions do not promise future ones.' },
+	{ t: 'Hold period and exit', d: 'How long does the sponsor expect to hold, and what happens if the market is weak when they want to sell?' },
+	{ t: 'Timing and eligibility', d: 'Can the DST close inside your 45-day and 180-day deadlines, and will you pass the accredited-investor check?' },
+];
+
+const glossary = [
+	{ term: 'Triple net (NNN)', def: 'A lease in which the tenant pays rent plus property taxes, insurance, and maintenance.' },
+	{ term: 'Absolute net', def: 'A NNN lease that also puts the roof and structure on the tenant. Terms vary from lease to lease.' },
+	{ term: 'Cap rate', def: 'The year’s net operating income divided by the price. A property that earns $180,000 and sells for $3,000,000 has a 6.0% cap rate.' },
+	{ term: 'Net operating income (NOI)', def: 'The rent a property earns after operating expenses, before debt payments and income tax. In a NNN lease, the base rent is close to the NOI.' },
+	{ term: 'Delaware Statutory Trust (DST)', def: 'A trust that owns real estate and sells beneficial interests to investors. The IRS treats a properly built DST interest as real estate for a 1031 exchange.' },
+	{ term: 'Sponsor', def: 'The company that buys the property, creates the DST, and manages it for the investors.' },
+	{ term: 'Accredited investor', def: 'Generally, a person with income over $200,000 ($300,000 with a spouse) in each of the last two years, or net worth over $1 million not counting their home, or certain securities licenses.' },
+	{ term: 'Private placement memorandum (PPM)', def: 'The offering document for a DST. It describes the property, the plan, the fees, and the risks.' },
+	{ term: '1031 exchange', def: 'A way to defer capital gains tax by reinvesting the proceeds of an investment property into other like-kind real estate within strict deadlines.' },
+	{ term: 'Qualified intermediary (QI)', def: 'The neutral company that holds your sale proceeds during an exchange so you never touch them.' },
+	{ term: 'Boot', def: 'Cash or debt relief you receive in an exchange. It can be taxable even though the rest of the gain is deferred.' },
+	{ term: 'Debt replacement', def: 'Replacing the mortgage you paid off with new debt, trust-level debt in a DST, or extra cash, so the exchange does not produce boot.' },
+	{ term: 'Rent escalation', def: 'A scheduled increase in a lease’s rent, either a percentage each year or a larger step every few years.' },
+	{ term: 'Rollover risk', def: 'The risk that a tenant does not renew, leaving the space empty and the landlord paying for a new lease.' },
+];
+
 const faqs = [
 	{
 		q: 'Do you sell DSTs or NNN properties yourselves?',
@@ -22,6 +206,94 @@ const faqs = [
 	{
 		q: 'Is this only for 1031 exchange clients?',
 		a: 'Most owners we introduce to NNN and DST specialists are exchanging out of an apartment building, but you don’t need to be selling through us to ask for an introduction.',
+	},
+	{
+		q: 'What is a triple-net (NNN) lease?',
+		a: 'It is a lease in which the tenant pays rent plus the property taxes, insurance, and maintenance on the property. The landlord receives the rent with few or no operating bills, which is why NNN properties appeal to owners who want to stop managing a building.',
+	},
+	{
+		q: 'Does "triple net" mean I have no responsibilities as the owner?',
+		a: 'Not always. In many NNN leases the landlord is still responsible for the roof and structure, and you still enforce the lease, collect the rent, and deal with the tenant if something goes wrong. An absolute net lease puts nearly everything on the tenant. Read the lease, because the words "triple net" mean different things in different leases.',
+	},
+	{
+		q: 'What is the difference between NNN and absolute net?',
+		a: 'In a typical NNN lease the tenant pays taxes, insurance, and routine maintenance, while the landlord keeps the roof and structure. In an absolute net lease the tenant also covers the roof and structure, so the landlord’s responsibilities are close to none. Absolute net properties usually cost more for the same rent, because they carry less risk for the owner.',
+	},
+	{
+		q: 'What is a Delaware Statutory Trust (DST)?',
+		a: 'A DST is a trust that owns one or more properties. Investors buy beneficial interests in the trust, and a sponsor manages the property. You receive your share of the cash flow, and you make no decisions about the property. The trust is set up under Delaware law and sold as a security.',
+	},
+	{
+		q: 'Why can a DST be used in a 1031 exchange?',
+		a: 'In Revenue Ruling 2004-86, the IRS said that a beneficial interest in a properly structured DST can be treated as direct ownership of real estate, so it can be like-kind replacement property. The trust has to follow limits on what the trustee may do, which is why DSTs are built the way they are.',
+	},
+	{
+		q: 'What are the "seven deadly sins" of a DST?',
+		a: 'It is the common name for the limits that keep a DST within the IRS ruling. Generally, after the offering closes, the trustee cannot take new money from investors, renegotiate or refinance the debt, sign new leases or renegotiate existing ones, reinvest sale proceeds, make major capital improvements beyond maintenance and repairs, or hold cash beyond limited reserves. It must also pay out its cash flow. The sponsor’s documents spell out how the DST works within these limits.',
+	},
+	{
+		q: 'Who can invest in a DST?',
+		a: 'DST interests are generally offered only to accredited investors. For most individuals that means income over $200,000 ($300,000 with a spouse) in each of the last two years, or a net worth over $1 million not counting your primary residence, or certain securities licenses. A broker-dealer will verify your status.',
+	},
+	{
+		q: 'How much do I need to invest in a DST?',
+		a: 'Minimums vary by offering. Many start around $100,000, and some are lower or higher. Because the minimum is small compared with a whole building, many owners split their exchange money across several DSTs.',
+	},
+	{
+		q: 'How is a DST different from buying an NNN property myself?',
+		a: 'With an NNN property you choose the building, you own it directly, you control it, and you can use a loan. With a DST you own a share of a larger property, you cannot make decisions, and you cannot sell on your own schedule, but you have no landlord duties at all. A DST also lets you spread a smaller amount over several properties. NNN gives you control and DST gives you simplicity.',
+	},
+	{
+		q: 'Can I use both an NNN property and a DST in the same exchange?',
+		a: 'Often, yes. Many owners place part of their proceeds in a NNN property and the rest in one or more DSTs. Each replacement must be identified within the 45-day window, and the combined value and equity have to meet the exchange rules, so plan it with your qualified intermediary and CPA.',
+	},
+	{
+		q: 'How long is my money tied up in a DST?',
+		a: 'Usually for the sponsor’s planned hold, which is often 5 to 10 years, and sometimes longer. You generally cannot force a sale, and there is no ready market for the interests. Treat a DST as money you will not need back early.',
+	},
+	{
+		q: 'What happens when the DST sells the property?',
+		a: 'The trust sells and distributes the proceeds. You can take the cash and pay the deferred tax, or you can do another 1031 exchange with your share, including into another DST, if you follow the exchange rules again.',
+	},
+	{
+		q: 'How fast can a DST close?',
+		a: 'Often much faster than buying a building, sometimes within days, because the sponsor has already bought the property. That is why some owners keep a DST in mind as a backup when time is running short. It depends on the offering, so ask the sponsor about its closing timeline.',
+	},
+	{
+		q: 'What cap rate should I expect on an NNN property?',
+		a: 'It depends on the tenant’s credit, how long the lease has left, the rent increases, and the location. A strong national tenant on a long lease usually sells at a lower cap rate than a smaller operator on a short one. We don’t quote a number because it changes with the market. Compare the cap rate to the risk, not just to other cap rates.',
+	},
+	{
+		q: 'What are the main risks of an NNN property?',
+		a: 'The tenant could stop paying or file for bankruptcy. The lease could end and the space sit empty while you pay for a new tenant. Fixed rents lose buying power if inflation rises. Interest rates can affect what the property is worth if you sell. And one property means one tenant, so your income depends on a single business.',
+	},
+	{
+		q: 'What are the main risks of a DST?',
+		a: 'You cannot control the decisions or the timing of the sale. The interests are hard to sell early. Fees reduce your return. Debt inside the trust adds risk, especially if the loan comes due in a weak market. And distributions are not guaranteed. A good sponsor and a careful read of the offering document are the best protection.',
+	},
+	{
+		q: 'Can I use a loan to buy an NNN property in an exchange?',
+		a: 'Yes. In fact, if you had a mortgage on the building you sold, you may need new debt, or extra cash, so the exchange does not produce taxable boot. Our planner below shows how much replacement value and debt you would need.',
+	},
+	{
+		q: 'What is boot, and why does mortgage payoff matter?',
+		a: 'Boot is cash or debt relief you receive in an exchange, and it can be taxed. If your old mortgage is paid off at closing and your new property has less debt, the IRS can treat the difference as received. To defer all the tax you generally buy replacement property worth at least the net sale price and either take on at least as much debt or add the cash. Your intermediary and CPA will work out the numbers for you.',
+	},
+	{
+		q: 'Do I have to buy outside California?',
+		a: 'No. NNN properties and DSTs are available in many states, and many Los Angeles owners buy out of state because of the choices there. California has its own exchange reporting, and the deferred California gain generally stays taxable if you later sell the out-of-state property, so ask your CPA how it applies to you.',
+	},
+	{
+		q: 'Is NNN income really passive?',
+		a: 'It is much more passive than running an apartment building, but not hands-off. You still own the property, you collect the rent, you pay any landlord repairs, and you decide what to do when the lease ends. If you want no decisions at all, a DST or a property with an absolute net lease is closer to that.',
+	},
+	{
+		q: 'What if I want to cash out instead of exchanging?',
+		a: 'You can sell and pay the tax. Some owners also keep exchanging for life, because under current tax law the heirs of an owner who dies may receive a stepped-up basis that can reduce or erase the deferred gain. Whether that applies to you is a question for your CPA or estate attorney.',
+	},
+	{
+		q: 'How do I choose an NNN broker or a DST sponsor?',
+		a: 'Use the checklists on this page. For an NNN broker, look at their experience in the tenant’s industry and market. For a DST, look at the sponsor’s track record from start to finish, the fees, the debt, and the offering document. We introduce you to specialists and stay involved, but you make the choice, ideally with your CPA and attorney.',
 	},
 ];
 
@@ -34,11 +306,20 @@ const faqSchema = {
 		acceptedAnswer: { '@type': 'Answer', text: f.a },
 	})),
 };
+
+const toc = [
+	{ href: '#compare', label: 'Compare the options' },
+	{ href: '#examples', label: 'Worked examples' },
+	{ href: '#tools', label: 'Free tools' },
+	{ href: '#checklists', label: 'Checklists' },
+	{ href: '#glossary', label: 'Glossary' },
+	{ href: '#faq', label: 'FAQs' },
+];
 ---
 
 <BaseLayout
-	title="Triple Net (NNN) & DSTs | Highlight Multifamily Group"
-	description="Highlight Multifamily Group connects LA apartment owners with trusted NNN commercial brokers and DST professionals for passive, zero-management investments."
+	title="Triple Net (NNN) & DST Guide for LA Apartment Owners"
+	description="NNN and DST explained for LA apartment owners: how they compare, worked examples, free calculators for your 1031 exchange, due-diligence checklists, and FAQs."
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 	<link rel="alternate" hreflang="en" href={`${site.url}/triple-net-dst/`} slot="head" />
@@ -53,10 +334,20 @@ const faqSchema = {
 				connect you with trusted specialists in triple-net (NNN) commercial real estate and Delaware Statutory Trusts (DSTs), and stay involved
 				so you're never navigating the process alone.
 			</p>
+			<p>
+				This page explains how each option works, compares them side by side, walks through examples with real numbers, and gives you three free
+				calculators to try with your own building.
+			</p>
 			<a href="/contact/?intent=nnn-dst" class="btn btn-gold">Talk Through Your Options</a>
 			<p class="lang-link"><a href="/es/triple-net-dst/" hreflang="es" lang="es">Esta página en español &rarr;</a></p>
 		</div>
 	</section>
+
+	<nav class="toc" aria-label="On this page">
+		<div class="container toc__inner">
+			{toc.map((t) => <a href={t.href}>{t.label}</a>)}
+		</div>
+	</nav>
 
 	<section class="section">
 		<div class="container">
@@ -75,7 +366,344 @@ const faqSchema = {
 		</div>
 	</section>
 
+	<section class="section section-alt" id="compare">
+		<div class="container">
+			<span class="eyebrow">Compare</span>
+			<h2>Apartments, NNN, or a DST: How They Differ</h2>
+			<p class="lead">
+				After selling an apartment building, an owner can stay in apartments, buy a triple-net property, buy into a DST, or combine them. None is best
+				for everyone. Here is how they compare on the questions owners ask most.
+			</p>
+			<div class="table-scroll">
+				<table class="cmp">
+					<thead>
+						<tr>
+							<th scope="col"></th>
+							<th scope="col">Apartment building</th>
+							<th scope="col">NNN property</th>
+							<th scope="col">DST</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							compare.map((r) => (
+								<tr>
+									<th scope="row">{r.label}</th>
+									<td data-label="Apartment building">{r.apt}</td>
+									<td data-label="NNN property">{r.nnn}</td>
+									<td data-label="DST">{r.dst}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+
+			<h3 class="sub">What "Net" Means in a Lease</h3>
+			<p class="lead">
+				The word "net" tells you how many of the property’s costs the tenant pays. The more costs the tenant carries, the less work, and the less
+				uncertainty, there is for the owner. Leases are written one at a time, so always read the one for the property you are buying.
+			</p>
+			<div class="table-scroll">
+				<table class="cmp cmp--lease">
+					<thead>
+						<tr>
+							<th scope="col">Lease type</th>
+							<th scope="col">The tenant pays</th>
+							<th scope="col">The landlord usually pays</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							leaseTypes.map((l) => (
+								<tr>
+									<th scope="row">{l.type}</th>
+									<td data-label="The tenant pays">{l.tenant}</td>
+									<td data-label="The landlord usually pays">{l.landlord}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" id="examples">
+		<div class="container">
+			<span class="eyebrow">Examples</span>
+			<h2>Worked Examples</h2>
+			<p class="lead">
+				The numbers in the first two examples are made up to show how the math works. They are not offers, quotes, or market figures, and your own
+				numbers will differ.
+			</p>
+
+			<h3 class="sub">Example 1: Replacing the Debt on Your Old Building</h3>
+			<p>
+				An owner sells a Los Angeles apartment building for <strong>{money(ex1.price)}</strong> and pays <strong>{money(ex1.costs)}</strong> (3%) in
+				selling costs. A <strong>{money(ex1.payoff)}</strong> mortgage is paid off at closing. That leaves <strong>{money(ex1.equity)}</strong> in
+				equity to reinvest. To defer all of the tax, the owner generally has to buy replacement property worth at least the
+				<strong>{money(ex1.netPrice)}</strong> net sale price and reinvest every dollar of that equity. Here is how four approaches compare.
+			</p>
+			<div class="scen-grid">
+				{
+					ex1Scenarios.map((s) => (
+						<article class={s.ok ? 'scen scen--ok' : 'scen scen--no'}>
+							<h4>{s.name}</h4>
+							<p class="scen__detail">{s.detail}</p>
+							<p class="scen__result">
+								<span class="scen__tag">{s.ok ? 'Meets the tests' : 'Falls short'}</span> {s.result}
+							</p>
+						</article>
+					))
+				}
+			</div>
+			<p class="fine">The planner below runs this math on your own numbers.</p>
+
+			<h3 class="sub">Example 2: Two Ways a Lease Can Raise the Rent</h3>
+			<p>
+				Two NNN leases can start at the same rent and still pay differently. Say a $3,000,000 property starts at a 6.0% cap rate, which is
+				<strong>$180,000</strong> a year, with a 15-year lease. One lease raises the rent <strong>1.5% every year</strong>. The other raises it
+				<strong>10% every five years</strong>.
+			</p>
+			<div class="table-scroll">
+				<table class="cmp cmp--num">
+					<thead>
+						<tr>
+							<th scope="col">Lease year</th>
+							<th scope="col">1.5% each year</th>
+							<th scope="col">10% every 5 years</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							ex2Years.map((y) => (
+								<tr>
+									<th scope="row">Year {y}</th>
+									<td data-label="1.5% each year">{money(ex2.annual[y - 1])}</td>
+									<td data-label="10% every 5 years">{money(ex2.stepped[y - 1])}</td>
+								</tr>
+							))
+						}
+						<tr class="cmp__total">
+							<th scope="row">Total over 15 years</th>
+							<td data-label="1.5% each year">{money(sum(ex2.annual))}</td>
+							<td data-label="10% every 5 years">{money(sum(ex2.stepped))}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p>
+				Over 15 years the totals are within about 1% of each other, but the timing is not. The five-year steps pay more in the first year of each new
+				period (years 6 and 11), and the yearly bumps pay more in the years just before the next step. If you plan to sell before the lease ends, the structure
+				matters.
+			</p>
+
+			<h3 class="sub">Example 3: Real Exchanges From Our Own Sales</h3>
+			<div class="real-grid">
+				{
+					clientExamples.map((e) => (
+						<article class="real">
+							<span class="real__tag">Sold by Highlight</span>
+							<h4>{e.sale!.name}</h4>
+							<p class="real__meta">
+								Los Angeles{e.sale!.units ? `, ${e.sale!.units} units` : ''} · {formatPrice(e.sale!.price)}
+							</p>
+							<p>{e.story}</p>
+							<a href={e.href}>{e.cta} &rarr;</a>
+						</article>
+					))
+				}
+			</div>
+			<p class="fine">
+				Every exchange is different. These are examples of what clients have done, not predictions of what you will get. See all
+				<a href="/case-studies/">our case studies</a> or <a href="/1031-exchanges/">how we run a 1031 exchange</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="tools">
+		<div class="container">
+			<span class="eyebrow">Free Tools</span>
+			<h2>Try the Numbers on Your Own Building</h2>
+			<p class="lead">
+				These calculators run in your browser. Nothing you type is sent to us. They simplify the rules and are for education only, so confirm
+				your numbers with your qualified intermediary and CPA.
+			</p>
+
+			<!-- Tool 1: exchange planner -->
+			<article class="tool" id="planner" data-tool="exchange_planner">
+				<header class="tool__head">
+					<h3>1. Exchange Planner</h3>
+					<p>How much replacement value and debt do you need to defer all of the tax?</p>
+				</header>
+				<div class="tool__body">
+					<form class="tool__form" onsubmit="return false">
+						<label>
+							Expected sale price
+							<input class="money" data-id="p-price" inputmode="numeric" value="4,000,000" />
+						</label>
+						<label>
+							Mortgage to pay off
+							<input class="money" data-id="p-payoff" inputmode="numeric" value="1,200,000" />
+						</label>
+						<label>
+							Selling costs (% of price)
+							<input data-id="p-costs" inputmode="decimal" value="3" />
+						</label>
+						<label>
+							Cash you want to take out
+							<input class="money" data-id="p-cash" inputmode="numeric" value="0" />
+						</label>
+					</form>
+					<div class="tool__out" aria-live="polite" data-out="planner"></div>
+				</div>
+			</article>
+
+			<!-- Tool 2: NNN lease projector -->
+			<article class="tool" id="projector" data-tool="nnn_projector">
+				<header class="tool__head">
+					<h3>2. NNN Rent Projector</h3>
+					<p>See the rent a NNN lease pays year by year, with two kinds of rent increases.</p>
+				</header>
+				<div class="tool__body">
+					<form class="tool__form" onsubmit="return false">
+						<label>
+							Purchase price
+							<input class="money" data-id="r-price" inputmode="numeric" value="3,000,000" />
+						</label>
+						<label>
+							Starting cap rate (%)
+							<input data-id="r-cap" inputmode="decimal" value="6" />
+						</label>
+						<label>
+							Lease length (years)
+							<select data-id="r-years">
+								<option>10</option>
+								<option selected>15</option>
+								<option>20</option>
+								<option>25</option>
+							</select>
+						</label>
+						<label>
+							Increase each year (%)
+							<input data-id="r-annual" inputmode="decimal" value="1.5" />
+						</label>
+						<label>
+							Increase every 5 years (%)
+							<input data-id="r-step" inputmode="decimal" value="10" />
+						</label>
+					</form>
+					<div class="tool__out" aria-live="polite" data-out="projector"></div>
+				</div>
+			</article>
+
+			<!-- Tool 3: income match -->
+			<article class="tool" id="income-match" data-tool="income_match">
+				<header class="tool__head">
+					<h3>3. Income Match</h3>
+					<p>What yield would you need to replace your building’s take-home income?</p>
+				</header>
+				<div class="tool__body">
+					<form class="tool__form" onsubmit="return false">
+						<label>
+							Equity to reinvest
+							<input class="money" data-id="m-equity" inputmode="numeric" value="2,680,000" />
+						</label>
+						<label>
+							Your yearly take-home from the building
+							<input class="money" data-id="m-income" inputmode="numeric" value="120,000" />
+						</label>
+						<label>
+							NNN cap rate to compare (%)
+							<input data-id="m-nnn" inputmode="decimal" value="6" />
+						</label>
+						<label>
+							DST yearly distribution rate to compare (%)
+							<input data-id="m-dst" inputmode="decimal" value="5" />
+						</label>
+					</form>
+					<div class="tool__out" aria-live="polite" data-out="match"></div>
+				</div>
+				<p class="fine tool__note">
+					Take-home means what reaches your pocket after the mortgage, expenses, and anything you pay a manager. This comparison buys with cash and no new
+					loan. The rates shown are examples for the calculator, not what you will earn.
+				</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="section" id="checklists">
+		<div class="container">
+			<span class="eyebrow">Due Diligence</span>
+			<h2>What to Check Before You Buy</h2>
+			<p class="lead">Use these lists with your NNN broker or DST professional, and bring your CPA and attorney into the conversation early.</p>
+			<div class="check-cols">
+				<div class="check-col">
+					<h3>NNN Property Checklist</h3>
+					<ul class="checks">
+						{
+							nnnChecklist.map((c) => (
+								<li>
+									<strong>{c.t}</strong>
+									<span>{c.d}</span>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<div class="check-col">
+					<h3>DST Checklist</h3>
+					<ul class="checks">
+						{
+							dstChecklist.map((c) => (
+								<li>
+									<strong>{c.t}</strong>
+									<span>{c.d}</span>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
 	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Timing</span>
+			<h2>How This Fits Into Your 1031 Clock</h2>
+			<p>
+				After your building closes, you have <strong>45 days</strong> to identify replacement property and <strong>180 days</strong> to close on it. Those
+				deadlines are firm, and a NNN purchase can take time to find, negotiate, and close. A DST often closes faster, which is why some owners identify one as a backup.
+			</p>
+			<p>
+				The way to ease the pressure is to start before the sale closes. We bring in your NNN broker once contingencies are removed on your building,
+				so offers can go out while escrow is still open, and we build a 30-day escrow extension option into our counter offers. Read the full
+				process on our <a href="/1031-exchanges/">1031 exchange page</a>, or the article on
+				<a href="/insights/1031-exchange-into-triple-net-properties/">exchanging into triple-net properties</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section" id="glossary">
+		<div class="container">
+			<span class="eyebrow">Glossary</span>
+			<h2>Terms You Will Hear</h2>
+			<dl class="gloss">
+				{
+					glossary.map((g) => (
+						<div class="gloss__item">
+							<dt>{g.term}</dt>
+							<dd>{g.def}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="faq">
 		<div class="container narrow">
 			<span class="eyebrow">Common Questions</span>
 			<h2>NNN & DST FAQs</h2>
@@ -97,7 +725,16 @@ const faqSchema = {
 
 	<section class="section">
 		<div class="container">
-			<BOVForm heading="Explore NNN & DST Options" subheading="Tell us about your goals and timeline, and we'll walk you through what fits and connect you with the right specialist." />
+			<ExchangeConsultForm
+				heading="Explore NNN & DST Options"
+				subheading="Tell us about your goals and timeline, and we'll walk you through what fits and connect you with the right specialist. Free and confidential."
+			/>
+			<p class="fine disclaimer">
+				This page is general information, not tax, legal, or investment advice, and it is not an offer to sell or a solicitation to buy any security. DST
+				interests are securities offered only by licensed professionals to accredited investors through a private placement memorandum, and they carry risks,
+				including loss of principal. Examples use made-up numbers for illustration. Rules and thresholds change, so confirm everything with your CPA, attorney,
+				and qualified intermediary.
+			</p>
 		</div>
 	</section>
 </BaseLayout>
@@ -136,6 +773,44 @@ const faqSchema = {
 		border-color: var(--gold-light);
 	}
 
+	.page-hero .lang-link a {
+		color: var(--gold-light);
+	}
+
+	.toc {
+		background: var(--paper);
+		border-bottom: 1px solid var(--border);
+		position: sticky;
+		top: 85px;
+		z-index: 5;
+	}
+
+	/* Land below the sticky header and the on-page menu when a link jumps to a section. */
+	[id] {
+		scroll-margin-top: 150px;
+	}
+
+	.toc__inner {
+		display: flex;
+		gap: 0.25rem 1.5rem;
+		overflow-x: auto;
+		padding-block: 0.8rem;
+		white-space: nowrap;
+	}
+
+	.toc a {
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: var(--navy);
+	}
+
+	.toc a:hover {
+		color: var(--gold-dark);
+		text-decoration: none;
+	}
+
 	.help-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -156,8 +831,404 @@ const faqSchema = {
 		margin-bottom: 0.5rem;
 	}
 
+	.lead {
+		max-width: 760px;
+		color: var(--ink);
+	}
+
+	.sub {
+		margin-top: 2.75rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.fine {
+		font-size: 0.82rem;
+		color: var(--ink-light);
+		line-height: 1.55;
+		margin-top: 1rem;
+	}
+
 	.narrow {
-		max-width: 720px;
+		max-width: 760px;
+	}
+
+	/* ---------- Tables ---------- */
+	.table-scroll {
+		overflow-x: auto;
+		margin-top: 1.25rem;
+		background: #fff;
+		border: 1px solid var(--border);
+	}
+
+	.cmp {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+		min-width: 720px;
+	}
+
+	.cmp th,
+	.cmp td {
+		text-align: left;
+		vertical-align: top;
+		padding: 0.8rem 1rem;
+		border-bottom: 1px solid var(--border);
+		line-height: 1.5;
+	}
+
+	.cmp thead th {
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.74rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.cmp tbody th {
+		width: 17%;
+		font-weight: 700;
+		color: var(--navy-dark);
+		background: var(--navy-tint);
+	}
+
+	.cmp tbody tr:last-child th,
+	.cmp tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.cmp--lease {
+		min-width: 620px;
+	}
+
+	.cmp--num {
+		min-width: 0;
+	}
+
+	.cmp__total th,
+	.cmp__total td {
+		font-weight: 700;
+		color: var(--navy-dark);
+		background: var(--navy-tint);
+	}
+
+	/* ---------- Examples ---------- */
+	.scen-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1rem;
+		margin-top: 1.25rem;
+	}
+
+	.scen {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		padding: 1.25rem 1.35rem;
+	}
+
+	.scen--no {
+		border-top-color: #b5483b;
+	}
+
+	.scen--ok {
+		border-top-color: #3d7a55;
+	}
+
+	.scen h4 {
+		margin: 0 0 0.5rem;
+		font-size: 1.05rem;
+		color: var(--navy-dark);
+	}
+
+	.scen p {
+		margin: 0 0 0.6rem;
+		font-size: 0.9rem;
+		line-height: 1.55;
+	}
+
+	.scen__tag {
+		display: inline-block;
+		margin-right: 0.35rem;
+		padding: 0.1rem 0.5rem;
+		border-radius: 999px;
+		font-size: 0.68rem;
+		font-weight: 800;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: #fff;
+		background: #3d7a55;
+	}
+
+	.scen--no .scen__tag {
+		background: #b5483b;
+	}
+
+	.real-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.25rem;
+	}
+
+	.real {
+		background: var(--navy-dark);
+		color: #d7e0ea;
+		padding: 1.5rem 1.6rem;
+		border-radius: 2px;
+	}
+
+	.real h4 {
+		color: #fff;
+		margin: 0.4rem 0 0.2rem;
+		font-size: 1.2rem;
+	}
+
+	.real__tag {
+		font-size: 0.68rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--gold-light);
+	}
+
+	.real__meta {
+		font-size: 0.85rem;
+		color: var(--gold-light);
+		margin: 0 0 0.75rem;
+	}
+
+	.real a {
+		color: var(--gold-light);
+		font-weight: 600;
+	}
+
+	/* ---------- Tools ---------- */
+	.tool {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		margin-top: 1.75rem;
+		box-shadow: 0 18px 34px -28px rgb(12 46 80 / 0.5);
+	}
+
+	.tool__head {
+		padding: 1.25rem 1.5rem 0;
+	}
+
+	.tool__head h3 {
+		margin: 0;
+		font-size: 1.3rem;
+	}
+
+	.tool__head p {
+		margin: 0.3rem 0 0;
+		color: var(--ink-light);
+		font-size: 0.92rem;
+	}
+
+	.tool__body {
+		display: grid;
+		grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.4fr);
+		gap: 1.75rem;
+		padding: 1.25rem 1.5rem 1.5rem;
+	}
+
+	.tool__form {
+		display: grid;
+		gap: 0.85rem;
+		align-content: start;
+	}
+
+	.tool__form label {
+		display: grid;
+		gap: 0.3rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	.tool__form input,
+	.tool__form select {
+		font: inherit;
+		font-size: 1rem;
+		font-weight: 500;
+		padding: 0.6rem 0.75rem;
+		border: 1px solid #c9c3b4;
+		border-radius: 2px;
+		background: var(--paper);
+		color: var(--ink);
+	}
+
+	.tool__form input:focus,
+	.tool__form select:focus {
+		outline: 2px solid var(--gold);
+		outline-offset: 1px;
+	}
+
+	.tool__out {
+		background: var(--navy-tint);
+		border-radius: 2px;
+		padding: 1.25rem 1.4rem;
+		min-height: 8rem;
+		font-size: 0.92rem;
+		line-height: 1.55;
+	}
+
+	.tool__note {
+		padding: 0 1.5rem 1.25rem;
+		margin: 0;
+	}
+
+	/* The calculator results are written by the script, so these rules have to be global. */
+	:global(.out-big) {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: clamp(1.7rem, 3vw, 2.2rem);
+		line-height: 1.1;
+		color: var(--navy-dark);
+	}
+
+	:global(.out-label) {
+		display: block;
+		font-size: 0.74rem;
+		font-weight: 700;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+		color: var(--gold-dark);
+		margin-top: 0.9rem;
+	}
+
+	:global(.out-label:first-child) {
+		margin-top: 0;
+	}
+
+	:global(.out-note) {
+		margin: 0.9rem 0 0;
+		padding-top: 0.8rem;
+		border-top: 1px solid #cdd8e5;
+		font-size: 0.85rem;
+	}
+
+	:global(.out-warn) {
+		color: #8a2f25;
+		font-weight: 600;
+	}
+
+	:global(.out-table) {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.85rem;
+		margin-top: 0.9rem;
+	}
+
+	:global(.out-table th),
+	:global(.out-table td) {
+		padding: 0.4rem 0.5rem;
+		text-align: right;
+		border-bottom: 1px solid #cdd8e5;
+	}
+
+	:global(.out-table th:first-child),
+	:global(.out-table td:first-child) {
+		text-align: left;
+	}
+
+	:global(.out-table thead th) {
+		font-size: 0.7rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--ink-light);
+	}
+
+	:global(.out-table tfoot td) {
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	:global(.out-scroll) {
+		max-height: 17rem;
+		overflow: auto;
+		margin-top: 0.4rem;
+	}
+
+	/* ---------- Checklists, glossary, FAQ ---------- */
+	.check-cols {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.check-col {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		padding: 1.5rem 1.6rem;
+	}
+
+	.check-col h3 {
+		margin: 0 0 0.75rem;
+		font-size: 1.25rem;
+	}
+
+	.checks {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.9rem;
+	}
+
+	.checks li {
+		position: relative;
+		padding-left: 1.7rem;
+		display: grid;
+		gap: 0.15rem;
+		line-height: 1.55;
+	}
+
+	.checks li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.35rem;
+		width: 0.8rem;
+		height: 0.45rem;
+		border-left: 2px solid var(--gold-dark);
+		border-bottom: 2px solid var(--gold-dark);
+		transform: rotate(-45deg);
+	}
+
+	.checks strong {
+		color: var(--navy-dark);
+	}
+
+	.checks span {
+		font-size: 0.9rem;
+		color: var(--ink);
+	}
+
+	.gloss {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 0.75rem 2rem;
+		margin: 1.5rem 0 0;
+	}
+
+	.gloss__item {
+		padding: 0.9rem 0;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.gloss dt {
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+	}
+
+	.gloss dd {
+		margin: 0.25rem 0 0;
+		font-size: 0.92rem;
+		line-height: 1.6;
 	}
 
 	.faq-list {
@@ -182,10 +1253,235 @@ const faqSchema = {
 	.faq-item p {
 		margin-top: 0.75rem;
 		margin-bottom: 0;
+		line-height: 1.7;
 	}
 
 	.faq-cta {
 		margin-top: 1.5rem;
 		font-size: 0.9rem;
 	}
+
+	.disclaimer {
+		margin-top: 2rem;
+		max-width: 820px;
+	}
+
+	@media (max-width: 820px) {
+		.tool__body {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+
+	/* On a phone, the comparison tables turn into stacked cards so nothing needs sideways scrolling. */
+	@media (max-width: 700px) {
+		.table-scroll {
+			border: none;
+			background: none;
+			overflow: visible;
+		}
+
+		.cmp,
+		.cmp--lease {
+			min-width: 0;
+		}
+
+		.cmp thead {
+			display: none;
+		}
+
+		.cmp,
+		.cmp tbody,
+		.cmp tr,
+		.cmp th,
+		.cmp td {
+			display: block;
+			width: 100%;
+		}
+
+		.cmp tr {
+			background: #fff;
+			border: 1px solid var(--border);
+			margin-bottom: 0.75rem;
+		}
+
+		.cmp tbody th {
+			width: 100%;
+			border-bottom: 1px solid var(--border);
+		}
+
+		.cmp td {
+			border-bottom: 1px solid var(--border);
+		}
+
+		.cmp td::before {
+			content: attr(data-label);
+			display: block;
+			font-size: 0.68rem;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--gold-dark);
+			margin-bottom: 0.15rem;
+		}
+	}
 </style>
+
+<script>
+	// Three simple calculators. They run entirely in the browser and send nothing anywhere except a count that a calculator was used.
+	const fmtMoney = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+	const fmtPct = (n: number, d = 1) => `${n.toFixed(d)}%`;
+	const num = (s: string | undefined | null) => {
+		const v = parseFloat(String(s ?? '').replace(/[^0-9.]/g, ''));
+		return isFinite(v) ? v : 0;
+	};
+	const field = (id: string) => document.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-id="${id}"]`)!;
+	const out = (name: string) => document.querySelector<HTMLElement>(`[data-out="${name}"]`)!;
+
+	// Show thousands separators in the dollar boxes once the visitor leaves them.
+	document.querySelectorAll<HTMLInputElement>('input.money').forEach((el) => {
+		el.addEventListener('blur', () => {
+			el.value = num(el.value).toLocaleString('en-US');
+		});
+	});
+
+	const used = new Set<string>();
+	let ready = false; // stays false while the page sets up, so loading the page does not count as using a calculator
+	const track = (tool: string) => {
+		if (!ready || used.has(tool)) return;
+		used.add(tool);
+		(window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'calculator_use', {
+			calculator: tool,
+			page_path: window.location.pathname,
+		});
+	};
+
+	// ---- 1. Exchange planner ----
+	function planner() {
+		const price = num(field('p-price').value);
+		const payoff = num(field('p-payoff').value);
+		const costPct = num(field('p-costs').value);
+		const cash = num(field('p-cash').value);
+		const box = out('planner');
+		if (price <= 0) {
+			box.innerHTML = '<p class="out-warn">Enter an expected sale price.</p>';
+			return;
+		}
+		const costs = price * (costPct / 100);
+		const netPrice = price - costs;
+		const equity = netPrice - payoff - cash;
+		if (equity < 0) {
+			box.innerHTML = '<p class="out-warn">The mortgage and cash out are more than your net sale price. Lower one of them.</p>';
+			return;
+		}
+		const debtNeeded = payoff + cash;
+		const ltv = netPrice > 0 ? (debtNeeded / netPrice) * 100 : 0;
+		const short = netPrice - equity;
+		box.innerHTML = `
+			<span class="out-label">To defer all of the gain, buy at least</span>
+			<span class="out-big">${fmtMoney(netPrice)}</span>
+			<span class="out-label">Equity to reinvest</span>
+			<span class="out-big">${fmtMoney(equity)}</span>
+			<span class="out-label">Debt or added cash to replace</span>
+			<span class="out-big">${fmtMoney(debtNeeded)}</span>
+			<p class="out-note">
+				Selling costs: ${fmtMoney(costs)}. ${debtNeeded > 0 ? `If you buy at the minimum price, that is a loan of about ${fmtPct(ltv, 0)} of the price, or the same amount in extra cash, or debt inside a DST.` : 'With no mortgage and no cash taken out, you do not need replacement debt.'}
+			</p>
+			<p class="out-note">
+				${short > 0 ? `<strong>An all-cash purchase with your equity alone</strong> would be ${fmtMoney(equity)}, which is ${fmtMoney(short)} short. That shortfall can be taxable boot.${cash > 0 ? ` The ${fmtMoney(cash)} you take out is taxable boot too.` : ''}` : `<strong>An all-cash purchase</strong> of ${fmtMoney(equity)} would meet the minimum, because you have no mortgage to replace.`}
+			</p>`;
+		track('exchange_planner');
+	}
+
+	// ---- 2. NNN rent projector ----
+	function projector() {
+		const price = num(field('r-price').value);
+		const cap = num(field('r-cap').value);
+		const years = parseInt((field('r-years') as HTMLSelectElement).value, 10) || 15;
+		const annualPct = num(field('r-annual').value);
+		const stepPct = num(field('r-step').value);
+		const box = out('projector');
+		if (price <= 0 || cap <= 0) {
+			box.innerHTML = '<p class="out-warn">Enter a price and a cap rate.</p>';
+			return;
+		}
+		const base = price * (cap / 100);
+		const rowsA: number[] = [];
+		const rowsB: number[] = [];
+		for (let y = 0; y < years; y++) {
+			rowsA.push(base * Math.pow(1 + annualPct / 100, y));
+			rowsB.push(base * Math.pow(1 + stepPct / 100, Math.floor(y / 5)));
+		}
+		const sum = (a: number[]) => a.reduce((s, n) => s + n, 0);
+		const totalA = sum(rowsA);
+		const totalB = sum(rowsB);
+		const body = rowsA
+			.map((a, i) => `<tr><td>Year ${i + 1}</td><td>${fmtMoney(a)}</td><td>${fmtMoney(rowsB[i])}</td></tr>`)
+			.join('');
+		box.innerHTML = `
+			<span class="out-label">Year 1 rent</span>
+			<span class="out-big">${fmtMoney(base)} <small style="font-size:0.9rem;font-family:inherit">(${fmtMoney(base / 12)} a month)</small></span>
+			<div class="out-scroll">
+				<table class="out-table">
+					<thead><tr><th>Lease year</th><th>${fmtPct(annualPct, 1)} each year</th><th>${fmtPct(stepPct, 1)} every 5 years</th></tr></thead>
+					<tbody>${body}</tbody>
+					<tfoot><tr><td>Total, ${years} years</td><td>${fmtMoney(totalA)}</td><td>${fmtMoney(totalB)}</td></tr>
+					<tr><td>Average yearly yield on price</td><td>${fmtPct((totalA / years / price) * 100, 2)}</td><td>${fmtPct((totalB / years / price) * 100, 2)}</td></tr></tfoot>
+				</table>
+			</div>
+			<p class="out-note">
+				This shows base rent only, before any loan payments, vacancy at the end of the lease, or income tax. If the tenant does not renew, rent stops
+				until a new tenant signs.
+			</p>`;
+		track('nnn_projector');
+	}
+
+	// ---- 3. Income match ----
+	function incomeMatch() {
+		const equity = num(field('m-equity').value);
+		const income = num(field('m-income').value);
+		const nnn = num(field('m-nnn').value);
+		const dst = num(field('m-dst').value);
+		const box = out('match');
+		if (equity <= 0) {
+			box.innerHTML = '<p class="out-warn">Enter the equity you plan to reinvest.</p>';
+			return;
+		}
+		const need = (income / equity) * 100;
+		const nnnIncome = equity * (nnn / 100);
+		const dstIncome = equity * (dst / 100);
+		const row = (label: string, value: number) => {
+			const diff = value - income;
+			return `<tr><td>${label}</td><td>${fmtMoney(value)}</td><td>${diff >= 0 ? '+' : '−'}${fmtMoney(Math.abs(diff))}</td></tr>`;
+		};
+		const needNnn = nnn > 0 ? income / (nnn / 100) : 0;
+		const needDst = dst > 0 ? income / (dst / 100) : 0;
+		box.innerHTML = `
+			<span class="out-label">Yield needed to match your income</span>
+			<span class="out-big">${fmtPct(need, 2)}</span>
+			<table class="out-table">
+				<thead><tr><th>Option</th><th>Income a year</th><th>vs. today</th></tr></thead>
+				<tbody>
+					${row(`NNN at ${fmtPct(nnn, 2)}`, nnnIncome)}
+					${row(`DST at ${fmtPct(dst, 2)}`, dstIncome)}
+				</tbody>
+			</table>
+			<p class="out-note">
+				To match ${fmtMoney(income)} a year you would need about ${nnn > 0 ? fmtMoney(needNnn) : 'n/a'} invested at the NNN rate, or about
+				${dst > 0 ? fmtMoney(needDst) : 'n/a'} at the DST rate. ${need > Math.max(nnn, dst) ? 'Your building may be paying more than these passive rates, so the trade is usually between income and effort, not just income.' : ''}
+			</p>`;
+		track('income_match');
+	}
+
+	const wire = (ids: string[], fn: () => void) => {
+		ids.forEach((id) => {
+			const el = field(id);
+			el.addEventListener('input', fn);
+			el.addEventListener('change', fn);
+		});
+		fn();
+	};
+	wire(['p-price', 'p-payoff', 'p-costs', 'p-cash'], planner);
+	wire(['r-price', 'r-cap', 'r-years', 'r-annual', 'r-step'], projector);
+	wire(['m-equity', 'm-income', 'm-nnn', 'm-dst'], incomeMatch);
+	ready = true;
+</script>
