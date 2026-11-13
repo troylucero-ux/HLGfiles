@@ -34,6 +34,7 @@ export const site = {
 		linkedin: 'https://www.linkedin.com/in/josh-a-kaplan/',
 		instagram: 'https://www.instagram.com/highlightmultifamily/',
 		facebook: 'https://www.facebook.com/LAMultifamily',
+		x: 'https://x.com/HighlightMFG',
 	},
 };
 
