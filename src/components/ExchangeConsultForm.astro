@@ -1,73 +1,131 @@
 ---
 // Short 1031 exchange consult request. The three questions tell us how urgent the exchange is before we call.
 // Posts to /api/1031-lead (worker/exchange-lead.ts), which creates a Pipedrive lead.
+// lang="es" shows the form in Spanish and tags the lead as Spanish. Option values stay English because the worker checks them.
 interface Props {
 	heading?: string;
 	subheading?: string;
+	lang?: 'en' | 'es';
 }
 
-const { heading = 'Talk Through Your 1031 Exchange', subheading = 'Tell us where you are and we will call you to plan the exchange. Free and confidential.' } = Astro.props;
+const { lang = 'en' } = Astro.props;
+const text = {
+	en: {
+		heading: 'Talk Through Your 1031 Exchange',
+		subheading: 'Tell us where you are and we will call you to plan the exchange. Free and confidential.',
+		name: 'Name',
+		email: 'Email',
+		phone: 'Phone',
+		optional: '(optional)',
+		stage: 'Where are you in the sale?',
+		interest: 'What might you buy?',
+		timing: 'When do you expect to close the sale?',
+		select: 'Select one',
+		stages: ['Just exploring', 'Preparing to list', 'Listed or in escrow', 'Sale closed (the 45 days are running)'],
+		interests: ['Apartments', 'Triple-net (NNN) property', 'Delaware Statutory Trust (DST)', 'Not sure yet'],
+		timings: ['Within 60 days', 'In 2 to 6 months', 'In 6 to 12 months', 'Not sure yet'],
+		consentPre: 'I agree to the ',
+		privacy: 'Privacy Policy',
+		consentPost: ' and to be contacted about my exchange. You can unsubscribe at any time.',
+		submit: 'Request My Exchange Call',
+	},
+	es: {
+		heading: 'Hablemos de su intercambio 1031',
+		subheading: 'Cuéntenos en qué punto está y lo llamaremos para planear el intercambio, en español. Gratis y confidencial.',
+		name: 'Nombre',
+		email: 'Correo electrónico',
+		phone: 'Teléfono',
+		optional: '(opcional)',
+		stage: '¿En qué punto está de la venta?',
+		interest: '¿Qué podría comprar?',
+		timing: '¿Cuándo espera cerrar la venta?',
+		select: 'Elija una',
+		stages: ['Solo estoy explorando', 'Preparándome para listar', 'Listado o en depósito en garantía (escrow)', 'La venta ya cerró (los 45 días están corriendo)'],
+		interests: ['Apartamentos', 'Propiedad triple net (NNN)', 'Fideicomiso Estatutario de Delaware (DST)', 'Todavía no estoy seguro'],
+		timings: ['En los próximos 60 días', 'En 2 a 6 meses', 'En 6 a 12 meses', 'Todavía no estoy seguro'],
+		consentPre: 'Acepto la ',
+		privacy: 'Política de Privacidad',
+		consentPost: ' (en inglés) y que me contacten sobre mi intercambio. Puedo cancelar en cualquier momento.',
+		submit: 'Solicitar mi llamada sobre el intercambio',
+	},
+}[lang];
+// Values sent to the worker, in the same order as the labels above.
+const stageValues = ['Just exploring', 'Preparing to list', 'Listed or in escrow', 'Sale closed (the 45 days are running)'];
+const interestValues = ['Apartments', 'Triple-net (NNN) property', 'Delaware Statutory Trust (DST)', 'Not sure yet'];
+const timingValues = ['Within 60 days', 'In 2 to 6 months', 'In 6 to 12 months', 'Not sure yet'];
+
+const { heading = text.heading, subheading = text.subheading } = Astro.props;
+const privacyHref = '/privacy-policy/';
 ---
 
 <section class="xc" id="exchange-consult">
 	<h2>{heading}</h2>
 	<p class="xc__sub">{subheading}</p>
-	<form class="js-xc-form" novalidate>
+	<form class="js-xc-form" data-lang={lang} novalidate>
+		{lang === 'es' && <input type="hidden" name="language" value="Spanish" />}
 		<div class="xc__grid">
 			<div>
-				<label for="xc-name">Name</label>
+				<label for="xc-name">{text.name}</label>
 				<input id="xc-name" name="name" type="text" autocomplete="name" required />
 			</div>
 			<div>
-				<label for="xc-email">Email</label>
+				<label for="xc-email">{text.email}</label>
 				<input id="xc-email" name="email" type="email" autocomplete="email" required />
 			</div>
 			<div class="xc__wide">
-				<label for="xc-phone">Phone <span class="xc__opt">(optional)</span></label>
+				<label for="xc-phone">{text.phone} <span class="xc__opt">{text.optional}</span></label>
 				<input id="xc-phone" name="phone" type="tel" autocomplete="tel" />
 			</div>
 			<div>
-				<label for="xc-stage">Where are you in the sale?</label>
+				<label for="xc-stage">{text.stage}</label>
 				<select id="xc-stage" name="stage" required>
-					<option value="">Select one</option>
-					<option>Just exploring</option>
-					<option>Preparing to list</option>
-					<option>Listed or in escrow</option>
-					<option>Sale closed (the 45 days are running)</option>
+					<option value="">{text.select}</option>
+					{text.stages.map((o, i) => <option value={stageValues[i]}>{o}</option>)}
 				</select>
 			</div>
 			<div>
-				<label for="xc-interest">What might you buy?</label>
+				<label for="xc-interest">{text.interest}</label>
 				<select id="xc-interest" name="interest" required>
-					<option value="">Select one</option>
-					<option>Apartments</option>
-					<option>Triple-net (NNN) property</option>
-					<option>Delaware Statutory Trust (DST)</option>
-					<option>Not sure yet</option>
+					<option value="">{text.select}</option>
+					{text.interests.map((o, i) => <option value={interestValues[i]}>{o}</option>)}
 				</select>
 			</div>
 			<div class="xc__wide">
-				<label for="xc-timing">When do you expect to close the sale?</label>
+				<label for="xc-timing">{text.timing}</label>
 				<select id="xc-timing" name="timing" required>
-					<option value="">Select one</option>
-					<option>Within 60 days</option>
-					<option>In 2 to 6 months</option>
-					<option>In 6 to 12 months</option>
-					<option>Not sure yet</option>
+					<option value="">{text.select}</option>
+					{text.timings.map((o, i) => <option value={timingValues[i]}>{o}</option>)}
 				</select>
 			</div>
 		</div>
 		<label class="xc__consent">
 			<input type="checkbox" name="privacyConsent" required />
-			<span>I agree to the <a href="/privacy-policy/">Privacy Policy</a> and to be contacted about my exchange. You can unsubscribe at any time.</span>
+			<span>{text.consentPre}<a href={privacyHref}>{text.privacy}</a>{text.consentPost}</span>
 		</label>
-		<button type="submit" class="btn btn-gold">Request My Exchange Call</button>
+		<button type="submit" class="btn btn-gold">{text.submit}</button>
 		<p class="xc__status" role="status" hidden></p>
 	</form>
 </section>
 
 <script>
+	const MSG = {
+		en: {
+			incomplete: 'Please complete the required fields and accept the privacy policy.',
+			sending: 'Sending...',
+			thanks: "Thank you. We'll call you shortly to plan your exchange.",
+			wrong: 'Something went wrong. Please try again.',
+			wrongCall: 'Something went wrong. Please try again or call us directly.',
+		},
+		es: {
+			incomplete: 'Por favor complete los campos obligatorios y acepte la política de privacidad.',
+			sending: 'Enviando...',
+			thanks: 'Gracias. Lo llamaremos pronto para planear su intercambio.',
+			wrong: 'Algo salió mal. Por favor intente de nuevo.',
+			wrongCall: 'Algo salió mal. Por favor intente de nuevo o llámenos directamente.',
+		},
+	};
 	document.querySelectorAll<HTMLFormElement>('.js-xc-form').forEach((form) => {
+		const m = MSG[form.dataset.lang === 'es' ? 'es' : 'en'];
 		const status = form.querySelector<HTMLParagraphElement>('.xc__status')!;
 		const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
 		form.addEventListener('submit', async (e) => {
@@ -75,7 +133,7 @@ const { heading = 'Talk Through Your 1031 Exchange', subheading = 'Tell us where
 			status.hidden = false;
 			if (!form.checkValidity()) {
 				status.style.color = '#b3261e';
-				status.textContent = 'Please complete the required fields and accept the privacy policy.';
+				status.textContent = m.incomplete;
 				form.reportValidity();
 				return;
 			}
@@ -84,13 +142,13 @@ const { heading = 'Talk Through Your 1031 Exchange', subheading = 'Tell us where
 			data.source = (window as unknown as { hlgSource?: () => unknown }).hlgSource?.();
 			button.disabled = true;
 			status.style.color = '';
-			status.textContent = 'Sending...';
+			status.textContent = m.sending;
 			try {
 				const res = await fetch('/api/1031-lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
 				const result = await res.json();
 				if (res.ok) {
 					status.style.color = 'var(--success)';
-					status.textContent = "Thank you. We'll call you shortly to plan your exchange.";
+					status.textContent = m.thanks;
 					// Counts as a lead in Google Analytics. Only the page and the form's purpose are sent, never the visitor's details.
 					(window as unknown as { gtag?: (...a: unknown[]) => void }).gtag?.('event', 'generate_lead', {
 						form_name: 'consult_1031',
@@ -99,11 +157,11 @@ const { heading = 'Talk Through Your 1031 Exchange', subheading = 'Tell us where
 					form.reset();
 				} else {
 					status.style.color = '#b3261e';
-					status.textContent = result.error ?? 'Something went wrong. Please try again.';
+					status.textContent = m.wrong;
 				}
 			} catch {
 				status.style.color = '#b3261e';
-				status.textContent = 'Something went wrong. Please try again or call us directly.';
+				status.textContent = m.wrongCall;
 			} finally {
 				button.disabled = false;
 			}

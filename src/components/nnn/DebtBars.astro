@@ -1,0 +1,326 @@
+---
+// Example 1 graphics, plain HTML/CSS bars so they scale to any width:
+//  (a) where a sale price goes: selling costs, mortgage payoff, equity;
+//  (b) each purchase approach against the net sale price that has to be matched.
+interface Props {
+	lang?: 'en' | 'es';
+	price: number;
+	costs: number;
+	netPrice: number;
+	payoff: number;
+	equity: number;
+}
+const { lang = 'en', price, costs, netPrice, payoff, equity } = Astro.props;
+
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+const pct = (n: number) => `${((n / price) * 100).toFixed(2)}%`;
+const targetPos = pct(netPrice);
+const t = {
+	en: {
+		short: 'short',
+		meets: 'Meets both tests',
+		n1: 'All-cash NNN purchase',
+		n2: 'One NNN purchase with a loan',
+		n3: 'Two NNN properties',
+		equity: 'Equity',
+		shortfall: 'Shortfall',
+		loan: 'Loan',
+		p1: 'Property 1, all cash',
+		p2e: 'Property 2, equity',
+		p2l: 'Property 2, loan',
+		c1: (e: string) => `${e} of equity buys a ${e} property.`,
+		c2: (e: string, l: string, n: string) => `${e} equity plus a ${l} loan buys a ${n} property.`,
+		c3: (a: string, b: string, l: string) => `A ${a} property all cash, and a ${b} property with a ${l} loan.`,
+		splitTitle: (p: string) => `Where the ${p} sale price goes`,
+		splitAria: (p: string, c: string, l: string, e: string) => `Of the ${p} sale price, ${c} goes to selling costs, ${l} pays off the mortgage, and ${e} is equity to reinvest.`,
+		lcost: 'Selling costs (3%)',
+		lloan: 'Mortgage paid off',
+		leq: 'Equity to reinvest',
+		note1: (n: string) => `To defer all of the tax, the replacement purchase generally has to be worth at least the <strong>${n}</strong> net price, and use all of the equity.`,
+		cardTitle: (n: string) => `Three ways to buy, against the ${n} target`,
+		target: 'Target',
+		legEq: 'Your equity',
+		legLoan: 'Loan',
+		legGap: 'Shortfall',
+		note2: 'A fourth option, a DST that carries its own debt, is covered in the cards below.',
+	},
+	es: {
+		short: 'de menos',
+		meets: 'Cumple las dos pruebas',
+		n1: 'Compra NNN al contado',
+		n2: 'Una compra NNN con préstamo',
+		n3: 'Dos propiedades NNN',
+		equity: 'Capital',
+		shortfall: 'Faltante',
+		loan: 'Préstamo',
+		p1: 'Propiedad 1, al contado',
+		p2e: 'Propiedad 2, capital',
+		p2l: 'Propiedad 2, préstamo',
+		c1: (e: string) => `${e} de capital compran una propiedad de ${e}.`,
+		c2: (e: string, l: string, n: string) => `${e} de capital más un préstamo de ${l} compran una propiedad de ${n}.`,
+		c3: (a: string, b: string, l: string) => `Una propiedad de ${a} al contado, y una de ${b} con un préstamo de ${l}.`,
+		splitTitle: (p: string) => `A dónde va el precio de venta de ${p}`,
+		splitAria: (p: string, c: string, l: string, e: string) => `Del precio de venta de ${p}, ${c} son costos de venta, ${l} pagan la hipoteca y ${e} son capital para reinvertir.`,
+		lcost: 'Costos de venta (3%)',
+		lloan: 'Hipoteca pagada',
+		leq: 'Capital para reinvertir',
+		note1: (n: string) => `Para diferir todo el impuesto, la compra de reemplazo generalmente debe valer al menos el precio neto de <strong>${n}</strong> y usar todo el capital.`,
+		cardTitle: (n: string) => `Tres maneras de comprar, frente a la meta de ${n}`,
+		target: 'Meta',
+		legEq: 'Su capital',
+		legLoan: 'Préstamo',
+		legGap: 'Faltante',
+		note2: 'Una cuarta opción, un DST que tiene su propia deuda, se explica en las tarjetas de abajo.',
+	},
+}[lang];
+
+// Each purchase approach is a list of segments in order.
+type Seg = { kind: 'equity' | 'loan' | 'gap'; value: number; label: string };
+const twoFirst = 2_000_000;
+const approaches: { name: string; verdict: string; ok: boolean; segs: Seg[]; caption: string }[] = [
+	{
+		name: t.n1,
+		verdict: `${money(netPrice - equity)} ${t.short}`,
+		ok: false,
+		segs: [
+			{ kind: 'equity', value: equity, label: t.equity },
+			{ kind: 'gap', value: netPrice - equity, label: t.shortfall },
+		],
+		caption: t.c1(money(equity)),
+	},
+	{
+		name: t.n2,
+		verdict: t.meets,
+		ok: true,
+		segs: [
+			{ kind: 'equity', value: equity, label: t.equity },
+			{ kind: 'loan', value: payoff, label: t.loan },
+		],
+		caption: t.c2(money(equity), money(payoff), money(netPrice)),
+	},
+	{
+		name: t.n3,
+		verdict: t.meets,
+		ok: true,
+		segs: [
+			{ kind: 'equity', value: twoFirst, label: t.p1 },
+			{ kind: 'equity', value: equity - twoFirst, label: t.p2e },
+			{ kind: 'loan', value: payoff, label: t.p2l },
+		],
+		caption: t.c3(money(twoFirst), money(netPrice - twoFirst), money(payoff)),
+	},
+];
+---
+
+<div class="db">
+	<figure class="db__card">
+		<figcaption>{t.splitTitle(money(price))}</figcaption>
+		<div class="split" role="img" aria-label={t.splitAria(money(price), money(costs), money(payoff), money(equity))}>
+			<span class="split__seg split__seg--cost" style={`width:${pct(costs)}`}></span>
+			<span class="split__seg split__seg--loan" style={`width:${pct(payoff)}`}></span>
+			<span class="split__seg split__seg--eq" style={`width:${pct(equity)}`}></span>
+		</div>
+		<ul class="legend">
+			<li><i class="sw sw--cost"></i><span>{t.lcost}</span><strong>{money(costs)}</strong></li>
+			<li><i class="sw sw--loan"></i><span>{t.lloan}</span><strong>{money(payoff)}</strong></li>
+			<li><i class="sw sw--eq"></i><span>{t.leq}</span><strong>{money(equity)}</strong></li>
+		</ul>
+		<p class="db__note" set:html={t.note1(money(netPrice))} />
+	</figure>
+
+	<figure class="db__card">
+		<figcaption>{t.cardTitle(money(netPrice))}</figcaption>
+		<div class="bars">
+			<div class="target-label" aria-hidden="true"><span style={`right:calc(100% - ${targetPos})`}>{t.target} {money(netPrice)}</span></div>
+			{
+				approaches.map((a) => (
+					<div class="bar-row">
+						<div class="bar-row__head">
+							<strong>{a.name}</strong>
+							<span class={a.ok ? 'tag tag--ok' : 'tag tag--no'}>{a.ok ? '✓ ' : '✗ '}{a.verdict}</span>
+						</div>
+						<div
+							class="track"
+							role="img"
+							aria-label={`${a.name}: ${a.segs.map((s) => `${s.label} ${money(s.value)}`).join(', ')}.`}
+						>
+							<span class="mark" style={`left:${targetPos}`} aria-hidden="true"></span>
+							{a.segs.map((s) => (
+								<span class={`seg seg--${s.kind}`} style={`width:${pct(s.value)}`} title={`${s.label}: ${money(s.value)}`}></span>
+							))}
+						</div>
+						<p class="bar-row__cap">{a.caption}</p>
+					</div>
+				))
+			}
+		</div>
+		<ul class="legend legend--row">
+			<li><i class="sw sw--eq"></i><span>{t.legEq}</span></li>
+			<li><i class="sw sw--loan"></i><span>{t.legLoan}</span></li>
+			<li><i class="sw sw--gap"></i><span>{t.legGap}</span></li>
+		</ul>
+		<p class="db__note">{t.note2}</p>
+	</figure>
+</div>
+
+<style>
+	.db {
+		display: grid;
+		gap: 1.25rem;
+		margin: 1.5rem 0 1.75rem;
+	}
+	.db__card {
+		margin: 0;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		padding: 1.15rem 1.35rem 1.25rem;
+	}
+	figcaption {
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		color: var(--navy);
+		margin-bottom: 0.9rem;
+	}
+	.split,
+	.track {
+		display: flex;
+		gap: 2px;
+		height: 38px;
+	}
+	.split__seg,
+	.seg {
+		display: block;
+		height: 100%;
+		min-width: 3px;
+	}
+	.split__seg:first-child,
+	.seg:first-child {
+		border-radius: 6px 0 0 6px;
+	}
+	.split__seg:last-child,
+	.seg:last-child {
+		border-radius: 0 6px 6px 0;
+	}
+	.split__seg--cost,
+	.sw--cost {
+		background: #8c877b;
+	}
+	.split__seg--loan,
+	.seg--loan,
+	.sw--loan {
+		background: var(--gold);
+	}
+	.split__seg--eq,
+	.seg--equity,
+	.sw--eq {
+		background: var(--navy);
+	}
+	.seg--gap,
+	.sw--gap {
+		background: repeating-linear-gradient(135deg, #fff 0 5px, #e3d9c2 5px 7px);
+		border: 1.5px dashed #8c877b;
+	}
+	.legend {
+		list-style: none;
+		margin: 0.9rem 0 0;
+		padding: 0;
+		display: grid;
+		gap: 0.35rem;
+	}
+	.legend li {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		font-size: 0.93rem;
+		color: var(--ink);
+	}
+	.legend li strong {
+		margin-left: auto;
+		color: var(--navy);
+	}
+	.legend--row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem 1.4rem;
+		margin-top: 0.8rem;
+	}
+	.sw {
+		display: inline-block;
+		width: 14px;
+		height: 14px;
+		border-radius: 3px;
+		flex: none;
+	}
+	.db__note {
+		margin: 0.9rem 0 0;
+		font-size: 0.9rem;
+		color: var(--ink-soft);
+	}
+	.bars {
+		position: relative;
+	}
+	.target-label {
+		position: relative;
+		height: 1.3rem;
+	}
+	.target-label span {
+		position: absolute;
+		top: 0;
+		white-space: nowrap;
+		font-size: 0.76rem;
+		font-weight: 700;
+		color: var(--navy-dark);
+		padding-right: 6px;
+		line-height: 1.2;
+	}
+	.track {
+		position: relative;
+	}
+	.mark {
+		position: absolute;
+		top: -5px;
+		bottom: -5px;
+		width: 0;
+		border-left: 2px dashed var(--navy-dark);
+		z-index: 2;
+		pointer-events: none;
+	}
+	.bar-row + .bar-row {
+		margin-top: 1.15rem;
+	}
+	.bar-row__head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 0.2rem 0.75rem;
+		margin-bottom: 0.35rem;
+		font-size: 0.95rem;
+		color: var(--navy);
+	}
+	.tag {
+		font-size: 0.78rem;
+		font-weight: 700;
+		padding: 0.1rem 0.55rem;
+		border-radius: 99px;
+	}
+	.tag--ok {
+		background: #e3f0e7;
+		color: #24573a;
+	}
+	.tag--no {
+		background: #f6e4df;
+		color: #7a2e20;
+	}
+	.bar-row__cap {
+		margin: 0.35rem 0 0;
+		font-size: 0.86rem;
+		color: var(--ink-soft);
+	}
+	@media (max-width: 700px) {
+		.db__card {
+			padding: 1rem 1rem 1.1rem;
+		}
+	}
+</style>

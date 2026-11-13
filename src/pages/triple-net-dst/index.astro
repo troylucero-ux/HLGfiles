@@ -1,6 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ExchangeConsultForm from '../../components/ExchangeConsultForm.astro';
+import ExchangeTimeline from '../../components/ExchangeTimeline.astro';
+import HowTheyWork from '../../components/nnn/HowTheyWork.astro';
+import LeaseMatrix from '../../components/nnn/LeaseMatrix.astro';
+import DebtBars from '../../components/nnn/DebtBars.astro';
+import RentChart from '../../components/nnn/RentChart.astro';
 import { site } from '../../data/site';
 import { closings } from '../../data/closings';
 import { formatPrice } from '../../lib/format';
@@ -363,6 +368,7 @@ const toc = [
 					))
 				}
 			</div>
+			<HowTheyWork />
 		</div>
 	</section>
 
@@ -404,6 +410,7 @@ const toc = [
 				The word "net" tells you how many of the property’s costs the tenant pays. The more costs the tenant carries, the less work, and the less
 				uncertainty, there is for the owner. Leases are written one at a time, so always read the one for the property you are buying.
 			</p>
+			<LeaseMatrix />
 			<div class="table-scroll">
 				<table class="cmp cmp--lease">
 					<thead>
@@ -445,6 +452,7 @@ const toc = [
 				equity to reinvest. To defer all of the tax, the owner generally has to buy replacement property worth at least the
 				<strong>{money(ex1.netPrice)}</strong> net sale price and reinvest every dollar of that equity. Here is how four approaches compare.
 			</p>
+			<DebtBars price={ex1.price} costs={ex1.costs} netPrice={ex1.netPrice} payoff={ex1.payoff} equity={ex1.equity} />
 			<div class="scen-grid">
 				{
 					ex1Scenarios.map((s) => (
@@ -466,6 +474,7 @@ const toc = [
 				<strong>$180,000</strong> a year, with a 15-year lease. One lease raises the rent <strong>1.5% every year</strong>. The other raises it
 				<strong>10% every five years</strong>.
 			</p>
+			<RentChart annual={ex2.annual} stepped={ex2.stepped} annualLabel="1.5% each year" steppedLabel="10% every 5 years" />
 			<div class="table-scroll">
 				<table class="cmp cmp--num">
 					<thead>
@@ -673,6 +682,7 @@ const toc = [
 		<div class="container narrow">
 			<span class="eyebrow">Timing</span>
 			<h2>How This Fits Into Your 1031 Clock</h2>
+			<ExchangeTimeline />
 			<p>
 				After your building closes, you have <strong>45 days</strong> to identify replacement property and <strong>180 days</strong> to close on it. Those
 				deadlines are firm, and a NNN purchase can take time to find, negotiate, and close. A DST often closes faster, which is why some owners identify one as a backup.

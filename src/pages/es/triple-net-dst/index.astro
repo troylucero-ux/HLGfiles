@@ -1,7 +1,14 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import BOVForm from '../../../components/BOVForm.astro';
+import ExchangeConsultForm from '../../../components/ExchangeConsultForm.astro';
+import ExchangeTimeline from '../../../components/ExchangeTimeline.astro';
+import HowTheyWork from '../../../components/nnn/HowTheyWork.astro';
+import LeaseMatrix from '../../../components/nnn/LeaseMatrix.astro';
+import DebtBars from '../../../components/nnn/DebtBars.astro';
+import RentChart from '../../../components/nnn/RentChart.astro';
 import { site } from '../../../data/site';
+import { closings } from '../../../data/closings';
+import { formatPrice } from '../../../lib/format';
 import { ES, PAGES_ES } from '../../../data/esSlugs';
 
 const en = `${site.url}/triple-net-dst/`;
@@ -18,15 +25,186 @@ const helpItems = [
 	},
 ];
 
-const basics = [
+// ---- Comparación de las tres maneras de tener bienes raíces después de una venta ----
+const compare = [
 	{
-		title: 'Qué es una propiedad triple net (NNN)',
-		body: 'En un contrato triple net, el inquilino, no el dueño, paga los impuestos a la propiedad, el seguro y el mantenimiento. Muchas veces la propiedad está rentada a un solo inquilino comercial con un contrato a largo plazo, así que desaparece la administración diaria de inquilinos.',
+		label: 'Quién hace el trabajo',
+		apt: 'Usted, o un administrador que usted contrata: inquilinos, reparaciones, rotación de inquilinos y cumplimiento de reglas.',
+		nnn: 'El inquilino se encarga de la mayor parte del mantenimiento diario. Usted maneja el contrato y las obligaciones de propietario que el contrato le deje.',
+		dst: 'El administrador profesional del patrocinador. Usted es un inversionista pasivo.',
 	},
 	{
-		title: 'Qué es un DST',
-		body: 'Un DST le permite comprar una participación fraccionada en una propiedad más grande, con administración profesional, como inversionista pasivo. Las participaciones en un DST pueden calificar como propiedad de reemplazo en un intercambio 1031.',
+		label: 'Su control',
+		apt: 'Total: usted fija las políticas y decide cuándo vender o refinanciar.',
+		nnn: 'Total: usted escoge la propiedad y puede venderla o refinanciarla.',
+		dst: 'Ninguno: el patrocinador toma las decisiones, incluso cuándo vender.',
 	},
+	{
+		label: 'Inquilinos',
+		apt: 'Muchos inquilinos residenciales.',
+		nnn: 'Normalmente un solo inquilino comercial, a veces unos cuantos.',
+		dst: 'Depende de la propiedad: un inquilino en un DST de arrendamiento net, muchos en un DST de apartamentos.',
+	},
+	{
+		label: 'De dónde sale el ingreso',
+		apt: 'Rentas mensuales, con aumentos limitados por el control de rentas donde aplica.',
+		nnn: 'Un contrato de largo plazo, normalmente con aumentos de renta programados.',
+		dst: 'Distribuciones del flujo de efectivo de la propiedad. No están garantizadas.',
+	},
+	{
+		label: 'Quién puede invertir',
+		apt: 'Cualquier persona.',
+		nnn: 'Cualquier persona.',
+		dst: 'Solo inversionistas acreditados.',
+	},
+	{
+		label: 'Tamaño de la inversión',
+		apt: 'El precio del edificio.',
+		nnn: 'El precio de la propiedad, que puede ser una sola compra grande.',
+		dst: 'Muchas veces empieza alrededor de $100,000, y usted puede repartir su dinero entre varios DST. Los mínimos varían.',
+	},
+	{
+		label: 'Deuda',
+		apt: 'Su préstamo actual, o uno nuevo.',
+		nnn: 'Puede comprar al contado o con un préstamo nuevo.',
+		dst: 'Cualquier deuda queda dentro del fideicomiso, y por lo general los inversionistas no la firman personalmente.',
+	},
+	{
+		label: 'Liquidez',
+		apt: 'Puede vender en el mercado abierto.',
+		nnn: 'Puede vender en el mercado abierto, a un grupo de compradores distinto al de los apartamentos.',
+		dst: 'Limitada. Las participaciones generalmente se mantienen hasta que el patrocinador vende, muchas veces dentro de 5 a 10 años.',
+	},
+	{
+		label: 'Costos',
+		apt: 'Administración, reparaciones, seguro, impuestos.',
+		nnn: 'Una comisión de corretaje al comprar. El contrato traslada al inquilino la mayor parte de los costos de operación.',
+		dst: 'Honorarios del patrocinador al inicio y de manera continua, que los documentos de la oferta describen.',
+	},
+	{
+		label: 'Sirve para un intercambio 1031',
+		apt: 'Sí.',
+		nnn: 'Sí.',
+		dst: 'Sí, cuando se estructura conforme a la Resolución de Ingresos (Revenue Ruling) 2004-86 del IRS.',
+	},
+];
+
+const leaseTypes = [
+	{ type: 'Bruto (servicio completo)', tenant: 'Solo la renta.', landlord: 'Impuestos a la propiedad, seguro y todo el mantenimiento.' },
+	{ type: 'Net sencillo (N)', tenant: 'La renta más los impuestos a la propiedad.', landlord: 'El seguro y el mantenimiento.' },
+	{ type: 'Net doble (NN)', tenant: 'La renta más los impuestos a la propiedad y el seguro.', landlord: 'El mantenimiento, que normalmente incluye el techo y la estructura.' },
+	{ type: 'Triple net (NNN)', tenant: 'La renta más los impuestos a la propiedad, el seguro y el mantenimiento.', landlord: 'Muchas veces todavía el techo y la estructura, según el contrato.' },
+	{ type: 'Net absoluto', tenant: 'Todo, incluso el techo y la estructura.', landlord: 'Casi nada. La renta se paga pase lo que pase con el edificio.' },
+];
+
+// ---- Ejemplo 1: reemplazo de la deuda, con las mismas cuentas que usa el planificador ----
+const ex1 = (() => {
+	const price = 4_000_000;
+	const costs = price * 0.03;
+	const netPrice = price - costs;
+	const payoff = 1_200_000;
+	const equity = netPrice - payoff;
+	return { price, costs, netPrice, payoff, equity };
+})();
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+
+const ex1Scenarios = [
+	{
+		name: 'Compra NNN al contado',
+		detail: `Compra una propiedad de ${money(ex1.equity)} con su capital y sin préstamo.`,
+		result: `Queda ${money(ex1.netPrice - ex1.equity)} por debajo de los ${money(ex1.netPrice)} que hacen falta. El faltante es la hipoteca que usted pagó, que puede estar sujeta a impuestos.`,
+		ok: false,
+	},
+	{
+		name: 'Una compra NNN con préstamo',
+		detail: `Compra una propiedad de ${money(ex1.netPrice)} con ${money(ex1.equity)} de enganche y un préstamo de ${money(ex1.payoff)} (${Math.round((ex1.payoff / ex1.netPrice) * 100)}% del precio).`,
+		result: 'Cumple las dos pruebas: valor igual y todo el capital reinvertido.',
+		ok: true,
+	},
+	{
+		name: 'Dos propiedades NNN',
+		detail: `Compra una propiedad de $2,000,000 al contado, y una de ${money(ex1.netPrice - 2_000_000)} con ${money(ex1.equity - 2_000_000)} de enganche y un préstamo de ${money(ex1.payoff)}.`,
+		result: 'También cumple las dos pruebas, y reparte el dinero entre dos inquilinos. El préstamo de la segunda propiedad es una parte alta de su precio.',
+		ok: true,
+	},
+	{
+		name: 'Un DST con deuda',
+		detail: `Pone ${money(ex1.equity)} en un DST cuya propiedad tiene su propia deuda.`,
+		result: 'La deuda del fideicomiso puede contar para reemplazar la suya, sin que usted firme ningún préstamo. Si alcanza o no depende de la oferta, así que confírmelo con su intermediario y su contador.',
+		ok: true,
+	},
+];
+
+// ---- Ejemplo 2: dos maneras de aumentar la renta en el mismo contrato ----
+const projectRent = (price: number, capPct: number, years: number, annualPct: number, stepPct: number) => {
+	const base = price * (capPct / 100);
+	const annual: number[] = [];
+	const stepped: number[] = [];
+	for (let y = 0; y < years; y++) {
+		annual.push(base * Math.pow(1 + annualPct / 100, y));
+		stepped.push(base * Math.pow(1 + stepPct / 100, Math.floor(y / 5)));
+	}
+	return { annual, stepped };
+};
+const ex2 = projectRent(3_000_000, 6, 15, 1.5, 10);
+const sum = (a: number[]) => a.reduce((s, n) => s + n, 0);
+const ex2Years = [1, 5, 6, 10, 11, 15];
+
+// ---- Intercambios reales de nuestras propias ventas ----
+const clientExamples = [
+	{
+		slug: '1136-s-alvarado-st-los-angeles-ca-90006',
+		story: 'Nuestro cliente vendedor vendió este edificio de 24 unidades en Pico-Union y usó un intercambio 1031 para pasar el dinero a dos propiedades triple net, una en Florida y otra en Georgia. El impuesto sobre la ganancia se difirió por completo.',
+		href: `/es/insights/${ES.intercambio}/`,
+		cta: 'Lea cómo funcionó',
+	},
+	{
+		slug: '707-crenshaw-blvd-los-angeles-ca-90005',
+		story: 'Nuestro cliente vendedor hizo un intercambio desde este edificio de 10 unidades en Koreatown hacia propiedades triple net.',
+		href: PAGES_ES.intercambios,
+		cta: 'Vea cómo manejamos un intercambio',
+	},
+]
+	.map((e) => ({ ...e, sale: closings.find((c) => c.slug === e.slug) }))
+	.filter((e) => e.sale);
+
+const nnnChecklist = [
+	{ t: 'Crédito del inquilino', d: '¿El inquilino es una empresa pública, un franquiciatario grande o una sola persona? ¿Hay garantía de la empresa o personal? La renta es tan segura como el inquilino que la paga.' },
+	{ t: 'Tiempo que le queda al contrato', d: 'Un contrato con 15 años por delante es una inversión distinta a uno con 3. Pregunte por las opciones de renovación y qué pasa al final.' },
+	{ t: 'Aumentos de renta', d: 'Pueden ser escalones fijos, porcentajes anuales o ligados a la inflación. Vea el proyector de más abajo para saber cuánto cambia el total.' },
+	{ t: 'Lo que todavía le toca reparar', d: 'Muchos contratos NNN dejan el techo y la estructura al propietario. Pida la edad y el estado del techo.' },
+	{ t: 'Impuestos a la propiedad después de la venta', d: 'En California, una venta normalmente reajusta el valor tasado. En un contrato NNN el inquilino paga el impuesto, así que revise cómo maneja el contrato una cuenta más alta.' },
+	{ t: 'Qué tan importante es el local para el inquilino', d: '¿La tienda gana dinero? ¿El inquilino puede dejar de operar pero seguir pagando renta, o irse? ¿Es un local que el inquilino querría conservar?' },
+	{ t: 'Valor si el inquilino se va', d: '¿Cuánto vale el terreno y podría otro negocio usar el edificio? Esa es su alternativa de respaldo.' },
+	{ t: 'Condición ambiental y física', d: 'Las gasolineras, las tintorerías y los edificios antiguos requieren más cuidado. Obtenga inspecciones, título y un levantamiento topográfico.' },
+];
+
+const dstChecklist = [
+	{ t: 'El patrocinador', d: '¿Cuántos DST ha manejado y cuántos se han vendido y cerrado? Pregunte cómo les fue a los inversionistas en ellos.' },
+	{ t: 'El documento de la oferta', d: 'El memorando de colocación privada (PPM) enumera los riesgos, los honorarios y el plan. Lea primero la sección de riesgos.' },
+	{ t: 'Honorarios', d: 'Pida todos los honorarios en dólares y en porcentajes: costos iniciales, administración continua y el honorario cuando se vende la propiedad.' },
+	{ t: 'Deuda', d: '¿Cuánto pide prestado el fideicomiso, a qué tasa, y cuándo vence el préstamo comparado con el plazo que planean mantener la propiedad? Un préstamo que vence temprano puede forzar una venta.' },
+	{ t: 'La propiedad', d: 'Tipo, ubicación, ocupación, contratos que están por renovarse y reparaciones grandes que vienen.' },
+	{ t: 'Distribuciones', d: '¿Las cubre el ingreso de la propiedad o las reservas? Las distribuciones pasadas no prometen las futuras.' },
+	{ t: 'Plazo de tenencia y salida', d: '¿Cuánto tiempo espera mantener el patrocinador la propiedad, y qué pasa si el mercado está débil cuando quiera vender?' },
+	{ t: 'Plazos y elegibilidad', d: '¿Puede cerrar el DST dentro de sus plazos de 45 y 180 días, y usted pasará la verificación de inversionista acreditado?' },
+];
+
+const glossary = [
+	{ term: 'Triple net (NNN)', def: 'Un contrato en el que el inquilino paga la renta más los impuestos a la propiedad, el seguro y el mantenimiento.' },
+	{ term: 'Net absoluto', def: 'Un contrato NNN que además pone el techo y la estructura a cargo del inquilino. Los términos varían de contrato en contrato.' },
+	{ term: 'Tasa de capitalización (cap rate)', def: 'El ingreso operativo neto de un año dividido entre el precio. Una propiedad que genera $180,000 y se vende en $3,000,000 tiene una tasa de capitalización de 6.0%.' },
+	{ term: 'Ingreso operativo neto (NOI)', def: 'La renta que gana una propiedad después de los gastos de operación, antes de los pagos de deuda y del impuesto sobre la renta. En un contrato NNN, la renta base se acerca al NOI.' },
+	{ term: 'Fideicomiso Estatutario de Delaware (DST)', def: 'Un fideicomiso que es dueño de bienes raíces y vende participaciones beneficiarias a inversionistas. El IRS trata una participación en un DST bien estructurado como bienes raíces para un intercambio 1031.' },
+	{ term: 'Patrocinador (sponsor)', def: 'La empresa que compra la propiedad, crea el DST y lo administra para los inversionistas.' },
+	{ term: 'Inversionista acreditado', def: 'Por lo general, una persona con ingresos de más de $200,000 ($300,000 con su cónyuge) en cada uno de los últimos dos años, o un patrimonio neto de más de $1 millón sin contar su vivienda, o ciertas licencias de valores.' },
+	{ term: 'Memorando de colocación privada (PPM)', def: 'El documento de la oferta de un DST. Describe la propiedad, el plan, los honorarios y los riesgos.' },
+	{ term: 'Intercambio 1031', def: 'Una manera de diferir el impuesto sobre ganancias de capital reinvirtiendo lo que se obtiene de una propiedad de inversión en otros bienes raíces de tipo similar, dentro de plazos estrictos.' },
+	{ term: 'Intermediario calificado (QI)', def: 'La empresa neutral que guarda el dinero de su venta durante un intercambio para que usted nunca lo toque.' },
+	{ term: 'Boot', def: 'Efectivo o alivio de deuda que usted recibe en un intercambio. Puede estar sujeto a impuestos aunque el resto de la ganancia se difiera.' },
+	{ term: 'Reemplazo de deuda', def: 'Reemplazar la hipoteca que usted pagó con deuda nueva, deuda dentro del fideicomiso en un DST, o efectivo adicional, para que el intercambio no produzca boot.' },
+	{ term: 'Aumento de renta programado', def: 'Un aumento previsto en la renta de un contrato, ya sea un porcentaje cada año o un escalón más grande cada pocos años.' },
+	{ term: 'Riesgo de renovación', def: 'El riesgo de que un inquilino no renueve, dejando el espacio vacío y al propietario pagando por un contrato nuevo.' },
 ];
 
 const faqs = [
@@ -42,6 +220,94 @@ const faqs = [
 		q: '¿Puedo hacer un intercambio 1031 de mi edificio de apartamentos hacia una propiedad triple net?',
 		a: 'Sí. Según el código fiscal actual, las propiedades multifamiliares y las comerciales califican entre sí como de tipo similar, y eso es lo que hace posible un intercambio de apartamentos a NNN. Los plazos son estrictos: 45 días para identificar y 180 días para cerrar.',
 	},
+	{
+		q: '¿Qué es un contrato triple net (NNN)?',
+		a: 'Es un contrato en el que el inquilino paga la renta más los impuestos a la propiedad, el seguro y el mantenimiento de la propiedad. El propietario recibe la renta con pocas o ninguna cuenta de operación, y por eso las propiedades NNN atraen a dueños que quieren dejar de administrar un edificio.',
+	},
+	{
+		q: '¿“Triple net” significa que no tengo responsabilidades como dueño?',
+		a: 'No siempre. En muchos contratos NNN el propietario sigue siendo responsable del techo y la estructura, y usted todavía hace cumplir el contrato, cobra la renta y trata con el inquilino si algo sale mal. Un contrato net absoluto pone casi todo a cargo del inquilino. Lea el contrato, porque las palabras “triple net” significan cosas distintas en contratos distintos.',
+	},
+	{
+		q: '¿Cuál es la diferencia entre NNN y net absoluto?',
+		a: 'En un contrato NNN típico el inquilino paga impuestos, seguro y mantenimiento rutinario, mientras que el propietario conserva el techo y la estructura. En un contrato net absoluto el inquilino también cubre el techo y la estructura, así que las responsabilidades del propietario son casi nulas. Las propiedades net absoluto normalmente cuestan más por la misma renta, porque tienen menos riesgo para el dueño.',
+	},
+	{
+		q: '¿Qué es un Fideicomiso Estatutario de Delaware (DST)?',
+		a: 'Un DST es un fideicomiso que es dueño de una o más propiedades. Los inversionistas compran participaciones beneficiarias en el fideicomiso y un patrocinador administra la propiedad. Usted recibe su parte del flujo de efectivo y no toma ninguna decisión sobre la propiedad. El fideicomiso se constituye bajo la ley de Delaware y se vende como un valor.',
+	},
+	{
+		q: '¿Por qué se puede usar un DST en un intercambio 1031?',
+		a: 'En la Resolución de Ingresos (Revenue Ruling) 2004-86, el IRS dijo que una participación beneficiaria en un DST bien estructurado puede tratarse como propiedad directa de bienes raíces, y por eso puede ser propiedad de reemplazo de tipo similar. El fideicomiso tiene que cumplir límites sobre lo que el fiduciario puede hacer, y por eso los DST están construidos como están.',
+	},
+	{
+		q: '¿Cuáles son los “siete pecados capitales” de un DST?',
+		a: 'Es el nombre común de los límites que mantienen a un DST dentro de la resolución del IRS. En general, después de que cierra la oferta, el fiduciario no puede aceptar dinero nuevo de los inversionistas, renegociar o refinanciar la deuda, firmar contratos nuevos ni renegociar los existentes, reinvertir lo que obtenga de una venta, hacer mejoras de capital grandes más allá del mantenimiento y las reparaciones, ni guardar efectivo más allá de reservas limitadas. También tiene que distribuir su flujo de efectivo. Los documentos del patrocinador explican cómo funciona el DST dentro de estos límites.',
+	},
+	{
+		q: '¿Quién puede invertir en un DST?',
+		a: 'Las participaciones en un DST generalmente se ofrecen solo a inversionistas acreditados. Para la mayoría de las personas eso significa ingresos de más de $200,000 ($300,000 con su cónyuge) en cada uno de los últimos dos años, o un patrimonio neto de más de $1 millón sin contar su vivienda principal, o ciertas licencias de valores. Un corredor-agente de valores (broker-dealer) verificará su estatus.',
+	},
+	{
+		q: '¿Cuánto necesito para invertir en un DST?',
+		a: 'Los mínimos varían según la oferta. Muchos empiezan alrededor de $100,000, y algunos son más bajos o más altos. Como el mínimo es pequeño comparado con un edificio entero, muchos dueños reparten el dinero de su intercambio entre varios DST.',
+	},
+	{
+		q: '¿En qué se diferencia un DST de comprar yo mismo una propiedad NNN?',
+		a: 'Con una propiedad NNN usted escoge el edificio, es su dueño directo, lo controla y puede usar un préstamo. Con un DST usted es dueño de una parte de una propiedad más grande, no puede tomar decisiones y no puede vender cuando usted quiera, pero no tiene ninguna obligación de propietario. Un DST también le permite repartir una cantidad menor entre varias propiedades. NNN le da control y el DST le da sencillez.',
+	},
+	{
+		q: '¿Puedo usar una propiedad NNN y un DST en el mismo intercambio?',
+		a: 'Muchas veces sí. Muchos dueños ponen una parte de su dinero en una propiedad NNN y el resto en uno o más DST. Cada propiedad de reemplazo tiene que identificarse dentro de la ventana de 45 días, y el valor y el capital combinados tienen que cumplir las reglas del intercambio, así que planéelo con su intermediario calificado y su contador.',
+	},
+	{
+		q: '¿Cuánto tiempo queda atado mi dinero en un DST?',
+		a: 'Normalmente durante el plazo que el patrocinador planea mantener la propiedad, que muchas veces es de 5 a 10 años, y a veces más. Por lo general usted no puede forzar una venta, y no hay un mercado listo para las participaciones. Trate un DST como dinero que no va a necesitar de vuelta pronto.',
+	},
+	{
+		q: '¿Qué pasa cuando el DST vende la propiedad?',
+		a: 'El fideicomiso vende y distribuye lo que obtiene. Usted puede tomar el efectivo y pagar el impuesto diferido, o puede hacer otro intercambio 1031 con su parte, incluso hacia otro DST, si vuelve a seguir las reglas del intercambio.',
+	},
+	{
+		q: '¿Qué tan rápido puede cerrar un DST?',
+		a: 'Muchas veces mucho más rápido que comprar un edificio, a veces en días, porque el patrocinador ya compró la propiedad. Por eso algunos dueños tienen en mente un DST como respaldo cuando se les acaba el tiempo. Depende de la oferta, así que pregunte al patrocinador por su calendario de cierre.',
+	},
+	{
+		q: '¿Qué tasa de capitalización debo esperar en una propiedad NNN?',
+		a: 'Depende del crédito del inquilino, de cuánto le queda al contrato, de los aumentos de renta y de la ubicación. Un inquilino nacional sólido con un contrato largo normalmente se vende con una tasa de capitalización más baja que un operador pequeño con un contrato corto. No damos un número porque cambia con el mercado. Compare la tasa con el riesgo, no solo con otras tasas.',
+	},
+	{
+		q: '¿Cuáles son los principales riesgos de una propiedad NNN?',
+		a: 'El inquilino podría dejar de pagar o declararse en quiebra. El contrato podría terminar y el espacio quedar vacío mientras usted paga por un inquilino nuevo. Las rentas fijas pierden poder de compra si sube la inflación. Las tasas de interés pueden afectar lo que vale la propiedad si usted vende. Y una propiedad significa un inquilino, así que su ingreso depende de un solo negocio.',
+	},
+	{
+		q: '¿Cuáles son los principales riesgos de un DST?',
+		a: 'Usted no puede controlar las decisiones ni el momento de la venta. Las participaciones son difíciles de vender antes de tiempo. Los honorarios reducen su rendimiento. La deuda dentro del fideicomiso agrega riesgo, sobre todo si el préstamo vence en un mercado débil. Y las distribuciones no están garantizadas. Un buen patrocinador y una lectura cuidadosa del documento de la oferta son la mejor protección.',
+	},
+	{
+		q: '¿Puedo usar un préstamo para comprar una propiedad NNN en un intercambio?',
+		a: 'Sí. De hecho, si usted tenía una hipoteca sobre el edificio que vendió, puede necesitar deuda nueva, o efectivo adicional, para que el intercambio no produzca boot sujeto a impuestos. Nuestro planificador de más abajo le muestra cuánto valor de reemplazo y cuánta deuda necesitaría.',
+	},
+	{
+		q: '¿Qué es el boot y por qué importa el pago de la hipoteca?',
+		a: 'El boot es el efectivo o el alivio de deuda que usted recibe en un intercambio, y puede estar sujeto a impuestos. Si su hipoteca anterior se paga al cierre y su propiedad nueva tiene menos deuda, el IRS puede tratar la diferencia como recibida. Para diferir todo el impuesto, por lo general usted compra una propiedad de reemplazo que valga al menos el precio de venta neto y asume al menos la misma cantidad de deuda o agrega el efectivo. Su intermediario y su contador calcularán los números por usted.',
+	},
+	{
+		q: '¿Tengo que comprar fuera de California?',
+		a: 'No. Las propiedades NNN y los DST están disponibles en muchos estados, y muchos dueños de Los Ángeles compran fuera del estado por las opciones que hay allí. California tiene su propio reporte de intercambios, y la ganancia diferida de California generalmente sigue sujeta a impuestos si usted vende más tarde la propiedad de otro estado, así que pregunte a su contador cómo le aplica.',
+	},
+	{
+		q: '¿El ingreso NNN es realmente pasivo?',
+		a: 'Es mucho más pasivo que manejar un edificio de apartamentos, pero no es totalmente libre de trabajo. Usted sigue siendo dueño de la propiedad, cobra la renta, paga las reparaciones que le toquen como propietario y decide qué hacer cuando termina el contrato. Si no quiere tomar ninguna decisión, un DST o una propiedad con un contrato net absoluto se acerca más a eso.',
+	},
+	{
+		q: '¿Y si prefiero cobrar en efectivo en vez de hacer un intercambio?',
+		a: 'Puede vender y pagar el impuesto. Algunos dueños también siguen haciendo intercambios toda su vida, porque bajo la ley fiscal actual los herederos de un dueño que fallece pueden recibir una base ajustada al valor actual que puede reducir o borrar la ganancia diferida. Si eso le aplica es una pregunta para su contador o su abogado de herencias.',
+	},
+	{
+		q: '¿Cómo escojo a un corredor NNN o a un patrocinador de DST?',
+		a: 'Use las listas de verificación de esta página. Para un corredor NNN, mire su experiencia en la industria del inquilino y en el mercado. Para un DST, mire el historial del patrocinador de principio a fin, los honorarios, la deuda y el documento de la oferta. Nosotros le presentamos a los especialistas y seguimos involucrados, pero la decisión es suya, idealmente con su contador y su abogado.',
+	},
 ];
 
 const faqSchema = {
@@ -54,12 +320,21 @@ const faqSchema = {
 		acceptedAnswer: { '@type': 'Answer', text: f.a },
 	})),
 };
+
+const toc = [
+	{ href: '#comparar', label: 'Compare las opciones' },
+	{ href: '#ejemplos', label: 'Ejemplos' },
+	{ href: '#herramientas', label: 'Herramientas gratis' },
+	{ href: '#listas', label: 'Listas de verificación' },
+	{ href: '#glosario', label: 'Glosario' },
+	{ href: '#preguntas', label: 'Preguntas' },
+];
 ---
 
 <BaseLayout
 	lang="es"
-	title="Propiedades Triple Net (NNN) y DST para Dueños en LA"
-	description="Highlight Multifamily Group conecta a dueños de apartamentos en Los Ángeles con corredores NNN y profesionales de DST de confianza para inversiones pasivas."
+	title="Guía de Triple Net (NNN) y DST para Dueños de Apartamentos en LA"
+	description="NNN y DST explicados para dueños de apartamentos en Los Ángeles: comparación, ejemplos, calculadoras gratis para su intercambio 1031, listas de verificación y preguntas frecuentes."
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 	<link rel="alternate" hreflang="es" href={es} slot="head" />
@@ -75,34 +350,22 @@ const faqSchema = {
 				1031 o una nueva inversión, los conectamos con especialistas de confianza en bienes raíces comerciales triple net (NNN) y en Fideicomisos
 				Estatutarios de Delaware (DST), y nos mantenemos involucrados para que nunca navegue el proceso solo. Troy Lucero lo atiende en español.
 			</p>
+			<p>
+				Esta página explica cómo funciona cada opción, las compara lado a lado, repasa ejemplos con números y le da tres calculadoras gratis para probar
+				con su propio edificio.
+			</p>
 			<a href="#formulario" class="btn btn-gold">Conversemos sobre sus opciones</a>
+			<p class="lang-link"><a href="/triple-net-dst/" hreflang="en" lang="en">This page in English &rarr;</a></p>
 		</div>
 	</section>
+
+	<nav class="toc" aria-label="En esta página">
+		<div class="container toc__inner">
+			{toc.map((t) => <a href={t.href}>{t.label}</a>)}
+		</div>
+	</nav>
 
 	<section class="section">
-		<div class="container">
-			<span class="eyebrow">Lo básico</span>
-			<h2>Qué son las dos opciones</h2>
-			<div class="help-grid">
-				{
-					basics.map((item) => (
-						<div class="help-card">
-							<h3>{item.title}</h3>
-							<p>{item.body}</p>
-						</div>
-					))
-				}
-			</div>
-			<p class="basics-links">
-				Lea cómo funciona un{' '}
-				<a href={PAGES_ES.intercambios}>intercambio 1031</a>
-				y por qué muchos dueños en Los Ángeles{' '}
-				<a href={`/es/insights/${ES.intercambio}/`}>cambian de apartamentos a propiedades triple net</a>.
-			</p>
-		</div>
-	</section>
-
-	<section class="section section-alt">
 		<div class="container">
 			<span class="eyebrow">Cómo ayudamos</span>
 			<h2>Dos caminos hacia una inversión pasiva</h2>
@@ -116,10 +379,367 @@ const faqSchema = {
 					))
 				}
 			</div>
+			<HowTheyWork lang="es" />
+			<p class="fine">
+				Lea cómo funciona un{' '}
+				<a href={PAGES_ES.intercambios}>intercambio 1031</a>
+				y por qué muchos dueños en Los Ángeles{' '}
+				<a href={`/es/insights/${ES.intercambio}/`}>cambian de apartamentos a propiedades triple net</a>.
+			</p>
 		</div>
 	</section>
 
-	<section class="section">
+	<section class="section section-alt" id="comparar">
+		<div class="container">
+			<span class="eyebrow">Comparar</span>
+			<h2>Apartamentos, NNN o un DST: en qué se diferencian</h2>
+			<p class="lead">
+				Después de vender un edificio de apartamentos, un dueño puede seguir en apartamentos, comprar una propiedad triple net, comprar una participación en
+				un DST, o combinarlos. Ninguno es el mejor para todos. Así se comparan en las preguntas que más hacen los dueños.
+			</p>
+			<div class="table-scroll">
+				<table class="cmp">
+					<thead>
+						<tr>
+							<th scope="col"></th>
+							<th scope="col">Edificio de apartamentos</th>
+							<th scope="col">Propiedad NNN</th>
+							<th scope="col">DST</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							compare.map((r) => (
+								<tr>
+									<th scope="row">{r.label}</th>
+									<td data-label="Edificio de apartamentos">{r.apt}</td>
+									<td data-label="Propiedad NNN">{r.nnn}</td>
+									<td data-label="DST">{r.dst}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+
+			<h3 class="sub">Qué significa “net” en un contrato</h3>
+			<p class="lead">
+				La palabra “net” dice cuántos de los costos de la propiedad paga el inquilino. Mientras más costos carga el inquilino, menos trabajo y menos
+				incertidumbre tiene el dueño. Los contratos se redactan uno por uno, así que lea siempre el de la propiedad que va a comprar.
+			</p>
+			<LeaseMatrix lang="es" />
+			<div class="table-scroll">
+				<table class="cmp cmp--lease">
+					<thead>
+						<tr>
+							<th scope="col">Tipo de contrato</th>
+							<th scope="col">El inquilino paga</th>
+							<th scope="col">El propietario normalmente paga</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							leaseTypes.map((l) => (
+								<tr>
+									<th scope="row">{l.type}</th>
+									<td data-label="El inquilino paga">{l.tenant}</td>
+									<td data-label="El propietario normalmente paga">{l.landlord}</td>
+								</tr>
+							))
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" id="ejemplos">
+		<div class="container">
+			<span class="eyebrow">Ejemplos</span>
+			<h2>Ejemplos con números</h2>
+			<p class="lead">
+				Los números de los dos primeros ejemplos son inventados para mostrar cómo funcionan las cuentas. No son ofertas, cotizaciones ni cifras del mercado,
+				y los suyos serán distintos.
+			</p>
+
+			<h3 class="sub">Ejemplo 1: reemplazar la deuda de su edificio anterior</h3>
+			<p>
+				Un dueño vende un edificio de apartamentos en Los Ángeles en <strong>{money(ex1.price)}</strong> y paga <strong>{money(ex1.costs)}</strong> (3%) en
+				costos de venta. Al cierre se paga una hipoteca de <strong>{money(ex1.payoff)}</strong>. Eso deja <strong>{money(ex1.equity)}</strong> de capital para
+				reinvertir. Para diferir todo el impuesto, el dueño por lo general tiene que comprar una propiedad de reemplazo que valga al menos el precio de venta
+				neto de <strong>{money(ex1.netPrice)}</strong> y reinvertir hasta el último dólar de ese capital. Así se comparan cuatro enfoques.
+			</p>
+			<DebtBars
+				lang="es"
+				price={ex1.price}
+				costs={ex1.costs}
+				netPrice={ex1.netPrice}
+				payoff={ex1.payoff}
+				equity={ex1.equity}
+			/>
+			<div class="scen-grid">
+				{
+					ex1Scenarios.map((s) => (
+						<article class={s.ok ? 'scen scen--ok' : 'scen scen--no'}>
+							<h4>{s.name}</h4>
+							<p class="scen__detail">{s.detail}</p>
+							<p class="scen__result">
+								<span class="scen__tag">{s.ok ? 'Cumple las pruebas' : 'Se queda corto'}</span> {s.result}
+							</p>
+						</article>
+					))
+				}
+			</div>
+			<p class="fine">El planificador de más abajo hace estas cuentas con sus propios números.</p>
+
+			<h3 class="sub">Ejemplo 2: dos maneras en que un contrato puede subir la renta</h3>
+			<p>
+				Dos contratos NNN pueden empezar con la misma renta y aun así pagar distinto. Digamos que una propiedad de $3,000,000 empieza con una tasa de
+				capitalización de 6.0%, que son <strong>$180,000</strong> al año, con un contrato de 15 años. Un contrato sube la renta
+				<strong>1.5% cada año</strong>. El otro la sube <strong>10% cada cinco años</strong>.
+			</p>
+			<RentChart lang="es" annual={ex2.annual} stepped={ex2.stepped} annualLabel="1.5% cada año" steppedLabel="10% cada 5 años" />
+			<div class="table-scroll">
+				<table class="cmp cmp--num">
+					<thead>
+						<tr>
+							<th scope="col">Año del contrato</th>
+							<th scope="col">1.5% cada año</th>
+							<th scope="col">10% cada 5 años</th>
+						</tr>
+					</thead>
+					<tbody>
+						{
+							ex2Years.map((y) => (
+								<tr>
+									<th scope="row">Año {y}</th>
+									<td data-label="1.5% cada año">{money(ex2.annual[y - 1])}</td>
+									<td data-label="10% cada 5 años">{money(ex2.stepped[y - 1])}</td>
+								</tr>
+							))
+						}
+						<tr class="cmp__total">
+							<th scope="row">Total en 15 años</th>
+							<td data-label="1.5% cada año">{money(sum(ex2.annual))}</td>
+							<td data-label="10% cada 5 años">{money(sum(ex2.stepped))}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<p>
+				En 15 años los totales quedan a menos de 1% uno del otro, pero el momento en que se cobra no es el mismo. Los escalones de cinco años pagan más en
+				el primer año de cada período nuevo (años 6 y 11), y los aumentos anuales pagan más en los años justo antes del siguiente escalón. Si usted piensa
+				vender antes de que termine el contrato, la estructura importa.
+			</p>
+
+			<h3 class="sub">Ejemplo 3: intercambios reales de nuestras propias ventas</h3>
+			<div class="real-grid">
+				{
+					clientExamples.map((e) => (
+						<article class="real">
+							<span class="real__tag">Vendido por Highlight</span>
+							<h4>{e.sale!.name}</h4>
+							<p class="real__meta">
+								Los Ángeles{e.sale!.units ? `, ${e.sale!.units} unidades` : ''} · {formatPrice(e.sale!.price)}
+							</p>
+							<p>{e.story}</p>
+							<a href={e.href}>{e.cta} &rarr;</a>
+						</article>
+					))
+				}
+			</div>
+			<p class="fine">
+				Cada intercambio es distinto. Estos son ejemplos de lo que han hecho clientes, no predicciones de lo que usted obtendrá. Vea todos
+				<a href="/case-studies/">nuestros casos de estudio</a> (en inglés) o <a href={PAGES_ES.intercambios}>cómo manejamos un intercambio 1031</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="herramientas">
+		<div class="container">
+			<span class="eyebrow">Herramientas gratis</span>
+			<h2>Pruebe los números con su propio edificio</h2>
+			<p class="lead">
+				Estas calculadoras funcionan en su navegador. Nada de lo que escriba se nos envía. Simplifican las reglas y son solo para educación, así que
+				confirme sus números con su intermediario calificado y su contador.
+			</p>
+
+			<!-- Herramienta 1: planificador de intercambio -->
+			<article class="tool" id="planner" data-tool="exchange_planner">
+				<header class="tool__head">
+					<h3>1. Planificador de intercambio</h3>
+					<p>¿Cuánto valor de reemplazo y cuánta deuda necesita para diferir todo el impuesto?</p>
+				</header>
+				<div class="tool__body">
+					<form class="tool__form" onsubmit="return false">
+						<label>
+							Precio de venta esperado
+							<input class="money" data-id="p-price" inputmode="numeric" value="4,000,000" />
+						</label>
+						<label>
+							Hipoteca por pagar
+							<input class="money" data-id="p-payoff" inputmode="numeric" value="1,200,000" />
+						</label>
+						<label>
+							Costos de venta (% del precio)
+							<input data-id="p-costs" inputmode="decimal" value="3" />
+						</label>
+						<label>
+							Efectivo que quiere retirar
+							<input class="money" data-id="p-cash" inputmode="numeric" value="0" />
+						</label>
+					</form>
+					<div class="tool__out" aria-live="polite" data-out="planner"></div>
+				</div>
+			</article>
+
+			<!-- Herramienta 2: proyector de renta NNN -->
+			<article class="tool" id="projector" data-tool="nnn_projector">
+				<header class="tool__head">
+					<h3>2. Proyector de renta NNN</h3>
+					<p>Vea la renta que paga un contrato NNN año por año, con dos tipos de aumento de renta.</p>
+				</header>
+				<div class="tool__body">
+					<form class="tool__form" onsubmit="return false">
+						<label>
+							Precio de compra
+							<input class="money" data-id="r-price" inputmode="numeric" value="3,000,000" />
+						</label>
+						<label>
+							Tasa de capitalización inicial (%)
+							<input data-id="r-cap" inputmode="decimal" value="6" />
+						</label>
+						<label>
+							Duración del contrato (años)
+							<select data-id="r-years">
+								<option>10</option>
+								<option selected>15</option>
+								<option>20</option>
+								<option>25</option>
+							</select>
+						</label>
+						<label>
+							Aumento cada año (%)
+							<input data-id="r-annual" inputmode="decimal" value="1.5" />
+						</label>
+						<label>
+							Aumento cada 5 años (%)
+							<input data-id="r-step" inputmode="decimal" value="10" />
+						</label>
+					</form>
+					<div class="tool__out" aria-live="polite" data-out="projector"></div>
+				</div>
+			</article>
+
+			<!-- Herramienta 3: ingreso equivalente -->
+			<article class="tool" id="income-match" data-tool="income_match">
+				<header class="tool__head">
+					<h3>3. Ingreso equivalente</h3>
+					<p>¿Qué rendimiento necesitaría para reemplazar el ingreso neto que le deja su edificio?</p>
+				</header>
+				<div class="tool__body">
+					<form class="tool__form" onsubmit="return false">
+						<label>
+							Capital para reinvertir
+							<input class="money" data-id="m-equity" inputmode="numeric" value="2,680,000" />
+						</label>
+						<label>
+							Lo que le deja el edificio al año
+							<input class="money" data-id="m-income" inputmode="numeric" value="120,000" />
+						</label>
+						<label>
+							Tasa de capitalización NNN para comparar (%)
+							<input data-id="m-nnn" inputmode="decimal" value="6" />
+						</label>
+						<label>
+							Tasa anual de distribución de un DST para comparar (%)
+							<input data-id="m-dst" inputmode="decimal" value="5" />
+						</label>
+					</form>
+					<div class="tool__out" aria-live="polite" data-out="match"></div>
+				</div>
+				<p class="fine tool__note">
+					Lo que le deja el edificio es lo que le llega a su bolsillo después de la hipoteca, los gastos y lo que le pague a un administrador. Esta comparación
+					compra al contado y sin préstamo nuevo. Las tasas que se muestran son ejemplos para la calculadora, no lo que usted ganará.
+				</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="section" id="listas">
+		<div class="container">
+			<span class="eyebrow">Revisión previa</span>
+			<h2>Qué revisar antes de comprar</h2>
+			<p class="lead">Use estas listas con su corredor NNN o su profesional de DST, e incluya a su contador y a su abogado en la conversación desde temprano.</p>
+			<div class="check-cols">
+				<div class="check-col">
+					<h3>Lista para una propiedad NNN</h3>
+					<ul class="checks">
+						{
+							nnnChecklist.map((c) => (
+								<li>
+									<strong>{c.t}</strong>
+									<span>{c.d}</span>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+				<div class="check-col">
+					<h3>Lista para un DST</h3>
+					<ul class="checks">
+						{
+							dstChecklist.map((c) => (
+								<li>
+									<strong>{c.t}</strong>
+									<span>{c.d}</span>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container narrow">
+			<span class="eyebrow">Plazos</span>
+			<h2>Cómo encaja esto en su calendario del 1031</h2>
+			<ExchangeTimeline lang="es" />
+			<p>
+				Después de que cierra su edificio, usted tiene <strong>45 días</strong> para identificar la propiedad de reemplazo y <strong>180 días</strong> para
+				cerrarla. Esos plazos son firmes, y una compra NNN puede tardar en encontrarse, negociarse y cerrarse. Un DST muchas veces cierra más rápido, y por
+				eso algunos dueños identifican uno como respaldo.
+			</p>
+			<p>
+				La manera de aliviar la presión es empezar antes de que cierre la venta. Traemos a su corredor NNN en cuanto se eliminan las condiciones de la venta
+				de su edificio, para que las ofertas puedan salir mientras el depósito en garantía (escrow) sigue abierto, y incluimos una opción de extensión de
+				30 días del escrow en nuestras contraofertas. Lea el proceso completo en nuestra página de{' '}
+				<a href={PAGES_ES.intercambios}>intercambios 1031</a>, o el artículo sobre cómo{' '}
+				<a href={`/es/insights/${ES.intercambio}/`}>cambiar de apartamentos a propiedades triple net</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section" id="glosario">
+		<div class="container">
+			<span class="eyebrow">Glosario</span>
+			<h2>Términos que escuchará</h2>
+			<dl class="gloss">
+				{
+					glossary.map((g) => (
+						<div class="gloss__item">
+							<dt>{g.term}</dt>
+							<dd>{g.def}</dd>
+						</div>
+					))
+				}
+			</dl>
+		</div>
+	</section>
+
+	<section class="section section-alt" id="preguntas">
 		<div class="container narrow">
 			<span class="eyebrow">Preguntas frecuentes</span>
 			<h2>Preguntas sobre NNN y DST</h2>
@@ -134,24 +754,34 @@ const faqSchema = {
 				}
 			</div>
 			<p class="faq-cta">
-				Vea más respuestas en nuestras <a href="/es/preguntas-frecuentes/">preguntas frecuentes completas</a>. Esta página es información general, no una oferta
-				de valores ni asesoría legal o de impuestos. Consulte con su contador y su abogado.
+				Vea más respuestas en nuestras <a href="/es/preguntas-frecuentes/">preguntas frecuentes completas</a>.
 			</p>
 		</div>
 	</section>
 
-	<section class="section section-alt" id="formulario">
+	<section class="section" id="formulario">
 		<div class="container">
-			<BOVForm
+			<ExchangeConsultForm
 				lang="es"
 				heading="Explore las opciones NNN y DST"
-				subheading="Cuéntenos sus metas y su calendario, y le explicaremos qué le conviene y lo conectaremos con el especialista adecuado, en español."
+				subheading="Cuéntenos sus metas y su calendario, y le explicaremos qué le conviene y lo conectaremos con el especialista adecuado, en español. Gratis y confidencial."
 			/>
+			<p class="fine disclaimer">
+				Esta página es información general, no asesoría legal, de impuestos ni de inversión, y no es una oferta de venta ni una solicitud de compra de ningún
+				valor. Las participaciones en un DST son valores que solo ofrecen profesionales con licencia a inversionistas acreditados mediante un memorando de
+				colocación privada, y conllevan riesgos, incluso la pérdida del capital. Los ejemplos usan números inventados para ilustrar. Las reglas y los
+				límites cambian, así que confirme todo con su contador, su abogado y su intermediario calificado. Traducido del inglés.
+			</p>
 		</div>
 	</section>
 </BaseLayout>
 
 <style>
+	.lang-link {
+		margin-top: 1rem;
+		font-weight: 600;
+	}
+
 	.page-hero {
 		background: linear-gradient(135deg, var(--navy) 0%, var(--navy-dark) 100%);
 		color: #fff;
@@ -180,6 +810,44 @@ const faqSchema = {
 		border-color: var(--gold-light);
 	}
 
+	.page-hero .lang-link a {
+		color: var(--gold-light);
+	}
+
+	.toc {
+		background: var(--paper);
+		border-bottom: 1px solid var(--border);
+		position: sticky;
+		top: 85px;
+		z-index: 5;
+	}
+
+	/* Land below the sticky header and the on-page menu when a link jumps to a section. */
+	[id] {
+		scroll-margin-top: 150px;
+	}
+
+	.toc__inner {
+		display: flex;
+		gap: 0.25rem 1.5rem;
+		overflow-x: auto;
+		padding-block: 0.8rem;
+		white-space: nowrap;
+	}
+
+	.toc a {
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: var(--navy);
+	}
+
+	.toc a:hover {
+		color: var(--gold-dark);
+		text-decoration: none;
+	}
+
 	.help-grid {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -200,8 +868,404 @@ const faqSchema = {
 		margin-bottom: 0.5rem;
 	}
 
+	.lead {
+		max-width: 760px;
+		color: var(--ink);
+	}
+
+	.sub {
+		margin-top: 2.75rem;
+		margin-bottom: 0.75rem;
+	}
+
+	.fine {
+		font-size: 0.82rem;
+		color: var(--ink-light);
+		line-height: 1.55;
+		margin-top: 1rem;
+	}
+
 	.narrow {
-		max-width: 720px;
+		max-width: 760px;
+	}
+
+	/* ---------- Tables ---------- */
+	.table-scroll {
+		overflow-x: auto;
+		margin-top: 1.25rem;
+		background: #fff;
+		border: 1px solid var(--border);
+	}
+
+	.cmp {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+		min-width: 720px;
+	}
+
+	.cmp th,
+	.cmp td {
+		text-align: left;
+		vertical-align: top;
+		padding: 0.8rem 1rem;
+		border-bottom: 1px solid var(--border);
+		line-height: 1.5;
+	}
+
+	.cmp thead th {
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.74rem;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.cmp tbody th {
+		width: 17%;
+		font-weight: 700;
+		color: var(--navy-dark);
+		background: var(--navy-tint);
+	}
+
+	.cmp tbody tr:last-child th,
+	.cmp tbody tr:last-child td {
+		border-bottom: none;
+	}
+
+	.cmp--lease {
+		min-width: 620px;
+	}
+
+	.cmp--num {
+		min-width: 0;
+	}
+
+	.cmp__total th,
+	.cmp__total td {
+		font-weight: 700;
+		color: var(--navy-dark);
+		background: var(--navy-tint);
+	}
+
+	/* ---------- Examples ---------- */
+	.scen-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 1rem;
+		margin-top: 1.25rem;
+	}
+
+	.scen {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		padding: 1.25rem 1.35rem;
+	}
+
+	.scen--no {
+		border-top-color: #b5483b;
+	}
+
+	.scen--ok {
+		border-top-color: #3d7a55;
+	}
+
+	.scen h4 {
+		margin: 0 0 0.5rem;
+		font-size: 1.05rem;
+		color: var(--navy-dark);
+	}
+
+	.scen p {
+		margin: 0 0 0.6rem;
+		font-size: 0.9rem;
+		line-height: 1.55;
+	}
+
+	.scen__tag {
+		display: inline-block;
+		margin-right: 0.35rem;
+		padding: 0.1rem 0.5rem;
+		border-radius: 999px;
+		font-size: 0.68rem;
+		font-weight: 800;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: #fff;
+		background: #3d7a55;
+	}
+
+	.scen--no .scen__tag {
+		background: #b5483b;
+	}
+
+	.real-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.25rem;
+	}
+
+	.real {
+		background: var(--navy-dark);
+		color: #d7e0ea;
+		padding: 1.5rem 1.6rem;
+		border-radius: 2px;
+	}
+
+	.real h4 {
+		color: #fff;
+		margin: 0.4rem 0 0.2rem;
+		font-size: 1.2rem;
+	}
+
+	.real__tag {
+		font-size: 0.68rem;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--gold-light);
+	}
+
+	.real__meta {
+		font-size: 0.85rem;
+		color: var(--gold-light);
+		margin: 0 0 0.75rem;
+	}
+
+	.real a {
+		color: var(--gold-light);
+		font-weight: 600;
+	}
+
+	/* ---------- Tools ---------- */
+	.tool {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		margin-top: 1.75rem;
+		box-shadow: 0 18px 34px -28px rgb(12 46 80 / 0.5);
+	}
+
+	.tool__head {
+		padding: 1.25rem 1.5rem 0;
+	}
+
+	.tool__head h3 {
+		margin: 0;
+		font-size: 1.3rem;
+	}
+
+	.tool__head p {
+		margin: 0.3rem 0 0;
+		color: var(--ink-light);
+		font-size: 0.92rem;
+	}
+
+	.tool__body {
+		display: grid;
+		grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.4fr);
+		gap: 1.75rem;
+		padding: 1.25rem 1.5rem 1.5rem;
+	}
+
+	.tool__form {
+		display: grid;
+		gap: 0.85rem;
+		align-content: start;
+	}
+
+	.tool__form label {
+		display: grid;
+		gap: 0.3rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	.tool__form input,
+	.tool__form select {
+		font: inherit;
+		font-size: 1rem;
+		font-weight: 500;
+		padding: 0.6rem 0.75rem;
+		border: 1px solid #c9c3b4;
+		border-radius: 2px;
+		background: var(--paper);
+		color: var(--ink);
+	}
+
+	.tool__form input:focus,
+	.tool__form select:focus {
+		outline: 2px solid var(--gold);
+		outline-offset: 1px;
+	}
+
+	.tool__out {
+		background: var(--navy-tint);
+		border-radius: 2px;
+		padding: 1.25rem 1.4rem;
+		min-height: 8rem;
+		font-size: 0.92rem;
+		line-height: 1.55;
+	}
+
+	.tool__note {
+		padding: 0 1.5rem 1.25rem;
+		margin: 0;
+	}
+
+	/* The calculator results are written by the script, so these rules have to be global. */
+	:global(.out-big) {
+		display: block;
+		font-family: var(--font-serif);
+		font-size: clamp(1.7rem, 3vw, 2.2rem);
+		line-height: 1.1;
+		color: var(--navy-dark);
+	}
+
+	:global(.out-label) {
+		display: block;
+		font-size: 0.74rem;
+		font-weight: 700;
+		letter-spacing: 0.07em;
+		text-transform: uppercase;
+		color: var(--gold-dark);
+		margin-top: 0.9rem;
+	}
+
+	:global(.out-label:first-child) {
+		margin-top: 0;
+	}
+
+	:global(.out-note) {
+		margin: 0.9rem 0 0;
+		padding-top: 0.8rem;
+		border-top: 1px solid #cdd8e5;
+		font-size: 0.85rem;
+	}
+
+	:global(.out-warn) {
+		color: #8a2f25;
+		font-weight: 600;
+	}
+
+	:global(.out-table) {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.85rem;
+		margin-top: 0.9rem;
+	}
+
+	:global(.out-table th),
+	:global(.out-table td) {
+		padding: 0.4rem 0.5rem;
+		text-align: right;
+		border-bottom: 1px solid #cdd8e5;
+	}
+
+	:global(.out-table th:first-child),
+	:global(.out-table td:first-child) {
+		text-align: left;
+	}
+
+	:global(.out-table thead th) {
+		font-size: 0.7rem;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--ink-light);
+	}
+
+	:global(.out-table tfoot td) {
+		font-weight: 700;
+		color: var(--navy-dark);
+	}
+
+	:global(.out-scroll) {
+		max-height: 17rem;
+		overflow: auto;
+		margin-top: 0.4rem;
+	}
+
+	/* ---------- Checklists, glossary, FAQ ---------- */
+	.check-cols {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.check-col {
+		background: var(--paper);
+		border: 1px solid var(--border);
+		border-top: 3px solid var(--gold);
+		padding: 1.5rem 1.6rem;
+	}
+
+	.check-col h3 {
+		margin: 0 0 0.75rem;
+		font-size: 1.25rem;
+	}
+
+	.checks {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.9rem;
+	}
+
+	.checks li {
+		position: relative;
+		padding-left: 1.7rem;
+		display: grid;
+		gap: 0.15rem;
+		line-height: 1.55;
+	}
+
+	.checks li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.35rem;
+		width: 0.8rem;
+		height: 0.45rem;
+		border-left: 2px solid var(--gold-dark);
+		border-bottom: 2px solid var(--gold-dark);
+		transform: rotate(-45deg);
+	}
+
+	.checks strong {
+		color: var(--navy-dark);
+	}
+
+	.checks span {
+		font-size: 0.9rem;
+		color: var(--ink);
+	}
+
+	.gloss {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 0.75rem 2rem;
+		margin: 1.5rem 0 0;
+	}
+
+	.gloss__item {
+		padding: 0.9rem 0;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.gloss dt {
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		color: var(--navy-dark);
+	}
+
+	.gloss dd {
+		margin: 0.25rem 0 0;
+		font-size: 0.92rem;
+		line-height: 1.6;
 	}
 
 	.faq-list {
@@ -226,16 +1290,235 @@ const faqSchema = {
 	.faq-item p {
 		margin-top: 0.75rem;
 		margin-bottom: 0;
+		line-height: 1.7;
 	}
 
 	.faq-cta {
 		margin-top: 1.5rem;
 		font-size: 0.9rem;
 	}
-</style>
 
-<style>
-	.basics-links {
-		margin-top: 1.5rem;
+	.disclaimer {
+		margin-top: 2rem;
+		max-width: 820px;
+	}
+
+	@media (max-width: 820px) {
+		.tool__body {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+
+	/* On a phone, the comparison tables turn into stacked cards so nothing needs sideways scrolling. */
+	@media (max-width: 700px) {
+		.table-scroll {
+			border: none;
+			background: none;
+			overflow: visible;
+		}
+
+		.cmp,
+		.cmp--lease {
+			min-width: 0;
+		}
+
+		.cmp thead {
+			display: none;
+		}
+
+		.cmp,
+		.cmp tbody,
+		.cmp tr,
+		.cmp th,
+		.cmp td {
+			display: block;
+			width: 100%;
+		}
+
+		.cmp tr {
+			background: #fff;
+			border: 1px solid var(--border);
+			margin-bottom: 0.75rem;
+		}
+
+		.cmp tbody th {
+			width: 100%;
+			border-bottom: 1px solid var(--border);
+		}
+
+		.cmp td {
+			border-bottom: 1px solid var(--border);
+		}
+
+		.cmp td::before {
+			content: attr(data-label);
+			display: block;
+			font-size: 0.68rem;
+			font-weight: 800;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+			color: var(--gold-dark);
+			margin-bottom: 0.15rem;
+		}
 	}
 </style>
+
+<script>
+	// Tres calculadoras sencillas. Funcionan por completo en el navegador y no envían nada a ningún lado, salvo un conteo de que se usó una calculadora.
+	const fmtMoney = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+	const fmtPct = (n: number, d = 1) => `${n.toFixed(d)}%`;
+	const num = (s: string | undefined | null) => {
+		const v = parseFloat(String(s ?? '').replace(/[^0-9.]/g, ''));
+		return isFinite(v) ? v : 0;
+	};
+	const field = (id: string) => document.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-id="${id}"]`)!;
+	const out = (name: string) => document.querySelector<HTMLElement>(`[data-out="${name}"]`)!;
+
+	// Muestra separadores de miles en las casillas de dólares cuando el visitante sale de ellas.
+	document.querySelectorAll<HTMLInputElement>('input.money').forEach((el) => {
+		el.addEventListener('blur', () => {
+			el.value = num(el.value).toLocaleString('en-US');
+		});
+	});
+
+	const used = new Set<string>();
+	let ready = false; // se queda en falso mientras la página se prepara, para que cargarla no cuente como usar una calculadora
+	const track = (tool: string) => {
+		if (!ready || used.has(tool)) return;
+		used.add(tool);
+		(window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'calculator_use', {
+			calculator: tool,
+			page_path: window.location.pathname,
+		});
+	};
+
+	// ---- 1. Planificador de intercambio ----
+	function planner() {
+		const price = num(field('p-price').value);
+		const payoff = num(field('p-payoff').value);
+		const costPct = num(field('p-costs').value);
+		const cash = num(field('p-cash').value);
+		const box = out('planner');
+		if (price <= 0) {
+			box.innerHTML = '<p class="out-warn">Escriba un precio de venta esperado.</p>';
+			return;
+		}
+		const costs = price * (costPct / 100);
+		const netPrice = price - costs;
+		const equity = netPrice - payoff - cash;
+		if (equity < 0) {
+			box.innerHTML = '<p class="out-warn">La hipoteca y el efectivo que retira son más que su precio de venta neto. Baje uno de los dos.</p>';
+			return;
+		}
+		const debtNeeded = payoff + cash;
+		const ltv = netPrice > 0 ? (debtNeeded / netPrice) * 100 : 0;
+		const short = netPrice - equity;
+		box.innerHTML = `
+			<span class="out-label">Para diferir toda la ganancia, compre al menos</span>
+			<span class="out-big">${fmtMoney(netPrice)}</span>
+			<span class="out-label">Capital para reinvertir</span>
+			<span class="out-big">${fmtMoney(equity)}</span>
+			<span class="out-label">Deuda o efectivo adicional por reemplazar</span>
+			<span class="out-big">${fmtMoney(debtNeeded)}</span>
+			<p class="out-note">
+				Costos de venta: ${fmtMoney(costs)}. ${debtNeeded > 0 ? `Si compra al precio mínimo, eso es un préstamo de cerca de ${fmtPct(ltv, 0)} del precio, o la misma cantidad en efectivo adicional, o deuda dentro de un DST.` : 'Sin hipoteca y sin retirar efectivo, no necesita deuda de reemplazo.'}
+			</p>
+			<p class="out-note">
+				${short > 0 ? `<strong>Una compra al contado solo con su capital</strong> sería de ${fmtMoney(equity)}, que es ${fmtMoney(short)} de menos. Ese faltante puede ser boot sujeto a impuestos.${cash > 0 ? ` Los ${fmtMoney(cash)} que retira también son boot sujeto a impuestos.` : ''}` : `<strong>Una compra al contado</strong> de ${fmtMoney(equity)} cumpliría el mínimo, porque no tiene hipoteca que reemplazar.`}
+			</p>`;
+		track('exchange_planner');
+	}
+
+	// ---- 2. Proyector de renta NNN ----
+	function projector() {
+		const price = num(field('r-price').value);
+		const cap = num(field('r-cap').value);
+		const years = parseInt((field('r-years') as HTMLSelectElement).value, 10) || 15;
+		const annualPct = num(field('r-annual').value);
+		const stepPct = num(field('r-step').value);
+		const box = out('projector');
+		if (price <= 0 || cap <= 0) {
+			box.innerHTML = '<p class="out-warn">Escriba un precio y una tasa de capitalización.</p>';
+			return;
+		}
+		const base = price * (cap / 100);
+		const rowsA: number[] = [];
+		const rowsB: number[] = [];
+		for (let y = 0; y < years; y++) {
+			rowsA.push(base * Math.pow(1 + annualPct / 100, y));
+			rowsB.push(base * Math.pow(1 + stepPct / 100, Math.floor(y / 5)));
+		}
+		const sum = (a: number[]) => a.reduce((s, n) => s + n, 0);
+		const totalA = sum(rowsA);
+		const totalB = sum(rowsB);
+		const body = rowsA
+			.map((a, i) => `<tr><td>Año ${i + 1}</td><td>${fmtMoney(a)}</td><td>${fmtMoney(rowsB[i])}</td></tr>`)
+			.join('');
+		box.innerHTML = `
+			<span class="out-label">Renta del año 1</span>
+			<span class="out-big">${fmtMoney(base)} <small style="font-size:0.9rem;font-family:inherit">(${fmtMoney(base / 12)} al mes)</small></span>
+			<div class="out-scroll">
+				<table class="out-table">
+					<thead><tr><th>Año del contrato</th><th>${fmtPct(annualPct, 1)} cada año</th><th>${fmtPct(stepPct, 1)} cada 5 años</th></tr></thead>
+					<tbody>${body}</tbody>
+					<tfoot><tr><td>Total, ${years} años</td><td>${fmtMoney(totalA)}</td><td>${fmtMoney(totalB)}</td></tr>
+					<tr><td>Rendimiento anual promedio sobre el precio</td><td>${fmtPct((totalA / years / price) * 100, 2)}</td><td>${fmtPct((totalB / years / price) * 100, 2)}</td></tr></tfoot>
+				</table>
+			</div>
+			<p class="out-note">
+				Esto muestra solo la renta base, antes de pagos de préstamo, de la vacante al final del contrato o del impuesto sobre la renta. Si el inquilino no
+				renueva, la renta se detiene hasta que firme un inquilino nuevo.
+			</p>`;
+		track('nnn_projector');
+	}
+
+	// ---- 3. Ingreso equivalente ----
+	function incomeMatch() {
+		const equity = num(field('m-equity').value);
+		const income = num(field('m-income').value);
+		const nnn = num(field('m-nnn').value);
+		const dst = num(field('m-dst').value);
+		const box = out('match');
+		if (equity <= 0) {
+			box.innerHTML = '<p class="out-warn">Escriba el capital que piensa reinvertir.</p>';
+			return;
+		}
+		const need = (income / equity) * 100;
+		const nnnIncome = equity * (nnn / 100);
+		const dstIncome = equity * (dst / 100);
+		const row = (label: string, value: number) => {
+			const diff = value - income;
+			return `<tr><td>${label}</td><td>${fmtMoney(value)}</td><td>${diff >= 0 ? '+' : '−'}${fmtMoney(Math.abs(diff))}</td></tr>`;
+		};
+		const needNnn = nnn > 0 ? income / (nnn / 100) : 0;
+		const needDst = dst > 0 ? income / (dst / 100) : 0;
+		box.innerHTML = `
+			<span class="out-label">Rendimiento necesario para igualar su ingreso</span>
+			<span class="out-big">${fmtPct(need, 2)}</span>
+			<table class="out-table">
+				<thead><tr><th>Opción</th><th>Ingreso al año</th><th>frente a hoy</th></tr></thead>
+				<tbody>
+					${row(`NNN al ${fmtPct(nnn, 2)}`, nnnIncome)}
+					${row(`DST al ${fmtPct(dst, 2)}`, dstIncome)}
+				</tbody>
+			</table>
+			<p class="out-note">
+				Para igualar ${fmtMoney(income)} al año necesitaría invertir cerca de ${nnn > 0 ? fmtMoney(needNnn) : 'n/d'} a la tasa NNN, o cerca de
+				${dst > 0 ? fmtMoney(needDst) : 'n/d'} a la tasa del DST. ${need > Math.max(nnn, dst) ? 'Puede que su edificio esté pagando más que estas tasas pasivas, así que el cambio normalmente es entre ingreso y esfuerzo, no solo ingreso.' : ''}
+			</p>`;
+		track('income_match');
+	}
+
+	const wire = (ids: string[], fn: () => void) => {
+		ids.forEach((id) => {
+			const el = field(id);
+			el.addEventListener('input', fn);
+			el.addEventListener('change', fn);
+		});
+		fn();
+	};
+	wire(['p-price', 'p-payoff', 'p-costs', 'p-cash'], planner);
+	wire(['r-price', 'r-cap', 'r-years', 'r-annual', 'r-step'], projector);
+	wire(['m-equity', 'm-income', 'm-nnn', 'm-dst'], incomeMatch);
+	ready = true;
+</script>

@@ -28,6 +28,7 @@ export async function handleExchangeLead(request: Request, env: Env): Promise<Re
 	const stage = str(body.stage);
 	const interest = str(body.interest);
 	const timing = str(body.timing);
+	const spanish = str(body.language, 20) === 'Spanish';
 
 	if (!name || !/^\S+@\S+\.\S+$/.test(email) || !STAGES.includes(stage) || !INTERESTS.includes(interest) || !TIMINGS.includes(timing) || body.privacyConsent !== true) {
 		return new Response(JSON.stringify({ error: 'Please complete the required fields and accept the privacy policy.' }), { status: 400, headers: corsHeaders() });
@@ -36,6 +37,7 @@ export async function handleExchangeLead(request: Request, env: Env): Promise<Re
 	const urgent = stage === 'Sale closed (the 45 days are running)' || stage === 'Listed or in escrow' || timing === 'Within 60 days';
 	const note = [
 		'1031 exchange consult request submitted via highlightreg.com.',
+		spanish ? 'PREFERRED LANGUAGE: SPANISH. Please call in Spanish (Troy).' : '',
 		`Email: ${email}`,
 		phone ? `Phone: ${phone}` : '',
 		`Where they are in the sale: ${stage}`,
@@ -51,7 +53,7 @@ export async function handleExchangeLead(request: Request, env: Env): Promise<Re
 		try {
 			const person = await createPerson(env, { name, email, phone: phone || undefined });
 			if (person) {
-				await createLead(env, { title: `${urgent ? '[URGENT] ' : ''}1031 Consult: ${name}`, personId: person.id, note });
+				await createLead(env, { title: `${urgent ? '[URGENT] ' : ''}${spanish ? '[ES] ' : ''}1031 Consult: ${name}`, personId: person.id, note });
 			} else {
 				console.error('Pipedrive person creation failed for 1031 lead:', { name, email });
 			}

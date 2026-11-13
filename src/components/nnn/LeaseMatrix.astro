@@ -1,0 +1,167 @@
+---
+// "Who pays for what" matrix for the five common lease types. Each cell says who usually pays,
+// in words and by chip style, so it never relies on color alone.
+type Who = 'T' | 'L' | 'V';
+interface Props {
+	lang?: 'en' | 'es';
+}
+const { lang = 'en' } = Astro.props;
+const t = {
+	en: {
+		cols: ['Property taxes', 'Insurance', 'Day-to-day upkeep', 'Roof and structure'],
+		types: ['Gross (full service)', 'Single net (N)', 'Double net (NN)', 'Triple net (NNN)', 'Absolute net'],
+		label: { T: 'Tenant', L: 'Landlord', V: 'Varies' },
+		title: 'Who usually pays, at a glance',
+		varies: 'Varies by lease',
+		leaseType: 'Lease type',
+		note: 'Leases are written one at a time, so the lease for the property you are buying decides. In a typical NNN lease the roof and structure stay with the landlord.',
+	},
+	es: {
+		cols: ['Impuestos a la propiedad', 'Seguro', 'Mantenimiento diario', 'Techo y estructura'],
+		types: ['Bruto (servicio completo)', 'Net sencillo (N)', 'Net doble (NN)', 'Triple net (NNN)', 'Net absoluto'],
+		label: { T: 'Inquilino', L: 'Propietario', V: 'Varía' },
+		title: 'Quién suele pagar, de un vistazo',
+		varies: 'Varía según el contrato',
+		leaseType: 'Tipo de contrato',
+		note: 'Cada contrato se redacta por separado, así que lo que manda es el contrato de la propiedad que usted compra. En un contrato NNN típico, el techo y la estructura se quedan con el propietario.',
+	},
+}[lang];
+const cols = t.cols;
+const cellsFor: Who[][] = [
+	['L', 'L', 'L', 'L'],
+	['T', 'L', 'L', 'L'],
+	['T', 'T', 'L', 'L'],
+	['T', 'T', 'T', 'V'],
+	['T', 'T', 'T', 'T'],
+];
+const rows = t.types.map((type, i) => ({ type, cells: cellsFor[i] }));
+const label: Record<Who, string> = t.label;
+---
+
+<figure class="lm">
+	<figcaption>
+		<strong>{t.title}</strong>
+		<span class="lm__key" aria-hidden="true">
+			<span class="chip chip--T">{t.label.T}</span>
+			<span class="chip chip--L">{t.label.L}</span>
+			<span class="chip chip--V">{t.varies}</span>
+		</span>
+	</figcaption>
+	<div class="lm__scroll">
+		<table>
+			<thead>
+				<tr>
+					<th scope="col">{t.leaseType}</th>
+					{cols.map((c) => <th scope="col">{c}</th>)}
+				</tr>
+			</thead>
+			<tbody>
+				{
+					rows.map((r) => (
+						<tr>
+							<th scope="row">{r.type}</th>
+							{r.cells.map((w, i) => (
+								<td>
+									<span class={`chip chip--${w}`} aria-label={`${cols[i]}: ${label[w]}`}>
+										{label[w]}
+									</span>
+								</td>
+							))}
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+	</div>
+	<p class="lm__note">{t.note}</p>
+</figure>
+
+<style>
+	.lm {
+		margin: 1.75rem 0 2rem;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		padding: 1.1rem 1.25rem 1.2rem;
+	}
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 0.6rem 1.25rem;
+		margin-bottom: 0.9rem;
+		color: var(--navy);
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+	}
+	.lm__key {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+	.lm__scroll {
+		overflow-x: auto;
+	}
+	table {
+		width: 100%;
+		min-width: 540px;
+		border-collapse: separate;
+		border-spacing: 4px;
+	}
+	th {
+		font-size: 0.78rem;
+		letter-spacing: 0.04em;
+		color: var(--ink-soft);
+		font-weight: 700;
+		text-align: center;
+		padding: 0.3rem 0.2rem;
+	}
+	thead th:first-child,
+	tbody th {
+		text-align: left;
+	}
+	tbody th {
+		font-size: 0.92rem;
+		letter-spacing: 0;
+		color: var(--navy);
+		white-space: nowrap;
+		padding-right: 0.5rem;
+	}
+	td {
+		text-align: center;
+		padding: 0;
+	}
+	.chip {
+		display: block;
+		padding: 0.5rem 0.3rem;
+		border-radius: 8px;
+		font-size: 0.82rem;
+		font-weight: 700;
+		line-height: 1.1;
+	}
+	.lm__key .chip {
+		display: inline-block;
+		padding: 0.3rem 0.7rem;
+		font-size: 0.74rem;
+		font-family: var(--font-sans);
+	}
+	.chip--T {
+		background: var(--navy);
+		color: #fff;
+	}
+	.chip--L {
+		background: #f0e4c4;
+		color: #4a3a14;
+	}
+	.chip--V {
+		background: #fff;
+		color: var(--navy);
+		border: 2px dashed var(--navy);
+	}
+	.lm__note {
+		margin: 0.9rem 0 0;
+		font-size: 0.9rem;
+		color: var(--ink-soft);
+	}
+</style>

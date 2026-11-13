@@ -1,0 +1,318 @@
+---
+// Example 2 chart: yearly rent under two lease structures, as a line chart with a hover/focus readout.
+// The year-by-year table beside it carries the same numbers.
+interface Props {
+	lang?: 'en' | 'es';
+	annual: number[];
+	stepped: number[];
+	annualLabel: string;
+	steppedLabel: string;
+}
+const { lang = 'en', annual, stepped, annualLabel, steppedLabel } = Astro.props;
+const t = {
+	en: {
+		title: (n: number) => `Yearly rent, year 1 to year ${n}`,
+		aria: (n: number, a: string, a0: string, a1: string, s: string, s1: string) =>
+			`Line chart of yearly rent over ${n} years. With ${a}, rent rises from ${a0} to ${a1}. With ${s}, rent stays flat for five years at a time and rises to ${s1}. The table below lists the numbers.`,
+		axis: 'Lease year (the axis starts at $160K)',
+		year: 'Year',
+		hit: (y: number, a: string, av: string, s: string, sv: string) => `Year ${y}: ${a} ${av}; ${s} ${sv}`,
+		note: 'Hover or tap a year to see both numbers. The same figures are in the table below.',
+	},
+	es: {
+		title: (n: number) => `Renta anual, del año 1 al año ${n}`,
+		aria: (n: number, a: string, a0: string, a1: string, s: string, s1: string) =>
+			`Gráfica de líneas de la renta anual durante ${n} años. Con ${a}, la renta sube de ${a0} a ${a1}. Con ${s}, la renta se queda igual cinco años seguidos y sube a ${s1}. La tabla de abajo muestra las cifras.`,
+		axis: 'Año del contrato (el eje empieza en $160K)',
+		year: 'Año',
+		hit: (y: number, a: string, av: string, s: string, sv: string) => `Año ${y}: ${a} ${av}; ${s} ${sv}`,
+		note: 'Pase el cursor o toque un año para ver las dos cifras. Los mismos números están en la tabla de abajo.',
+	},
+}[lang];
+
+const money = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
+const W = 640;
+const H = 330;
+const L = 66;
+const R = 26;
+const T = 30;
+const B = 46;
+const yMin = 160_000;
+const yMax = 240_000;
+const n = annual.length;
+const x = (i: number) => L + (i / (n - 1)) * (W - L - R);
+const y = (v: number) => T + (1 - (v - yMin) / (yMax - yMin)) * (H - T - B);
+const ticks = [160_000, 180_000, 200_000, 220_000, 240_000];
+
+const annualPath = annual.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
+let steppedPath = `M${x(0).toFixed(1)} ${y(stepped[0]).toFixed(1)}`;
+for (let i = 1; i < n; i++) {
+	steppedPath += ` L${x(i).toFixed(1)} ${y(stepped[i - 1]).toFixed(1)}`;
+	if (stepped[i] !== stepped[i - 1]) steppedPath += ` L${x(i).toFixed(1)} ${y(stepped[i]).toFixed(1)}`;
+}
+const step = (W - L - R) / (n - 1);
+const last = n - 1;
+---
+
+<figure class="rc" data-rent-chart>
+	<figcaption>
+		<strong>{t.title(n)}</strong>
+		<span class="rc__legend" aria-hidden="true">
+			<span><i class="rc__sw rc__sw--a"></i>{annualLabel}</span>
+			<span><i class="rc__sw rc__sw--s"></i>{steppedLabel}</span>
+		</span>
+	</figcaption>
+	<div class="rc__scroll">
+		<svg
+			viewBox={`0 0 ${W} ${H}`}
+			role="img"
+			aria-label={t.aria(n, annualLabel, money(annual[0]), money(annual[last]), steppedLabel, money(stepped[last]))}
+		>
+			{
+				ticks.map((t) => (
+					<g>
+						<line x1={L} x2={W - R} y1={y(t)} y2={y(t)} class="rc__grid" />
+						<text x={L - 10} y={y(t) + 4} class="rc__ytick" text-anchor="end">
+							${t / 1000}K
+						</text>
+					</g>
+				))
+			}
+			{
+				annual.map((_, i) => (
+					<text x={x(i)} y={H - B + 22} class="rc__xtick" text-anchor="middle">
+						{i + 1}
+					</text>
+				))
+			}
+			<text x={(L + W - R) / 2} y={H - 6} class="rc__axis" text-anchor="middle">{t.axis}</text>
+
+			<line data-cross x1="0" x2="0" y1={T} y2={H - B} class="rc__cross" style="opacity:0" />
+
+			<path d={steppedPath} class="rc__line rc__line--s" />
+			<path d={annualPath} class="rc__line rc__line--a" />
+			{annual.map((v, i) => <circle cx={x(i)} cy={y(v)} r="3.6" class="rc__dot rc__dot--a" />)}
+			{
+				stepped.map((v, i) =>
+					i % 5 === 0 ? <rect x={x(i) - 4.5} y={y(v) - 4.5} width="9" height="9" class="rc__dot rc__dot--s" /> : null
+				)
+			}
+
+			<text x={x(last)} y={y(annual[last]) - 12} class="rc__end rc__end--a" text-anchor="end">{money(annual[last])}</text>
+			<text x={x(last)} y={y(stepped[last]) + 22} class="rc__end rc__end--s" text-anchor="end">{money(stepped[last])}</text>
+
+			{
+				annual.map((v, i) => (
+					<rect
+						x={x(i) - step / 2}
+						y={T}
+						width={step}
+						height={H - T - B}
+						fill="transparent"
+						class="rc__hit"
+						tabindex="0"
+						data-i={i}
+						data-year={i + 1}
+						data-yearlabel={t.year}
+						data-a={money(v)}
+						data-s={money(stepped[i])}
+						data-x={x(i)}
+						aria-label={t.hit(i + 1, annualLabel, money(v), steppedLabel, money(stepped[i]))}
+					/>
+				))
+			}
+		</svg>
+	</div>
+	<div class="rc__tip" data-tip role="status" aria-live="polite" hidden></div>
+	<p class="rc__note">{t.note}</p>
+</figure>
+
+<style>
+	.rc {
+		position: relative;
+		margin: 1.5rem 0 1.5rem;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		padding: 1.1rem 1.25rem 1.1rem;
+	}
+	figcaption {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: center;
+		gap: 0.5rem 1.25rem;
+		margin-bottom: 0.6rem;
+		font-family: var(--font-serif);
+		font-size: 1.1rem;
+		color: var(--navy);
+	}
+	.rc__legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem 1.2rem;
+		font-family: var(--font-sans);
+		font-size: 0.86rem;
+		font-weight: 600;
+		color: var(--ink);
+	}
+	.rc__legend span {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+	}
+	.rc__sw {
+		display: inline-block;
+		width: 22px;
+		height: 0;
+		border-top: 3px solid var(--navy);
+	}
+	.rc__sw--s {
+		border-top-color: var(--gold);
+		border-top-style: solid;
+	}
+	.rc__scroll {
+		overflow-x: auto;
+	}
+	svg {
+		display: block;
+		width: 100%;
+		min-width: 560px;
+		height: auto;
+	}
+	.rc__grid {
+		stroke: var(--border);
+		stroke-width: 1;
+	}
+	.rc__ytick,
+	.rc__xtick {
+		font-size: 12.5px;
+		fill: var(--ink-soft);
+		font-family: var(--font-sans);
+	}
+	.rc__axis {
+		font-size: 12.5px;
+		fill: var(--ink-light);
+		font-family: var(--font-sans);
+	}
+	.rc__line {
+		fill: none;
+		stroke-width: 3;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+	}
+	.rc__line--a {
+		stroke: var(--navy);
+	}
+	.rc__line--s {
+		stroke: var(--gold);
+	}
+	.rc__dot--a {
+		fill: var(--navy);
+		stroke: #fff;
+		stroke-width: 2;
+	}
+	.rc__dot--s {
+		fill: var(--gold);
+		stroke: #fff;
+		stroke-width: 2;
+	}
+	.rc__end {
+		font-size: 13px;
+		font-weight: 700;
+		font-family: var(--font-sans);
+	}
+	.rc__end--a {
+		fill: var(--navy);
+	}
+	.rc__end--s {
+		fill: var(--gold-dark);
+	}
+	.rc__cross {
+		stroke: var(--ink-light);
+		stroke-width: 1;
+		stroke-dasharray: 3 3;
+	}
+	.rc__hit {
+		cursor: crosshair;
+		outline: none;
+	}
+	.rc__tip {
+		position: absolute;
+		top: 3.4rem;
+		z-index: 3;
+		min-width: 190px;
+		max-width: 260px;
+		padding: 0.55rem 0.75rem;
+		background: var(--navy-dark);
+		color: #fff;
+		border-radius: 8px;
+		font-size: 0.84rem;
+		line-height: 1.45;
+		box-shadow: 0 6px 18px rgba(12, 46, 80, 0.25);
+		pointer-events: none;
+	}
+	.rc__tip[hidden] {
+		display: none;
+	}
+	.rc__tip :global(b) {
+		display: block;
+		margin-bottom: 0.15rem;
+	}
+	.rc__tip :global(i) {
+		display: inline-block;
+		width: 10px;
+		height: 10px;
+		border-radius: 2px;
+		margin-right: 0.4rem;
+	}
+	.rc__note {
+		margin: 0.6rem 0 0;
+		font-size: 0.86rem;
+		color: var(--ink-soft);
+	}
+	@media (max-width: 700px) {
+		.rc {
+			padding: 1rem 0.9rem;
+		}
+	}
+</style>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-rent-chart]').forEach((card) => {
+		const tip = card.querySelector<HTMLElement>('[data-tip]')!;
+		const cross = card.querySelector<SVGLineElement>('[data-cross]')!;
+		const hits = card.querySelectorAll<SVGRectElement>('.rc__hit');
+		const names = card.querySelectorAll<HTMLElement>('.rc__legend span');
+		const nameA = names[0]?.textContent?.trim() ?? '';
+		const nameS = names[1]?.textContent?.trim() ?? '';
+		const show = (el: SVGRectElement) => {
+			const cx = el.dataset.x ?? '0';
+			cross.setAttribute('x1', cx);
+			cross.setAttribute('x2', cx);
+			cross.style.opacity = '1';
+			tip.innerHTML =
+				`<b>${el.dataset.yearlabel} ${el.dataset.year}</b>` +
+				`<i style="background:#4f86bd"></i>${nameA}: ${el.dataset.a}<br>` +
+				`<i style="background:#b6944a"></i>${nameS}: ${el.dataset.s}`;
+			tip.hidden = false;
+			const box = card.getBoundingClientRect();
+			const r = el.getBoundingClientRect();
+			const w = tip.offsetWidth;
+			let left = r.left + r.width / 2 - box.left - w / 2;
+			left = Math.max(8, Math.min(left, box.width - w - 8));
+			tip.style.left = `${left}px`;
+		};
+		const hide = () => {
+			tip.hidden = true;
+			cross.style.opacity = '0';
+		};
+		hits.forEach((el) => {
+			el.addEventListener('mouseenter', () => show(el));
+			el.addEventListener('focus', () => show(el));
+			el.addEventListener('touchstart', () => show(el), { passive: true });
+			el.addEventListener('blur', hide);
+		});
+		card.addEventListener('mouseleave', hide);
+	});
+</script>
