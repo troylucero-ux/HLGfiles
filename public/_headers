@@ -5,9 +5,3 @@
 /om/*
   X-Robots-Tag: noindex, nofollow, noarchive
   Cache-Control: private, no-store
-
-# Temporary: email HTML copies used to fill Constant Contact drafts (removed after use).
-/email-src/*
-  Access-Control-Allow-Origin: *
-  X-Robots-Tag: noindex, nofollow
-  Cache-Control: no-store
