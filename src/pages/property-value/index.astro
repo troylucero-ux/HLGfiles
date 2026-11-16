@@ -206,6 +206,48 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 		document.getElementById('val-address-error').hidden = true;
 	});
 
+	// Step tracking (GA4). Each step is its own event name so it shows in the GA4 Events report with
+	// no setup, and the drop-off between steps is visible. Never sends the address, rents or year.
+	function track(name, extra) {
+		if (typeof window.gtag !== 'function') return;
+		window.gtag('event', name, Object.assign({ page_path: window.location.pathname }, extra || {}));
+	}
+	const trackedOnce = {};
+	function trackOnce(name, extra) {
+		if (trackedOnce[name]) return;
+		trackedOnce[name] = true;
+		track(name, extra);
+	}
+	[
+		['val-address', 'input', 'calc_address_started'],
+		['val-year', 'input', 'calc_year_entered'],
+		['val-rent', 'input', 'calc_rent_entered'],
+		['val-units', 'input', 'calc_units_entered'],
+	].forEach(function (f) {
+		document.getElementById(f[0])?.addEventListener(f[1], function () {
+			trackOnce(f[2]);
+		});
+	});
+	document.getElementById('val-submarket')?.addEventListener('change', function (e) {
+		const sel = e.target;
+		trackOnce('calc_neighborhood_selected', { area: sel.options[sel.selectedIndex]?.text || '' });
+	});
+	form?.querySelector('button[type="submit"]')?.addEventListener('click', function () {
+		track('calc_estimate_clicked');
+	});
+	document.getElementById('result-details')?.addEventListener('toggle', function (e) {
+		if (e.target.open) trackOnce('calc_details_opened');
+	});
+	document.querySelector('.calc-result__cta')?.addEventListener('click', function () {
+		track('calc_precise_clicked');
+	});
+	document.querySelector('.calc-panel__btn')?.addEventListener('click', function () {
+		track('calc_side_bov_clicked');
+	});
+	document.querySelector('.calc-panel__call')?.addEventListener('click', function () {
+		track('calc_side_call_clicked');
+	});
+
 	// Does a typed address say it is in California? California ZIP codes run from 90001 to 96162.
 	function californiaStatus(address) {
 		const zip = address.match(/(?:,|\s)(\d{5})(?:-\d{4})?\s*(?:,\s*(?:USA|US))?\s*$/)?.[1];
@@ -317,6 +359,7 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 					? 'This calculator only covers properties in California. For a property in another state, request a free Broker Opinion of Value below and we will help.'
 					: 'Please include the city and state in the address, for example: 123 Main St, Los Angeles, CA.';
 			addressError.hidden = false;
+			track('calc_address_error', { reason: caStatus });
 			result.hidden = true;
 			document.getElementById('val-address')?.focus();
 			return;
@@ -384,6 +427,7 @@ const ownCitySlugs = submarkets.filter((sm) => sm.city).map((sm) => sm.slug);
 				]
 			: ['Checking your address', `Looking for recent ${areaName ?? 'neighborhood'} sales`, 'Checking whether there is enough data'];
 		showResultAfterLoading(steps, capRate ? { valueLow, valueHigh } : null);
+		track(capRate ? 'calc_result_shown' : 'calc_no_estimate', { area: areaName || 'Other / Not Listed' });
 
 		// Prefill the BOV form below so a visitor who wants a precise number doesn't have to retype it.
 		const bovAddress = document.querySelector('.js-bov-form input[name="address"]');
