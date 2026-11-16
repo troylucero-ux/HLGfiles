@@ -238,9 +238,20 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 						<div class="sold-gallery">
 							<h2>Photos</h2>
 							<div class="sold-gallery__grid">
-								{gallery.map((src, i) => (
-									<img class={gallery.length % 2 === 1 && i === 0 ? 'sold-gallery__wide' : undefined} src={src} alt={`${sale.name}, ${sale.city}: photo ${i + 2}`} width="800" height="600" loading="lazy" />
-								))}
+								{gallery.map((src, i) => {
+									// A file name with "-staged" marks a virtually staged photo, which is labelled as such.
+									const staged = /-staged\./.test(src);
+									const cls = gallery.length % 2 === 1 && i === 0 ? 'sold-gallery__wide' : undefined;
+									const img = <img class={cls} src={src} alt={`${sale.name}, ${sale.city}: photo ${i + 2}${staged ? ' (virtually staged)' : ''}`} width="800" height="600" loading="lazy" />;
+									return staged ? (
+										<figure class={`sold-gallery__staged${cls ? ' sold-gallery__staged--wide' : ''}`}>
+											{img}
+											<figcaption>Virtually staged</figcaption>
+										</figure>
+									) : (
+										img
+									);
+								})}
 							</div>
 						</div>
 					)
@@ -567,6 +578,28 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 		width: 100%;
 		aspect-ratio: 4 / 3;
 		object-fit: cover;
+		border-radius: 2px;
+	}
+
+	.sold-gallery__staged {
+		position: relative;
+		margin: 0;
+	}
+
+	.sold-gallery__staged--wide {
+		grid-column: span 2;
+	}
+
+	.sold-gallery__staged figcaption {
+		position: absolute;
+		left: 0.6rem;
+		bottom: 0.6rem;
+		background: rgb(12 46 80 / 0.85);
+		color: #fff;
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		padding: 0.2rem 0.55rem;
 		border-radius: 2px;
 	}
 
