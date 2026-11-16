@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BOVForm from '../../components/BOVForm.astro';
 import YouTubeFacade from '../../components/YouTubeFacade.astro';
+import sharp from 'sharp';
 import { closings } from '../../data/closings';
 import { caseStudies } from '../../data/caseStudies';
 import { submarkets } from '../../data/submarkets';
@@ -23,7 +24,24 @@ const { sale } = Astro.props;
 const isLand = sale.type === 'development-site';
 const submarket = sale.submarket ? submarkets.find((s) => s.slug === sale.submarket) : null;
 const caseStudy = sale.caseStudySlug ? caseStudies.find((c) => c.slug === sale.caseStudySlug) : null;
-const image = sale.images?.[0];
+// Photo sizes are read at build time. A full-width hero needs a sharp photo (1000px+ wide): the first photo is used when it is big enough,
+// otherwise the widest one that is. Sales whose photos are all small get a compact header with the photo shown as a framed picture instead.
+const allImages = sale.images ?? [];
+const imageWidths = await Promise.all(
+	allImages.map(async (src) => {
+		try {
+			return (await sharp(`public${src}`).metadata()).width ?? 0;
+		} catch (e) {
+			console.warn("[closed-sales] could not read photo size for", src, String(e).slice(0,160));
+			return 0;
+		}
+	}),
+);
+const widest = imageWidths.length ? Math.max(...imageWidths) : 0;
+const heroIdx = imageWidths[0] >= 1000 ? 0 : widest >= 1000 ? imageWidths.indexOf(widest) : 0;
+const heroWide = allImages.length > 0 && imageWidths[heroIdx] >= 1000;
+const image = allImages[heroIdx];
+const heroNaturalWidth = imageWidths[heroIdx] || 400;
 // A building that sold more than once with us gets the sale year after its name; a recorded year (or a year in the slug) tells the pages apart.
 const hasSibling = closings.some((c) => c.name === sale.name && c.slug !== sale.slug);
 const saleYear = sale.soldDate && hasSibling ? sale.soldDate.slice(0, 4) : /-20\d\d$/.test(sale.slug) ? sale.slug.slice(-4) : null;
@@ -104,7 +122,10 @@ const stats: { label: string; value: string; featured?: boolean }[] = [
 	...(pricePerSf ? [{ label: isLand ? 'Price Per Land SF' : 'Price Per SF', value: `$${pricePerSf.toLocaleString('en-US')}` }] : []),
 	...(roleLabel ? [{ label: 'We Represented', value: roleLabel }] : []),
 ];
-const gallery = (sale.images ?? []).slice(1);
+// Photo grid: everything except the hero, and when there are at least two sharp photos, without the small low-resolution ones.
+const galleryAll = allImages.map((src, i) => ({ src, w: imageWidths[i] })).filter((_, i) => i !== heroIdx);
+const gallerySharp = galleryAll.filter((g) => g.w >= 600);
+const gallery = (gallerySharp.length >= 2 ? gallerySharp : galleryAll).map((g) => g.src);
 const imageAlt = `${sale.name}, ${sale.city}, ${sale.state}: ${kind} (closed sale)`;
 const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 ---
@@ -112,28 +133,49 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 <BaseLayout title={seoTitle} description={seoDescription} image={image}>
 	{videoSchema && <script type="application/ld+json" set:html={JSON.stringify(videoSchema)} />}
 
-	<header class="sold-hero">
-		{image && <img class="sold-hero__img" src={image} alt={imageAlt} width="1200" height="800" loading="eager" fetchpriority="high" />}
-		<div class="sold-hero__shade"></div>
-		<div class="sold-hero__stamp" aria-hidden="true">
-			<span>SOLD</span>
-			{sale.soldDate && <small>{formatSoldDate(sale.soldDate)}</small>}
-		</div>
+	<header class={heroWide ? 'sold-hero' : 'sold-hero sold-hero--compact'}>
+		{
+			heroWide && image && (
+				<>
+					<img class="sold-hero__img" src={image} alt={imageAlt} width="1200" height="800" loading="eager" fetchpriority="high" />
+					<div class="sold-hero__shade" />
+				</>
+			)
+		}
+		{
+			heroWide && (
+				<div class="sold-hero__stamp" aria-hidden="true">
+					<span>SOLD</span>
+					{sale.soldDate && <small>{formatSoldDate(sale.soldDate)}</small>}
+				</div>
+			)
+		}
 		<div class="container sold-hero__inner">
-			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Closed Sales', href: '/closed-sales/' }, { label: sale.name }]} />
-			<span class="sold-hero__eyebrow">Closed Sale</span>
-			<h1>{sale.name}{saleYear ? ` (${saleYear})` : ''}</h1>
-			<p class="sold-hero__location">
-				{place}
+			<div class="sold-hero__text">
+				<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Closed Sales', href: '/closed-sales/' }, { label: sale.name }]} />
 				{
-					submarket && (
-						<>
-							{' '}
-							&middot; <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a>
-						</>
+					!heroWide && (
+						<div class="sold-hero__stamp sold-hero__stamp--inline" aria-hidden="true">
+							<span>SOLD</span>
+							{sale.soldDate && <small>{formatSoldDate(sale.soldDate)}</small>}
+						</div>
 					)
 				}
-			</p>
+				<span class="sold-hero__eyebrow">Closed Sale</span>
+				<h1>{sale.name}{saleYear ? ` (${saleYear})` : ''}</h1>
+				<p class="sold-hero__location">
+					{place}
+					{
+						submarket && (
+							<>
+								{' '}
+								&middot; <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a>
+							</>
+						)
+					}
+				</p>
+			</div>
+			{!heroWide && image && <img class="sold-hero__thumb" style={`--thumb-w:${heroNaturalWidth}px`} src={image} alt={imageAlt} loading="eager" fetchpriority="high" />}
 		</div>
 	</header>
 
@@ -359,6 +401,18 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 		z-index: 2;
 	}
 
+	.sold-hero--compact .sold-hero__eyebrow {
+		display: none;
+	}
+
+	.sold-hero__stamp--inline {
+		position: static;
+		display: inline-block;
+		margin-bottom: 1.1rem;
+		transform: rotate(-3deg);
+		padding: 0.35rem 1.1rem 0.45rem;
+	}
+
 	.sold-hero__stamp span {
 		display: block;
 		font-family: var(--font-sans);
@@ -375,6 +429,32 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
+	}
+
+	/* Compact header for sales whose photos are too small to run full width without looking blurry. */
+	.sold-hero--compact {
+		min-height: 0;
+		background: linear-gradient(160deg, var(--navy) 0%, var(--navy-dark) 100%);
+		padding-block: clamp(2rem, 5vw, 3.5rem) clamp(4.5rem, 8vw, 6rem);
+		align-items: center;
+	}
+
+	.sold-hero--compact .sold-hero__inner {
+		display: grid;
+		grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+		gap: clamp(1.5rem, 4vw, 3rem);
+		align-items: end;
+	}
+
+	.sold-hero__thumb {
+		justify-self: end;
+		width: 100%;
+		max-width: clamp(240px, calc(var(--thumb-w) * 1.4), 520px);
+		max-height: 340px;
+		object-fit: cover;
+		border: 3px solid var(--gold);
+		border-radius: 3px;
+		box-shadow: 0 14px 34px rgb(0 0 0 / 0.35);
 	}
 
 	.sold-stats {
@@ -696,6 +776,11 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 			right: 0.9rem;
 		}
 
+		.sold-hero__stamp--inline {
+			top: auto;
+			right: auto;
+		}
+
 		.sold-hero__stamp span {
 			font-size: 1.7rem;
 		}
@@ -706,6 +791,14 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 
 		.sold-hero__inner {
 			padding-top: 4.25rem;
+		}
+
+		.sold-hero--compact .sold-hero__inner {
+			grid-template-columns: 1fr;
+		}
+
+		.sold-hero__thumb {
+			justify-self: start;
 		}
 
 		.sold-stats__grid {
