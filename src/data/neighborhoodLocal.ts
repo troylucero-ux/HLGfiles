@@ -288,7 +288,7 @@ export const neighborhoodLocal: Record<string, LocalSection> = {
 			},
 		],
 		proof:
-			'We sold the 7-unit [941 N Normandie Ave](/case-studies/941-normandie-ave-east-hollywood-apartments/) in East Hollywood and are marketing [4412-4414 Lockwood Ave](/listings/4412-4414-lockwood-ave-los-angeles-ca-90029/) in the Virgil Village pocket.',
+			'We sold the 7-unit [941 N Normandie Ave](/case-studies/941-normandie-ave-east-hollywood-apartments/) in East Hollywood and also sold [4412-4414 Lockwood Ave](/closed-sales/4412-4414-lockwood-ave-los-angeles-ca-90029/) in the Virgil Village pocket.',
 		source: 'Sources: Highlight analysis of CoStar sold multifamily comps, January to October 2026. Each median rests on the sale count shown.',
 		faqs: [
 			{

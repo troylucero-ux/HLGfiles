@@ -103,7 +103,7 @@ export const submarkets: Submarket[] = [
 		],
 		employers: ['Kaiser Permanente Los Angeles Medical Center', 'Children’s Hospital Los Angeles', 'Los Angeles City College'],
 		overview:
-			'East Hollywood, bordered by Los Feliz to the north, Silver Lake to the east, and Hollywood to the west, is one of LA’s most walkable and culturally diverse submarkets, anchored by major medical and educational institutions. Highlight closed the 7-unit value-add sale at 941 N Normandie Ave here, and is currently marketing 4412-4414 Lockwood Ave in the submarket’s Virgil Village pocket.',
+			'East Hollywood, bordered by Los Feliz to the north, Silver Lake to the east, and Hollywood to the west, is one of LA’s most walkable and culturally diverse submarkets, anchored by major medical and educational institutions. Highlight closed the 7-unit value-add sale at 941 N Normandie Ave here, and also sold 4412-4414 Lockwood Ave in the submarket’s Virgil Village pocket.',
 		metaDescription:
 			'East Hollywood multifamily broker: 2026 apartment prices and cap rates, LA rent control and Measure ULA explained, and a free valuation for owners.',
 		laOwnerGuide: true,
