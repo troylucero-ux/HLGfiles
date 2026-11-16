@@ -91,17 +91,39 @@ const videoSchema = sale.youtubeId
 			...youtubeMeta[sale.youtubeId],
 		}
 	: null;
+
+// Key figures shown as big cards. Only figures that exist for this sale are shown.
+const roleLabel = sale.role === 'buyer' ? 'The Buyer' : sale.role === 'seller' ? 'The Seller' : sale.role === 'both' ? 'Buyer and Seller' : null;
+const stats: { label: string; value: string; featured?: boolean }[] = [
+	{ label: 'Sale Price', value: formatPriceFull(sale.price), featured: true },
+	...(sale.soldDate ? [{ label: 'Sale Date', value: formatSoldDate(sale.soldDate) }] : []),
+	...(sale.units ? [{ label: 'Units', value: String(sale.units) }] : []),
+	...(sale.sqft ? [{ label: isLand ? 'Land Area' : 'Building Size', value: `${sale.sqft.toLocaleString('en-US')} SF` }] : []),
+	...(sale.acres ? [{ label: 'Acres', value: String(sale.acres) }] : []),
+	...(pricePerUnit ? [{ label: 'Price Per Unit', value: formatPriceFull(pricePerUnit) }] : []),
+	...(pricePerSf ? [{ label: isLand ? 'Price Per Land SF' : 'Price Per SF', value: `$${pricePerSf.toLocaleString('en-US')}` }] : []),
+	...(roleLabel ? [{ label: 'We Represented', value: roleLabel }] : []),
+];
+const gallery = (sale.images ?? []).slice(1);
+const imageAlt = `${sale.name}, ${sale.city}, ${sale.state}: ${kind} (closed sale)`;
+const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 ---
 
 <BaseLayout title={seoTitle} description={seoDescription} image={image}>
 	{videoSchema && <script type="application/ld+json" set:html={JSON.stringify(videoSchema)} />}
 
-	<article class="section">
-		<div class="container sale-detail">
+	<header class="sold-hero">
+		{image && <img class="sold-hero__img" src={image} alt={imageAlt} width="1200" height="800" loading="eager" fetchpriority="high" />}
+		<div class="sold-hero__shade"></div>
+		<div class="sold-hero__stamp" aria-hidden="true">
+			<span>SOLD</span>
+			{sale.soldDate && <small>{formatSoldDate(sale.soldDate)}</small>}
+		</div>
+		<div class="container sold-hero__inner">
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Closed Sales', href: '/closed-sales/' }, { label: sale.name }]} />
-			<span class="eyebrow">Closed Sale</span>
+			<span class="sold-hero__eyebrow">Closed Sale</span>
 			<h1>{sale.name}{saleYear ? ` (${saleYear})` : ''}</h1>
-			<p class="sale-detail__location">
+			<p class="sold-hero__location">
 				{place}
 				{
 					submarket && (
@@ -112,129 +134,110 @@ const videoSchema = sale.youtubeId
 					)
 				}
 			</p>
+		</div>
+	</header>
 
-			{
-				sale.youtubeId ? (
-					<YouTubeFacade youtubeId={sale.youtubeId} title={`${sale.name} Video Tour`} />
-				) : (
-					image && (
-						<img
-							class="sale-detail__image"
-							src={image}
-							alt={`${sale.name}, ${sale.city}, ${sale.state}: ${kind} (closed sale)`}
-							width="900"
-							height="520"
-							loading="eager"
-						/>
-					)
-				)
-			}
-
-			<dl class="sale-detail__facts">
-				<div>
-					<dt>Sale Price</dt>
-					<dd>{formatPriceFull(sale.price)}</dd>
-				</div>
+	<section class="sold-stats" aria-label="Key figures">
+		<div class="container">
+			<dl class="sold-stats__grid">
 				{
-					sale.role && (
-						<div>
-							<dt>We Represented</dt>
-							<dd>{sale.role === 'buyer' ? 'The Buyer' : sale.role === 'seller' ? 'The Seller' : 'Buyer and Seller'}</dd>
+					stats.map((st) => (
+						<div class={st.featured ? 'sold-stats__card sold-stats__card--featured' : 'sold-stats__card'}>
+							<dt>{st.label}</dt>
+							<dd>{st.value}</dd>
 						</div>
-					)
-				}
-				{
-					sale.soldDate && (
-						<div>
-							<dt>Sale Date</dt>
-							<dd>{formatSoldDate(sale.soldDate)}</dd>
-						</div>
-					)
-				}
-				{
-					sale.units && (
-						<div>
-							<dt>Units</dt>
-							<dd>{sale.units}</dd>
-						</div>
-					)
-				}
-				{
-					sale.sqft && (
-						<div>
-							<dt>{isLand ? 'Land Area' : 'Building Size'}</dt>
-							<dd>{sale.sqft.toLocaleString('en-US')} SF</dd>
-						</div>
-					)
-				}
-				{
-					pricePerUnit && (
-						<div>
-							<dt>Price Per Unit</dt>
-							<dd>{formatPriceFull(pricePerUnit)}</dd>
-						</div>
-					)
-				}
-				{
-					pricePerSf && (
-						<div>
-							<dt>{isLand ? 'Price Per Land SF' : 'Price Per SF'}</dt>
-							<dd>${pricePerSf.toLocaleString('en-US')}</dd>
-						</div>
-					)
-				}
-				{
-					sale.acres && (
-						<div>
-							<dt>Acres</dt>
-							<dd>{sale.acres}</dd>
-						</div>
-					)
+					))
 				}
 			</dl>
+		</div>
+	</section>
 
-			<div class="sale-detail__body">
-				<h2>Sale Summary</h2>
-				<p>{summary}</p>
-				{sale.blurb && <p>{blurbParts.map((part) => (part.href ? <a href={part.href}>{part.text}</a> : part.text))}</p>}
+	<article class="section">
+		<div class="container sold-layout">
+			<div class="sold-main">
+				{sale.youtubeId && <YouTubeFacade youtubeId={sale.youtubeId} title={`${sale.name} Video Tour`} />}
+
+				<div class="sale-detail__body">
+					<h2>Sale Summary</h2>
+					<p>{summary}</p>
+					{sale.blurb && <p>{blurbParts.map((part) => (part.href ? <a href={part.href}>{part.text}</a> : part.text))}</p>}
+					{
+						submarket && (
+							<p>
+								The property sits in the <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a> submarket ({submarket.region}){submarket.walkScore !== undefined ? `, which scores ${submarket.walkScore} for Walk Score${submarket.transitScore !== undefined ? ` and ${submarket.transitScore} for Transit Score` : ''}` : ''}.
+							</p>
+						)
+					}
+					<p>
+						This sale is part of the <a href="/closed-sales/">Highlight Multifamily Group track record</a>.
+						{closingCoordinates[sale.slug] && (
+							<>
+								{' '}
+								<a href={`/closed-sales/map/?sale=${sale.slug}`}>See it on our closed sales map</a>.
+							</>
+						)}
+					</p>
+				</div>
+
 				{
-					submarket && (
-						<p>
-							The property sits in the <a href={`/submarkets/${submarket.slug}/`}>{submarket.name}</a> submarket ({submarket.region}){submarket.walkScore !== undefined ? `, which scores ${submarket.walkScore} for Walk Score${submarket.transitScore !== undefined ? ` and ${submarket.transitScore} for Transit Score` : ''}` : ''}.
-						</p>
+					sale.story && sale.story.length > 0 && (
+						<div class="sold-story">
+							<span class="sold-story__label">The Story</span>
+							<h2>The story behind this sale</h2>
+							{sale.story.map((para) => (
+								<p>{para}</p>
+							))}
+						</div>
 					)
 				}
-				<p>
-					This sale is part of the <a href="/closed-sales/">Highlight Multifamily Group track record</a>.
-					{closingCoordinates[sale.slug] && (
-						<>
-							{' '}
-							<a href={`/closed-sales/map/?sale=${sale.slug}`}>See it on our closed sales map</a>.
-						</>
-					)}
-				</p>
+
+				{
+					gallery.length > 0 && (
+						<div class="sold-gallery">
+							<h2>Photos</h2>
+							<div class="sold-gallery__grid">
+								{gallery.map((src, i) => (
+									<img class={gallery.length % 2 === 1 && i === 0 ? 'sold-gallery__wide' : undefined} src={src} alt={`${sale.name}, ${sale.city}: photo ${i + 2}`} width="800" height="600" loading="lazy" />
+								))}
+							</div>
+						</div>
+					)
+				}
+
+				{
+					caseStudy && (
+						<a href={`/case-studies/${caseStudy.slug}/`} class="sale-detail__casestudy">
+							<span class="eyebrow">Case Study</span>
+							<strong>{caseStudy.title}</strong>
+							<span>{caseStudy.summary}</span>
+							<span class="sale-detail__casestudy-cta">Read the full case study &rarr;</span>
+						</a>
+					)
+				}
 			</div>
 
-			{
-				caseStudy && (
-					<a href={`/case-studies/${caseStudy.slug}/`} class="sale-detail__casestudy">
-						<span class="eyebrow">Case Study</span>
-						<strong>{caseStudy.title}</strong>
-						<span>{caseStudy.summary}</span>
-						<span class="sale-detail__casestudy-cta">Read the full case study &rarr;</span>
-					</a>
-				)
-			}
+			<aside class="sold-aside">
+				<div class="sold-cta">
+					<span class="sold-cta__label">Own a building like this?</span>
+					<h2>See what yours could sell for</h2>
+					<p>A free estimate takes about 60 seconds, built on real closed sales near you. No sign-up to see your range.</p>
+					<a href="/property-value/" class="sold-cta__btn" data-cta="sold-page-estimate">Get my free estimate</a>
+					<a href={phoneHref} class="sold-cta__call" data-cta="sold-page-call">Or call {site.phone}</a>
+				</div>
+			</aside>
+		</div>
 
+		<div class="container sold-more">
 			{
 				related.length > 0 && (
 					<div class="sale-detail__related">
 						<h2>{sameSubmarket.length >= 3 && submarket ? `More Sales in ${submarket.name}` : 'Related Closed Sales'}</h2>
-						<ul>
+						<ul class="sold-cards">
 							{related.map((r) => (
 								<li>
 									<a href={`/closed-sales/${r.slug}/`}>
-										<span>{r.name}</span>
+										{r.images?.[0] ? <img src={r.images[0]} alt="" width="400" height="260" loading="lazy" /> : <span class="sold-cards__ph" aria-hidden="true">SOLD</span>}
+										<span class="sold-cards__name">{r.name}</span>
 										<span class="sale-detail__related-meta">
 											{r.city}, {r.state} &middot; {r.units ? `${r.units} Units` : 'Development Site'} &middot; Sold for {formatPrice(r.price)}
 										</span>
@@ -276,51 +279,161 @@ const videoSchema = sale.youtubeId
 </BaseLayout>
 
 <style>
-	.sale-detail {
-		max-width: 760px;
+	.sold-hero {
+		position: relative;
+		color: #fff;
+		min-height: clamp(380px, 52vw, 560px);
+		display: flex;
+		align-items: flex-end;
+		overflow: hidden;
+		background: var(--navy-dark);
+		padding-block: clamp(2rem, 6vw, 4.5rem) clamp(4.5rem, 8vw, 6.5rem);
 	}
 
-	.sale-detail__location {
-		color: var(--ink-light);
-		font-weight: 600;
-		margin-bottom: 1.5rem;
-	}
-
-	.sale-detail__image {
+	.sold-hero__img {
+		position: absolute;
+		inset: 0;
 		width: 100%;
-		height: 420px;
+		height: 100%;
 		object-fit: cover;
-		border-radius: 2px;
-		margin-bottom: 2rem;
 	}
 
-	.sale-detail :global(.yt-facade) {
-		margin-bottom: 2rem;
+	.sold-hero__shade {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(180deg, rgb(12 46 80 / 0.5) 0%, rgb(12 46 80 / 0.25) 38%, rgb(12 46 80 / 0.92) 100%);
 	}
 
-	.sale-detail__facts {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-		gap: 1.5rem;
-		border-top: 1px solid var(--border);
-		border-bottom: 1px solid var(--border);
-		padding-block: 1.5rem;
-		margin: 0 0 2.5rem;
+	.sold-hero__inner {
+		position: relative;
+		width: 100%;
 	}
 
-	.sale-detail__facts dt {
-		font-size: 0.72rem;
+	.sold-hero :global(.breadcrumbs),
+	.sold-hero :global(.breadcrumbs a),
+	.sold-hero :global(.breadcrumbs li:last-child),
+	.sold-hero :global(.breadcrumbs li:last-child *) {
+		color: rgb(255 255 255 / 0.9);
+	}
+
+	.sold-hero__eyebrow {
+		display: inline-block;
+		margin-top: 1rem;
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--ink-light);
-		font-weight: 600;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		color: var(--gold-light);
 	}
 
-	.sale-detail__facts dd {
+	.sold-hero h1 {
+		color: #fff;
+		margin: 0.3rem 0 0.3rem;
+		text-shadow: 0 2px 18px rgb(0 0 0 / 0.35);
+	}
+
+	.sold-hero__location {
+		margin: 0;
+		font-weight: 600;
+		color: rgb(255 255 255 / 0.92);
+	}
+
+	.sold-hero__location a {
+		color: var(--gold-light);
+	}
+
+	.sold-hero__stamp {
+		position: absolute;
+		top: clamp(1.25rem, 4vw, 2.5rem);
+		right: clamp(1rem, 5vw, 4rem);
+		transform: rotate(-8deg);
+		background: var(--gold);
+		color: var(--navy-dark);
+		padding: 0.5rem 1.4rem 0.6rem;
+		border-radius: 3px;
+		text-align: center;
+		box-shadow:
+			0 10px 30px rgb(0 0 0 / 0.35),
+			inset 0 0 0 3px var(--gold),
+			inset 0 0 0 5px var(--navy-dark);
+		z-index: 2;
+	}
+
+	.sold-hero__stamp span {
+		display: block;
+		font-family: var(--font-sans);
+		font-weight: 900;
+		font-size: clamp(2rem, 6vw, 3.4rem);
+		letter-spacing: 0.08em;
+		line-height: 1;
+	}
+
+	.sold-hero__stamp small {
+		display: block;
+		margin-top: 0.2rem;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.sold-stats {
+		position: relative;
+		z-index: 3;
+		margin-top: -3.25rem;
+	}
+
+	.sold-stats__grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+		gap: 0.75rem;
+		margin: 0;
+	}
+
+	.sold-stats__card {
+		background: var(--navy-dark);
+		color: #fff;
+		padding: 1.1rem 1.2rem;
+		border-radius: 3px;
+		border-top: 3px solid var(--gold);
+		box-shadow: 0 12px 30px rgb(12 46 80 / 0.22);
+	}
+
+	.sold-stats__card--featured {
+		background: var(--gold);
+		border-top-color: var(--navy-dark);
+		color: var(--navy-dark);
+	}
+
+	.sold-stats__card dt {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.09em;
+		font-weight: 700;
+		opacity: 0.8;
+	}
+
+	.sold-stats__card dd {
 		margin: 0.3rem 0 0;
 		font-family: var(--font-serif);
-		font-size: 1.5rem;
+		font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+		line-height: 1.15;
+		color: var(--gold-light);
+	}
+
+	.sold-stats__card--featured dd {
 		color: var(--navy-dark);
+	}
+
+	.sold-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+		gap: clamp(1.5rem, 4vw, 3.5rem);
+		align-items: start;
+	}
+
+	.sold-main :global(.yt-facade) {
+		margin-bottom: 2rem;
 	}
 
 	.sale-detail__body {
@@ -330,6 +443,117 @@ const videoSchema = sale.youtubeId
 
 	.sale-detail__body h2 {
 		font-size: 1.5rem;
+	}
+
+	.sold-story {
+		margin: 2.5rem 0;
+		padding: 1.75rem 1.75rem 1.25rem;
+		background: var(--paper-alt);
+		border-left: 4px solid var(--gold);
+		border-radius: 2px;
+		font-size: 1.08rem;
+		line-height: 1.75;
+	}
+
+	.sold-story__label {
+		display: block;
+		text-transform: uppercase;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		color: var(--gold-dark);
+	}
+
+	.sold-story h2 {
+		margin-top: 0.3rem;
+		font-size: 1.5rem;
+	}
+
+	.sold-gallery {
+		margin: 2.5rem 0;
+	}
+
+	.sold-gallery h2 {
+		font-size: 1.35rem;
+	}
+
+	.sold-gallery__grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
+	}
+
+	.sold-gallery__grid img {
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: 2px;
+	}
+
+	.sold-gallery__grid .sold-gallery__wide {
+		grid-column: span 2;
+		aspect-ratio: 16 / 9;
+	}
+
+	.sold-aside {
+		position: sticky;
+		top: 1.5rem;
+	}
+
+	.sold-cta {
+		background: linear-gradient(160deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: #fff;
+		padding: 1.75rem;
+		border-radius: 3px;
+		border-top: 4px solid var(--gold);
+		box-shadow: 0 14px 34px rgb(12 46 80 / 0.25);
+	}
+
+	.sold-cta__label {
+		display: block;
+		text-transform: uppercase;
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.12em;
+		color: var(--gold-light);
+	}
+
+	.sold-cta h2 {
+		color: #fff;
+		font-size: 1.5rem;
+		margin: 0.4rem 0 0.6rem;
+	}
+
+	.sold-cta p {
+		color: rgb(255 255 255 / 0.88);
+		font-size: 0.98rem;
+		margin: 0 0 1.25rem;
+	}
+
+	.sold-cta__btn {
+		display: block;
+		text-align: center;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-weight: 700;
+		padding: 0.85rem 1rem;
+		border-radius: 2px;
+		text-decoration: none;
+		transition: background 0.2s ease;
+	}
+
+	.sold-cta__btn:hover {
+		background: var(--gold-light);
+		color: var(--navy-dark);
+		text-decoration: none;
+	}
+
+	.sold-cta__call {
+		display: block;
+		text-align: center;
+		margin-top: 0.85rem;
+		color: #fff;
+		font-weight: 600;
 	}
 
 	.sale-detail__casestudy {
@@ -361,6 +585,10 @@ const videoSchema = sale.youtubeId
 		color: var(--navy);
 	}
 
+	.sold-more {
+		margin-top: 2.5rem;
+	}
+
 	.sale-detail__related {
 		border-top: 1px solid var(--border);
 		padding-top: 1.5rem;
@@ -388,7 +616,9 @@ const videoSchema = sale.youtubeId
 		font-family: var(--font-serif);
 		font-weight: 500;
 		color: var(--navy-dark);
-		transition: border-color 0.2s ease;
+		transition:
+			border-color 0.2s ease,
+			transform 0.2s ease;
 	}
 
 	.sale-detail__related a:hover {
@@ -396,10 +626,94 @@ const videoSchema = sale.youtubeId
 		text-decoration: none;
 	}
 
+	.sale-detail__related .sold-cards {
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 1rem;
+	}
+
+	.sold-cards a {
+		padding: 0;
+		overflow: hidden;
+		gap: 0;
+	}
+
+	.sold-cards a:hover {
+		transform: translateY(-2px);
+	}
+
+	.sold-cards img {
+		width: 100%;
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+		display: block;
+	}
+
+	.sold-cards__ph {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		aspect-ratio: 3 / 2;
+		background: linear-gradient(160deg, var(--navy) 0%, var(--navy-dark) 100%);
+		color: var(--gold-light);
+		font-family: var(--font-sans);
+		font-weight: 900;
+		font-size: 1.6rem;
+		letter-spacing: 0.12em;
+	}
+
+	.sold-cards__name {
+		display: block;
+		padding: 0.8rem 1.1rem 0.15rem;
+	}
+
+	.sold-cards .sale-detail__related-meta {
+		padding: 0 1.1rem 0.9rem;
+	}
+
 	.sale-detail__related-meta {
 		font-family: var(--font-sans);
 		font-weight: 400;
 		font-size: 0.85rem;
 		color: var(--ink-light);
+	}
+
+	@media (max-width: 860px) {
+		.sold-layout {
+			grid-template-columns: 1fr;
+		}
+
+		.sold-aside {
+			position: static;
+		}
+
+		.sold-stats {
+			margin-top: -2.5rem;
+		}
+
+		.sold-hero__stamp {
+			padding: 0.3rem 0.8rem 0.4rem;
+			top: 0.9rem;
+			right: 0.9rem;
+		}
+
+		.sold-hero__stamp span {
+			font-size: 1.7rem;
+		}
+
+		.sold-hero__stamp small {
+			font-size: 0.6rem;
+		}
+
+		.sold-hero__inner {
+			padding-top: 4.25rem;
+		}
+
+		.sold-stats__grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.sold-stats__card--featured {
+			grid-column: span 2;
+		}
 	}
 </style>

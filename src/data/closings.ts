@@ -19,6 +19,7 @@ export type Closing = {
 	youtubeId?: string; // the video ID from a youtube.com/watch?v=<id> URL, not the full URL
 	soldDate?: string; // ISO date (YYYY-MM-DD), only where the closing date is known; 'YYYY-MM' or 'YYYY' when only the month or year is known
 	blurb?: string; // optional real detail about the deal (shown on its page); leave unset rather than guess
+	story?: string[]; // optional "story behind this sale", one string per paragraph, shown in its own section; only what the client has approved for publication
 	role?: 'buyer' | 'seller' | 'both'; // which side we represented, set where the same building sold more than once with us on different sides
 };
 
