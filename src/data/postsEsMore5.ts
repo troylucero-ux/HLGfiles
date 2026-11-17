@@ -11,7 +11,7 @@ export const postsEsMore5: PostEs[] = [
 		enSlug: 'sb-1365-emergency-rent-cap-la-apartment-owners',
 		title: 'SB 1365: el límite de rentas de emergencia de California cubrirá contratos de cualquier duración',
 		seoTitle: 'SB 1365: Límite de Rentas de Emergencia en California',
-		description: 'La SB 1365 extiende el límite de 10% de California para aumentos de renta en emergencias a todo contrato. Qué deben hacer los dueños de edificios en Los Ángeles.',
+		description: 'La SB 1365 extiende el límite de 10% de California para aumentos de renta en emergencias a todo contrato. Qué deben hacer los dueños en Los Ángeles.',
 		date: '2026-11-03',
 		image: {
 			src: '/images/insights/es/sb-1365-limite-emergencia.webp',
@@ -465,7 +465,7 @@ export const postsEsMore5: PostEs[] = [
 		slug: ES.hijos,
 		title: '¿Traspasar el edificio a mis hijos o venderlo? Lo que debe saber sobre la Proposición 19 y los impuestos',
 		seoTitle: '¿Traspasar el Edificio a mis Hijos o Venderlo?',
-		description: 'Heredar, regalar o vender: cómo cambian los impuestos, la base fiscal y el impuesto a la propiedad, y por qué la Proposición 19 no protege una propiedad de renta.',
+		description: 'Heredar, regalar o vender: cómo cambian los impuestos, la base fiscal y el impuesto a la propiedad, y por qué la Proposición 19 no protege una renta.',
 		date: '2026-11-03',
 		image: {
 			src: '/images/insights/es/traspasar-a-hijos-o-vender.webp',

@@ -42,6 +42,8 @@ const heroIdx = imageWidths[0] >= 1000 ? 0 : widest >= 1000 ? imageWidths.indexO
 const heroWide = allImages.length > 0 && imageWidths[heroIdx] >= 1000;
 const image = allImages[heroIdx];
 const heroNaturalWidth = imageWidths[heroIdx] || 400;
+// Natural height of the hero photo, so the browser can reserve its space (avoids layout shift).
+const heroNaturalHeight = image ? ((await sharp(`public${image}`).metadata().catch(() => ({ height: 0 }))).height ?? 0) || 300 : 300;
 // A building that sold more than once with us gets the sale year after its name; a recorded year (or a year in the slug) tells the pages apart.
 const hasSibling = closings.some((c) => c.name === sale.name && c.slug !== sale.slug);
 const saleYear = sale.soldDate && hasSibling ? sale.soldDate.slice(0, 4) : /-20\d\d$/.test(sale.slug) ? sale.slug.slice(-4) : null;
@@ -162,7 +164,7 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 					}
 				</p>
 			</div>
-			{!heroWide && image && <img class="sold-hero__thumb" style={`--thumb-w:${heroNaturalWidth}px`} src={image} alt={imageAlt} loading="eager" fetchpriority="high" />}
+			{!heroWide && image && <img class="sold-hero__thumb" style={`--thumb-w:${heroNaturalWidth}px`} src={image} alt={imageAlt} width={heroNaturalWidth} height={heroNaturalHeight} loading="eager" fetchpriority="high" />}
 		</div>
 	</header>
 
@@ -460,6 +462,11 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 		letter-spacing: 0.09em;
 		font-weight: 700;
 		opacity: 0.8;
+	}
+
+	/* Full-strength label on the gold card: at 80% opacity navy on gold falls below the 4.5:1 contrast minimum. */
+	.sold-stats__card--featured dt {
+		opacity: 1;
 	}
 
 	.sold-stats__card dd {

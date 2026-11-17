@@ -5,3 +5,9 @@
 /om/*
   X-Robots-Tag: noindex, nofollow, noarchive
   Cache-Control: private, no-store
+
+# Basic security headers for every page (no effect on how pages look or rank; browsers and scanners like to see them).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN

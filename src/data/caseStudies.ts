@@ -251,7 +251,7 @@ export const caseStudies: CaseStudy[] = [
 		title: '4412-4414 Lockwood Ave',
 		location: 'East Hollywood (Virgil Village), Los Angeles, CA',
 		submarket: 'east-hollywood',
-		summary: 'A seven-unit East Hollywood property, owned by one family since the 1960s, sold for $1,050,000 to a seasoned investor who saw the upside in renovating and updating it.',
+		summary: 'A seven-unit East Hollywood property, owned by one family since the 1960s, sold for $1,050,000 to a seasoned investor planning to renovate and update it.',
 		dealType: ['family-legacy', 'value-add'],
 		opportunity:
 			'4412-4414 Lockwood Ave combined a freestanding five-bedroom house (built 1946) and a six-unit, all one-bedroom apartment building (built 1960) on a single 9,299 SF lot in Virgil Village, four blocks from Sunset Junction. The family had owned it since the 1960s. The property needed significant deferred maintenance, so it called for a seasoned investor and a seasoned broker who understood the value of owning a well-located asset, and who could capitalize on the upside by renovating units and updating the property.',

@@ -2020,7 +2020,7 @@ const allPosts: Post[] = [
 		title: 'LA Rent Stabilization in 2026: What Changed for Apartment Owners',
 		seoTitle: 'LA RSO Rent Increase Rules 2026: What Owners Need to Know',
 		description:
-			'Los Angeles rewrote its rent control formula in 2025. What changed for RSO buildings in 2026: the annual increase, the utility add-on, and what buyers underwrite.',
+			'Los Angeles rewrote its rent control formula in 2025. What changed for RSO buildings in 2026: the annual increase, utility add-on and what buyers underwrite.',
 		date: '2026-10-27',
 		image: {
 			src: '/images/insights/la-rso-rent-increase-2026.webp',
