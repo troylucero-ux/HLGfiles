@@ -142,26 +142,13 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 				</>
 			)
 		}
-		{
-			heroWide && (
-				<div class="sold-hero__stamp" aria-hidden="true">
-					<span>SOLD</span>
-					{sale.soldDate && <small>{formatSoldDate(sale.soldDate)}</small>}
-				</div>
-			)
-		}
 		<div class="container sold-hero__inner">
 			<div class="sold-hero__text">
 				<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Closed Sales', href: '/closed-sales/' }, { label: sale.name }]} />
-				{
-					!heroWide && (
-						<div class="sold-hero__stamp sold-hero__stamp--inline" aria-hidden="true">
-							<span>SOLD</span>
-							{sale.soldDate && <small>{formatSoldDate(sale.soldDate)}</small>}
-						</div>
-					)
-				}
-				<span class="sold-hero__eyebrow">Closed Sale</span>
+				<div class="sold-hero__badge">
+					<span class="sold-hero__badge-tag">Sold</span>
+					{sale.soldDate && <span class="sold-hero__badge-date">{formatSoldDate(sale.soldDate)}</span>}
+				</div>
 				<h1>{sale.name}{saleYear ? ` (${saleYear})` : ''}</h1>
 				<p class="sold-hero__location">
 					{place}
@@ -369,13 +356,31 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 		color: rgb(255 255 255 / 0.9);
 	}
 
-	.sold-hero__eyebrow {
-		display: inline-block;
-		margin-top: 1rem;
-		text-transform: uppercase;
-		font-size: 0.72rem;
+	/* Flat "SOLD" label with the closing date, above the property name. */
+	.sold-hero__badge {
+		display: flex;
+		align-items: center;
+		gap: 0.9rem;
+		margin: 1.1rem 0 0.6rem;
+	}
+
+	.sold-hero__badge-tag {
+		background: var(--gold);
+		color: var(--navy-dark);
 		font-weight: 700;
-		letter-spacing: 0.12em;
+		font-size: 0.8rem;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		padding: 0.4rem 0.85rem 0.4rem 1rem;
+	}
+
+	.sold-hero__badge-date {
+		border-left: 2px solid rgb(217 196 145 / 0.7);
+		padding-left: 0.9rem;
+		font-weight: 700;
+		font-size: 0.78rem;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
 		color: var(--gold-light);
 	}
 
@@ -393,53 +398,6 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 
 	.sold-hero__location a {
 		color: var(--gold-light);
-	}
-
-	.sold-hero__stamp {
-		position: absolute;
-		top: clamp(1.25rem, 4vw, 2.5rem);
-		right: clamp(1rem, 5vw, 4rem);
-		transform: rotate(-8deg);
-		background: var(--gold);
-		color: var(--navy-dark);
-		padding: 0.5rem 1.4rem 0.6rem;
-		border-radius: 3px;
-		text-align: center;
-		box-shadow:
-			0 10px 30px rgb(0 0 0 / 0.35),
-			inset 0 0 0 3px var(--gold),
-			inset 0 0 0 5px var(--navy-dark);
-		z-index: 2;
-	}
-
-	.sold-hero--compact .sold-hero__eyebrow {
-		display: none;
-	}
-
-	.sold-hero__stamp--inline {
-		position: static;
-		display: inline-block;
-		margin-bottom: 1.1rem;
-		transform: rotate(-3deg);
-		padding: 0.35rem 1.1rem 0.45rem;
-	}
-
-	.sold-hero__stamp span {
-		display: block;
-		font-family: var(--font-sans);
-		font-weight: 900;
-		font-size: clamp(2rem, 6vw, 3.4rem);
-		letter-spacing: 0.08em;
-		line-height: 1;
-	}
-
-	.sold-hero__stamp small {
-		display: block;
-		margin-top: 0.2rem;
-		font-size: 0.7rem;
-		font-weight: 700;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
 	}
 
 	/* Compact header for sales whose photos are too small to run full width without looking blurry. */
@@ -801,29 +759,6 @@ const phoneHref = `tel:${site.phone.replace(/\D/g, '')}`;
 
 		.sold-stats {
 			margin-top: -2.5rem;
-		}
-
-		.sold-hero__stamp {
-			padding: 0.3rem 0.8rem 0.4rem;
-			top: 0.9rem;
-			right: 0.9rem;
-		}
-
-		.sold-hero__stamp--inline {
-			top: auto;
-			right: auto;
-		}
-
-		.sold-hero__stamp span {
-			font-size: 1.7rem;
-		}
-
-		.sold-hero__stamp small {
-			font-size: 0.6rem;
-		}
-
-		.sold-hero__inner {
-			padding-top: 4.25rem;
 		}
 
 		.sold-hero--compact .sold-hero__inner {
