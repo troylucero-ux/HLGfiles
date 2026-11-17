@@ -1,0 +1,849 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BOVForm from '../../components/BOVForm.astro';
+import ArticleFaq from '../../components/ArticleFaq.astro';
+import { stripLinks } from '../../lib/inlineLinks';
+import { site } from '../../data/site';
+
+// Rates checked November 17, 2026. UPDATE EVERY JULY 1 (RSO) AND EVERY AUGUST 1 (AB 1482), and keep the numbers in the
+// <script> below in step with these.
+// - City of Los Angeles Housing Department (https://housing.lacity.gov/renter-protections-2 and /rso-rent-increase-calculator):
+//   the RSO annual increase effective July 1, 2026 through June 30, 2027 is 3%, unless amended by the City Council. Council
+//   amended the formula to 90% of average CPI, floor 1%, ceiling 4%, effective February 2, 2026; LAHD says the increase "remains
+//   at 3% from July 1, 2025, to June 30, 2027." Since February 2, 2026 no utility add-on and no extra 10% for an added dependent.
+//   RSO increases are allowed once every 12 months. State law requires 30 days' written notice for increases under 10%.
+//   LAHD's registration bulletin says an owner cannot legally collect rent without a current RSO registration.
+// - California Civil Code 1947.12 (AB 1482): the lesser of 5% plus the change in the regional CPI, or 10%, over any 12 months, measured
+//   from the lowest rent charged in the prior 12 months; no more than two increments in 12 months. For increases taking effect on or
+//   after August 1, the CPI change is April of that year against April of the year before. U.S. Bureau of Labor Statistics, Los
+//   Angeles-Long Beach-Anaheim CPI-U, 12-month change: April 2026 3.7% (cap 8.7%, increases from Aug 1, 2026), April 2025 3.0% (cap 8.0%).
+// - Not covered by AB 1482 (Civil Code 1947.12(d)): housing under a stricter local rent control (so City of LA RSO buildings use the
+//   RSO figure), deed-restricted affordable housing, housing with a certificate of occupancy within the last 15 years, and certain
+//   single-family homes and owner-occupied duplexes.
+// - The refinance figures are an illustration only: loan size is the extra income divided by (DSCR x the loan constant for the
+//   chosen rate over a 30-year amortization). Lenders also cap loans by loan-to-value, so the lower of the two limits applies.
+const faqs = [
+	{
+		q: 'How much can I raise the rent on a City of Los Angeles RSO unit in 2026?',
+		a: 'The Los Angeles Housing Department (LAHD) publishes 3% for increases effective July 1, 2026 through June 30, 2027. Increases are allowed once every 12 months, and state law requires 30 days of written notice for an increase under 10%. Since February 2, 2026 an owner can no longer add a separate percentage for utilities. The City Council changed the formula to 90% of average CPI, with a floor of 1% and a ceiling of 4%, but LAHD says the rate stays at 3% through June 30, 2027.',
+	},
+	{
+		q: 'Does the state 8.7% limit apply to my rent-controlled building?',
+		a: 'No. California’s AB 1482 does not apply to housing that is covered by a local rent control law that limits annual increases to less than the state limit, so a City of Los Angeles RSO building follows the RSO percentage. AB 1482 matters for buildings that are not rent-stabilized, such as most apartment buildings built after October 1, 1978 in the City of Los Angeles, and for buildings in cities with no rent control of their own.',
+	},
+	{
+		q: 'How is the AB 1482 limit figured?',
+		a: 'It is 5% plus the percentage change in the regional Consumer Price Index, or 10%, whichever is lower, measured against the lowest rent charged for the unit in the prior 12 months. For increases that take effect on or after August 1, 2026, the Los Angeles-Long Beach-Anaheim CPI change from April 2025 to April 2026 was 3.7%, so the limit is 8.7%. Before August 1, 2026, it was 8.0%. If the same tenant stays, no more than two increases are allowed in a 12-month period.',
+	},
+	{
+		q: 'I haven’t raised the rent in years. Can I catch up?',
+		a: 'Not all at once. Under AB 1482 the limit applies to any 12-month window, so one increase cannot exceed 5% plus CPI or 10%. For RSO units LAHD publishes one percentage for each year and allows one increase every 12 months, and we have not found a rule that lets an owner add up the years that were skipped. Confirm your situation with LAHD or a landlord-tenant attorney before you send a notice. The practical point is that income you did not collect in earlier years is generally gone, which is why a long gap is expensive.',
+	},
+	{
+		q: 'Do rent increases really change what my building is worth?',
+		a: 'They can. Buyers and appraisers value an apartment building on its net operating income, so extra rent that is actually collected, with no matching rise in expenses, adds value at the market cap rate. The calculator shows that math. It is a simplification: it ignores vacancy and turnover costs, and an increase that pushes a good tenant out can cost you more than it earns. See what a [free Broker Opinion of Value](/broker-opinion-of-value/) says about your building in today’s market.',
+	},
+	{
+		q: 'How do rent increases help if I plan to keep the building and refinance?',
+		a: 'Lenders size a loan from the building’s income, usually by the lesser of a loan-to-value limit and a debt service coverage requirement. Higher collected rents raise the income that supports the loan, so a refinance can produce more proceeds. Lenders generally look at the current rent roll, leases and recent collections, so increases that were never sent, or sent incorrectly, may not count. The calculator’s refinance estimate is an illustration; ask your lender for actual terms.',
+	},
+	{
+		q: 'Is this legal advice?',
+		a: 'No. It is an informational estimate. Rent rules change, have exceptions, and differ by city, and an increase notice that is wrong can be invalid. Check the figures with LAHD or a landlord-tenant attorney before you act. If you want to talk through what the numbers mean for your building’s value, [call us or request a free valuation](#bov-form).',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((f) => ({
+		'@type': 'Question',
+		name: f.q,
+		acceptedAnswer: { '@type': 'Answer', text: stripLinks(f.a) },
+	})),
+};
+
+const rentGapExamples = [
+	{
+		href: '/case-studies/453-s-gramercy-pl-koreatown-apartments/',
+		title: '453 S Gramercy Pl, Koreatown',
+		fact: '14 units, rent-controlled. Most tenants were long-term occupants paying rents about 80% below market.',
+		result:
+			'That gap made a sale at full value complicated. We found an off-market buyer experienced with below-market rental buildings, and the building sold for $2,200,000 in January 2017.',
+	},
+	{
+		href: '/case-studies/925-n-san-vicente-blvd-west-hollywood-apartments/',
+		title: '925 N San Vicente Blvd, West Hollywood',
+		fact: '9 units, rent-controlled, built in 1963. Rents ran roughly 60% below market, alongside a required seismic retrofit and deferred maintenance.',
+		result: 'We reached out to buyers who had shown interest in comparable buildings and went under contract in under a week.',
+	},
+	{
+		href: '/case-studies/941-normandie-ave-east-hollywood-apartments/',
+		title: '941 N Normandie Ave, East Hollywood',
+		fact: '7 units, not rent-controlled. Rents ran roughly 45% below market, with extensive deferred maintenance.',
+		result: 'We went directly to buyers of comparable non-rent-controlled buildings nearby. It closed at 97% of list price.',
+	},
+];
+---
+
+<BaseLayout
+	title="Rent Increase Calculator: Value and Refinance Impact"
+	description="Free calculator for LA apartment owners. See the 2026 rent increase limits, what annual increases add to income, value and refinance proceeds, and the cost of skipping them."
+>
+	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
+
+	<section class="ri-hero">
+		<div class="container ri-hero__inner">
+			<span class="ri-hero__eyebrow">Free Tool</span>
+			<h1>Rent Increase Upside Calculator</h1>
+			<p class="ri-hero__lede">
+				See what the legal rent increase could add to your building&rsquo;s income, its value, and the loan you could get if you refinance. It also
+				shows what skipping increases costs over five years.
+			</p>
+			<ul class="ri-hero__chips" role="list">
+				<li>2026 limits, checked against official sources</li>
+				<li>Free, nothing to sign up for</li>
+			</ul>
+		</div>
+	</section>
+
+	<section class="ri-main">
+		<div class="container ri-grid">
+			<div class="ri-card">
+				<div class="ri-card__head">
+					<h2>Your Building</h2>
+					<p>Change any number and the results update.</p>
+				</div>
+				<form id="ri-form" novalidate onsubmit="return false">
+					<div class="ri-field">
+						<label for="ri-type">Where is the building?</label>
+						<select id="ri-type">
+							<option value="rso" selected>City of Los Angeles, rent-stabilized (RSO)</option>
+							<option value="state">City of Los Angeles, not rent-stabilized (California AB 1482 limit)</option>
+							<optgroup label="Coming next">
+								<option disabled>Santa Monica</option>
+								<option disabled>Pasadena</option>
+								<option disabled>West Hollywood</option>
+							</optgroup>
+						</select>
+						<span class="ri-hint" id="ri-type-hint">RSO buildings in the City of Los Angeles are generally those built on or before October 1, 1978. Check an address at zimas.lacity.org.</span>
+					</div>
+					<div class="ri-row">
+						<div class="ri-field">
+							<label for="ri-units">Number of units</label>
+							<input id="ri-units" type="number" inputmode="numeric" min="2" max="500" step="1" value="12" />
+						</div>
+						<div class="ri-field">
+							<label for="ri-rent">Average monthly rent per unit</label>
+							<div class="ri-money"><span aria-hidden="true">$</span><input id="ri-rent" type="text" inputmode="numeric" autocomplete="off" value="1,650" /></div>
+						</div>
+					</div>
+					<div class="ri-row">
+						<div class="ri-field">
+							<label for="ri-pct">Increase you plan to give (%)</label>
+							<input id="ri-pct" type="number" inputmode="decimal" min="0" step="0.1" value="3" />
+							<span class="ri-hint" id="ri-pct-hint">The limit is 3%.</span>
+						</div>
+						<div class="ri-field">
+							<label for="ri-cap">Market cap rate (%)</label>
+							<input id="ri-cap" type="number" inputmode="decimal" min="2" max="12" step="0.25" value="5.5" />
+							<span class="ri-hint">Used to turn extra income into value. See our <a href="/market-report/">market report</a> for current cap rates.</span>
+						</div>
+					</div>
+					<details class="ri-more">
+						<summary>Refinance assumptions</summary>
+						<div class="ri-row">
+							<div class="ri-field">
+								<label for="ri-rate">Loan interest rate (%)</label>
+								<input id="ri-rate" type="number" inputmode="decimal" min="2" max="15" step="0.125" value="6.5" />
+							</div>
+							<div class="ri-field">
+								<label for="ri-dscr">Lender coverage ratio (DSCR)</label>
+								<input id="ri-dscr" type="number" inputmode="decimal" min="1" max="2" step="0.05" value="1.25" />
+							</div>
+						</div>
+						<span class="ri-hint">Illustrative only: a 30-year amortizing loan sized by coverage ratio. Ask your lender for real terms.</span>
+					</details>
+				</form>
+				<p class="ri-disclaimer">
+					Informational estimate only, not legal, tax or lending advice. It assumes the extra rent is collected and expenses stay the same.
+				</p>
+			</div>
+
+			<div class="ri-card ri-card--result" aria-live="polite">
+				<span class="eyebrow">If You Give the Increase</span>
+				<p class="ri-big" id="ri-extra-year">$0</p>
+				<p class="ri-sub" id="ri-extra-sub">more income every year</p>
+				<div class="ri-flag" id="ri-flag" hidden></div>
+				<dl class="ri-stats">
+					<div><dt>Extra rent, per unit per month</dt><dd id="ri-per-unit">$0</dd></div>
+					<div><dt>Added building value at your cap rate</dt><dd id="ri-value">$0</dd></div>
+					<div><dt>Added loan proceeds if you refinance</dt><dd id="ri-loan">$0</dd></div>
+					<div><dt>Notice required</dt><dd id="ri-notice">30 days</dd></div>
+				</dl>
+				<a href="#bov-form" class="ri-btn">See What Your Building Is Worth &rarr;</a>
+				<a class="ri-call" href={`tel:+1${site.phone.replace(/\D/g, '')}`}>Or call {site.phone}</a>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="ri-card ri-skip">
+				<h2>The Cost of Skipping Increases</h2>
+				<p class="ri-skip__lede" id="ri-skip-lede"></p>
+				<div class="ri-table-wrap">
+					<table class="ri-table">
+						<thead>
+							<tr>
+								<th scope="col">Year</th>
+								<th scope="col">Rent per unit if raised every year</th>
+								<th scope="col">Rent per unit if never raised</th>
+								<th scope="col">Rent you did not collect, running total</th>
+							</tr>
+						</thead>
+						<tbody id="ri-skip-body"></tbody>
+					</table>
+				</div>
+				<p class="ri-skip__note" id="ri-skip-note"></p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container ri-text">
+			<span class="eyebrow">The Rules</span>
+			<h2>What the Law Allows Right Now</h2>
+			<p>Checked against official sources on November 17, 2026. These limits change every year, so confirm them before you send a notice.</p>
+			<div class="ri-rules">
+				<div class="ri-rule">
+					<h3>City of Los Angeles RSO</h3>
+					<p class="ri-rule__num">3%</p>
+					<p class="ri-rule__when">For increases effective July 1, 2026 through June 30, 2027</p>
+					<ul>
+						<li>One increase every 12 months.</li>
+						<li>30 days of written notice for an increase under 10%.</li>
+						<li>No separate utility add-on since February 2, 2026.</li>
+						<li>The City Council changed the formula to 90% of average CPI, between 1% and 4%. LAHD says the rate stays at 3% through June 30, 2027.</li>
+						<li>The unit has to be registered with LAHD before rent can be collected.</li>
+					</ul>
+				</div>
+				<div class="ri-rule">
+					<h3>California AB 1482</h3>
+					<p class="ri-rule__num">8.7%</p>
+					<p class="ri-rule__when">For increases effective August 1, 2026 through July 31, 2027</p>
+					<ul>
+						<li>The lesser of 5% plus regional CPI, or 10%. LA-area CPI rose 3.7% from April 2025 to April 2026.</li>
+						<li>Before August 1, 2026 the limit was 8.0% (5% plus 3.0%).</li>
+						<li>No more than two increases in 12 months, measured from the lowest rent charged in the prior 12 months.</li>
+						<li>Does not apply to RSO buildings, deed-restricted affordable housing, or buildings with a certificate of occupancy in the last 15 years. Some single-family homes and owner-occupied duplexes are exempt.</li>
+					</ul>
+				</div>
+			</div>
+			<p class="ri-note">
+				This calculator covers the City of Los Angeles. Santa Monica, Pasadena and West Hollywood are next. Other cities, such as Beverly Hills, have their
+				own rent rules and are not covered yet. <a href="/contact/">Ask us</a> if your building is in one of them.
+			</p>
+			<p class="ri-source">
+				Sources: <a href="https://housing.lacity.gov/renter-protections-2" target="_blank" rel="noopener noreferrer">Los Angeles Housing Department</a>,
+				<a href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=1947.12" target="_blank" rel="noopener noreferrer">California Civil Code 1947.12</a>,
+				<a href="https://www.bls.gov/regions/west/news-release/consumerpriceindex_losangeles.htm" target="_blank" rel="noopener noreferrer">U.S. Bureau of Labor Statistics, Los Angeles area CPI</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container ri-text">
+			<span class="eyebrow">The Trade-Offs</span>
+			<h2>Giving Annual Increases, or Not: The Pros and Cons</h2>
+			<p>
+				Neither choice is right for every owner or every tenant. A good tenant you want to keep, a hardship, or a soft rental market can all be
+				reasons to hold off. The point is to make it a decision with the numbers in front of you, not a habit.
+			</p>
+			<div class="ri-compare">
+				<div class="ri-compare__col">
+					<h3>If you give annual increases</h3>
+					<h4>Pros</h4>
+					<ul>
+						<li>Income keeps pace with taxes, insurance, repairs and payroll, which rise every year.</li>
+						<li>Every collected dollar of rent adds to net operating income, and buyers, appraisers and lenders price that income.</li>
+						<li>Small, regular increases avoid a large gap that is harder to explain to a tenant or a buyer later.</li>
+						<li>A documented rent history is easy for a lender or buyer to verify.</li>
+					</ul>
+					<h4>Cons</h4>
+					<ul>
+						<li>Some tenants may leave. A vacancy costs lost rent, turnover repairs and leasing time.</li>
+						<li>It can strain a good tenant relationship, especially in a soft market.</li>
+						<li>It adds paperwork. A wrong notice, a missed registration or an increase over the limit can make the increase invalid.</li>
+					</ul>
+				</div>
+				<div class="ri-compare__col">
+					<h3>If you hold the rent flat</h3>
+					<h4>Pros</h4>
+					<ul>
+						<li>Goodwill, longer tenancies and fewer vacancies.</li>
+						<li>Less administration, and no notices to get wrong.</li>
+						<li>A sensible choice for a tenant who pays on time and takes care of the unit, if you make it deliberately.</li>
+					</ul>
+					<h4>Cons</h4>
+					<ul>
+						<li>The income you did not collect is generally gone. Limits apply to each 12-month window, so skipped years are not simply added back.</li>
+						<li>The gap to market rent grows, and the building is worth less on paper because buyers and lenders value the rents in place.</li>
+						<li>Expenses keep rising, so net income shrinks even though nothing about the building changed.</li>
+						<li>A large gap complicates a sale at full value. It narrows the buyers who will pay for it, as the examples below show.</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container ri-text">
+			<span class="eyebrow">Keeping the Building</span>
+			<h2>Why Increases Matter When You Plan to Refinance</h2>
+			<p>
+				If you are not selling, the rents you collect still decide what the building can borrow. Lenders typically size a loan two ways, by a
+				loan-to-value limit and by a debt service coverage ratio, and the lower number wins. Coverage is measured against net operating income, and
+				income is read from your current rent roll, your leases and what you actually collected.
+			</p>
+			<ul class="ri-points">
+				<li><strong>More collected rent supports a bigger loan.</strong> The calculator above shows the added proceeds for your numbers. The same extra income also raises the appraised value, which helps the loan-to-value test.</li>
+				<li><strong>Increases only count once they are in effect.</strong> Rent that could have been charged, but was not, generally does not count toward the loan.</li>
+				<li><strong>Clean paperwork helps.</strong> A lender or buyer can ask for leases, notices and the rent roll. Increases that were sent correctly, on time, are easier to stand behind.</li>
+				<li><strong>Timing matters.</strong> An increase you give a year or two before you refinance has time to show up in your collections.</li>
+			</ul>
+			<p class="ri-note">
+				This is a general explanation. Loan terms depend on the lender, the property and the market, so ask your lender or mortgage broker for real figures.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container ri-text">
+			<span class="eyebrow">From Our Closed Sales</span>
+			<h2>Real Buildings With Large Rent Gaps</h2>
+			<p>
+				These are buildings we sold where rents had fallen far below market. The reasons differ, from rent control to long tenancies, and we are not
+				saying the owner made a mistake in any of them. What they show is how a big gap shapes a sale: who will buy, how the building is marketed, and
+				what the owner has to work through.
+			</p>
+			<div class="ri-examples">
+				{
+					rentGapExamples.map((e) => (
+						<a class="ri-example" href={e.href}>
+							<h3>{e.title}</h3>
+							<p>{e.fact}</p>
+							<p class="ri-example__result">{e.result}</p>
+							<span class="ri-example__link">Read the case study &rarr;</span>
+						</a>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<section class="section section-alt">
+		<div class="container ri-faq">
+			<ArticleFaq faqs={faqs} />
+		</div>
+	</section>
+
+	<section class="section" id="bov-form">
+		<div class="container">
+			<BOVForm
+				heading="Want to Know What Your Rents Mean for Your Value?"
+				subheading="A free Broker Opinion of Value from Highlight Multifamily Group uses your building’s actual rents and recent LA sales. No pressure, just data."
+			/>
+		</div>
+	</section>
+</BaseLayout>
+
+<script>
+	// Keep in step with the rates in the header comment of this file. Checked November 17, 2026.
+	const RSO_PCT = 3;
+	const STATE_PCT = 8.7;
+	const LIMIT_NOTICE_PCT = 10;
+
+	const $ = (id) => document.getElementById(id);
+	const money = (n) => `$${Math.round(n).toLocaleString('en-US')}`;
+	const digits = (s) => Number(String(s ?? '').replace(/[^0-9.]/g, ''));
+	const num = (id) => Number($(id).value);
+
+	let tracked = false;
+
+	function loanFactor(ratePct) {
+		const r = ratePct / 100 / 12;
+		const n = 360;
+		if (r <= 0) return 12 / n;
+		return (r / (1 - Math.pow(1 + r, -n))) * 12;
+	}
+
+	function update() {
+		const type = $('ri-type').value;
+		const limit = type === 'rso' ? RSO_PCT : STATE_PCT;
+		const units = Math.max(0, Math.round(num('ri-units')) || 0);
+		const rent = digits($('ri-rent').value);
+		let pct = num('ri-pct');
+		const cap = num('ri-cap') || 0;
+		const rate = num('ri-rate') || 0;
+		const dscr = num('ri-dscr') || 1.25;
+
+		$('ri-pct-hint').textContent =
+			type === 'rso'
+				? `The City of Los Angeles limit is ${RSO_PCT}% for increases effective July 1, 2026 through June 30, 2027.`
+				: `The California limit is ${STATE_PCT}% for increases effective August 1, 2026 through July 31, 2027. A higher rent than the market will pay can push tenants out.`;
+
+		const flag = $('ri-flag');
+		flag.hidden = true;
+		if (!(pct >= 0)) pct = 0;
+		if (pct > limit) {
+			flag.hidden = false;
+			flag.textContent = `${pct}% is above the ${limit}% limit, so the numbers below use ${limit}%.`;
+			pct = limit;
+		}
+
+		const perUnit = (rent * pct) / 100;
+		const extraYear = perUnit * 12 * units;
+		const value = cap > 0 ? extraYear / (cap / 100) : 0;
+		const loan = extraYear / (dscr * loanFactor(rate));
+
+		$('ri-extra-year').textContent = money(extraYear);
+		$('ri-extra-sub').textContent = `more income every year at ${pct}% across ${units} units`;
+		$('ri-per-unit').textContent = money(perUnit);
+		$('ri-value').textContent = money(value);
+		$('ri-loan').textContent = money(loan);
+		$('ri-notice').textContent = pct <= LIMIT_NOTICE_PCT ? '30 days (increase of 10% or less)' : '90 days';
+
+		const body = $('ri-skip-body');
+		body.innerHTML = '';
+		let running = 0;
+		for (let y = 1; y <= 5; y++) {
+			const raised = rent * Math.pow(1 + pct / 100, y);
+			running += (raised - rent) * 12 * units;
+			const tr = document.createElement('tr');
+			tr.innerHTML = `<th scope="row">Year ${y}</th><td>${money(raised)}</td><td>${money(rent)}</td><td>${money(running)}</td>`;
+			body.appendChild(tr);
+		}
+		const yr5 = (rent * Math.pow(1 + pct / 100, 5) - rent) * 12 * units;
+		const val5 = cap > 0 ? yr5 / (cap / 100) : 0;
+		$('ri-skip-lede').textContent =
+			pct > 0
+				? `Giving ${pct}% every year for five years, versus never raising the rent, adds ${money(running)} in rent collected, and about ${money(val5)} of building value by year five at a ${cap}% cap rate.`
+				: 'Enter an increase above zero to see the five-year difference.';
+		$('ri-skip-note').textContent =
+			'This assumes the same percentage every year, no vacancy, and no change in expenses. The yearly limit changes, so real figures will differ. Income skipped in one year is generally not recovered later.';
+
+		if (!tracked) {
+			tracked = true;
+			window.gtag?.('event', 'calculator_use', { calculator: 'rent_increase', page_path: window.location.pathname });
+		}
+	}
+
+	$('ri-type').addEventListener('change', () => {
+		const type = $('ri-type').value;
+		$('ri-pct').value = type === 'rso' ? String(RSO_PCT) : '5';
+		update();
+	});
+	for (const id of ['ri-units', 'ri-pct', 'ri-cap', 'ri-rate', 'ri-dscr']) $(id).addEventListener('input', update);
+	$('ri-rent').addEventListener('input', () => {
+		const d = digits($('ri-rent').value);
+		$('ri-rent').value = d ? Math.round(d).toLocaleString('en-US') : '';
+		update();
+	});
+	update();
+</script>
+
+<style>
+	.ri-hero {
+		color: #fff;
+		background: radial-gradient(120% 140% at 85% 0%, #1c5b99 0%, var(--navy) 38%, var(--navy-dark) 100%);
+		padding-block: clamp(3rem, 7vw, 5rem) clamp(6rem, 10vw, 8rem);
+	}
+	.ri-hero__eyebrow {
+		display: inline-block;
+		font-size: 0.72rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		font-weight: 600;
+		color: var(--gold-light);
+		margin-bottom: 0.9rem;
+	}
+	.ri-hero h1 {
+		color: #fff;
+		font-size: clamp(2rem, 5vw, 3.2rem);
+		margin: 0 0 1rem;
+		max-width: 20ch;
+	}
+	.ri-hero__lede {
+		max-width: 60ch;
+		font-size: 1.1rem;
+		line-height: 1.6;
+		color: #e6edf5;
+		margin: 0 0 1.25rem;
+	}
+	.ri-hero__chips {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.6rem;
+		padding: 0;
+		margin: 0;
+	}
+	.ri-hero__chips li {
+		border: 1px solid rgba(217, 196, 145, 0.5);
+		color: var(--gold-light);
+		font-size: 0.85rem;
+		padding: 0.35rem 0.8rem;
+		border-radius: 999px;
+	}
+
+	.ri-main {
+		margin-top: -4.5rem;
+		padding-bottom: 3rem;
+	}
+	.ri-grid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+		gap: 1.5rem;
+		align-items: start;
+	}
+	.ri-card {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 14px;
+		padding: clamp(1.25rem, 3vw, 2rem);
+		box-shadow: 0 10px 30px rgba(12, 46, 80, 0.08);
+	}
+	.ri-card--result {
+		background: var(--navy-dark);
+		color: #fff;
+		border-color: var(--navy-dark);
+	}
+	.ri-card__head h2,
+	.ri-skip h2 {
+		font-size: 1.5rem;
+		margin: 0 0 0.25rem;
+	}
+	.ri-card__head p {
+		margin: 0 0 1.25rem;
+		color: var(--ink-soft);
+	}
+	.ri-field {
+		margin-bottom: 1.1rem;
+	}
+	.ri-field label {
+		display: block;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--navy-dark);
+		margin-bottom: 0.35rem;
+	}
+	.ri-field input,
+	.ri-field select {
+		width: 100%;
+		font: inherit;
+		padding: 0.65rem 0.75rem;
+		border: 1px solid #cfc7b5;
+		border-radius: 8px;
+		background: #fff;
+		color: var(--navy-dark);
+		min-height: 44px;
+	}
+	.ri-field input:focus,
+	.ri-field select:focus {
+		outline: 2px solid var(--gold);
+		outline-offset: 1px;
+	}
+	.ri-money {
+		position: relative;
+	}
+	.ri-money span {
+		position: absolute;
+		left: 0.75rem;
+		top: 50%;
+		transform: translateY(-50%);
+		color: var(--ink-soft);
+	}
+	.ri-money input {
+		padding-left: 1.6rem;
+	}
+	.ri-row {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1rem;
+	}
+	.ri-hint {
+		display: block;
+		font-size: 0.8rem;
+		color: var(--ink-soft);
+		margin-top: 0.3rem;
+		line-height: 1.45;
+	}
+	.ri-more {
+		border-top: 1px solid var(--border);
+		padding-top: 0.9rem;
+		margin-top: 0.4rem;
+	}
+	.ri-more summary {
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--navy);
+		margin-bottom: 0.9rem;
+	}
+	.ri-disclaimer {
+		font-size: 0.78rem;
+		color: var(--ink-soft);
+		margin: 1rem 0 0;
+		line-height: 1.5;
+	}
+
+	.ri-card--result .eyebrow {
+		color: var(--gold-light);
+	}
+	.ri-big {
+		font-family: var(--font-serif);
+		font-size: clamp(2.4rem, 6vw, 3.4rem);
+		line-height: 1.05;
+		margin: 0.4rem 0 0.2rem;
+		color: #fff;
+	}
+	.ri-sub {
+		margin: 0 0 1rem;
+		color: #d5dfeb;
+	}
+	.ri-flag {
+		background: rgba(217, 196, 145, 0.18);
+		border: 1px solid var(--gold-light);
+		color: #fff;
+		font-size: 0.88rem;
+		padding: 0.6rem 0.8rem;
+		border-radius: 8px;
+		margin-bottom: 1rem;
+	}
+	.ri-stats {
+		margin: 0 0 1.25rem;
+	}
+	.ri-stats div {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.7rem 0;
+		border-top: 1px solid rgba(255, 255, 255, 0.16);
+	}
+	.ri-stats dt {
+		color: #d5dfeb;
+		font-size: 0.9rem;
+	}
+	.ri-stats dd {
+		margin: 0;
+		font-weight: 600;
+		font-size: 1.05rem;
+		text-align: right;
+	}
+	.ri-btn {
+		display: block;
+		text-align: center;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-weight: 700;
+		padding: 0.85rem 1rem;
+		border-radius: 999px;
+		text-decoration: none;
+	}
+	.ri-btn:hover {
+		background: var(--gold-light);
+	}
+	.ri-call {
+		display: block;
+		text-align: center;
+		margin-top: 0.8rem;
+		color: var(--gold-light);
+		font-size: 0.92rem;
+	}
+
+	.ri-skip {
+		margin-top: 1.5rem;
+	}
+	.ri-skip__lede {
+		margin: 0.5rem 0 1rem;
+		color: var(--ink);
+		line-height: 1.6;
+	}
+	.ri-table-wrap {
+		overflow-x: auto;
+	}
+	.ri-table {
+		width: 100%;
+		min-width: 520px;
+		border-collapse: collapse;
+		font-size: 0.92rem;
+	}
+	.ri-table th,
+	.ri-table td {
+		padding: 0.65rem 0.8rem;
+		text-align: right;
+		border-bottom: 1px solid var(--border);
+	}
+	.ri-table thead th {
+		background: var(--navy-dark);
+		color: #fff;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		text-align: right;
+	}
+	.ri-table thead th:first-child,
+	.ri-table tbody th {
+		text-align: left;
+	}
+	.ri-table tbody th {
+		color: var(--navy-dark);
+		font-weight: 600;
+	}
+	.ri-table td:last-child {
+		font-weight: 600;
+		color: var(--navy-dark);
+	}
+	.ri-skip__note {
+		font-size: 0.82rem;
+		color: var(--ink-soft);
+		margin: 0.9rem 0 0;
+		line-height: 1.5;
+	}
+
+	.ri-text {
+		max-width: 62rem;
+	}
+	.ri-text h2 {
+		margin: 0.3rem 0 0.8rem;
+	}
+	.ri-text p,
+	.ri-text li {
+		line-height: 1.65;
+	}
+	.ri-rules {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.25rem;
+		margin: 1.5rem 0 1rem;
+	}
+	.ri-rule {
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		padding: 1.4rem;
+	}
+	.ri-rule h3 {
+		margin: 0;
+		font-size: 1.1rem;
+	}
+	.ri-rule__num {
+		font-family: var(--font-serif);
+		font-size: 2.6rem;
+		color: var(--navy-dark);
+		margin: 0.2rem 0 0;
+		line-height: 1.1;
+	}
+	.ri-rule__when {
+		font-size: 0.85rem;
+		color: var(--gold-dark);
+		font-weight: 600;
+		margin: 0 0 0.8rem;
+	}
+	.ri-rule ul {
+		margin: 0;
+		padding-left: 1.1rem;
+		font-size: 0.92rem;
+	}
+	.ri-note,
+	.ri-source {
+		font-size: 0.85rem;
+		color: var(--ink-soft);
+	}
+	.ri-compare {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 1.25rem;
+		margin-top: 1.5rem;
+	}
+	.ri-compare__col {
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		padding: 1.4rem;
+		background: #fff;
+	}
+	.ri-compare__col h3 {
+		margin: 0 0 0.6rem;
+		font-size: 1.15rem;
+	}
+	.ri-compare__col h4 {
+		margin: 0.9rem 0 0.3rem;
+		font-size: 0.78rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--gold-dark);
+	}
+	.ri-compare__col ul {
+		margin: 0;
+		padding-left: 1.1rem;
+		font-size: 0.93rem;
+	}
+	.ri-compare__col li {
+		margin-bottom: 0.35rem;
+	}
+	.ri-points {
+		padding-left: 1.1rem;
+	}
+	.ri-points li {
+		margin-bottom: 0.6rem;
+	}
+	.ri-examples {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1.1rem;
+		margin-top: 1.5rem;
+	}
+	.ri-example {
+		display: flex;
+		flex-direction: column;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		padding: 1.2rem;
+		text-decoration: none;
+		color: var(--ink);
+	}
+	.ri-example:hover {
+		border-color: var(--gold);
+	}
+	.ri-example h3 {
+		font-size: 1.02rem;
+		margin: 0 0 0.5rem;
+		color: var(--navy-dark);
+	}
+	.ri-example p {
+		font-size: 0.9rem;
+		margin: 0 0 0.6rem;
+	}
+	.ri-example__result {
+		color: var(--ink-soft);
+	}
+	.ri-example__link {
+		margin-top: auto;
+		font-weight: 600;
+		color: var(--navy);
+		font-size: 0.88rem;
+	}
+
+	@media (max-width: 860px) {
+		.ri-grid,
+		.ri-rules,
+		.ri-compare,
+		.ri-examples {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+	@media (max-width: 520px) {
+		.ri-row {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+</style>

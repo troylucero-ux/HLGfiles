@@ -795,6 +795,7 @@ const allPosts: Post[] = [
 				heading: 'What AB 1482 Actually Caps',
 				paragraphs: [
 					"Assembly Bill 1482, California's statewide Tenant Protection Act, has capped most residential rent increases since 2020 at whichever is lower: 10%, or 5% plus the percentage change in the regional Consumer Price Index (CPI) over the prior year. That CPI figure is not fixed. It is recalculated each year, region by region, which means the actual dollar ceiling on a rent increase moves annually even though the law itself has not changed.",
+					'To see what an annual increase adds to your building’s income, value and refinance proceeds, try our [rent increase calculator](/rent-increase-calculator/).',
 				],
 			},
 			{
@@ -2036,6 +2037,7 @@ const allPosts: Post[] = [
 					'According to the Los Angeles Housing Department, since February 2, 2026 a landlord can no longer include any extra percentage for utilities in an annual increase.',
 					'The City’s published annual increase for RSO units is 3%, and a council office page states it stays at 3% through June 30, 2027. The ordinance also describes a new formula, covered below, so confirm the current number and how it applies with the Housing Department before you send a notice.',
 					'This is separate from the statewide AB 1482 cap, which applies to newer buildings and is 8.7% for increases effective on or after August 1, 2026.',
+					'To see what the annual increase adds to your building’s income, value and refinance proceeds, try our [rent increase calculator](/rent-increase-calculator/).',
 				],
 			},
 			{
