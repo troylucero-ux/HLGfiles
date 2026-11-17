@@ -246,4 +246,20 @@ export const caseStudies: CaseStudy[] = [
 		closingSlug: '1513-arlington-ave-los-angeles-ca-90019',
 		images: ['/images/listings/1513-arlington-ave-los-angeles-ca-90019/1513-arlington-ave.webp'],
 	},
+	{
+		slug: '4412-4414-lockwood-ave-east-hollywood-apartments',
+		title: '4412-4414 Lockwood Ave',
+		location: 'East Hollywood (Virgil Village), Los Angeles, CA',
+		submarket: 'east-hollywood',
+		summary: 'A seven-unit East Hollywood property, owned by one family since the 1960s, sold for $1,050,000 to a seasoned investor who saw the upside in renovating and updating it.',
+		dealType: ['family-legacy', 'value-add'],
+		opportunity:
+			'4412-4414 Lockwood Ave combined a freestanding five-bedroom house (built 1946) and a six-unit, all one-bedroom apartment building (built 1960) on a single 9,299 SF lot in Virgil Village, four blocks from Sunset Junction. The family had owned it since the 1960s. The property needed significant deferred maintenance, so it called for a seasoned investor and a seasoned broker who understood the value of owning a well-located asset, and who could capitalize on the upside by renovating units and updating the property.',
+		solution:
+			'We represented the sellers and marketed the property to a broad group of investors. About half of the offers came from our own investor database, and the rest came from other brokers. We weighed each offer on more than the price: the reputation and experience of the buyer and the buyer’s broker, a broker we had closed transactions with before and enjoyed working with. That track record is what made us comfortable putting the winning buyer under contract.',
+		results:
+			'The property sold on November 16, 2026 for $1,050,000, or $150,000 per unit. In a market where deals often fall out of escrow, we kept the process moving and worked through the challenges together to get this one to the finish line. The buyer is positioned to renovate, update and capitalize on the property’s upside.',
+		closingSlug: '4412-4414-lockwood-ave-los-angeles-ca-90029',
+		images: ['/images/listings/4412-4414-lockwood-ave-los-angeles-ca-90029/4412-4414-lockwood-ave-los-angeles-ca.webp'],
+	},
 ];
