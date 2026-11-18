@@ -31,7 +31,8 @@ import { site } from '../../data/site';
 //   prior year, with 30 days' written notice. The history table below is the Agency's "General Adjustment and Registration Fee History"
 //   (PDF dated July 2025) plus the 2026 figures from the Maximum Lawful Rent page. Registration fee 2026/27: $240 a unit, $10 a month pass-through.
 // - City of West Hollywood (weho.org/city-government/rent-stabilization): the Annual General Adjustment is 75% of the area CPI, announced by the
-//   Rent Stabilization Commission before July 1 and applied September 1 through August 31; one increase per 12 months; it cannot be banked;
+//   Rent Stabilization Commission before July 1 and applied September 1 through August 31; 75% of area inflation, nearest quarter point, 3% ceiling;
+//   2.75% for Sept 1, 2026 to Aug 31, 2027 was announced at the June 25, 2026 Commission meeting (as on the WestHollywoodGuide); one increase per 12 months; it cannot be banked;
 //   covers multi-family rentals built before July 1, 1979. As of November 18, 2026 the city's pages still showed 2.25% for September 1, 2025
 //   through August 31, 2026 and did not show the 2026-27 percentage (a notice form "for increases effective September 1, 2026" exists). Until
 //   the figure is confirmed the calculator asks the visitor to enter it. When confirmed, set it as the WeHo limit in the script and header.
@@ -60,7 +61,7 @@ const faqs = [
 	},
 	{
 		q: 'How much can I raise the rent in West Hollywood?',
-		a: 'West Hollywood’s rent stabilization covers multi-family rentals built before July 1, 1979. The Annual General Adjustment is 75% of the area CPI, announced each year by the Rent Stabilization Commission before July 1 and applied September 1 through August 31. An increase is allowed once every 12 months, and an adjustment you skip cannot be banked and added later. When we checked on November 18, 2026, the city’s site showed 2.25% for September 1, 2025 through August 31, 2026 and did not show the 2026 to 2027 percentage, so use the figure in the city’s notice or call the Rent Stabilization Division at (323) 848-6450. The city is also considering updates to its ordinance.',
+		a: 'West Hollywood’s rent stabilization covers multi-family rentals built before July 1, 1979. The Annual General Adjustment is 75% of the change in LA-area inflation, rounded to the nearest quarter point, and can never exceed 3%. The Rent Stabilization Commission announces it each year before July 1 and it applies September 1 through August 31. For September 1, 2026 through August 31, 2027 it is 2.75%, up from 2.25% the year before. An increase is allowed once every 12 months with proper written notice, and an adjustment you skip cannot be banked and added later. The city’s rent page still showed the prior year’s figure when we checked on November 18, 2026, so confirm against your notice form or call the Rent Stabilization Division at (323) 848-6450. On a $2,000 rent, 2.75% is $55 a month.',
 	},
 	{
 		q: 'I haven’t raised the rent in years. Can I catch up?',
@@ -319,12 +320,12 @@ const rentGapExamples = [
 				</div>
 				<div class="ri-rule">
 					<h3>West Hollywood, Rent Stabilization</h3>
-					<p class="ri-rule__num">Set each year</p>
-					<p class="ri-rule__when">Applies September 1 through August 31</p>
+					<p class="ri-rule__num">2.75%</p>
+					<p class="ri-rule__when">For increases effective September 1, 2026 through August 31, 2027</p>
 					<ul>
 						<li>Covers multi-family rentals built before July 1, 1979.</li>
 						<li>One increase every 12 months. An increase you skip cannot be banked and added later.</li>
-						<li>The percentage is announced each year by the Rent Stabilization Commission. The last figure on the city&rsquo;s site when we checked on November 18, 2026 was 2.25% for September 1, 2025 through August 31, 2026. We could not find the 2026 to 2027 percentage there, so the calculator asks you to enter it from your notice, or call the city at (323) 848-6450.</li>
+						<li>The percentage is 75% of the change in LA-area inflation, rounded to the nearest quarter point, and never more than 3%. The Rent Stabilization Commission announced 2.75% at its June 25, 2026 meeting. The city&rsquo;s rent page still showed the prior year&rsquo;s 2.25% when we checked on November 18, 2026, so check your notice form or call the city at (323) 848-6450.</li>
 						<li>The owner has to be current on the $144 per unit registration fee. The city is also considering updates to its ordinance.</li>
 					</ul>
 				</div>
@@ -363,8 +364,8 @@ const rentGapExamples = [
 						</tr>
 						<tr>
 							<th scope="row">West Hollywood</th>
-							<td>75% of the area CPI, announced each year by the Rent Stabilization Commission before July 1.</td>
-							<td>Not confirmed on the city&rsquo;s site. The prior year was 2.25%.</td>
+							<td>75% of the area inflation, rounded to the nearest quarter point, never more than 3%, announced each year by the Rent Stabilization Commission before July 1.</td>
+							<td>2.75% for September 1, 2026 through August 31, 2027, announced June 25, 2026. It cannot exceed 3%. The prior year was 2.25%.</td>
 						</tr>
 					</tbody>
 				</table>
@@ -528,7 +529,8 @@ const rentGapExamples = [
 <script>
 	// Keep in step with the rates in the header comment of this file. Checked November 17 to 18, 2026.
 	// Update each year: LA RSO in July, AB 1482 in August, Santa Monica and West Hollywood in September, Pasadena in October.
-	// West Hollywood: limit is null until the city's 2026-27 percentage is confirmed; the visitor enters it. When confirmed, set limit and def.
+	// West Hollywood: 2.75% was announced at the June 25, 2026 Rent Stabilization Commission meeting (same figure as WestHollywoodGuide.astro).
+	// weho.org still showed the prior year's 2.25% on November 18, 2026, so confirm against the city's notice form when it is updated.
 	const RULES = {
 		rso: {
 			limit: 3,
@@ -561,12 +563,12 @@ const rentGapExamples = [
 			pctHint: 'Santa Monica’s 2026 general adjustment is 2.6%, with a ceiling of $70 a month for MARs of $2,674 or more, for increases effective September 1, 2026.',
 		},
 		weho: {
-			limit: null,
-			def: '',
+			limit: 2.75,
+			def: 2.75,
 			rentLabel: 'Average monthly rent per unit',
 			typeHint: 'West Hollywood’s rent stabilization covers multi-family rentals built before July 1, 1979.',
 			pctHint:
-				'West Hollywood announces its percentage each year (75% of the area CPI). The city’s site showed 2.25% for 2025 to 2026 when we checked on November 18, 2026 and not the 2026 to 2027 figure, so enter the percentage from your notice.',
+				'West Hollywood’s limit is 2.75% for increases effective September 1, 2026 through August 31, 2027, as announced by its Rent Stabilization Commission. Confirm it against your notice form.',
 		},
 	};
 	const LIMIT_NOTICE_PCT = 10;

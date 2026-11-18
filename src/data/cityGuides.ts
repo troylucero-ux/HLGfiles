@@ -74,7 +74,7 @@ export const cityGuides: Record<string, CityGuide> = {
 				heading: 'How Pasadena rent stabilization works',
 				paragraphs: [
 					'The city’s rent stabilization pages say the rules apply to multi-unit residential rental properties built before February 1, 1995. The city lists condominiums and single-family homes as not covered by the rent limits, although its registry pages still ask owners of rented houses and condos to register and claim an exemption, so read both pages or call the city if you own one of those. Newer buildings generally fall under the statewide AB 1482 cap, which is 8.7% for increases effective on or after August 1, 2026.',
-					'Each year the city sets an Annual General Adjustment, the most a covered rent can rise. For October 1, 2026 through September 30, 2027 it is 2.50%. It was 2.25% the year before and 3% the year before that. Rent can go up once every 12 months, with 30 days’ written notice. Increases that were approved earlier but never taken cannot be added on top of the yearly adjustment.',
+					'Each year the city sets an Annual General Adjustment, the most a covered rent can rise. For October 1, 2026 through September 30, 2027 it is 2.50%: 75% of the 3.4% change in the Los Angeles-area CPI for the 12 months ending in March is 2.55%, rounded to the nearest quarter percent. It was 2.25% the year before and 3% the year before that. Rent can go up once every 12 months, with 30 days’ written notice. Increases that were approved earlier but never taken cannot be added on top of the yearly adjustment.',
 				],
 			},
 			{
@@ -106,8 +106,11 @@ export const cityGuides: Record<string, CityGuide> = {
 		faqs: [
 			{
 				q: 'How much can landlords raise rent in Pasadena in 2026?',
-				a: 'For rent-stabilized units, the Annual General Adjustment is 2.50% for October 1, 2026 through September 30, 2027. The city sets it each year; it was 2.25% for the year before. Rent can go up once every 12 months with 30 days’ written notice, and the unit must be registered with the city. Buildings the city does not cover fall under the statewide AB 1482 cap instead.',
-				links: [{ label: '2026 AB 1482 rent cap', href: '/insights/ab-1482-rent-cap-2026/' }],
+				a: 'For rent-stabilized units, the Annual General Adjustment is 2.50% for October 1, 2026 through September 30, 2027. The city sets it each year at 75% of the change in the Los Angeles-area CPI for the 12 months ending in March, rounded to the nearest quarter percent: 3.4% times 75% is 2.55%, which rounds to 2.50%. It was 2.25% the year before. On a $2,000 rent, 2.50% is $50 a month. Rent can go up once every 12 months with 30 days’ written notice, and the unit must be registered with the city. Buildings the city does not cover fall under the statewide AB 1482 cap instead.',
+				links: [
+					{ label: 'Rent increase calculator', href: '/rent-increase-calculator/' },
+					{ label: '2026 AB 1482 rent cap', href: '/insights/ab-1482-rent-cap-2026/' },
+				],
 			},
 			ulaFaq('Pasadena'),
 			{
