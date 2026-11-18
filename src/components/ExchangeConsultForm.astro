@@ -155,6 +155,8 @@ const privacyHref = '/privacy-policy/';
 						page_path: window.location.pathname,
 					});
 					form.reset();
+						// Confirmation page for Google Ads and Analytics conversion tracking; the pause lets the lead event go out first.
+						setTimeout(() => window.location.assign(form.dataset.lang === 'es' ? '/es/gracias/' : '/thank-you/'), 500);
 				} else {
 					status.style.color = '#b3261e';
 					status.textContent = m.wrong;

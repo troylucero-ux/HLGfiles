@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://highlightreg.com',
-	integrations: [sitemap({ filter: (page) => !page.includes('/links/') })],
+	integrations: [sitemap({ filter: (page) => !page.includes('/links/') && !page.includes('/thank-you/') && !page.includes('/es/gracias/') })],
 	// Small stylesheets are inlined into each page so the first paint does not wait on extra CSS requests.
 	build: {
 		inlineStylesheets: 'always',

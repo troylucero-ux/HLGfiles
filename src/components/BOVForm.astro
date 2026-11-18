@@ -70,6 +70,7 @@ const text = {
 	<form
 		class="js-bov-form"
 		data-endpoint="/api/bov-lead"
+		data-thanks-url={lang === 'es' ? '/es/gracias/' : '/thank-you/'}
 		data-msg-checking={text.checking}
 		data-msg-notfound={text.notFound}
 		data-msg-thanks={text.thanks}
@@ -196,6 +197,10 @@ const text = {
 						});
 						status.style.color = 'var(--success)';
 						form.reset();
+							// Send the visitor to the confirmation page (used for Google Ads and Analytics conversion tracking). The short pause lets
+							// the lead event above go out first; the message above stays on screen if the move is blocked.
+							const thanksUrl = form.dataset.thanksUrl;
+							if (thanksUrl) setTimeout(() => window.location.assign(thanksUrl), 500);
 					} else {
 						status.textContent = result.error ?? form.dataset.msgError ?? 'Something went wrong. Please try again.';
 						status.style.color = '#b3261e';

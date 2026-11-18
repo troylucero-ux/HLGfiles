@@ -1,0 +1,130 @@
+---
+// The page visitors land on after they send a lead form (Broker Opinion of Value, contact, 1031 consult). Google Ads needs a
+// separate confirmation page for conversion tracking, and Google Analytics counts it as a page view. It is kept out of search
+// results and out of the sitemap. The Spanish twin is /es/gracias/.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+
+const tel = `tel:+1${site.phone.replace(/\D/g, '')}`;
+const next = [
+	{ href: '/property-value/', title: 'Free apartment value calculator', text: 'See a value range from real closed LA sales in about 60 seconds.' },
+	{ href: '/rent-increase-calculator/', title: 'Rent increase calculator', text: 'See what the 2026 rent limits could add to your income and value.' },
+	{ href: '/measure-ula-calculator/', title: 'Measure ULA calculator', text: 'See your transfer taxes and what you would keep after a sale.' },
+	{ href: '/closed-sales/', title: 'Recent closed sales', text: 'Browse apartment buildings we have sold around Los Angeles.' },
+];
+---
+
+<BaseLayout
+	title="Thank You: We Received Your Request"
+	description="Thank you for contacting Highlight Multifamily Group. We have your request and will be in touch shortly."
+	noindex={true}
+	hideStickyCta={true}
+>
+	<section class="ty-hero">
+		<div class="container ty-hero__inner">
+			<span class="ty-hero__badge" aria-hidden="true">&#10003;</span>
+			<h1>Thank you. We have your request.</h1>
+			<p>
+				Josh Kaplan or Troy Lucero will be in touch shortly. If it is urgent, call us at <a href={tel}>{site.phone}</a>.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="container ty-next">
+			<h2>While you wait</h2>
+			<div class="ty-grid">
+				{
+					next.map((n) => (
+						<a class="ty-card" href={n.href}>
+							<h3>{n.title}</h3>
+							<p>{n.text}</p>
+							<span>Open &rarr;</span>
+						</a>
+					))
+				}
+			</div>
+			<p class="ty-back"><a href="/">Back to the homepage</a></p>
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	.ty-hero {
+		background: radial-gradient(120% 140% at 85% 0%, #1c5b99 0%, var(--navy) 38%, var(--navy-dark) 100%);
+		color: #fff;
+		padding-block: clamp(3rem, 8vw, 5.5rem);
+		text-align: center;
+	}
+	.ty-hero__badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 3.4rem;
+		height: 3.4rem;
+		border-radius: 50%;
+		background: var(--gold);
+		color: var(--navy-dark);
+		font-size: 1.6rem;
+		font-weight: 700;
+		margin-bottom: 1.2rem;
+	}
+	.ty-hero h1 {
+		color: #fff;
+		font-size: clamp(1.9rem, 5vw, 3rem);
+		margin: 0 0 1rem;
+	}
+	.ty-hero p {
+		max-width: 38rem;
+		margin: 0 auto;
+		font-size: 1.1rem;
+		line-height: 1.6;
+		color: #e6edf5;
+	}
+	.ty-hero a {
+		color: var(--gold-light);
+		font-weight: 600;
+	}
+	.ty-next h2 {
+		text-align: center;
+		margin: 0 0 1.5rem;
+	}
+	.ty-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 1.1rem;
+	}
+	.ty-card {
+		display: flex;
+		flex-direction: column;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		padding: 1.2rem;
+		text-decoration: none;
+		color: var(--ink);
+	}
+	.ty-card:hover {
+		border-color: var(--gold);
+	}
+	.ty-card h3 {
+		font-size: 1.05rem;
+		margin: 0 0 0.4rem;
+		color: var(--navy-dark);
+	}
+	.ty-card p {
+		font-size: 0.92rem;
+		line-height: 1.5;
+		margin: 0 0 0.8rem;
+	}
+	.ty-card span {
+		margin-top: auto;
+		font-weight: 600;
+		color: var(--navy);
+		font-size: 0.9rem;
+	}
+	.ty-back {
+		text-align: center;
+		margin-top: 1.8rem;
+	}
+</style>
