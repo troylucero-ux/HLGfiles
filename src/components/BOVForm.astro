@@ -15,9 +15,9 @@ const text = {
 	en: {
 		name: 'Name',
 		email: 'Email',
-		phone: 'Phone',
+		phone: 'Phone (optional)',
 		address: 'Property Address',
-		rents: 'Monthly Gross Rents (optional)',
+		rents: 'Monthly Gross Rents',
 		language: 'Preferred language',
 		submit: 'Get My Free Valuation',
 		badge: 'Free Broker Opinion of Value',
@@ -34,9 +34,9 @@ const text = {
 	es: {
 		name: 'Nombre',
 		email: 'Correo electrónico',
-		phone: 'Teléfono',
+		phone: 'Teléfono (opcional)',
 		address: 'Dirección de la propiedad',
-		rents: 'Renta bruta mensual (opcional)',
+		rents: 'Renta bruta mensual',
 		language: 'Idioma preferido',
 		submit: 'Obtener mi valuación gratis',
 		badge: 'Opinión de valor gratuita',
@@ -88,7 +88,7 @@ const text = {
 			</div>
 			<div class="bov-field">
 				<label for="bov-phone">{text.phone}</label>
-				<input id="bov-phone" name="phone" type="tel" placeholder={text.ph.phone} autocomplete="tel" required />
+				<input id="bov-phone" name="phone" type="tel" placeholder={text.ph.phone} autocomplete="tel" />
 			</div>
 		</div>
 		<div class="bov-form__row bov-form__row--property">
@@ -98,7 +98,7 @@ const text = {
 			</div>
 			<div class="bov-field">
 				<label for="bov-rents">{text.rents}</label>
-				<input id="bov-rents" name="monthlyGrossRents" type="text" inputmode="numeric" placeholder={text.ph.rents} />
+				<input id="bov-rents" name="monthlyGrossRents" type="text" inputmode="numeric" placeholder={text.ph.rents} required />
 			</div>
 		</div>
 		{

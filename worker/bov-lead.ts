@@ -21,6 +21,8 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 	const { name, email, phone, address, monthlyGrossRents, privacyConsent } = body;
 	// Visitors on the Spanish pages, or who pick Spanish on the contact form, are flagged so they get a Spanish reply.
 	const spanish = body.language === 'Spanish';
+	// Phone is optional on the form; monthly gross rents are required.
+	const phoneClean = typeof phone === 'string' ? phone.trim() : '';
 
 	if (
 		!name ||
@@ -28,12 +30,13 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 		!email ||
 		typeof email !== 'string' ||
 		!/^\S+@\S+\.\S+$/.test(email) ||
-		!phone ||
 		!address ||
 		typeof address !== 'string' ||
+		typeof monthlyGrossRents !== 'string' ||
+		!monthlyGrossRents.trim() ||
 		!privacyConsent
 	) {
-		return new Response(JSON.stringify({ error: 'Please fill out all fields and accept the privacy policy.' }), {
+		return new Response(JSON.stringify({ error: 'Please fill out all required fields and accept the privacy policy.' }), {
 			status: 400,
 			headers: corsHeaders(),
 		});
@@ -45,16 +48,16 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 
 	if (pipedriveConfigured(env)) {
 		try {
-			const person = await createPerson(env, { name, email, phone });
+			const person = await createPerson(env, { name, email, phone: phoneClean || undefined });
 			if (person) {
 				const noteLines = [
 					'Broker Opinion of Value request submitted via highlightreg.com.',
 					`Property Address: ${address}`,
 					describeAddressCheck(addressCheck),
 					`Email: ${email}`,
-					`Phone: ${phone}`,
+					`Phone: ${phoneClean || 'not provided'}`,
+					`Monthly Gross Rents: ${monthlyGrossRents}`,
 				];
-				if (monthlyGrossRents) noteLines.push(`Monthly Gross Rents: ${monthlyGrossRents}`);
 				if (spanish) noteLines.push('Preferred language: Spanish (respond in Spanish).');
 				noteLines.push(...sourceNote(body.source));
 
@@ -70,7 +73,7 @@ export async function handleBovLead(request: Request, env: Env): Promise<Respons
 			console.error('Pipedrive BOV lead sync error:', err);
 		}
 	} else {
-		console.log('BOV lead received (Pipedrive not configured):', { name, email, phone, address, monthlyGrossRents, addressCheck });
+		console.log('BOV lead received (Pipedrive not configured):', { name, email, phone: phoneClean, address, monthlyGrossRents, addressCheck });
 	}
 
 	return new Response(JSON.stringify({ ok: true }), { headers: corsHeaders() });
