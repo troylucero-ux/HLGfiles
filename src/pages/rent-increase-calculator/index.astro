@@ -20,6 +20,21 @@ import { site } from '../../data/site';
 // - Not covered by AB 1482 (Civil Code 1947.12(d)): housing under a stricter local rent control (so City of LA RSO buildings use the
 //   RSO figure), deed-restricted affordable housing, housing with a certificate of occupancy within the last 15 years, and certain
 //   single-family homes and owner-occupied duplexes.
+// - City of Pasadena (Measure H, Charter Article XVIII; cityofpasadena.net/rent-stabilization): covers multi-unit rentals built before
+//   February 1, 1995. The Annual General Adjustment (AGA) is 75% of the LA-area CPI for the 12 months ending in March, rounded to the nearest
+//   quarter percent: 3.4% x 75% = 2.55%, rounded to 2.5%, for October 1, 2026 through September 30, 2027 (City Manager release, August 31,
+//   2026). Earlier: 2.25% (Oct 2025 to Sep 2026), 3% (Oct 2024 to Sep 2025), 2.75% (Oct 2023 to Sep 2024). One increase per 12 months, written
+//   notice (30 days), no stacking of banked increases.
+// - City of Santa Monica Rent Control Board (santamonica.gov/maximum-lawful-rent): 2026 General Adjustment (GA) 2.6% effective September 1, 2026
+//   with a $70 ceiling for MARs of $2,674 and above; the GA is based on 75% of the LA-area CPI change for the 12 months ending in March
+//   (3.4% x 75% = 2.55%, announced as 2.6%). Applies to the Maximum Allowable Rent (MAR), only to tenancies that began before September 1 of the
+//   prior year, with 30 days' written notice. The history table below is the Agency's "General Adjustment and Registration Fee History"
+//   (PDF dated July 2025) plus the 2026 figures from the Maximum Lawful Rent page. Registration fee 2026/27: $240 a unit, $10 a month pass-through.
+// - City of West Hollywood (weho.org/city-government/rent-stabilization): the Annual General Adjustment is 75% of the area CPI, announced by the
+//   Rent Stabilization Commission before July 1 and applied September 1 through August 31; one increase per 12 months; it cannot be banked;
+//   covers multi-family rentals built before July 1, 1979. As of November 18, 2026 the city's pages still showed 2.25% for September 1, 2025
+//   through August 31, 2026 and did not show the 2026-27 percentage (a notice form "for increases effective September 1, 2026" exists). Until
+//   the figure is confirmed the calculator asks the visitor to enter it. When confirmed, set it as the WeHo limit in the script and header.
 // - The refinance figures are an illustration only: loan size is the extra income divided by (DSCR x the loan constant for the
 //   chosen rate over a 30-year amortization). Lenders also cap loans by loan-to-value, so the lower of the two limits applies.
 const faqs = [
@@ -34,6 +49,18 @@ const faqs = [
 	{
 		q: 'How is the AB 1482 limit figured?',
 		a: 'It is 5% plus the percentage change in the regional Consumer Price Index, or 10%, whichever is lower, measured against the lowest rent charged for the unit in the prior 12 months. For increases that take effect on or after August 1, 2026, the Los Angeles-Long Beach-Anaheim CPI change from April 2025 to April 2026 was 3.7%, so the limit is 8.7%. Before August 1, 2026, it was 8.0%. If the same tenant stays, no more than two increases are allowed in a 12-month period.',
+	},
+	{
+		q: 'How much can I raise the rent in Pasadena, and how is the limit calculated?',
+		a: 'Pasadena’s Measure H limits increases in multi-unit rentals built before February 1, 1995. The Annual General Adjustment is 75% of the change in the Los Angeles-area CPI for the 12 months ending in March, rounded to the nearest one-quarter percent. For 2026 that was 3.4% times 75%, or 2.55%, rounded to 2.5%, for increases effective October 1, 2026 through September 30, 2027. It is allowed once every 12 months with written notice, and past increases that were skipped cannot be stacked on top of it. On a $2,000 rent, 2.5% is $50 a month.',
+	},
+	{
+		q: 'How does Santa Monica rent control work, and what is the MAR?',
+		a: 'Santa Monica limits rent by each unit’s Maximum Allowable Rent (MAR), the legal ceiling, which is not always the rent being charged. Each year the Rent Control Board announces a general adjustment based on 75% of the change in the Los Angeles-area CPI for the 12 months ending in March, with a dollar ceiling set by formula. For September 1, 2026 it is 2.6% with a $70 ceiling for MARs of $2,674 or more, so on a $3,000 MAR the increase is $70, not $78. It applies only to tenancies that began before September 1, 2025, and needs 30 days of written notice. The table above shows the adjustment for each year since 2015.',
+	},
+	{
+		q: 'How much can I raise the rent in West Hollywood?',
+		a: 'West Hollywood’s rent stabilization covers multi-family rentals built before July 1, 1979. The Annual General Adjustment is 75% of the area CPI, announced each year by the Rent Stabilization Commission before July 1 and applied September 1 through August 31. An increase is allowed once every 12 months, and an adjustment you skip cannot be banked and added later. When we checked on November 18, 2026, the city’s site showed 2.25% for September 1, 2025 through August 31, 2026 and did not show the 2026 to 2027 percentage, so use the figure in the city’s notice or call the Rent Stabilization Division at (323) 848-6450. The city is also considering updates to its ordinance.',
 	},
 	{
 		q: 'I haven’t raised the rent in years. Can I catch up?',
@@ -63,6 +90,28 @@ const faqSchema = {
 	})),
 };
 
+// Santa Monica Rent Control Agency, "General Adjustment and Registration Fee History" (July 2025), plus the 2026 figures from the
+// Maximum Lawful Rent page. Rows copied as published; 2022 shows the special mid-year changes the Agency lists under that year.
+const smHistory = [
+	{ year: '2026', ga: '2.6%', ceiling: '$70 (MARs of $2,674 or above)', fee: '$240 ($10.00)' },
+	{ year: '2025', ga: '2.3%', ceiling: '$60 (MARs of $2,587 or above)', fee: '$240 ($10.00)' },
+	{ year: '2024', ga: '3.0%', ceiling: '$76 (MARs of $2,517 or above)', fee: '$228 ($9.50)' },
+	{ year: '2023', ga: '2.8%', ceiling: '$67 (MARs of $2,375 or above)', fee: '$228 ($9.50)' },
+	{
+		year: '2022',
+		ga: '3.0%, then 6% for 9/1/22 to 1/31/23, then 0.8% for 2/1/23 to 8/31/23',
+		ceiling: '$70 (MARs of $2,313 or above); $140 max for MARs of $2,325 or above (6%); $19 max for MARs of $2,313 or above (0.8%)',
+		fee: '$228 ($9.50)',
+	},
+	{ year: '2021', ga: '1.7%', ceiling: '$39 (MARs of $2,265 or above)', fee: '$198 ($8.25)' },
+	{ year: '2020', ga: '1.4%', ceiling: '$32 (MARs of $2,250 or above)', fee: '$198 ($8.25)' },
+	{ year: '2019', ga: '2.0%', ceiling: '$44 (MARs of $2,175 or above)', fee: '$198 ($8.25)' },
+	{ year: '2018', ga: '2.9%', ceiling: '$60 (MARs of $2,052 or above)', fee: '$198 ($8.25)' },
+	{ year: '2017', ga: '2.0%', ceiling: '$40 (MARs of $1,975 or above)', fee: '$198 ($8.25)' },
+	{ year: '2016', ga: '1.3%', ceiling: '$25 (MARs of $1,885 or above)', fee: '$174 ($7.29)' },
+	{ year: '2015', ga: '0.4%', ceiling: '$7 (MARs of $1,875 or above)', fee: '$174 ($7.29)' },
+];
+
 const rentGapExamples = [
 	{
 		href: '/case-studies/453-s-gramercy-pl-koreatown-apartments/',
@@ -88,7 +137,7 @@ const rentGapExamples = [
 
 <BaseLayout
 	title="Rent Increase Calculator: Value and Refinance Impact"
-	description="Free LA apartment calculator: 2026 rent increase limits, and what annual increases add to your income, value and refinance proceeds versus skipping them."
+	description="Free calculator: 2026 rent increase limits for LA, Pasadena, Santa Monica and West Hollywood, and what annual increases add to income, value and refinancing."
 >
 	<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} slot="head" />
 
@@ -97,8 +146,7 @@ const rentGapExamples = [
 			<span class="ri-hero__eyebrow">Free Tool</span>
 			<h1>Rent Increase Upside Calculator</h1>
 			<p class="ri-hero__lede">
-				See what the legal rent increase could add to your building&rsquo;s income, its value, and the loan you could get if you refinance. It also
-				shows what skipping increases costs over five years.
+				See what the legal rent increase could add to your building&rsquo;s income, its value, and the loan you could get if you refinance, for the City of Los Angeles, Pasadena, Santa Monica and West Hollywood. It also shows what skipping increases costs over five years.
 			</p>
 			<ul class="ri-hero__chips" role="list">
 				<li>2026 limits, checked against official sources</li>
@@ -120,13 +168,11 @@ const rentGapExamples = [
 						<select id="ri-type">
 							<option value="rso" selected>City of Los Angeles, rent-stabilized (RSO)</option>
 							<option value="state">City of Los Angeles, not rent-stabilized (California AB 1482 limit)</option>
-							<optgroup label="Coming next">
-								<option disabled>Santa Monica</option>
-								<option disabled>Pasadena</option>
-								<option disabled>West Hollywood</option>
-							</optgroup>
+							<option value="pasadena">Pasadena (Measure H)</option>
+							<option value="sm">Santa Monica (Rent Control, MAR)</option>
+							<option value="weho">West Hollywood (Rent Stabilization)</option>
 						</select>
-						<span class="ri-hint" id="ri-type-hint">RSO buildings in the City of Los Angeles are generally those built on or before October 1, 1978. Check an address at zimas.lacity.org.</span>
+						<span class="ri-hint" id="ri-type-hint"></span>
 					</div>
 					<div class="ri-row">
 						<div class="ri-field">
@@ -134,7 +180,7 @@ const rentGapExamples = [
 							<input id="ri-units" type="number" inputmode="numeric" min="2" max="500" step="1" value="12" />
 						</div>
 						<div class="ri-field">
-							<label for="ri-rent">Average monthly rent per unit</label>
+							<label for="ri-rent" id="ri-rent-label">Average monthly rent per unit</label>
 							<div class="ri-money"><span aria-hidden="true">$</span><input id="ri-rent" type="text" inputmode="numeric" autocomplete="off" value="1,650" /></div>
 						</div>
 					</div>
@@ -208,8 +254,8 @@ const rentGapExamples = [
 			<aside class="ri-bookmark" aria-label="Bookmark this page">
 				<h2>Bookmark this page and check back</h2>
 				<p>
-					We keep this calculator current. The rent limits are updated when they change each year, in July for rent-stabilized buildings and in August for
-					California&rsquo;s AB 1482 limit. For the market side of the numbers, our <a href="/property-value/">free value calculator</a> and
+					We keep this calculator current. The rent limits are updated when they change each year: July for City of Los Angeles rent-stabilized buildings,
+					August for California&rsquo;s AB 1482 limit, September for Santa Monica and West Hollywood, and October for Pasadena. For the market side of the numbers, our <a href="/property-value/">free value calculator</a> and
 					<a href="/market-report/">monthly market report</a> are refreshed regularly with new closed LA sales, so a fresh look every few months can change
 					what your building is worth.
 				</p>
@@ -247,14 +293,128 @@ const rentGapExamples = [
 					</ul>
 				</div>
 			</div>
+			<div class="ri-rules ri-rules--cities">
+				<div class="ri-rule">
+					<h3>Pasadena, Measure H</h3>
+					<p class="ri-rule__num">2.5%</p>
+					<p class="ri-rule__when">For increases effective October 1, 2026 through September 30, 2027</p>
+					<ul>
+						<li>Covers multi-unit rentals built before February 1, 1995.</li>
+						<li>One increase every 12 months, with 30 days of written notice.</li>
+						<li>Skipped or banked increases cannot be added on top of the yearly limit.</li>
+						<li>A rent change has to be registered with the city within 30 days.</li>
+						<li>Earlier limits: 2.25% (October 2025 to September 2026), 3% (2024 to 2025) and 2.75% (2023 to 2024).</li>
+					</ul>
+				</div>
+				<div class="ri-rule">
+					<h3>Santa Monica, Rent Control</h3>
+					<p class="ri-rule__num">2.6%, $70 max</p>
+					<p class="ri-rule__when">For increases effective September 1, 2026</p>
+					<ul>
+						<li>The percentage applies to the unit&rsquo;s Maximum Allowable Rent (MAR), the legal ceiling, which is not always the rent being charged.</li>
+						<li>The increase is capped at $70 a month for MARs of $2,674 or more.</li>
+						<li>Only for tenancies that began before September 1, 2025, with 30 days of written notice.</li>
+						<li>Fees must be paid and the tenancy registered. Half of the $240 annual registration fee ($10 a month) may be passed to the tenant, separate from the MAR.</li>
+					</ul>
+				</div>
+				<div class="ri-rule">
+					<h3>West Hollywood, Rent Stabilization</h3>
+					<p class="ri-rule__num">Set each year</p>
+					<p class="ri-rule__when">Applies September 1 through August 31</p>
+					<ul>
+						<li>Covers multi-family rentals built before July 1, 1979.</li>
+						<li>One increase every 12 months. An increase you skip cannot be banked and added later.</li>
+						<li>The percentage is announced each year by the Rent Stabilization Commission. The last figure on the city&rsquo;s site when we checked on November 18, 2026 was 2.25% for September 1, 2025 through August 31, 2026. We could not find the 2026 to 2027 percentage there, so the calculator asks you to enter it from your notice, or call the city at (323) 848-6450.</li>
+						<li>The owner has to be current on the $144 per unit registration fee. The city is also considering updates to its ordinance.</li>
+					</ul>
+				</div>
+			</div>
+
+			<h3 class="ri-sub-h">How each limit is calculated</h3>
+			<div class="ri-table-wrap">
+				<table class="ri-table ri-table--rules">
+					<thead>
+						<tr>
+							<th scope="col">Place</th>
+							<th scope="col">How the limit is set</th>
+							<th scope="col">The 2026 numbers</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row">City of Los Angeles (RSO)</th>
+							<td>Published each year by the Housing Department. The new formula is 90% of average CPI, with a floor of 1% and a ceiling of 4%.</td>
+							<td>The rate stays at 3% through June 30, 2027.</td>
+						</tr>
+						<tr>
+							<th scope="row">California AB 1482</th>
+							<td>5% plus the regional CPI change from April to April, but never more than 10%.</td>
+							<td>5% + 3.7% = 8.7%.</td>
+						</tr>
+						<tr>
+							<th scope="row">Pasadena</th>
+							<td>75% of the LA-area CPI change for the 12 months ending in March, rounded to the nearest one-quarter percent.</td>
+							<td>3.4% &times; 75% = 2.55%, rounded to 2.5%. On a $2,000 rent that is $50 a month.</td>
+						</tr>
+						<tr>
+							<th scope="row">Santa Monica</th>
+							<td>75% of the LA-area CPI change for the 12 months ending in March, applied to the MAR, with a dollar ceiling set by formula each year.</td>
+							<td>3.4% &times; 75% = 2.55%, announced as 2.6%. On a $3,000 MAR, 2.6% is $78, so the $70 ceiling applies.</td>
+						</tr>
+						<tr>
+							<th scope="row">West Hollywood</th>
+							<td>75% of the area CPI, announced each year by the Rent Stabilization Commission before July 1.</td>
+							<td>Not confirmed on the city&rsquo;s site. The prior year was 2.25%.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<details class="ri-history">
+				<summary>Santa Monica: general adjustment history, 2015 to 2026</summary>
+				<div class="ri-table-wrap">
+					<table class="ri-table ri-table--rules">
+						<caption>Santa Monica Rent Control Board general adjustment (GA), effective September 1 each year unless noted</caption>
+						<thead>
+							<tr>
+								<th scope="col">Year</th>
+								<th scope="col">General adjustment</th>
+								<th scope="col">Dollar ceiling (for MARs at or above)</th>
+								<th scope="col">Registration fee per year (monthly pass-through)</th>
+							</tr>
+						</thead>
+						<tbody>
+							{
+								smHistory.map((r) => (
+									<tr>
+										<th scope="row">{r.year}</th>
+										<td>{r.ga}</td>
+										<td>{r.ceiling}</td>
+										<td>{r.fee}</td>
+									</tr>
+								))
+							}
+						</tbody>
+					</table>
+				</div>
+				<p class="ri-source">
+					Source: Santa Monica Rent Control Agency, &ldquo;General Adjustment and Registration Fee History&rdquo; (July 2025) and the Maximum Lawful Rent page for
+					2026. Each year&rsquo;s adjustment does not apply to units whose tenancy started on or after September 1 of the prior year. Older years had different rules,
+					so see the Agency&rsquo;s full table for them. Look up a unit&rsquo;s MAR with the city&rsquo;s
+					<a href="https://www.smgov.net/departments/rentcontrol/mar.aspx" target="_blank" rel="noopener noreferrer">Look Up a Rent</a> tool.
+				</p>
+			</details>
+
 			<p class="ri-note">
-				This calculator covers the City of Los Angeles. Santa Monica, Pasadena and West Hollywood are next. Other cities, such as Beverly Hills, have their
-				own rent rules and are not covered yet. <a href="/contact/">Ask us</a> if your building is in one of them.
+				Other cities, such as Beverly Hills, have their own rent rules and are not covered yet. <a href="/contact/">Ask us</a> if your building is in one of them.
 			</p>
 			<p class="ri-source">
 				Sources: <a href="https://housing.lacity.gov/renter-protections-2" target="_blank" rel="noopener noreferrer">Los Angeles Housing Department</a>,
 				<a href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=1947.12" target="_blank" rel="noopener noreferrer">California Civil Code 1947.12</a>,
-				<a href="https://www.bls.gov/regions/west/news-release/consumerpriceindex_losangeles.htm" target="_blank" rel="noopener noreferrer">U.S. Bureau of Labor Statistics, Los Angeles area CPI</a>.
+				<a href="https://www.bls.gov/regions/west/news-release/consumerpriceindex_losangeles.htm" target="_blank" rel="noopener noreferrer">U.S. Bureau of Labor Statistics, Los Angeles area CPI</a>,
+				<a href="https://www.cityofpasadena.net/city-manager/news/pasadena-rental-housing-board-approves-2-5-annual-general-adjustment-for-2026-2027/" target="_blank" rel="noopener noreferrer">City of Pasadena</a>,
+				<a href="https://www.santamonica.gov/maximum-lawful-rent" target="_blank" rel="noopener noreferrer">City of Santa Monica</a>,
+				<a href="https://www.weho.org/city-government/rent-stabilization" target="_blank" rel="noopener noreferrer">City of West Hollywood</a>.
 			</p>
 		</div>
 	</section>
@@ -366,9 +526,49 @@ const rentGapExamples = [
 </BaseLayout>
 
 <script>
-	// Keep in step with the rates in the header comment of this file. Checked November 17, 2026.
-	const RSO_PCT = 3;
-	const STATE_PCT = 8.7;
+	// Keep in step with the rates in the header comment of this file. Checked November 17 to 18, 2026.
+	// Update each year: LA RSO in July, AB 1482 in August, Santa Monica and West Hollywood in September, Pasadena in October.
+	// West Hollywood: limit is null until the city's 2026-27 percentage is confirmed; the visitor enters it. When confirmed, set limit and def.
+	const RULES = {
+		rso: {
+			limit: 3,
+			def: 3,
+			rentLabel: 'Average monthly rent per unit',
+			typeHint: 'RSO buildings in the City of Los Angeles are generally those built on or before October 1, 1978. Check an address at zimas.lacity.org.',
+			pctHint: 'The City of Los Angeles limit is 3% for increases effective July 1, 2026 through June 30, 2027.',
+		},
+		state: {
+			limit: 8.7,
+			def: 5,
+			rentLabel: 'Average monthly rent per unit',
+			typeHint: 'California’s AB 1482 limit covers most buildings that are not rent-stabilized, with exceptions such as buildings less than 15 years old.',
+			pctHint:
+				'The California limit is 8.7% for increases effective August 1, 2026 through July 31, 2027. A higher rent than the market will pay can push tenants out.',
+		},
+		pasadena: {
+			limit: 2.5,
+			def: 2.5,
+			rentLabel: 'Average monthly rent per unit',
+			typeHint: 'Measure H covers multi-unit rentals in Pasadena built before February 1, 1995.',
+			pctHint: 'Pasadena’s limit is 2.5% for increases effective October 1, 2026 through September 30, 2027.',
+		},
+		sm: {
+			limit: 2.6,
+			def: 2.6,
+			capDollar: 70,
+			rentLabel: 'Average Maximum Allowable Rent (MAR) per unit',
+			typeHint: 'Santa Monica’s limit applies to each unit’s MAR, which can differ from the rent being charged. Look up a unit’s MAR with the city’s Look Up a Rent tool.',
+			pctHint: 'Santa Monica’s 2026 general adjustment is 2.6%, with a ceiling of $70 a month for MARs of $2,674 or more, for increases effective September 1, 2026.',
+		},
+		weho: {
+			limit: null,
+			def: '',
+			rentLabel: 'Average monthly rent per unit',
+			typeHint: 'West Hollywood’s rent stabilization covers multi-family rentals built before July 1, 1979.',
+			pctHint:
+				'West Hollywood announces its percentage each year (75% of the area CPI). The city’s site showed 2.25% for 2025 to 2026 when we checked on November 18, 2026 and not the 2026 to 2027 figure, so enter the percentage from your notice.',
+		},
+	};
 	const LIMIT_NOTICE_PCT = 10;
 
 	const $ = (id) => document.getElementById(id);
@@ -387,7 +587,7 @@ const rentGapExamples = [
 
 	function update() {
 		const type = $('ri-type').value;
-		const limit = type === 'rso' ? RSO_PCT : STATE_PCT;
+		const rule = RULES[type];
 		const units = Math.max(0, Math.round(num('ri-units')) || 0);
 		const rent = digits($('ri-rent').value);
 		let pct = num('ri-pct');
@@ -395,47 +595,61 @@ const rentGapExamples = [
 		const rate = num('ri-rate') || 0;
 		const dscr = num('ri-dscr') || 1.25;
 
-		$('ri-pct-hint').textContent =
-			type === 'rso'
-				? `The City of Los Angeles limit is ${RSO_PCT}% for increases effective July 1, 2026 through June 30, 2027.`
-				: `The California limit is ${STATE_PCT}% for increases effective August 1, 2026 through July 31, 2027. A higher rent than the market will pay can push tenants out.`;
+		$('ri-type-hint').textContent = rule.typeHint;
+		$('ri-pct-hint').textContent = rule.pctHint;
+		$('ri-rent-label').textContent = rule.rentLabel;
 
 		const flag = $('ri-flag');
 		flag.hidden = true;
 		if (!(pct >= 0)) pct = 0;
-		if (pct > limit) {
+		if (rule.limit === null) {
+			if (!$('ri-pct').value) {
+				flag.hidden = false;
+				flag.textContent = 'Enter the percentage from your West Hollywood increase notice to see the numbers.';
+			} else if (pct > LIMIT_NOTICE_PCT) {
+				flag.hidden = false;
+				flag.textContent = `${pct}% is unusually high for West Hollywood. Check it with the city at (323) 848-6450.`;
+			}
+		} else if (pct > rule.limit) {
 			flag.hidden = false;
-			flag.textContent = `${pct}% is above the ${limit}% limit, so the numbers below use ${limit}%.`;
-			pct = limit;
+			flag.textContent = `${pct}% is above the ${rule.limit}% limit, so the numbers below use ${rule.limit}%.`;
+			pct = rule.limit;
 		}
 
-		const perUnit = (rent * pct) / 100;
+		let perUnit = (rent * pct) / 100;
+		if (rule.capDollar && perUnit > rule.capDollar) {
+			perUnit = rule.capDollar;
+			flag.hidden = false;
+			flag.textContent = `The $${rule.capDollar} monthly ceiling applies at this MAR, so each unit’s increase is $${rule.capDollar}, not ${pct}%.`;
+		}
+		const effPct = rent > 0 ? (perUnit / rent) * 100 : pct;
 		const extraYear = perUnit * 12 * units;
 		const value = cap > 0 ? extraYear / (cap / 100) : 0;
 		const loan = extraYear / (dscr * loanFactor(rate));
 
+		const pctShown = Math.round(effPct * 100) / 100;
 		$('ri-extra-year').textContent = money(extraYear);
-		$('ri-extra-sub').textContent = `more income every year at ${pct}% across ${units} units`;
+		$('ri-extra-sub').textContent = `more income every year at ${pctShown}% across ${units} units`;
 		$('ri-per-unit').textContent = money(perUnit);
 		$('ri-value').textContent = money(value);
 		$('ri-loan').textContent = money(loan);
-		$('ri-notice').textContent = pct <= LIMIT_NOTICE_PCT ? '30 days (increase of 10% or less)' : '90 days';
+		$('ri-notice').textContent = effPct <= LIMIT_NOTICE_PCT ? '30 days (increase of 10% or less)' : '90 days';
 
 		const body = $('ri-skip-body');
 		body.innerHTML = '';
 		let running = 0;
 		for (let y = 1; y <= 5; y++) {
-			const raised = rent * Math.pow(1 + pct / 100, y);
+			const raised = rent * Math.pow(1 + effPct / 100, y);
 			running += (raised - rent) * 12 * units;
 			const tr = document.createElement('tr');
 			tr.innerHTML = `<th scope="row">Year ${y}</th><td>${money(raised)}</td><td>${money(rent)}</td><td>${money(running)}</td>`;
 			body.appendChild(tr);
 		}
-		const yr5 = (rent * Math.pow(1 + pct / 100, 5) - rent) * 12 * units;
+		const yr5 = (rent * Math.pow(1 + effPct / 100, 5) - rent) * 12 * units;
 		const val5 = cap > 0 ? yr5 / (cap / 100) : 0;
 		$('ri-skip-lede').textContent =
-			pct > 0
-				? `Giving ${pct}% every year for five years, versus never raising the rent, adds ${money(running)} in rent collected, and about ${money(val5)} of building value by year five at a ${cap}% cap rate.`
+			effPct > 0
+				? `Giving ${pctShown}% every year for five years, versus never raising the rent, adds ${money(running)} in rent collected, and about ${money(val5)} of building value by year five at a ${cap}% cap rate.`
 				: 'Enter an increase above zero to see the five-year difference.';
 		$('ri-skip-note').textContent =
 			'This assumes the same percentage every year, no vacancy, and no change in expenses. The yearly limit changes, so real figures will differ. Income skipped in one year is generally not recovered later.';
@@ -447,8 +661,8 @@ const rentGapExamples = [
 	}
 
 	$('ri-type').addEventListener('change', () => {
-		const type = $('ri-type').value;
-		$('ri-pct').value = type === 'rso' ? String(RSO_PCT) : '5';
+		const rule = RULES[$('ri-type').value];
+		$('ri-pct').value = String(rule.def);
 		update();
 	});
 	for (const id of ['ri-units', 'ri-pct', 'ri-cap', 'ri-rate', 'ri-dscr']) $(id).addEventListener('input', update);
@@ -785,6 +999,45 @@ const rentGapExamples = [
 		font-size: 0.85rem;
 		color: var(--ink-soft);
 	}
+	.ri-rules--cities {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		margin-top: 1.25rem;
+	}
+	.ri-sub-h {
+		margin: 2rem 0 0.8rem;
+		font-size: 1.2rem;
+	}
+	.ri-table--rules th,
+	.ri-table--rules td {
+		text-align: left;
+		vertical-align: top;
+		line-height: 1.5;
+	}
+	.ri-table--rules caption {
+		text-align: left;
+		font-size: 0.85rem;
+		color: var(--ink-soft);
+		padding-bottom: 0.6rem;
+	}
+	.ri-table--rules thead th {
+		text-align: left;
+	}
+	.ri-history {
+		margin: 1.5rem 0 1rem;
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		background: #fff;
+		padding: 0.9rem 1.2rem;
+	}
+	.ri-history summary {
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--navy);
+	}
+	.ri-history .ri-table-wrap {
+		margin-top: 0.9rem;
+	}
+
 	.ri-compare {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -860,6 +1113,11 @@ const rentGapExamples = [
 		font-size: 0.88rem;
 	}
 
+	@media (max-width: 1000px) {
+		.ri-rules--cities {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
 	@media (max-width: 860px) {
 		.ri-grid,
 		.ri-rules,
