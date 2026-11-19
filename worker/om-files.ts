@@ -5,6 +5,7 @@
 // `omGate: true` on the listing in src/data/listings.ts.
 
 export const omFiles: Record<string, string> = {
+	'15835-15837-saticoy-st-los-angeles-ca-91406': '/om/15835-15837-saticoy-st-om-81783606444990f3c1f4e4cd54408819.pdf', // DRAFT OM (Nov 2026): swap in the final PDF under a new random name when it is ready
 	'311-s-new-hampshire-ave-los-angeles-ca-90020': '/om/311-s-new-hampshire-ave-om-19984726de233c61b3f18484f4fcb662.pdf',
 	'4143-don-tomaso-dr-los-angeles-ca-90008': '/om/4143-don-tomaso-dr-om-ebb25fb9acc98a87f9734bab46ef2199.pdf',
 	'1118-1120-sanborn-ave-los-angeles-ca-90029': '/om/1118-1120-sanborn-ave-om-961b43fd57bf8c8d766624f3c91afabd.pdf',
