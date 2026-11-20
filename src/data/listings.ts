@@ -306,7 +306,7 @@ export const listings: Listing[] = [
 		sqft: 5294,
 		acres: null,
 		askingPrice: 1800000,
-		status: 'active',
+		status: 'in-escrow',
 		type: 'apartment',
 		submarket: 'koreatown',
 		description:
@@ -425,7 +425,7 @@ export const listings: Listing[] = [
 		sqft: 4558,
 		acres: null,
 		askingPrice: 1050000,
-		status: 'active',
+		status: 'in-escrow',
 		type: 'apartment',
 		submarket: 'silver-lake',
 		description:
