@@ -31,6 +31,7 @@ export type Post = {
 	seoTitle?: string; // shorter <title> tag (aim for 60 chars or fewer); falls back to `title`
 	description: string; // also used as the meta description, so keep it to ~155 characters
 	date: string; // ISO date
+updated?: string; // ISO date of the last substantive update; shown under the title and sent to Google as dateModified
 	image?: { src: string; alt: string; width: number; height: number }; // optional graphic shown under the date and used for social sharing
 	sections: { heading: string; paragraphs: string[] }[];
 };
@@ -316,7 +317,7 @@ const allPosts: Post[] = [
 			{
 				heading: '7. Physical Condition and Capital Expenses',
 				paragraphs: [
-					'Buyers subtract what they expect to spend. Roofs, plumbing, electrical systems, and required inspections all come off the price. At 1513 Arlington Ave, for example, the building had Federal Pacific electrical sub-panels that insurers increasingly require owners to replace, plus a state-mandated balcony inspection under SB 721. Our seller did not want to pay for either before closing, so we structured the sale for the buyer to take them on, as described in the [case study](/case-studies/1513-arlington-ave-arlington-heights-apartments/).',
+					'Buyers subtract what they expect to spend. Roofs, plumbing, electrical systems, and required inspections all come off the price. At 1513 Arlington Ave, for example, the building had Federal Pacific electrical sub-panels that insurers increasingly require owners to replace, plus a state-mandated balcony inspection under [SB 721](/insights/sb-721-balcony-inspection-los-angeles-apartment-owners/). Our seller did not want to pay for either before closing, so we structured the sale for the buyer to take them on, as described in the [case study](/case-studies/1513-arlington-ave-arlington-heights-apartments/).',
 					'In general, we advise sellers against spending money on the property before a sale, because they rarely get it back from buyers. Experienced investors have their own plans and cost-effective ways to bring a building up to market.',
 				],
 			},
@@ -1518,10 +1519,11 @@ const allPosts: Post[] = [
 	{
 		slug: 'sb-721-balcony-inspection-los-angeles-apartment-owners',
 		title: 'SB 721 Balcony Inspections in Los Angeles: What Apartment Owners Must Do Now',
-		seoTitle: 'SB 721 Balcony Inspection in Los Angeles: Owner Guide',
+		seoTitle: 'SB 721 Los Angeles: Missed the Deadline? Inspection Guide',
 		description:
-			'The SB 721 balcony and stair inspection deadline was January 1, 2026. What LA apartment owners must inspect, who can inspect, repairs, penalties, and selling.',
+			'The SB 721 balcony inspection deadline was Jan 1, 2026. Missed it? What LA apartment owners must inspect, who can inspect, repairs, and penalties.',
 		date: '2026-10-22',
+		updated: '2026-11-20',
 		image: {
 			src: '/images/insights/sb-721-balcony-inspection-la.png',
 			alt: 'Graphic: the SB 721 deadline has passed. Inspections were due January 1, 2026 and every six years after, for buildings with three or more units and elevated wood balconies, decks, and stairs. Civil penalties run $100 to $500 a day if repairs lag.',
@@ -1546,8 +1548,9 @@ const allPosts: Post[] = [
 				],
 			},
 			{
-				heading: 'Which Buildings and Which Parts Are Covered',
+				heading: 'Which Buildings Are Covered? Are Exterior Stairs and Walkways Included?',
 				paragraphs: [
+					'Yes, exterior stairways and walkways are covered when they extend beyond the building’s exterior walls, have a walking surface more than six feet above the ground, are designed for people to use, and rely in whole or in substantial part on wood for structural support. The law applies to buildings with three or more multifamily dwelling units, so a triplex or fourplex counts.',
 					'The law calls them “exterior elevated elements”: balconies, decks, porches, stairways, walkways, and entry structures, including their supports and railings. To be covered, an element has to extend beyond the exterior walls of the building, have a walking surface more than six feet above ground level, be designed for people to use, and rely in whole or in substantial part on wood or wood-based products for its structural support.',
 					'That can describe older multistory wood-frame buildings in Los Angeles with exterior stairs, walkways, or balconies. Steel or concrete structures are generally not covered, and neither are patios at ground level. Condominium buildings are handled by a different law, SB 326, which has its own rules.',
 				],
@@ -1567,8 +1570,9 @@ const allPosts: Post[] = [
 				],
 			},
 			{
-				heading: 'If the Inspector Finds a Problem',
+				heading: 'SB 721 Repairs: What Happens If the Inspector Finds a Problem',
 				paragraphs: [
+					'An SB 721 repair starts with a permit. For a problem that is not an immediate threat, you apply for a repair permit within 120 days of receiving the inspection report, then have 120 days after the permit is approved to finish the work with a licensed contractor, unless the local agency gives you more time. An immediate threat has to be addressed right away.',
 					'The timeline depends on how serious the problem is. If the inspector says an element is an immediate threat, that is an emergency. You have to act right away, and keeping people off the balcony or stair until repairs are done counts as compliance. The inspector then has to confirm the emergency repairs and report to the local enforcement agency. A report that recommends immediate repairs also has to go to the local agency within 15 days of the report being completed.',
 					'For problems that are not an immediate threat, you have to apply for a repair permit within 120 days of receiving the report. Once the permit is approved, you have 120 days to finish the work unless the local agency grants more time. Repairs have to be done by a licensed contractor, follow the inspector’s recommendations and the manufacturer’s specifications, meet the California Building Standards Code, and satisfy local requirements.',
 				],
@@ -1589,8 +1593,16 @@ const allPosts: Post[] = [
 				],
 			},
 			{
+				heading: 'Does SB 721 Apply Outside the City of Los Angeles?',
+				paragraphs: [
+					'Yes. SB 721 is a state law, so it applies to qualifying buildings with three or more multifamily dwelling units in every California city and county, including Glendale, Pasadena, Santa Monica, and unincorporated Los Angeles County. The inspection deadline, the list of qualified inspectors, and the repair schedule are the same.',
+					'What changes is the local enforcement agency: the city or county department that receives reports of immediate threats and enforces the repair schedule. The statute lets cities and counties set requirements that are stricter than the state law. Check with your city’s building department, or the county’s if you are in an unincorporated area, for how it handles reports and enforcement.',
+				],
+			},
+			{
 				heading: 'Missed the Deadline? What to Do Now',
 				paragraphs: [
+					'If you missed the January 1, 2026 deadline, hire a qualified inspector now and have the inspection done as soon as you can. The civil penalties in the statute apply when required repairs are not finished on time, and the inspection requirement itself is enforced locally, so the report is what starts the repair clock and shows the building is on track.',
 					'Do not wait for a complaint. Hire a qualified inspector now and schedule the inspection as soon as you can. The sooner the report exists, the sooner the repair clock starts and the sooner you can show the building is on track.',
 					'If you already have a report, check that it was done by one of the inspectors the law lists and that it covers each type of element. An older report from before 2019 no longer helps: that exemption ran only until January 1, 2026.',
 					'If the inspector flags an immediate threat, keep people off that balcony or stair right away, and tell your tenants why. For other inspections, give tenants the usual written notice before anyone enters a unit, which for non-emergency visits is generally 24 hours.',
@@ -2454,17 +2466,17 @@ export const relatedPostSlugs: Record<string, string[]> = {
 	'measure-ula-2026-thresholds-selling-la-apartment-building': ['measure-ula-hold-or-sell-la-apartment-building', 'capital-gains-depreciation-recapture-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end'],
 	'el-nino-2026-la-apartment-owners-checklist': ['ab-1482-rent-cap-2026', 'selling-la-apartment-building-with-tenants-rent-control', 'utility-bill-diligence-la-apartment-owners', 'air-conditioning-law-los-angeles-apartment-owners-electrical-panel'],
 	'selling-la-apartment-building-before-year-end': ['capital-gains-depreciation-recapture-selling-la-apartment-building', '1031-exchange-into-triple-net-properties', 'should-i-sell-my-la-apartment-building', 'la-apartment-market-update-q3-2026'],
-	'ab-1482-rent-cap-2026': ['la-rso-rent-increase-rules-2026-apartment-owners', 'selling-la-apartment-building-with-tenants-rent-control', 'sb-1365-emergency-rent-cap-la-apartment-owners'],
+	'ab-1482-rent-cap-2026': ['la-rso-rent-increase-rules-2026-apartment-owners', 'selling-la-apartment-building-with-tenants-rent-control', 'sb-1365-emergency-rent-cap-la-apartment-owners', 'sb-721-balcony-inspection-los-angeles-apartment-owners'],
 	'utility-bill-diligence-la-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'el-nino-2026-la-apartment-owners-checklist', 'should-i-sell-my-la-apartment-building', 'air-conditioning-law-los-angeles-apartment-owners-electrical-panel'],
 	'1031-exchange-into-triple-net-properties': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'selling-la-apartment-building-before-year-end', 'should-i-sell-my-la-apartment-building'],
 	'la-apartment-cap-rates-and-prices-by-neighborhood-2026': ['how-to-value-an-apartment-building-in-los-angeles', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'should-i-sell-my-la-apartment-building'],
-	'how-to-sell-an-apartment-building-in-los-angeles-step-by-step': ['should-i-sell-my-la-apartment-building', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'selling-la-apartment-building-before-year-end'],
+	'how-to-sell-an-apartment-building-in-los-angeles-step-by-step': ['should-i-sell-my-la-apartment-building', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'selling-la-apartment-building-before-year-end', 'sb-721-balcony-inspection-los-angeles-apartment-owners'],
 	'broker-opinion-of-value-vs-appraisal-apartment-building': ['how-to-value-an-apartment-building-in-los-angeles', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'la-apartment-market-update-q3-2026'],
-	'selling-a-fourplex-or-small-apartment-building-in-los-angeles': ['how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step'],
+	'selling-a-fourplex-or-small-apartment-building-in-los-angeles': ['how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'sb-721-balcony-inspection-los-angeles-apartment-owners'],
 	'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles': ['how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'how-to-choose-a-multifamily-broker-in-los-angeles', 'should-i-sell-my-la-apartment-building'],
 	'la-apartment-market-update-q3-2026': ['la-apartment-market-report-october-2026', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'how-to-value-an-apartment-building-in-los-angeles'],
 	'la-apartment-market-report-october-2026': ['la-apartment-market-update-q3-2026', 'la-apartment-cap-rates-and-prices-by-neighborhood-2026', 'should-i-sell-my-la-apartment-building'],
-	'inherited-apartment-building-los-angeles-what-to-do': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles'],
+	'inherited-apartment-building-los-angeles-what-to-do': ['capital-gains-depreciation-recapture-selling-la-apartment-building', 'broker-opinion-of-value-vs-appraisal-apartment-building', 'selling-an-apartment-building-off-market-vs-listing-it-in-los-angeles', 'sb-721-balcony-inspection-los-angeles-apartment-owners'],
 	'sb-721-balcony-inspection-los-angeles-apartment-owners': ['how-to-value-an-apartment-building-in-los-angeles', 'how-to-sell-an-apartment-building-in-los-angeles-step-by-step', 'selling-la-apartment-building-with-tenants-rent-control'],
 	'air-conditioning-law-los-angeles-apartment-owners-electrical-panel': ['sb-721-balcony-inspection-los-angeles-apartment-owners', 'how-to-value-an-apartment-building-in-los-angeles', 'selling-la-apartment-building-with-tenants-rent-control'],
 	'measure-ula-hold-or-sell-la-apartment-building': ['measure-ula-2026-thresholds-selling-la-apartment-building', 'capital-gains-depreciation-recapture-selling-la-apartment-building', 'should-i-sell-my-la-apartment-building'],

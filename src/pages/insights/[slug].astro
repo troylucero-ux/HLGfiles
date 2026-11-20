@@ -9,6 +9,8 @@ import SubmarketStatsTable from '../../components/SubmarketStatsTable.astro';
 import DepreciationRecaptureExample from '../../components/DepreciationRecaptureExample.astro';
 import MarketUpdateCharts from '../../components/MarketUpdateCharts.astro';
 import ArticleFaq from '../../components/ArticleFaq.astro';
+import InsightVisual from '../../components/InsightVisual.astro';
+import { articleVisuals } from '../../data/articleVisuals';
 import LanguageSwitch from '../../components/LanguageSwitch.astro';
 import { posts, relatedPostSlugs, postFaqs } from '../../data/posts';
 import { esSlugFor } from '../../data/postsEs';
@@ -49,6 +51,8 @@ const faqSchema = faqs.length
 // Appending a time avoids the date being parsed as UTC midnight, which can display as the
 // previous day in timezones behind UTC.
 const dateFormatted = formatQuarter(post.date);
+const updatedFormatted = post.updated ? new Date(`${post.updated}T12:00:00`).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : null;
+const visuals = articleVisuals[post.slug] ?? {};
 
 const articleSchema = {
 	'@context': 'https://schema.org',
@@ -56,6 +60,7 @@ const articleSchema = {
 	headline: post.title,
 	description: post.description,
 	datePublished: post.date,
+	...(post.updated ? { dateModified: post.updated } : {}),
 	...(post.image ? { image: `${site.url}${post.image.src}` } : {}),
 	author: {
 		'@type': 'Organization',
@@ -80,7 +85,7 @@ const articleSchema = {
 			<Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Insights', href: '/insights/' }, { label: post.title }]} />
 			<span class="eyebrow">Insights</span>
 			<h1>{post.title}</h1>
-			<p class="post-detail__date">{dateFormatted}</p>
+			<p class="post-detail__date">{dateFormatted}{updatedFormatted && ` | Updated ${updatedFormatted}`}</p>
 			{esSlug && <LanguageSwitch to="es" href={`/es/insights/${esSlug}/`} />}
 			{post.image && <img class="post-detail__image" src={post.image.src} alt={post.image.alt} width={post.image.width} height={post.image.height} loading="eager" />}
 
@@ -92,6 +97,7 @@ const articleSchema = {
 							{s.paragraphs.map((p) => (
 								<p>{toParts(p).map((part) => (part.href ? (part.href.startsWith('http') ? <a href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a> : <a href={part.href}>{part.text}</a>) : part.text))}</p>
 							))}
+							{(visuals[s.heading] ?? []).map((v) => <InsightVisual visual={v} />)}
 							{s.heading === 'How a 1031 Exchange Makes the Move Tax-Deferred' && <ExchangeTimeline />}
 							{s.heading === 'The New Maximum, Effective August 1, 2026' && <CpiRentCapTable />}
 							{s.heading === 'Why a Price Just Over the Line Costs So Much' && <UlaThresholdTable />}
