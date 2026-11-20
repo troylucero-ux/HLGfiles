@@ -65,7 +65,7 @@ const ICON: Record<IconName, string> = {
 
 {
 	(visual.kind === 'cards' || visual.kind === 'steps') && (
-		<figure class={`av av-cards${visual.kind === 'steps' ? ' av-cards--steps' : ''}`}>
+		<figure class={`av av-cards${visual.kind === 'steps' ? ' av-cards--steps' : ''}${visual.tone === 'warn' ? ' av-cards--warn' : ''}`}>
 			{visual.caption && <figcaption>{visual.caption}</figcaption>}
 			<ul role="list">
 				{visual.items.map((i, n) => (
@@ -75,7 +75,7 @@ const ICON: Record<IconName, string> = {
 						</span>
 						<div>
 							<strong>{visual.kind === 'steps' ? `${n + 1}. ${i.title}` : i.title}</strong>
-							<p>{i.text}</p>
+							{i.text && <p>{i.text}</p>}
 						</div>
 					</li>
 				))}
@@ -305,6 +305,10 @@ const ICON: Record<IconName, string> = {
 		stroke-width: 1.8;
 		stroke-linecap: round;
 		stroke-linejoin: round;
+	}
+
+	.av-cards--warn .av-cards__icon {
+		background: #a32d2d;
 	}
 
 	.av-cards--steps .av-cards__icon {

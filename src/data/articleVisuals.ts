@@ -7,8 +7,8 @@ export type IconName = 'ruler' | 'building' | 'wrench' | 'clipboard' | 'search' 
 export type Visual =
 	| { kind: 'stats'; caption?: string; items: { value: string; label: string }[] }
 	| { kind: 'timeline'; caption?: string; steps: { label: string; detail: string; tone?: 'warn' }[] }
-	| { kind: 'cards'; caption?: string; items: { icon: IconName; title: string; text: string }[] }
-	| { kind: 'steps'; caption?: string; items: { icon: IconName; title: string; text: string }[] }
+	| { kind: 'cards'; caption?: string; tone?: 'warn'; items: { icon: IconName; title: string; text?: string }[] }
+	| { kind: 'steps'; caption?: string; tone?: 'warn'; items: { icon: IconName; title: string; text?: string }[] }
 	| { kind: 'compare'; caption?: string; yes: { title: string; items: string[] }; no: { title: string; items: string[] } }
 	| { kind: 'balcony' };
 
@@ -86,6 +86,108 @@ export const articleVisuals: Record<string, Record<string, Visual[]>> = {
 					{ icon: 'search', title: 'Inspect', text: 'A qualified inspector examines the balconies, decks, and stairs.' },
 					{ icon: 'doc', title: 'Keep the reports', text: 'Keep them in your permanent records for at least two inspection cycles.' },
 					{ icon: 'key', title: 'Deliver at sale', text: 'Disclose the reports and deliver them to the buyer when you sell.' },
+				],
+			},
+		],
+	},
+	'la-apartment-building-due-diligence-checklist-for-buyers': {
+		'Key Takeaways': [
+			{
+				kind: 'stats',
+				caption: 'Due diligence at a glance',
+				items: [
+					{ value: '3', label: 'ways to check the rent roll' },
+					{ value: '6', label: 'areas to check, from income to title' },
+					{ value: 'Day 1', label: 'start the work the day escrow opens' },
+					{ value: '$114,000', label: 'value lost to $8,000 of extra yearly expense at a 7% cap rate' },
+				],
+			},
+		],
+		'How the Due Diligence Period Works': [
+			{
+				kind: 'timeline',
+				caption: 'From signed offer to a decision',
+				steps: [
+					{ label: 'Purchase agreement signed, escrow opens', detail: 'The buyer now has a set period to inspect the building and review its records.' },
+					{ label: 'Start the work the same day', detail: 'Records, inspections, and the loan appraisal each take days, so run them at the same time.' },
+					{ label: 'Check everything the seller told you', detail: 'Income, rent control, the building, permits, taxes and insurance, title and financing.' },
+					{ label: 'Deposit becomes non-refundable at the end of the period', detail: 'The length of the period, the size of the deposit, and your right to cancel are all negotiated.', tone: 'warn' },
+					{ label: 'What you find is leverage', detail: 'A lower price, a credit, or a decision to walk away before your deposit is at risk.' },
+				],
+			},
+		],
+		'1. Income: Check the Rent Roll Three Ways': [
+			{
+				kind: 'steps',
+				caption: 'Compare the seller’s rent roll against three sources',
+				items: [
+					{ icon: 'doc', title: 'The leases', text: 'Look for rents that differ between documents and occupied units with no lease.' },
+					{ icon: 'users', title: 'Tenant estoppels', text: 'Short statements in which each tenant confirms their rent, deposit, and lease dates.' },
+					{ icon: 'clipboard', title: 'The seller’s bank deposits', text: 'The last several months of deposits, compared with the rent roll.' },
+				],
+			},
+		],
+		'2. Rent Control and Tenant Law': [
+			{
+				kind: 'cards',
+				caption: 'Which rules apply in the City of Los Angeles',
+				items: [
+					{ icon: 'building', title: 'Certificate of occupancy before October 1, 1978', text: 'Generally covered by the Rent Stabilization Ordinance (RSO).' },
+					{ icon: 'home', title: 'Newer buildings', text: 'Typically fall under the statewide AB 1482 cap.' },
+					{ icon: 'key', title: 'Other cities', text: 'Santa Monica, West Hollywood, and Beverly Hills have their own rent control.' },
+				],
+			},
+		],
+		'3. The Physical Building': [
+			{
+				kind: 'cards',
+				caption: 'What most often drives cost in older Los Angeles buildings',
+				items: [
+					{ icon: 'home', title: 'Roof and drainage', text: 'Flat roofs, aging flashing, and clogged drains show up fast in a wet winter.' },
+					{ icon: 'wrench', title: 'Plumbing', text: 'Older buildings may still have galvanized or cast-iron pipes. Have a plumber scope the lines.' },
+					{ icon: 'warning', title: 'Electrical', text: 'Ask what panels the building has and whether any are brands inspectors flag.' },
+					{ icon: 'building', title: 'Seismic', text: 'Pre-1978 wood-frame soft-story buildings must be retrofitted under a 2015 ordinance. Ask for proof the work was permitted.' },
+					{ icon: 'ruler', title: 'Balconies and stairs', text: 'Three or more units with elevated wood-supported balconies or stairs need an SB 721 inspection report.' },
+					{ icon: 'check', title: 'Appliances', text: 'Leases entered, amended, or extended on or after January 1, 2026 need a working stove and refrigerator.' },
+					{ icon: 'shield', title: 'Lead paint', text: 'Sellers of housing built before 1978 must disclose known lead-based paint hazards.' },
+				],
+			},
+		],
+		'5. Taxes, Insurance, and Transfer Costs': [
+			{
+				kind: 'cards',
+				items: [
+					{ icon: 'building', title: 'Property tax', text: 'A purchase triggers a reassessment. The base rate is 1% of the purchase price, plus voter-approved charges.' },
+					{ icon: 'shield', title: 'Insurance', text: 'Get quotes before you remove contingencies, and ask for the seller’s claims history.' },
+					{ icon: 'arrow', title: 'Transfer taxes', text: 'Measure ULA is figured on the gross price, including any loan the buyer assumes.' },
+				],
+			},
+		],
+		'Red Flags': [
+			{
+				kind: 'cards',
+				tone: 'warn',
+				caption: 'Signs to slow down',
+				items: [
+					{ icon: 'warning', title: 'Rents that do not match', text: 'Rent roll rents that tenants or leases contradict.' },
+					{ icon: 'warning', title: 'Expenses that look too low', text: 'Or a seller who will not provide actual bills.' },
+					{ icon: 'warning', title: 'RSO gaps', text: 'No record of RSO registration, or increases above what the law allowed.' },
+					{ icon: 'warning', title: 'Unrecorded units', text: 'Units that are rented but not on the City’s records.' },
+					{ icon: 'warning', title: '“Minor” deferred maintenance', text: 'The seller calls it minor and the inspector does not.' },
+					{ icon: 'warning', title: 'Resistance to checking', text: 'A seller who resists estoppels or access to units.' },
+				],
+			},
+		],
+		'Build the Right Team': [
+			{
+				kind: 'cards',
+				caption: 'Most buyers need',
+				items: [
+					{ icon: 'doc', title: 'A real estate attorney' },
+					{ icon: 'search', title: 'A licensed inspector' },
+					{ icon: 'clipboard', title: 'A CPA' },
+					{ icon: 'key', title: 'A lender' },
+					{ icon: 'home', title: 'A broker who knows the neighborhood' },
 				],
 			},
 		],
