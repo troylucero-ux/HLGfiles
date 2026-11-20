@@ -1,0 +1,243 @@
+---
+// "Hear about new listings first": the buyer-list sign-up strip on the Listings page. Posts to /api/buyer-list, which
+// records the buyer in Pipedrive. Name and email are required, phone is optional, and consent is explicit.
+---
+
+<section class="buyer-list" id="buyer-list">
+	<div class="buyer-list__intro">
+		<span class="buyer-list__badge">Buyer list</span>
+		<h2>Hear about new listings first</h2>
+		<p>Many of our deals sell before they are advertised. Join the list and we will tell you when a new building comes up.</p>
+	</div>
+	<form class="buyer-list__form js-buyer-list" novalidate>
+		<div class="buyer-list__grid">
+			<div>
+				<label for="bl-name">Name</label>
+				<input id="bl-name" name="name" type="text" placeholder="Your name" autocomplete="name" required />
+			</div>
+			<div>
+				<label for="bl-email">Email</label>
+				<input id="bl-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+			</div>
+			<div class="buyer-list__wide">
+				<label for="bl-phone">Phone <span class="buyer-list__opt">(optional)</span></label>
+				<input id="bl-phone" name="phone" type="tel" placeholder="(310) 555-0123" autocomplete="tel" />
+			</div>
+		</div>
+		<label class="buyer-list__consent">
+			<input type="checkbox" name="privacyConsent" required />
+			<span>I agree to the <a href="/privacy-policy/">Privacy Policy</a> and to be contacted about new listings. You can unsubscribe at any time.</span>
+		</label>
+		<button type="submit" class="buyer-list__submit">Join the buyer list</button>
+		<p class="buyer-list__status" role="status" hidden></p>
+	</form>
+	<div class="buyer-list__done" hidden>
+		<p><strong>You are on the list.</strong> We will email you when a new building comes up.</p>
+	</div>
+</section>
+
+<script>
+	const box = document.querySelector<HTMLElement>('.buyer-list');
+	if (box) {
+		const form = box.querySelector<HTMLFormElement>('.js-buyer-list')!;
+		const status = box.querySelector<HTMLParagraphElement>('.buyer-list__status')!;
+		const done = box.querySelector<HTMLElement>('.buyer-list__done')!;
+		const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+			status.hidden = false;
+			status.style.color = '#ffb4ab';
+			if (!form.checkValidity()) {
+				status.textContent = 'Please enter your name and email and accept the privacy policy.';
+				form.reportValidity();
+				return;
+			}
+			const data = Object.fromEntries(new FormData(form).entries()) as Record<string, unknown>;
+			data.privacyConsent = (form.querySelector('input[name="privacyConsent"]') as HTMLInputElement).checked;
+			data.source = (window as unknown as { hlgSource?: () => unknown }).hlgSource?.();
+
+			button.disabled = true;
+			status.style.color = '';
+			status.textContent = 'Sending...';
+			try {
+				const res = await fetch('/api/buyer-list', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(data),
+				});
+				const result = await res.json();
+				if (res.ok) {
+					// Counts as a lead in Google Analytics. Only the form name and page are sent, never the visitor's details.
+					(window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.('event', 'generate_lead', {
+						form_name: 'buyer_list',
+						page_path: window.location.pathname,
+					});
+					form.hidden = true;
+					done.hidden = false;
+				} else {
+					status.style.color = '#ffb4ab';
+					status.textContent = result.error ?? 'Something went wrong. Please try again.';
+				}
+			} catch {
+				status.style.color = '#ffb4ab';
+				status.textContent = 'Something went wrong. Please try again or call us directly.';
+			} finally {
+				button.disabled = false;
+			}
+		});
+	}
+</script>
+
+<style>
+	.buyer-list {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+		gap: clamp(1.5rem, 4vw, 3rem);
+		align-items: center;
+		background: var(--navy-dark);
+		color: #d7e0ea;
+		padding: clamp(1.75rem, 4vw, 2.75rem);
+		border-top: 3px solid var(--gold);
+	}
+
+	.buyer-list__badge {
+		display: inline-block;
+		font-size: 0.7rem;
+		font-weight: 700;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+		color: var(--gold-light);
+		margin-bottom: 0.6rem;
+	}
+
+	.buyer-list h2 {
+		margin: 0 0 0.5rem;
+		color: #fff;
+		font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+		line-height: 1.2;
+	}
+
+	.buyer-list__intro p {
+		margin: 0;
+		line-height: 1.6;
+	}
+
+	.buyer-list__grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 0.9rem;
+		margin-bottom: 0.9rem;
+	}
+
+	.buyer-list__wide {
+		grid-column: 1 / -1;
+	}
+
+	.buyer-list label {
+		display: block;
+		font-size: 0.78rem;
+		font-weight: 700;
+		color: #fff;
+		margin-bottom: 0.35rem;
+	}
+
+	.buyer-list__opt {
+		font-weight: 400;
+		color: #b9c6d6;
+	}
+
+	.buyer-list input[type='text'],
+	.buyer-list input[type='email'],
+	.buyer-list input[type='tel'] {
+		width: 100%;
+		padding: 0.8rem 0.95rem;
+		border: 1px solid transparent;
+		border-radius: 8px;
+		font-size: 0.98rem;
+		font-family: var(--font-sans);
+		color: var(--ink);
+		background: #fff;
+	}
+
+	.buyer-list input:focus {
+		outline: 3px solid var(--gold);
+		outline-offset: 1px;
+	}
+
+	.buyer-list .buyer-list__consent {
+		display: flex;
+		gap: 0.6rem;
+		align-items: flex-start;
+		font-size: 0.78rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #d7e0ea;
+		margin: 0 0 1rem;
+	}
+
+	.buyer-list__consent input {
+		margin-top: 0.2rem;
+		accent-color: var(--gold);
+	}
+
+	.buyer-list__consent a {
+		color: #fff;
+		text-decoration: underline;
+	}
+
+	.buyer-list__submit {
+		font-family: var(--font-sans);
+		font-size: 0.86rem;
+		font-weight: 700;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--navy-dark);
+		background: var(--gold);
+		border: 0;
+		border-radius: 8px;
+		padding: 0.95rem 1.75rem;
+		cursor: pointer;
+	}
+
+	.buyer-list__submit:hover {
+		filter: brightness(1.06);
+	}
+
+	.buyer-list__submit:disabled {
+		opacity: 0.75;
+		cursor: progress;
+	}
+
+	.buyer-list__status {
+		margin: 0.8rem 0 0;
+		font-weight: 600;
+		font-size: 0.9rem;
+	}
+
+	.buyer-list__status[hidden],
+	.buyer-list__done[hidden],
+	.buyer-list__form[hidden] {
+		display: none;
+	}
+
+	.buyer-list__done p {
+		margin: 0;
+		font-size: 1.1rem;
+		color: #fff;
+	}
+
+	@media (max-width: 760px) {
+		.buyer-list {
+			grid-template-columns: 1fr;
+		}
+
+		.buyer-list__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.buyer-list__submit {
+			width: 100%;
+		}
+	}
+</style>

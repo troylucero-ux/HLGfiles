@@ -4,6 +4,7 @@ import { handleOmLead } from './om-lead';
 import { handleExchangeLead } from './exchange-lead';
 import { handleValuationLead } from './valuation-lead';
 import { handleNewsletter } from './newsletter';
+import { handleBuyerList } from './buyer-list';
 import { handleVerifyAddress } from './verify-address';
 import { redirects } from './redirects';
 import type { Env } from './env';
@@ -18,6 +19,7 @@ export default {
 		if (url.pathname === '/api/1031-lead') return handleExchangeLead(request, env);
 		if (url.pathname === '/api/valuation-lead') return handleValuationLead(request, env);
 		if (url.pathname === '/api/newsletter') return handleNewsletter(request, env);
+		if (url.pathname === '/api/buyer-list') return handleBuyerList(request, env);
 		if (url.pathname === '/api/verify-address') return handleVerifyAddress(request);
 
 		// Old highlightreg.com (WordPress) URLs — redirect before falling through to ASSETS so

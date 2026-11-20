@@ -13,6 +13,7 @@ export type Listing = {
 	acres: number | null;
 	askingPrice: number | null; // null = "Contact for Pricing"
 	status: 'active' | 'pending' | 'in-escrow' | 'off-market';
+	listedOn?: string; // ISO date the listing went live; the Listings page shows a NEW tag for 21 days
 	type: 'apartment' | 'development-site';
 	submarket: string | null;
 	description: string;
@@ -61,6 +62,7 @@ export const listings: Listing[] = [
 		acres: null,
 		askingPrice: 6400000,
 		status: 'active',
+		listedOn: '2026-11-19',
 		type: 'apartment',
 		submarket: 'van-nuys',
 		description:
