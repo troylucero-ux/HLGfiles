@@ -4,7 +4,7 @@ import BOVForm from '../../components/BOVForm.astro';
 import BuyerListForm from '../../components/BuyerListForm.astro';
 import { listings } from '../../data/listings';
 import { closings } from '../../data/closings';
-import { formatPrice, formatPriceFull } from '../../lib/format';
+import { formatPriceFull } from '../../lib/format';
 
 const labels: Record<string, string> = { active: 'Available', pending: 'Pending', 'in-escrow': 'In escrow', 'off-market': 'Off market' };
 
@@ -109,7 +109,7 @@ const itemList = {
 													))}
 												</ul>
 											)}
-											<p class="listing-card__price">{listing.askingPrice ? formatPrice(listing.askingPrice) : 'Contact for Pricing'}</p>
+											<p class="listing-card__price">{listing.askingPrice ? formatPriceFull(listing.askingPrice) : 'Contact for Pricing'}</p>
 											<p class="listing-card__cta">{escrow ? 'In escrow: view details' : 'View details and offering memorandum'}</p>
 										</div>
 									</a>
