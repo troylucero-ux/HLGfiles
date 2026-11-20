@@ -14,9 +14,11 @@ interface Props {
 	lang?: 'en' | 'es';
 	// Pages that carry their own bottom call-to-action bar (the listing pages) switch the sitewide one off.
 	hideStickyCta?: boolean;
+	// Hides the thin newsletter bar above the header (used on the listing pages).
+	hideUtilityBar?: boolean;
 }
 
-const { title, description, noindex = false, image = '/images/hero/453-s-gramercy-pl-hero.webp', lang = 'en', hideStickyCta = false } = Astro.props;
+const { title, description, noindex = false, image = '/images/hero/453-s-gramercy-pl-hero.webp', lang = 'en', hideStickyCta = false, hideUtilityBar = false } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Append the brand name only when the full title still fits in a search result (~60 chars). Long,
 // keyword-rich titles (listings, articles) get truncated by Google if the suffix pushes them over,
@@ -193,7 +195,7 @@ const builtAt = new Date().toISOString();
 	</head>
 	<body>
 		<a href="#main" class="skip-link">Skip to main content</a>
-		<Header lang={lang} />
+		<Header lang={lang} hideUtilityBar={hideUtilityBar} />
 		<main id="main">
 			<slot />
 		</main>

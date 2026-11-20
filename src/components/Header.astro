@@ -4,8 +4,10 @@ import { BOV, PAGES_ES } from '../data/esSlugs';
 
 interface Props {
 	lang?: 'en' | 'es';
+	// Pages that need the room (the listing pages) can hide the thin newsletter bar above the header.
+	hideUtilityBar?: boolean;
 }
-const { lang = 'en' } = Astro.props;
+const { lang = 'en', hideUtilityBar = false } = Astro.props;
 const es = lang === 'es';
 
 // The English page that matches the Spanish page the visitor is on, for the language switch. Anything else goes to the English homepage.
@@ -135,6 +137,7 @@ const simpleLinks = es
 		];
 ---
 
+{!hideUtilityBar && (
 <div class="utility-bar">
 	<div class="container utility-bar__inner">
 		<p class="utility-bar__text">{text.utility}</p>
@@ -146,6 +149,7 @@ const simpleLinks = es
 		</form>
 	</div>
 </div>
+)}
 
 <header class="site-header">
 	<div class="container site-header__inner">
