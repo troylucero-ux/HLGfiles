@@ -120,7 +120,7 @@ const facts = [
 const highlightList = listing.highlights ?? [];
 const splitHighlight = (t: string) => {
 	const i = t.indexOf(': ');
-	return i > 0 && i <= 56 ? { title: t.slice(0, i), body: t.slice(i + 2) } : { title: t.split(/[,.;]| near | with | and /)[0].trim().slice(0, 48), body: t };
+	return i > 0 && i <= 56 ? { title: t.slice(0, i), body: t.slice(i + 2).replace(/^./, (c) => c.toUpperCase()) } : { title: t.split(/[,.;]| near | with | and /)[0].trim().slice(0, 48), body: t };
 };
 const pickRules = [/occupied|cash flow|vacant|delivered/i, /cap rate|return|priced/i, /upside|below market|below new|loss to lease/i, /parcel|unit mix|owner-occupier|ADU|location|views/i];
 const pickedIdx: number[] = [];
