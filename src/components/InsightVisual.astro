@@ -50,7 +50,7 @@ const ICON: Record<IconName, string> = {
 				{visual.steps.map((s, n) => (
 					<li class={s.tone === 'warn' ? 'is-warn' : ''}>
 						<span class="av-timeline__dot" aria-hidden="true">
-							{s.tone === 'warn' ? '!' : n + 1}
+							{s.tone === 'warn' ? '!' : visual.steps.slice(0, n).filter((x) => x.tone !== 'warn').length + 1}
 						</span>
 						<div>
 							<strong>{s.label}</strong>
@@ -147,9 +147,6 @@ const ICON: Record<IconName, string> = {
 				<rect x="40" y="250" width="100" height="12" fill="#aeb7c2" stroke="#0c2e50" />
 				<line x1="0" y1="196" x2="680" y2="196" stroke="#a32d2d" stroke-width="1.5" stroke-dasharray="6 5" />
 				<text x="12" y="188" class="av-balcony__t av-balcony__t--red">6 feet above the ground</text>
-				<line x1="636" y1="149" x2="636" y2="262" stroke="#0c2e50" stroke-width="1.5" />
-				<path d="M631 156l5-7 5 7M631 255l5 7 5-7" fill="none" stroke="#0c2e50" stroke-width="1.5" />
-				<text x="566" y="288" class="av-balcony__t">Walking surface: more than 6 feet up</text>
 				<rect x="396" y="40" width="148" height="52" fill="#fff" stroke="#b6944a" />
 				<text x="470" y="62" text-anchor="middle" class="av-balcony__t av-balcony__t--b">Wood balcony</text>
 				<text x="470" y="80" text-anchor="middle" class="av-balcony__t">Covered</text>
